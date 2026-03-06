@@ -6,6 +6,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using JojaAutoTasks.Configuration;
+using JojaAutoTasks.Lifecycle;
 
 
 namespace JojaAutoTasks;
@@ -15,11 +16,15 @@ internal sealed class ModEntry : Mod
 {
     // Dependencies
 
-    private ModLogger? logger;
+    // Potentially change to closure-based approach
+    private ModLogger logger = null!;
     private uint nextTickLogAt;
 
     // TODO: Loaded during startup; used by runtime systems in later phases. Can delete this comment once it is referenced in the code.
     private ModConfig config = new();
+
+    //TODO: potentially change to closure-based approach
+    private LifecycleCoordinator lifecycleCoordinator = null!;
 
     // Public Methods
 
@@ -36,7 +41,11 @@ internal sealed class ModEntry : Mod
         ConfigLoader configLoader = new ConfigLoader(helper);
         config = configLoader.Load();
 
+        //Instantiate lifecycle coordinator
+        lifecycleCoordinator = new LifecycleCoordinator(logger);
+
         // Lifecycle hooks
+        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         helper.Events.GameLoop.DayStarted += OnDayStarted;
         helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
@@ -47,24 +56,29 @@ internal sealed class ModEntry : Mod
 
     }
 
+    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+    {
+        lifecycleCoordinator.HandleGameLaunched();
+    }
+
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        logger?.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
+        lifecycleCoordinator.HandleSaveLoaded();
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
-        logger?.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
+        logger.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
     {
-        logger?.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
+        logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
     }
 
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        logger?.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving");
+        logger.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving");
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -75,7 +89,7 @@ internal sealed class ModEntry : Mod
         }
 
         nextTickLogAt = e.Ticks + 360; // Log every 6 seconds (60 ticks per second)
-        logger?.Trace(LogEvents.LifecycleUpdateTickedGuard, "Tick Logging with Throttle guard activated");
+        logger.Trace(LogEvents.LifecycleUpdateTickedGuard, "Tick Logging with Throttle guard activated");
     }
 }
 

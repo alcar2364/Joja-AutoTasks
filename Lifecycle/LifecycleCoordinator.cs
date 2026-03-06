@@ -1,6 +1,7 @@
+using System.Diagnostics.Tracing;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-
+using JojaAutoTasks.Infrastructure.Logging;
 namespace JojaAutoTasks.Lifecycle;
 
 /// <summary>
@@ -21,19 +22,25 @@ internal sealed class LifecycleCoordinator
     // - no task/store mutation
     // - no tests in this step
 
+    // Dependencies:
+    private readonly ModLogger logger;
+
     // Constructor
-    public LifecycleCoordinator()
+    public LifecycleCoordinator(ModLogger logger)
     {
+        this.logger = logger;
     }
     
     // TODO: route lifecycle signals with methods on this class, and have the smapi event handlers call those methods.
 
-    private void OnGameLaunched()
+    internal void HandleGameLaunched()
     {
+        logger.Debug(LogEvents.LifecycleGameLaunched, "Lifecycle event: Game launched");
     }
     
-    private void OnSaveLoaded()
+    internal void HandleSaveLoaded()
     {
+        logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
     }
     
 }
