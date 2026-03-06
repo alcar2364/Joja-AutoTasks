@@ -17,18 +17,37 @@ internal sealed class ModEntry : Mod
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper helper)
     {
-        // Listen for the DayStarted event, which happens after the player wakes up and the world is ready.
-        helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+        helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+        helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
+        helper.Events.GameLoop.Saving += this.OnSaving;
+        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+
     }
 
-    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        // Ignore if player hasn't loaded a save yet.
-        if (!Context.IsWorldReady)
-            return;
+        
+    }
 
-        // Print button presses to the console
-        this.Monitor.Log($"The {e.Button} button was pressed.", LogLevel.Debug);
+    private void OnDayStarted(object? sender, DayStartedEventArgs e)
+    {
+        
+    }
+
+    private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
+    {
+        
+    }
+
+    private void OnSaving(object? sender, SavingEventArgs e)
+    {
+        
+    }
+
+    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        
     }
 }
 
