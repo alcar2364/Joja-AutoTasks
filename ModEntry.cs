@@ -5,6 +5,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using JojaAutoTasks.Configuration;
 
 
 namespace JojaAutoTasks;
@@ -17,21 +18,30 @@ internal sealed class ModEntry : Mod
     private ModLogger? logger;
     private uint nextTickLogAt;
 
+    // TODO: Loaded during startup; used by runtime systems in later phases. Can delete this comment once it is referenced in the code.
+    private ModConfig config = new();
+
     // Public Methods
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
-    public override void Entry(IModHelper helper)
+    public override void Entry(IModHelper helper )
     {
         // Confirm startup
         logger = new ModLogger(Monitor);
         logger.Info(LogEvents.StartupEntry, "Joja AutoTasks initialized. Your productivity is our priority!");
 
-        helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-        helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
-        helper.Events.GameLoop.Saving += this.OnSaving;
-        helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+        // Load configuration
+        // TODO: add debug log message around config loading
+        ConfigLoader configLoader = new ConfigLoader(helper);
+        config = configLoader.Load();
+
+        // Lifecycle hooks
+        helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+        helper.Events.GameLoop.DayStarted += OnDayStarted;
+        helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+        helper.Events.GameLoop.Saving += OnSaving;
+        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
         logger.Info(LogEvents.StartupInitialized, "We have hooked into your life. Let's make every day a Joja day!");
 
