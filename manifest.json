@@ -1,0 +1,9 @@
+{
+    "Name": "JojaAutoTasks",
+    "Author": "Alcar",
+    "Version": "%ProjectVersion%",
+    "Description": "Automated Task Tracking for Stardew Valley",
+    "UniqueID": "Alcar.JojaAutoTasks",
+    "EntryDll": "JojaAutoTasks.dll",
+    "MinimumApiVersion": "4.4.0"
+}
