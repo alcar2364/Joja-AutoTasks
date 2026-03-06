@@ -21,15 +21,19 @@ internal sealed class LifecycleCoordinator
     // - no task/store mutation
     // - no tests in this step
 
-    // TODO: route lifecycle signals with methods on this class, and have the smapi event handlers call those methods.
-
-    private void isGameLaunched()
+    // Constructor
+    public LifecycleCoordinator()
     {
-        return;
     }
     
-    private void isSaveLoaded()
+    // TODO: route lifecycle signals with methods on this class, and have the smapi event handlers call those methods.
+
+    private void OnGameLaunched()
     {
-        return;
     }
+    
+    private void OnSaveLoaded()
+    {
+    }
+    
 }
