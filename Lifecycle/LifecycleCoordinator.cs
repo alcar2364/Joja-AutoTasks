@@ -42,5 +42,10 @@ internal sealed class LifecycleCoordinator
     {
         logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
     }
+
+    internal void HandleSaving()
+    {
+        logger.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving");
+    }
     
 }

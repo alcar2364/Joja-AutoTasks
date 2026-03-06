@@ -76,9 +76,12 @@ internal sealed class ModEntry : Mod
         logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
     }
 
+    /// <summary>
+    /// OnSaving is signal-only. Do not perform file writes, checkpoint creation, or persistence work from this path.
+    /// </summary>
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        logger.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving");
+        lifecycleCoordinator.HandleSaving();
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
