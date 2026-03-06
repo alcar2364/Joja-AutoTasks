@@ -1,8 +1,7 @@
 namespace JojaAutoTasks.Events;
 
 /// <summary>
-/// Defines the contract for an event dispatcher that decouples runtime systems from SMAPI event args and subscription model.
-/// </summary>
+/// Defines a contract for dispatching lifecycle events to runtime systems.
 internal interface IEventDispatcher
 {
     // Responsibilities:
