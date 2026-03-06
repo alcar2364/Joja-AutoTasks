@@ -2,6 +2,7 @@ namespace JojaAutoTasks.Events;
 
 /// <summary>
 /// Defines a contract for dispatching lifecycle events to runtime systems.
+/// </summary>
 internal interface IEventDispatcher
 {
     // Responsibilities:
@@ -15,9 +16,9 @@ internal interface IEventDispatcher
     // - no task/store mutation
     // - no tests in this step
 
-    internal void DispatchSaveLoaded();
-    internal void DispatchDayStarted();
-    internal void DispatchReturnedToTitle();
-    internal void DispatchSaving();
-    internal void DispatchUpdateTicked();
+    void DispatchSaveLoaded();
+    void DispatchDayStarted();
+    void DispatchReturnedToTitle();
+    void DispatchSavingInProgress();
+    void DispatchUpdateTicked();
 }

@@ -81,7 +81,7 @@ internal sealed class ModEntry : Mod
     /// </summary>
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        lifecycleCoordinator.HandleSaving();
+        lifecycleCoordinator.HandleSavingInProgress();
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)

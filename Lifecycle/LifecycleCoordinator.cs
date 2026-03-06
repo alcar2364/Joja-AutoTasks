@@ -26,7 +26,7 @@ internal sealed class LifecycleCoordinator
     private readonly ModLogger logger;
 
     // Constructor
-    public LifecycleCoordinator(ModLogger logger)
+    internal LifecycleCoordinator(ModLogger logger)
     {
         this.logger = logger;
     }
@@ -43,9 +43,9 @@ internal sealed class LifecycleCoordinator
         logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
     }
 
-    internal void HandleSaving()
+    internal void HandleSavingInProgress()
     {
-        logger.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving");
+        logger.Debug(LogEvents.LifecycleSavingSignal, "Lifecycle event: Saving in progress");
     }
     
 }
