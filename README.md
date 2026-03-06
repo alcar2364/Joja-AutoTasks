@@ -1,3 +1,3 @@
-# Joja AutoTasks
+# Joja AutoTasks #
 
 Project repository initialized.
