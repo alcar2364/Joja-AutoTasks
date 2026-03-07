@@ -16,6 +16,7 @@ internal interface IEventDispatcher
     // - no task/store mutation
     // - no tests in this step
 
+    void DispatchGameLaunched();
     void DispatchSaveLoaded();
     void DispatchDayStarted();
     void DispatchReturnedToTitle();

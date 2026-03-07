@@ -15,6 +15,12 @@ internal sealed class EventDispatcher : IEventDispatcher
     // - no task/store mutation
     // - no tests in this step
 
+    public void DispatchGameLaunched()
+    {
+        // No-op for now; will route to runtime systems in later phases.
+
+    }
+    
     public void DispatchSaveLoaded()
     {
         // No-op for now; will route to runtime systems in later phases.

@@ -1,48 +1,31 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using JojaAutoTasks.Infrastructure.Logging;
+﻿using JojaAutoTasks.Infrastructure.Logging;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using JojaAutoTasks.Configuration;
-using JojaAutoTasks.Lifecycle;
+using JojaAutoTasks.Startup;
 
 
 namespace JojaAutoTasks;
 
-    /// <summary>The mod entry point.</summary>
+/// <summary>The mod entry point.</summary>
 internal sealed class ModEntry : Mod
 {
     // Dependencies
 
-    // Potentially change to closure-based approach
-    private ModLogger logger = null!;
+    // ModRuntime is the composition root for the mod. It holds references to all major dependencies
+    // and provides a single access point for core services.
+    private ModRuntime runtime = null!; 
     private uint nextTickLogAt;
-
-    // TODO: Loaded during startup; used by runtime systems in later phases. Can delete this comment once it is referenced in the code.
-    private ModConfig config = new();
-
-    //TODO: potentially change to closure-based approach
-    private LifecycleCoordinator lifecycleCoordinator = null!;
+    
 
     // Public Methods
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-    /// <param name="helper">Provides simplified APIs for writing mods.</param>
-    public override void Entry(IModHelper helper )
+    /// <param>Provides simplified APIs for writing mods.</param>
+    public override void Entry(IModHelper helper)
     {
-        // Confirm startup
-        logger = new ModLogger(Monitor);
-        logger.Info(LogEvents.StartupEntry, "Joja AutoTasks initialized. Your productivity is our priority!");
+        // Build the runtime, which will initialize all dependencies and perform necessary setup work.
+        runtime = BootstrapContainer.Build(helper, Monitor);
 
-        // Load configuration
-        // TODO: add debug log message around config loading
-        ConfigLoader configLoader = new ConfigLoader(helper);
-        config = configLoader.Load();
-
-        //Instantiate lifecycle coordinator
-        lifecycleCoordinator = new LifecycleCoordinator(logger);
 
         // Lifecycle hooks
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -52,28 +35,26 @@ internal sealed class ModEntry : Mod
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
-        logger.Info(LogEvents.StartupInitialized, "We have hooked into your life. Let's make every day a Joja day!");
-
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        lifecycleCoordinator.HandleGameLaunched();
+        runtime.LifecycleCoordinator.HandleGameLaunched();
     }
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        lifecycleCoordinator.HandleSaveLoaded();
+        runtime.LifecycleCoordinator.HandleSaveLoaded();
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
-        logger.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
+        runtime.LifecycleCoordinator.HandleDayStarted();
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
     {
-        logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
+        runtime.LifecycleCoordinator.HandleReturnedToTitle();
     }
 
     /// <summary>
@@ -81,7 +62,8 @@ internal sealed class ModEntry : Mod
     /// </summary>
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        lifecycleCoordinator.HandleSavingInProgress();
+
+        runtime.LifecycleCoordinator.HandleSavingInProgress();
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -91,8 +73,8 @@ internal sealed class ModEntry : Mod
             return;
         }
 
-        nextTickLogAt = e.Ticks + 360; // Log every 6 seconds (60 ticks per second)
-        logger.Trace(LogEvents.LifecycleUpdateTickedGuard, "Tick Logging with Throttle guard activated");
+        runtime.LifecycleCoordinator.HandleUpdateTicked();
+        nextTickLogAt = e.Ticks + 360; // Sends tick signal every 6 seconds (60 ticks per second)
     }
 }
 

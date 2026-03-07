@@ -20,6 +20,6 @@ internal static class LogEvents
     public const string LifecycleSaveLoaded = "lifecycle.save_loaded";
     public const string LifecycleDayStarted = "lifecycle.day_started";
     public const string LifecycleReturnedToTitle = "lifecycle.returned_to_title";
-    public const string LifecycleSavingSignal = "lifecycle.saving.signal";
+    public const string LifecycleSavingInProgress = "lifecycle.saving.in_progress";
     public const string LifecycleUpdateTickedGuard = "lifecycle.update_ticked.guard";
 }
