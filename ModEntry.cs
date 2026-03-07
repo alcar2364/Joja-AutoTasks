@@ -1,6 +1,6 @@
 ﻿// Purpose: Hosts the SMAPI entrypoint for Joja AutoTasks and forwards subscribed game-loop signals
 // into the runtime lifecycle coordinator with a throttled update-tick guard.
-using JojaAutoTasks.Infrastructure.Logging;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using JojaAutoTasks.Startup;
@@ -14,19 +14,19 @@ internal sealed class ModEntry : Mod
 
     // ModRuntime is the composition root for the mod. It holds references to all major dependencies
     // and provides a single access point for core services.
-    private ModRuntime runtime = null!; 
+    private ModRuntime _runtime = null!; 
 
     // State
-    private uint nextTickLogAt;
+    private uint _nextTickLogAt;
 
     // Public API
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-    /// <param>Provides simplified APIs for writing mods.</param>
+    /// <param name="helper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper helper)
     {
         // Build the runtime, which will initialize all dependencies and perform necessary setup work.
-        runtime = BootstrapContainer.Build(helper, Monitor);
+        _runtime = BootstrapContainer.Build(helper, Monitor);
 
 
         // Lifecycle hooks
@@ -42,22 +42,22 @@ internal sealed class ModEntry : Mod
     // Event Handlers
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        runtime.LifecycleCoordinator.HandleGameLaunched();
+        _runtime.LifecycleCoordinator.HandleGameLaunched();
     }
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        runtime.LifecycleCoordinator.HandleSaveLoaded();
+        _runtime.LifecycleCoordinator.HandleSaveLoaded();
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
-        runtime.LifecycleCoordinator.HandleDayStarted();
+        _runtime.LifecycleCoordinator.HandleDayStarted();
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
     {
-        runtime.LifecycleCoordinator.HandleReturnedToTitle();
+        _runtime.LifecycleCoordinator.HandleReturnedToTitle();
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ internal sealed class ModEntry : Mod
     private void OnSaving(object? sender, SavingEventArgs e)
     {
 
-        runtime.LifecycleCoordinator.HandleSavingInProgress();
+        _runtime.LifecycleCoordinator.HandleSavingInProgress();
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -75,7 +75,7 @@ internal sealed class ModEntry : Mod
         {
             return;
         }
-        runtime.LifecycleCoordinator.HandleUpdateTicked(runtime.Config.EnableDebugMode);
+        _runtime.LifecycleCoordinator.HandleUpdateTicked(_runtime.Config.EnableDebugMode);
     }
 
     // Private Helpers
@@ -83,9 +83,9 @@ internal sealed class ModEntry : Mod
     // Helper method to throttle UpdateTicked signals to a reasonable frequency. Adjust as needed
     private bool ShouldForwardUpdateTick(uint currentTick)
     {
-        if (currentTick >= nextTickLogAt)
+        if (currentTick >= _nextTickLogAt)
         {
-            nextTickLogAt = currentTick + 360; // Throttles ticks to once every 6 seconds (360 ticks) 
+            _nextTickLogAt = currentTick + 360; // Throttles ticks to once every 6 seconds (360 ticks) 
             return true;
         }
         return false;
