@@ -29,14 +29,10 @@ internal readonly struct TaskID : IEquatable<TaskID>
 
     }
 
-    // Gets canonical TaskID string
     public string Value => _taskID ?? string.Empty;
 
     public bool Equals(TaskID other) => Comparer.Equals(_taskID, other._taskID);
-    
-
     public override bool Equals(object? obj) => obj is TaskID other && Equals(other);
-
     public override int GetHashCode() => Comparer.GetHashCode(_taskID ?? string.Empty);
     public static bool operator ==(TaskID left, TaskID right) => left.Equals(right);
     public static bool operator !=(TaskID left, TaskID right) => !left.Equals(right);
