@@ -50,6 +50,18 @@ Current coverage in `Configuration/` includes:
     1. returned config instance is newly created (no mutation of input instance)
     1. non-version settings remain stable across old/future normalization paths
 
+## LifecycleCoordinator Test Matrix ##
+
+Current coverage in `Lifecycle/` includes:
+    1. `HandleGameLaunched` forwards only `DispatchGameLaunched`
+    1. `HandleSaveLoaded` forwards only `DispatchSaveLoaded`
+    1. `HandleSavingInProgress` forwards only `DispatchSavingInProgress` (signal-only `OnSaving` guard)
+    1. `HandleUpdateTicked(false)` forwards only `DispatchUpdateTicked`
+    1. sequential lifecycle calls preserve deterministic dispatch order
+
+These tests are intentionally forwarding-focused and do not assert dispatcher internals or
+processing logic.
+
 ## Determinism Rules for Tests ##
 
 All tests should:
@@ -77,4 +89,10 @@ Before submitting new tests:
 
 ```powershell
 dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj"
+```
+
+For focused lifecycle validation:
+
+```powershell
+dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorTests
 ```
