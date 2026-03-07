@@ -68,13 +68,23 @@ internal sealed class ModEntry : Mod
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        if (e.Ticks < nextTickLogAt)
+        if (!ShouldForwardUpdateTick(e.Ticks))
         {
             return;
         }
 
         runtime.LifecycleCoordinator.HandleUpdateTicked();
-        nextTickLogAt = e.Ticks + 360; // Sends tick signal every 6 seconds (60 ticks per second)
+    }
+
+    // Helper method to throttle UpdateTicked signals to a reasonable frequency. Adjust as needed
+    private bool ShouldForwardUpdateTick(uint currentTick)
+    {
+        if (currentTick >= nextTickLogAt)
+        {
+            nextTickLogAt = currentTick + 360; // Throttles ticks to once every 6 seconds (360 ticks) 
+            return true;
+        }
+        return false;
     }
 }
 
