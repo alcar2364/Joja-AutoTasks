@@ -14,6 +14,9 @@ Describe what changed and why.
 	    * [ ] I reviewed `JojaAutoTasks.Tests/README.md` and followed the test naming/coverage
 	      conventions.
 	    * [ ] I added or updated tests for the changed behavior.
+	    * [ ] If `OnUpdateTicked` flow changed, I verified tests cover deterministic tick
+	      throttling and the guard-block no-op path (no runtime access, no second dispatch
+	      in-window).
 	    * [ ] If lifecycle signal routing changed, I verified lifecycle tests cover signal forwarding and signal-only `OnSaving` expectations.
 	    * [ ] If dispatcher routing changed, I verified dispatcher tests still assert determinism, statelessness, and no-op dispatch contracts.
 	    * [ ] If `ModConfig.CurrentConfigVersion` or config migration logic changed, I updated

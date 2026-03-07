@@ -62,6 +62,19 @@ Current coverage in `Lifecycle/` includes:
 These tests are intentionally forwarding-focused and do not assert dispatcher internals or
 processing logic.
 
+## Hooks Test Matrix ##
+
+Current coverage in `Hooks/` includes:
+    1. deterministic throttle interval for `ModEntry.ShouldForwardUpdateTick` (`0` true,
+       `359` false, `360` true, `361` false)
+    1. `OnUpdateTicked` forwards once, then blocks repeated same-tick calls inside the throttle
+       window
+    1. guard-block no-op contract: throttled follow-up call does not require runtime access and
+       does not dispatch
+
+These tests protect Phase 1 guardrails by locking deterministic tick-throttle behavior,
+single-dispatch forwarding semantics, and safe no-op guard-block paths.
+
 ## EventDispatcher Test Matrix ##
 
 Current coverage in `Events/` includes:
@@ -109,4 +122,10 @@ For focused dispatcher validation:
 
 ```powershell
 dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~EventDispatcherTests
+```
+
+For focused update-tick guard validation:
+
+```powershell
+dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~UpdateTickedGuardTests
 ```
