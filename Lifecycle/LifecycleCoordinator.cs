@@ -63,11 +63,13 @@ internal sealed class LifecycleCoordinator
         logger.Debug(LogEvents.LifecycleSavingInProgress, "Lifecycle event: Saving in progress");
         eventDispatcher.DispatchSavingInProgress();
     }
-    
-    internal void HandleUpdateTicked()
+
+    internal void HandleUpdateTicked(bool isDebugMode)
     {
-        logger.Debug(LogEvents.LifecycleUpdateTickedGuard, "Forwarding throttled tick lifecycle");
+        if (isDebugMode)
+        {
+            logger.Debug(LogEvents.LifecycleUpdateTickedGuard, "Forwarding throttled tick lifecycle");
+        }
         eventDispatcher.DispatchUpdateTicked();
     }
-
 }

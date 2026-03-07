@@ -75,8 +75,7 @@ internal sealed class ModEntry : Mod
         {
             return;
         }
-
-        runtime.LifecycleCoordinator.HandleUpdateTicked();
+        runtime.LifecycleCoordinator.HandleUpdateTicked(runtime.Config.EnableDebugMode);
     }
 
     // -- Helpers -- //
