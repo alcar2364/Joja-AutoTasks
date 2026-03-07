@@ -14,4 +14,16 @@
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="JojaAutoTasks.Tests\**\*.cs" />
+    <None Remove="JojaAutoTasks.Tests\**\*" />
+    <EmbeddedResource Remove="JojaAutoTasks.Tests\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>JojaAutoTasks.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>
