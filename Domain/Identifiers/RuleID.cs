@@ -2,34 +2,34 @@
 
 namespace JojaAutoTasks.Domain.Identifiers;
 
-internal readonly struct RuleID : IEquatable<RuleID>
+internal readonly struct RuleId : IEquatable<RuleId>
 {
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
-    private readonly string _ruleID;
+    private readonly string _ruleId;
 
     /// <summary>
-    /// Initializes a new <see cref="RuleID"/> from a raw identifier string.
+    /// Initializes a new <see cref="RuleId"/> from a raw identifier string.
     /// </summary>
-    /// <param name="ruleID">The raw rule identifier.</param>
+    /// <param name="ruleId">The raw rule identifier.</param>
     /// <exception cref="ArgumentNullException">
-    /// Thrown when <paramref name="ruleID"/> is null.
+    /// Thrown when <paramref name="ruleId"/> is null.
     /// </exception>
     /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="ruleID"/> is null, empty or whitespace after normalization.
+    /// Thrown when <paramref name="ruleId"/> is null, empty or whitespace after normalization.
     /// </exception>
-    public RuleID(string ruleID)
+    public RuleId(string ruleId)
     {
-        string normalizedRuleID = IdentifierUtility.NormalizeIdentifier(ruleID);
-        IdentifierUtility.ValidateIdentifier(normalizedRuleID);
-        _ruleID = normalizedRuleID;
+        string normalizedRuleId = IdentifierUtility.NormalizeIdentifier(ruleId);
+        IdentifierUtility.ValidateIdentifier(normalizedRuleId);
+        _ruleId = normalizedRuleId;
     }
 
-    public string Value => _ruleID ?? string.Empty;
-    public bool Equals(RuleID other) => Comparer.Equals(_ruleID, other._ruleID);
-    public override bool Equals(object? obj) => obj is RuleID other && Equals(other);
-    public override int GetHashCode() => Comparer.GetHashCode(_ruleID ?? string.Empty);
-    public static bool operator ==(RuleID left, RuleID right) => left.Equals(right);
-    public static bool operator !=(RuleID left, RuleID right) => !left.Equals(right);
-    public override string ToString() => _ruleID ?? string.Empty;
+    public string Value => _ruleId ?? string.Empty;
+    public bool Equals(RuleId other) => Comparer.Equals(_ruleId, other._ruleId);
+    public override bool Equals(object? obj) => obj is RuleId other && Equals(other);
+    public override int GetHashCode() => Comparer.GetHashCode(_ruleId ?? string.Empty);
+    public static bool operator ==(RuleId left, RuleId right) => left.Equals(right);
+    public static bool operator !=(RuleId left, RuleId right) => !left.Equals(right);
+    public override string ToString() => _ruleId ?? string.Empty;
 
 }
