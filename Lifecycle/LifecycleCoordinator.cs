@@ -12,8 +12,8 @@ internal sealed class LifecycleCoordinator
 {
     // Dependencies
 
-    private readonly ModLogger logger;
-    private readonly IEventDispatcher eventDispatcher;
+    private readonly ModLogger _logger;
+    private readonly IEventDispatcher _eventDispatcher;
 
     // State
 
@@ -22,49 +22,49 @@ internal sealed class LifecycleCoordinator
     // Constructor
     internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher)
     {
-        this.logger = logger;
-        this.eventDispatcher = eventDispatcher;
+        _logger = logger;
+        _eventDispatcher = eventDispatcher;
     }
 
     // Public API
 
     internal void HandleGameLaunched()
     {
-        logger.Debug(LogEvents.LifecycleGameLaunched, "Lifecycle event: Game launched");
-        eventDispatcher.DispatchGameLaunched();
+        _logger.Debug(LogEvents.LifecycleGameLaunched, "Lifecycle event: Game launched");
+        _eventDispatcher.DispatchGameLaunched();
     }
 
     internal void HandleSaveLoaded()
     {
-        logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
-        eventDispatcher.DispatchSaveLoaded();
+        _logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
+        _eventDispatcher.DispatchSaveLoaded();
     }
 
     internal void HandleDayStarted()
     {
-        logger.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
-        eventDispatcher.DispatchDayStarted();
+        _logger.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
+        _eventDispatcher.DispatchDayStarted();
     }
 
     internal void HandleReturnedToTitle()
     {
-        logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
-        eventDispatcher.DispatchReturnedToTitle();
+        _logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
+        _eventDispatcher.DispatchReturnedToTitle();
     }
 
     internal void HandleSavingInProgress()
     {
-        logger.Debug(LogEvents.LifecycleSavingInProgress, "Lifecycle event: Saving in progress");
-        eventDispatcher.DispatchSavingInProgress();
+        _logger.Debug(LogEvents.LifecycleSavingInProgress, "Lifecycle event: Saving in progress");
+        _eventDispatcher.DispatchSavingInProgress();
     }
 
     internal void HandleUpdateTicked(bool isDebugMode)
     {
         if (isDebugMode)
         {
-            logger.Debug(LogEvents.LifecycleUpdateTickedGuard, "Forwarding throttled tick lifecycle");
+            _logger.Debug(LogEvents.LifecycleUpdateTickedGuard, "Forwarding throttled tick lifecycle");
         }
-        eventDispatcher.DispatchUpdateTicked();
+        _eventDispatcher.DispatchUpdateTicked();
     }
 
     // Event Handlers
