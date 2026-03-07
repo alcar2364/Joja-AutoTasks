@@ -13,24 +13,22 @@ internal static class BootstrapContainer
     {
 
         // Initialize logger
-        var logger = new ModLogger(monitor);
+        ModLogger logger = new(monitor);
         logger.Info(LogEvents.StartupEntry, "Joja AutoLogger initialized.");
 
         // Load configuration
-        var config = new ConfigLoader(helper).Load();
+        ModConfig config = new ConfigLoader(helper).Load();
 
         // Instantiate event dispatcher
-        var eventDispatcher = new EventDispatcher();
+        EventDispatcher eventDispatcher = new();
 
         // Instantiate lifecycle coordinator
-        var lifecycleCoordinator = new LifecycleCoordinator(logger, eventDispatcher);
-
+        LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher);
         logger.Info(
         LogEvents.StartupInitialized, "Joja AutoTasks initialized. Your productivity is our priority!"
         );
 
-        var runtime = new ModRuntime
-        (
+        ModRuntime runtime = new(
             logger,
             config,
             eventDispatcher,

@@ -9,15 +9,15 @@ namespace JojaAutoTasks;
 /// <summary>The mod entry point.</summary>
 internal sealed class ModEntry : Mod
 {
-    // Dependencies
+    // --Dependencies -- //
 
     // ModRuntime is the composition root for the mod. It holds references to all major dependencies
     // and provides a single access point for core services.
     private ModRuntime runtime = null!; 
     private uint nextTickLogAt;
-    
 
-    // Public Methods
+
+    // -- Public Methods -- //
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param>Provides simplified APIs for writing mods.</param>
@@ -37,6 +37,8 @@ internal sealed class ModEntry : Mod
 
     }
 
+    // -- Private Methods -- //
+    
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         runtime.LifecycleCoordinator.HandleGameLaunched();
