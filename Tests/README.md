@@ -106,26 +106,39 @@ Before submitting new tests:
     1. assertions validate behavior, not just non-null
     1. at least one edge case is covered
     1. interaction checks are included where dependency calls are meaningful
+    1. if production files changed, the mod project still builds without test-only dependencies
     1. tests pass locally via:
 
 ```powershell
-dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj"
+dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
+```
+
+Run the full test suite:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj"
 ```
 
 For focused lifecycle validation:
 
 ```powershell
-dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorTests
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorTests
 ```
 
 For focused dispatcher validation:
 
 ```powershell
-dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~EventDispatcherTests
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~EventDispatcherTests
 ```
 
 For focused update-tick guard validation:
 
 ```powershell
-dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~UpdateTickedGuardTests
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~UpdateTickedGuardTests
+```
+
+For focused config migration safety validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~ConfigLoaderMigrationSafetyTests
 ```

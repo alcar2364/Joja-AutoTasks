@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="JojaAutoTasks.Tests\**\*.cs" />
-    <None Remove="JojaAutoTasks.Tests\**\*" />
-    <EmbeddedResource Remove="JojaAutoTasks.Tests\**\*" />
+    <Compile Remove="Tests\**\*.cs" />
+    <None Remove="Tests\**\*" />
+    <EmbeddedResource Remove="Tests\**\*" />
   </ItemGroup>
 
   <ItemGroup>
