@@ -21,11 +21,10 @@ internal readonly struct TaskID : IEquatable<TaskID>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="taskID"/> is empty or whitespace after normalization.
     /// </exception>
-    /// 
     public TaskID(string taskID)
     {
-        string normalizedTaskID = NormalizeTaskID(taskID);
-        ValidateTaskID(normalizedTaskID);
+        string normalizedTaskID = IdentifierUtility.NormalizeIdentifier(taskID);
+        IdentifierUtility.ValidateIdentifier(normalizedTaskID);
         _taskID = normalizedTaskID;
 
     }
@@ -42,24 +41,6 @@ internal readonly struct TaskID : IEquatable<TaskID>
     public static bool operator ==(TaskID left, TaskID right) => left.Equals(right);
     public static bool operator !=(TaskID left, TaskID right) => !left.Equals(right);
     public override string ToString() => _taskID ?? string.Empty;
-
-    private static string NormalizeTaskID(string? taskID)
-    {
-        // Normalizes the task ID by trimming whitespace.  
-        // TODO: Add addtional normalization logic if needed
-        return taskID == null
-            ? throw new ArgumentNullException(nameof(taskID), "TaskID cannot be null.")
-            : taskID.Trim();
-    }
-
-    private static string ValidateTaskID(string? taskID)
-    {
-        // TODO: Add additional validation if necessary (e.g., check for invalid characters, length constraints, etc.)
-
-        return string.IsNullOrWhiteSpace(taskID)
-            ? throw new ArgumentException("TaskID cannot be null or whitespace.", nameof(taskID))
-            : taskID;
-    }
 
 }
 
