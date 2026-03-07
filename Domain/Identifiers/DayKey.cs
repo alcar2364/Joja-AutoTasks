@@ -1,5 +1,4 @@
 // Purpose: Defines the immutable TaskID value type used for deterministic date-based identifiers.
-
 namespace JojaAutoTasks.Domain.Identifiers;
 
 internal readonly struct DayKey : IEquatable<DayKey>
@@ -8,6 +7,7 @@ internal readonly struct DayKey : IEquatable<DayKey>
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _dayKey;
 
+
     /// <summary>Initializes a new <see cref="DayKey"/> from a raw identifier string.</summary>
     /// <param name="dayKey">The raw day key identifier.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="dayKey"/> is null.</exception>
@@ -15,7 +15,7 @@ internal readonly struct DayKey : IEquatable<DayKey>
     /// Thrown when <paramref name="dayKey"/> cannot be validated for format, season, or day value.</exception>
     public DayKey(string dayKey)
     {
-        string normalizedDayKey = NormalizeDayKey(dayKey);
+        string normalizedDayKey = IdentifierUtility.NormalizeIdentifier(dayKey);
         ValidateDayKey(normalizedDayKey);
         _dayKey = normalizedDayKey;
     }
@@ -29,22 +29,11 @@ internal readonly struct DayKey : IEquatable<DayKey>
     public static bool operator !=(DayKey left, DayKey right) => !left.Equals(right);
     public override string ToString() => _dayKey ?? string.Empty;
 
-    private static string NormalizeDayKey(string? dayKey)
-    {
-        // Validates null and normalizes the day key by trimming whitespace.    
-        return dayKey == null
-            ? throw new ArgumentNullException(nameof(dayKey), "DayKey cannot be null.")
-            : dayKey.Trim();
-    }
-
     private static void ValidateDayKey(string? dayKey)
     {
         // TODO: Add additional validation if necessary (e.g., check for invalid characters, length constraints, etc.)
 
-        if (string.IsNullOrWhiteSpace(dayKey))
-        {
-            throw new ArgumentException("DayKey cannot be null or whitespace.", nameof(dayKey));
-        }
+        IdentifierUtility.ValidateIdentifier(dayKey);
 
         string[] parts = dayKey.Split('_');
         if (parts.Length != 2)
