@@ -62,6 +62,14 @@ Current coverage in `Lifecycle/` includes:
 These tests are intentionally forwarding-focused and do not assert dispatcher internals or
 processing logic.
 
+## EventDispatcher Test Matrix ##
+
+Current coverage in `Events/` includes:
+    1. all dispatch methods are explicit no-ops (no-op contract)
+    1. dispatcher remains stateless (no instance fields)
+    1. dispatch call order has no behavioral impact (order-invariant behavior)
+    1. no-op IL contract is enforced across all public dispatch methods
+
 ## Determinism Rules for Tests ##
 
 All tests should:
@@ -95,4 +103,10 @@ For focused lifecycle validation:
 
 ```powershell
 dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorTests
+```
+
+For focused dispatcher validation:
+
+```powershell
+dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~EventDispatcherTests
 ```

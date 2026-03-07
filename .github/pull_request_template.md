@@ -15,6 +15,7 @@ Describe what changed and why.
 	      conventions.
 	    * [ ] I added or updated tests for the changed behavior.
 	    * [ ] If lifecycle signal routing changed, I verified lifecycle tests cover signal forwarding and signal-only `OnSaving` expectations.
+	    * [ ] If dispatcher routing changed, I verified dispatcher tests still assert determinism, statelessness, and no-op dispatch contracts.
 	    * [ ] If `ModConfig.CurrentConfigVersion` or config migration logic changed, I updated
 	      `ConfigLoaderMigrationSafetyTests` coverage.
 	    * [ ] I ran `dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj"` locally.
