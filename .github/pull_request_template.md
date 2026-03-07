@@ -14,6 +14,7 @@ Describe what changed and why.
 	    * [ ] I reviewed `JojaAutoTasks.Tests/README.md` and followed the test naming/coverage
 	      conventions.
 	    * [ ] I added or updated tests for the changed behavior.
+	    * [ ] If lifecycle signal routing changed, I verified lifecycle tests cover signal forwarding and signal-only `OnSaving` expectations.
 	    * [ ] If `ModConfig.CurrentConfigVersion` or config migration logic changed, I updated
 	      `ConfigLoaderMigrationSafetyTests` coverage.
 	    * [ ] I ran `dotnet test "JojaAutoTasks.Tests\JojaAutoTasks.Tests.csproj"` locally.
