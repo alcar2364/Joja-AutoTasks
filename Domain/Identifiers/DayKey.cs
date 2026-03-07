@@ -24,7 +24,7 @@ internal readonly struct DayKey : IEquatable<DayKey>
     public string Value => _dayKey ?? string.Empty;
     public bool Equals(DayKey other) => Comparer.Equals(_dayKey, other._dayKey);
     public override bool Equals(object? obj) => obj is DayKey other && Equals(other);
-    public override int GetHashCode() => Comparer.GetHashCode(_dayKey);
+    public override int GetHashCode() => Comparer.GetHashCode(_dayKey ?? string.Empty);
     public static bool operator ==(DayKey left, DayKey right) => left.Equals(right);
     public static bool operator !=(DayKey left, DayKey right) => !left.Equals(right);
     public override string ToString() => _dayKey ?? string.Empty;
@@ -35,7 +35,9 @@ internal readonly struct DayKey : IEquatable<DayKey>
 
         IdentifierUtility.ValidateIdentifier(dayKey);
 
-        string[] parts = dayKey.Split('_');
+        // Allows nullable input, as null is handled by ValidateIdentifier above. Further validation
+        // assumes non-null input.
+        string[] parts = dayKey?.Split('_') ?? Array.Empty<string>();
         if (parts.Length != 2)
         {
             throw new ArgumentException("DayKey must match canonical format 'Year{N}_{Season}{D}'.", nameof(dayKey));
