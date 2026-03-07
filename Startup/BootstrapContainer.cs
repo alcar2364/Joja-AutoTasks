@@ -25,7 +25,9 @@ internal static class BootstrapContainer
         // Instantiate lifecycle coordinator
         var lifecycleCoordinator = new LifecycleCoordinator(logger, eventDispatcher);
 
-        logger.Info(LogEvents.StartupInitialized, "Joja AutoTasks initialized. Your productivity is our priority!");
+        logger.Info(
+        LogEvents.StartupInitialized, "Joja AutoTasks initialized. Your productivity is our priority!"
+        );
 
         var runtime = new ModRuntime
         (
