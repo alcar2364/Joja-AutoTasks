@@ -1,6 +1,6 @@
 namespace JojaAutoTasks.Domain.Tasks;
 
-public enum TaskSource
+public enum TaskSourceType
 {
     BuiltIn,
     TaskBuilder,
