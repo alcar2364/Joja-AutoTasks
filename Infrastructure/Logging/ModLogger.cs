@@ -7,18 +7,18 @@ namespace JojaAutoTasks.Infrastructure.Logging;
 /// </summary>
 public class ModLogger
 {
-    // Dependencies
+    // -- Dependencies -- //
     private readonly IMonitor monitor;
 
-    // Constructor
+    // -- Constructor -- //
     public ModLogger(IMonitor monitor)
     {
         this.monitor = monitor;
     }
 
-    // Public APIs
+    // -- Public APIs -- //
     
-    // Log methods without context
+    // -- Log methods without context -- //
     public void Trace(string eventName, string message)
     {
         this.Log(LogLevel.Trace, eventName, message, context: null);
@@ -44,7 +44,7 @@ public class ModLogger
         this.Log(LogLevel.Error, eventName, message, context: null);
     }
 
-    // Log methods with context
+    // -- Log methods with context -- //
     public void Trace(string eventName, string context, string message)
     {
         this.Log(LogLevel.Trace, eventName, message, context);
@@ -70,7 +70,7 @@ public class ModLogger
         this.Log(LogLevel.Error, eventName, message, context);
     }
 
-    // Private Helpers
+    // -- Helpers -- //
 
     // Centralized log method to ensure consistent formatting
     private void Log(LogLevel level, string eventName, string message, string? context)

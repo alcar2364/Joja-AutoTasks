@@ -9,16 +9,16 @@ namespace JojaAutoTasks.Configuration;
 /// </summary>
 internal sealed class ConfigLoader
 {
-    // Dependencies
+    // -- Dependencies -- //
     private readonly IModHelper helper;
 
-    // Constructor
+    // -- Constructor -- //
     public ConfigLoader(IModHelper helper)
     {
         this.helper = helper;
     }
 
-    // Public Methods
+    // -- Public Methods -- //
 
     // Load the config, returning a valid config object with defaults applied and any necessary reconciliation performed.
     public ModConfig Load()
@@ -36,6 +36,8 @@ internal sealed class ConfigLoader
 
         return ValidateConfig(loadedConfig);
     }
+
+    // -- Private Methods -- //
 
     // Attempt to reconcile any issues with the loaded config, and return a valid config object
     private ModConfig ValidateConfig(ModConfig? loadedConfig)
@@ -68,6 +70,7 @@ internal sealed class ConfigLoader
 
     // Reconcile an older config version to the current version, applying any necessary transformations or defaults.
     // Currently, there are no differences between versions. This is a placeholder for future config changes.
+    // TODO: potentially make static
     private ModConfig UpgradeFromOlderVersion(ModConfig oldConfig)
     {
         return CreateNormalizedConfig(oldConfig);
@@ -77,12 +80,15 @@ internal sealed class ConfigLoader
     // This is a safe fallback that prevents crashes due to unknown config structures, but does not preserve any settings from the future config.
     // This is an edge case and should rarely happen.
     // Currently, there are no differences between versions. This is a placeholder.
+    // TODO: potentially make static
     private ModConfig NormalizeFutureVersion(ModConfig futureConfig)
     {
         return CreateNormalizedConfig(futureConfig);
     }
 
-    //
+    // Normalizes a current config, applying defaults for any missing fields. This is a safeguard against 
+    // invalid configs that are missing fields, but have the correct version.
+    // TODO: potentially make static
     private ModConfig NormalizeCurrentVersion(ModConfig currentConfig)
     {
         return CreateNormalizedConfig(currentConfig);

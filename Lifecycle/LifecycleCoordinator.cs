@@ -20,19 +20,19 @@ internal sealed class LifecycleCoordinator
     // - no task/store mutation
     // - no tests in this step
 
-    // Dependencies:
+    // -- Dependencies -- //
+
     private readonly ModLogger logger;
     private readonly IEventDispatcher eventDispatcher;
 
-    // Constructor
+    // -- Constructor -- //
     internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher)
     {
         this.logger = logger;
         this.eventDispatcher = eventDispatcher;
     }
     
-    // TODO: route lifecycle signals with methods on this class, and have the smapi event handlers
-    // call those methods.
+    // -- Lifecycle Signal Handlers -- //
 
     internal void HandleGameLaunched()
     {

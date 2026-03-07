@@ -39,6 +39,7 @@ internal sealed class ModEntry : Mod
 
     // -- Private Methods -- //
     
+    // -- SMAPI Event Handlers -- //
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         runtime.LifecycleCoordinator.HandleGameLaunched();
@@ -77,6 +78,8 @@ internal sealed class ModEntry : Mod
 
         runtime.LifecycleCoordinator.HandleUpdateTicked();
     }
+
+    // -- Helpers -- //
 
     // Helper method to throttle UpdateTicked signals to a reasonable frequency. Adjust as needed
     private bool ShouldForwardUpdateTick(uint currentTick)
