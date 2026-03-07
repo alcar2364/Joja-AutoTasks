@@ -1,45 +1,39 @@
+// Purpose: Coordinates approved lifecycle signal sequencing by logging and forwarding each hook event
+// to the dispatcher while enforcing Phase 1 signal-only boundaries.
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Events;
+
 namespace JojaAutoTasks.Lifecycle;
 
 /// <summary>
-/// Coordinates approved lifecycle signal flow for the mod. Owns sequencing and boundaries only. 
-/// Does not execute persistence, dispatcher processing, or gameplay mutation.
+/// Lifecycle signal sequencer and dispatcher forwarder.
 /// </summary>  
 internal sealed class LifecycleCoordinator
 {
-    // Responsibilities:
-    // - Define approved entry points for lifecycle signals
-    // - preserve deterministic sequencing and boundaries of lifecycle signals
-    // - keeps lifecycle sequencing in one place
-
-    // Non-responsibilities:
-    // - no smapi event subscription ownership
-    // - no dispatch implementation
-    // - no persistence implementation
-    // - no task/store mutation
-    // - no tests in this step
-
-    // -- Dependencies -- //
+    // Dependencies
 
     private readonly ModLogger logger;
     private readonly IEventDispatcher eventDispatcher;
 
-    // -- Constructor -- //
+    // State
+
+    // Constants
+
+    // Constructor
     internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher)
     {
         this.logger = logger;
         this.eventDispatcher = eventDispatcher;
     }
-    
-    // -- Lifecycle Signal Handlers -- //
+
+    // Public API
 
     internal void HandleGameLaunched()
     {
         logger.Debug(LogEvents.LifecycleGameLaunched, "Lifecycle event: Game launched");
         eventDispatcher.DispatchGameLaunched();
     }
-    
+
     internal void HandleSaveLoaded()
     {
         logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
@@ -72,4 +66,8 @@ internal sealed class LifecycleCoordinator
         }
         eventDispatcher.DispatchUpdateTicked();
     }
+
+    // Event Handlers
+
+    // Private Helpers
 }

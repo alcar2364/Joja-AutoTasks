@@ -1,3 +1,5 @@
+// Purpose: Verifies ModEntry update-tick throttling and guarded forwarding behavior so Phase 1 stays
+// no-op on the tick path while preserving deterministic dispatcher signaling.
 using System.Reflection;
 using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Events;
@@ -10,8 +12,18 @@ using StardewModdingAPI.Events;
 
 namespace JojaAutoTasks.Tests.Hooks;
 
+/// <summary>ModEntry update-tick throttle and guard tests.</summary>
 public class UpdateTickedGuardTests
 {
+    // Dependencies
+
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
     [Fact]
     public void ShouldForwardUpdateTick_ThrottlesSignalsToConfiguredInterval()
     {
@@ -56,6 +68,10 @@ public class UpdateTickedGuardTests
         Assert.Null(exception);
         Assert.Equal(1, dispatcher.UpdateTickedDispatchCount);
     }
+
+    // Event Handlers
+
+    // Private Helpers
 
     private static ModEntry CreateEntryWithRuntime(out RecordingEventDispatcher dispatcher)
     {
@@ -148,6 +164,8 @@ public class UpdateTickedGuardTests
 
         return Activator.CreateInstance(normalizedType);
     }
+
+    // Nested types
 
     private sealed class RecordingEventDispatcher : IEventDispatcher
     {

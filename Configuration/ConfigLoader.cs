@@ -1,24 +1,25 @@
+// Purpose: Reads config.json through SMAPI and returns a normalized ModConfig by defaulting null/invalid
+// payloads and reconciling version drift to the current schema version.
 using System.Linq.Expressions;
 using StardewModdingAPI;
 
 namespace JojaAutoTasks.Configuration;
 
 /// <summary>
-/// Loads and normalizes persistent mod configuration from the mod's config.json file.
-/// Attempts to reconcile mismatches between config versions, and provides defaults for missing/invalid configs.
+/// Loads and normalizes mod config payloads.
 /// </summary>
 internal sealed class ConfigLoader
 {
-    // -- Dependencies -- //
+    // Dependencies
     private readonly IModHelper helper;
 
-    // -- Constructor -- //
+    // Constructor
     public ConfigLoader(IModHelper helper)
     {
         this.helper = helper;
     }
 
-    // -- Public Methods -- //
+    // Public API
 
     // Load the config, returning a valid config object with defaults applied and any necessary reconciliation performed.
     public ModConfig Load()
@@ -37,7 +38,7 @@ internal sealed class ConfigLoader
         return ValidateConfig(loadedConfig);
     }
 
-    // -- Private Methods -- //
+    // Private Helpers
 
     // Attempt to reconcile any issues with the loaded config, and return a valid config object
     private ModConfig ValidateConfig(ModConfig? loadedConfig)

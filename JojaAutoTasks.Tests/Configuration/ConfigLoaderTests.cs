@@ -1,3 +1,5 @@
+// Purpose: Verifies ConfigLoader normalization behavior for current, older, future, null, and invalid
+// payloads so ConfigVersion handling and flag preservation remain stable across schema drift.
 using JojaAutoTasks.Configuration;
 using Moq;
 using StardewModdingAPI;
@@ -5,8 +7,20 @@ using Xunit;
 
 namespace JojaAutoTasks.Tests.Configuration;
 
+/// <summary>
+/// ConfigLoader normalization and fallback tests.
+/// </summary>
 public class ConfigLoaderTests
 {
+    // Dependencies
+
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
     [Fact]
     public void Load_WhenReadConfigReturnsCurrentVersion_NormalizesAndPreservesFlags()
     {
@@ -145,4 +159,8 @@ public class ConfigLoaderTests
         helper.Setup(x => x.ReadConfig<ModConfig>()).Returns(config);
         return helper;
     }
+
+    // Event Handlers
+
+    // Private Helpers
 }

@@ -3,8 +3,17 @@ using Moq;
 using StardewModdingAPI;
 using Xunit;
 
+// Purpose: tests for `ConfigLoader` to verify that configuration version normalization is working as 
+// expected, and that non-version settings are preserved during normalization. This ensures that users 
+// with older or future config versions will not lose their settings, and that the mod can evolve its 
+// configuration schema without breaking existing users.
+
 namespace JojaAutoTasks.Tests.Configuration;
 
+/// <summary>
+/// Tests for `ConfigLoader` to verify that configuration version normalization is working as 
+/// expected.
+/// </summary>
 public class ConfigLoaderMigrationSafetyTests
 {
     public static TheoryData<int> OlderVersions => new TheoryData<int>

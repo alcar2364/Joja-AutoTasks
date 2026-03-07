@@ -3,6 +3,8 @@ using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
 
+// Purpose: The mod runtime, which holds references to all major dependencies and provides a single
+// access point for core services.
 namespace JojaAutoTasks.Startup;
 /// <summary> The mod runtime, which holds references to all major dependencies and provides a 
 /// single access point for core services. </summary>
@@ -22,7 +24,7 @@ internal sealed class ModRuntime
         IEventDispatcher eventDispatcher,
         LifecycleCoordinator lifecycleCoordinator)
     {
-        
+
         Logger = logger;
         Config = config;
         EventDispatcher = eventDispatcher;

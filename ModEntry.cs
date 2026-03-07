@@ -1,23 +1,25 @@
-﻿using JojaAutoTasks.Infrastructure.Logging;
+﻿// Purpose: Hosts the SMAPI entrypoint for Joja AutoTasks and forwards subscribed game-loop signals
+// into the runtime lifecycle coordinator with a throttled update-tick guard.
+using JojaAutoTasks.Infrastructure.Logging;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using JojaAutoTasks.Startup;
 
-
 namespace JojaAutoTasks;
 
-/// <summary>The mod entry point.</summary>
+/// <summary>SMAPI mod entrypoint and hook forwarding.</summary>
 internal sealed class ModEntry : Mod
 {
-    // --Dependencies -- //
+    // Dependencies
 
     // ModRuntime is the composition root for the mod. It holds references to all major dependencies
     // and provides a single access point for core services.
     private ModRuntime runtime = null!; 
+
+    // State
     private uint nextTickLogAt;
 
-
-    // -- Public Methods -- //
+    // Public API
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param>Provides simplified APIs for writing mods.</param>
@@ -37,9 +39,7 @@ internal sealed class ModEntry : Mod
 
     }
 
-    // -- Private Methods -- //
-    
-    // -- SMAPI Event Handlers -- //
+    // Event Handlers
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         runtime.LifecycleCoordinator.HandleGameLaunched();
@@ -78,7 +78,7 @@ internal sealed class ModEntry : Mod
         runtime.LifecycleCoordinator.HandleUpdateTicked(runtime.Config.EnableDebugMode);
     }
 
-    // -- Helpers -- //
+    // Private Helpers
 
     // Helper method to throttle UpdateTicked signals to a reasonable frequency. Adjust as needed
     private bool ShouldForwardUpdateTick(uint currentTick)

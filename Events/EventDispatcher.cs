@@ -1,26 +1,28 @@
+// Purpose: Implements the lifecycle dispatch contract as a deterministic no-op in Phase 1, preserving
+// explicit boundaries between lifecycle coordination and downstream runtime processing.
 namespace JojaAutoTasks.Events;
 
 /// <summary>
-/// Accept lifecycle dispatch calls and record them in call order for deterministic internal observation; perform no downstream processing
+/// Deterministic no-op lifecycle dispatcher.
 /// </summary>
 internal sealed class EventDispatcher : IEventDispatcher
 {
-    // Responsibilities:
-    // - concrete implementation of event dispatching contract for runtime systems
+    // Dependencies
 
-    // Non-responsibilities:
-    // - no smapi event subscription ownership
-    // - no lifecycle sequencing ownership
-    // - no persistence implementation
-    // - no task/store mutation
-    // - no tests in this step
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
 
     public void DispatchGameLaunched()
     {
         // No-op for now; will route to runtime systems in later phases.
 
     }
-    
+
     public void DispatchSaveLoaded()
     {
         // No-op for now; will route to runtime systems in later phases.
@@ -50,4 +52,8 @@ internal sealed class EventDispatcher : IEventDispatcher
         // No-op for now; will route to runtime systems in later phases.
 
     }
+
+    // Event Handlers
+
+    // Private Helpers
 }

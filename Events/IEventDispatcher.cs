@@ -1,20 +1,21 @@
+// Purpose: Defines the Phase 1 lifecycle signal dispatch contract used by the coordinator to decouple
+// SMAPI hook sequencing from runtime processing concerns.
 namespace JojaAutoTasks.Events;
 
 /// <summary>
-/// Defines a contract for dispatching lifecycle events to runtime systems.
+/// Lifecycle signal dispatch contract.
 /// </summary>
 internal interface IEventDispatcher
 {
-    // Responsibilities:
-    // - define event dispatching contract for runtime systems
-    // - decouple runtime systems from smapi event args and subscription model
+    // Dependencies
 
-    // Non-responsibilities:
-    // - no smapi event subscription ownership
-    // - no lifecycle sequencing ownership
-    // - no persistence implementation
-    // - no task/store mutation
-    // - no tests in this step
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
 
     void DispatchGameLaunched();
     void DispatchSaveLoaded();
@@ -22,4 +23,8 @@ internal interface IEventDispatcher
     void DispatchReturnedToTitle();
     void DispatchSavingInProgress();
     void DispatchUpdateTicked();
+
+    // Event Handlers
+
+    // Private Helpers
 }

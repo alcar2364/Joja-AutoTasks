@@ -4,6 +4,7 @@ using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Lifecycle;
 using JojaAutoTasks.Events;
 
+// Purpose: Builds the mod runtime and composes all dependencies.
 namespace JojaAutoTasks.Startup;
 
 /// <summary> Builds the mod runtime and composes all dependencies. </summary>

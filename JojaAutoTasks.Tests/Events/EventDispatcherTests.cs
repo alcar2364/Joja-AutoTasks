@@ -1,11 +1,25 @@
+// Purpose: Validates that EventDispatcher dispatch members remain deterministic no-ops with no mutable
+// instance state or operational IL side effects across invocation orders.
 using System.Reflection;
 using JojaAutoTasks.Events;
 using Xunit;
 
 namespace JojaAutoTasks.Tests.Events;
 
+/// <summary>
+/// EventDispatcher no-op determinism tests.
+/// </summary>
 public class EventDispatcherTests
 {
+    // Dependencies
+
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
     [Fact]
     public void DispatchMethods_WhenInvokedInCanonicalOrder_DoNotThrow()
     {
@@ -99,4 +113,8 @@ public class EventDispatcherTests
 
         return values;
     }
+
+    // Event Handlers
+
+    // Private Helpers
 }
