@@ -1,37 +1,36 @@
-using System;
-using System.Collections.Generic;
-
+// Purpose: Represents a unique identifier for a subject in the JojaAutoTasks system. A subject can
+// represent any entity that can be associated with tasks, such as a player, NPC, or location.
 
 namespace JojaAutoTasks.Domain.Identifiers;
 
-internal readonly struct SubjectID : IEquatable<SubjectID>
+internal readonly struct SubjectId : IEquatable<SubjectId>
 {
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
-    private readonly string _subjectID;
+    private readonly string _subjectId;
 
     /// <summary>
-    /// Initializes a new <see cref="SubjectID"/> from a raw identifier string.
-    /// Initializes a new <see cref="SubjectID"/> from a raw identifier string.
+    /// Initializes a new <see cref="SubjectId"/> from a raw identifier string.
+    /// Initializes a new <see cref="SubjectId"/> from a raw identifier string.
     /// </summary>
-    /// <param name="subjectID">The raw subject identifier.</param>
+    /// <param name="subjectId">The raw subject identifier.</param>
     /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="subjectID"/> is null, empty, or consists only of whitespace after normalization.
+    /// Thrown when <paramref name="subjectId"/> is null, empty, or consists only of whitespace after normalization.
     /// </exception>
-    public SubjectID(string subjectID)
+    public SubjectId(string subjectId)
     {
-        string normalizedSubjectID = IdentifierUtility.NormalizeIdentifier(subjectID);
-        IdentifierUtility.ValidateIdentifier(normalizedSubjectID);
-        _subjectID = normalizedSubjectID;
+        string normalizedSubjectId = IdentifierUtility.NormalizeIdentifier(subjectId);
+        IdentifierUtility.ValidateIdentifier(normalizedSubjectId);
+        _subjectId = normalizedSubjectId;
     }
 
-    public string Value => _subjectID ?? string.Empty;
+    public string Value => _subjectId ?? string.Empty;
 
-    public bool Equals(SubjectID other) => Comparer.Equals(_subjectID, other._subjectID);
+    public bool Equals(SubjectId other) => Comparer.Equals(_subjectId, other._subjectId);
 
-    public override bool Equals(object? obj) => obj is SubjectID other && Equals(other);
+    public override bool Equals(object? obj) => obj is SubjectId other && Equals(other);
 
-    public override int GetHashCode() => Comparer.GetHashCode(_subjectID ?? string.Empty);
-    public static bool operator ==(SubjectID left, SubjectID right) => left.Equals(right);
-    public static bool operator !=(SubjectID left, SubjectID right) => !left.Equals(right);
-    public override string ToString() => _subjectID ?? string.Empty;
+    public override int GetHashCode() => Comparer.GetHashCode(_subjectId ?? string.Empty);
+    public static bool operator ==(SubjectId left, SubjectId right) => left.Equals(right);
+    public static bool operator !=(SubjectId left, SubjectId right) => !left.Equals(right);
+    public override string ToString() => _subjectId ?? string.Empty;
 }
