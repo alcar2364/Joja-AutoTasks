@@ -21,7 +21,6 @@ internal static class IdentifierUtility
     /// Validates that the identifier is not null, empty, or whitespace.
     /// </summary>
     /// <param name="identifier">The identifier string to validate.</param>
-    /// <param name="identifierName">The name of the identifier for error messages.</param>
     /// <exception cref="ArgumentException">
     /// Thrown when <paramref name="identifier"/> is null, empty, 
     /// or whitespace.
