@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": "bash .local/Agents/Hooks/context-preflight/context-preflight.sh",
+        "cwd": ".",
+        "timeoutSec": 8
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": "bash .local/Agents/Hooks/safety-guardrails/safety-guardrails.sh",
+        "cwd": ".",
+        "env": {
+          "BLOCK_ON_SECURITY_THREAT": "false"
+        },
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "bash .local/Agents/Hooks/ecosystem-maintenance/ecosystem-maintenance.sh",
+        "cwd": ".",
+        "timeoutSec": 15
+      }
+    ]
+  }
+}
