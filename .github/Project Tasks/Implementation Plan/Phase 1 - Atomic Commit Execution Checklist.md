@@ -276,16 +276,16 @@ Step goal:
 
 ### 8B - Complete checklist and scope audit ###
 
-    * [ ] Action: audit implementation against checklist and guardrails.
-    * [ ] Scope: this checklist file and optional existing audit notes.
-    * [ ] Verify: no task/store mutation paths were introduced.
-    * [ ] Commit message: `phase1(step8B): complete scope audit against phase1 guardrails`
-    * [ ] Must include: checklist/audit status updates only.
-    * [ ] Must exclude: runtime behavior changes.
+    * [x] Action: audit implementation against checklist and guardrails.
+    * [x] Scope: this checklist file and optional existing audit notes.
+    * [x] Verify: no task/store mutation paths were introduced.
+    * [x] Commit message: `phase1(step8B): complete scope audit against phase1 guardrails`
+    * [x] Must include: checklist/audit status updates only.
+    * [x] Must exclude: runtime behavior changes.
 
 ### 8C - Validate atomic boundaries and defer list ###
 
-    * [ ] Action: validate commit boundaries and list deferred non-Phase-1 work.
+    * [] Action: validate commit boundaries and list deferred non-Phase-1 work.
     * [ ] Scope: checklist updates and optional status note files.
     * [ ] Verify: each sub-step maps to one clean scope-respecting commit.
     * [ ] Commit message: `phase1(step8C): finalize atomic boundary review and defer list`
