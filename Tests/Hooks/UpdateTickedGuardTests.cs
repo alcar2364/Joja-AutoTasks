@@ -89,8 +89,22 @@ public class UpdateTickedGuardTests
 
     private static void SetRuntime(ModEntry entry, ModRuntime? runtime)
     {
-        FieldInfo runtimeField = typeof(ModEntry).GetField("runtime", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("ModEntry runtime field was not found.");
+        FieldInfo[] runtimeFields = typeof(ModEntry)
+            .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+            .Where(static field => field.FieldType == typeof(ModRuntime))
+            .ToArray();
+
+        if (runtimeFields.Length == 0)
+        {
+            throw new InvalidOperationException("ModEntry runtime field was not found.");
+        }
+
+        if (runtimeFields.Length > 1)
+        {
+            throw new InvalidOperationException("ModEntry runtime field was ambiguous.");
+        }
+
+        FieldInfo runtimeField = runtimeFields[0];
 
         runtimeField.SetValue(entry, runtime);
     }
