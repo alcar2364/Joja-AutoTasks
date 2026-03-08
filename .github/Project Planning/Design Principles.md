@@ -33,25 +33,25 @@ Identifiers must follow strict C# naming conventions as defined in
 
 **Hard Rules:**
 
-- **PascalCase** for types, methods, properties, events
-  - `TaskStore`, `EvaluateRules()`, `ActiveTasks`, `SnapshotPublished`
-- **camelCase** for parameters and local variables
-  - `taskId`, `ruleEvaluator`, `completedTasks`
-- **Interface prefix `I`** for all interfaces
-  - `ITaskStore`, `IEventDispatcher`, `IStateSnapshot`
-- **One type per file**, file name matches type name exactly
-  - `TaskStore.cs` contains `TaskStore`
-  - `ITaskStore.cs` contains `ITaskStore`
+    - **PascalCase** for types, methods, properties, events
+        * `TaskStore`, `EvaluateRules()`, `ActiveTasks`, `SnapshotPublished`
+    - **camelCase** for parameters and local variables
+        * `taskId`, `ruleEvaluator`, `completedTasks`
+    - **Interface prefix `I`** for all interfaces
+        * `ITaskStore`, `IEventDispatcher`, `IStateSnapshot`
+    - **One type per file**, file name matches type name exactly
+        * `TaskStore.cs` contains `TaskStore`
+        * `ITaskStore.cs` contains `ITaskStore`
 
 **Why This Matters in JAT:**
 
 JAT's architecture relies on deterministic identifiers (`TaskID`, `RuleID`, `DayKey`, `SubjectID`)
 that must remain stable across save/load cycles. Predictable naming ensures:
 
-- Task identifiers are derived from stable, recognizable sources
-- UI binding property paths are type-safe and discoverable
-- Dependency injection constructor parameters clearly communicate intent
-- Code review can verify correct identifier usage at a glance
+    - Task identifiers are derived from stable, recognizable sources
+    - UI binding property paths are type-safe and discoverable
+    - Dependency injection constructor parameters clearly communicate intent
+    - Code review can verify correct identifier usage at a glance
 
 **Examples:**
 
@@ -73,8 +73,8 @@ public class task_store : ITaskStore
 
 **Related Contracts:**
 
-- [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md) (Section 4)
-- [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md) (Section 4)
+    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
 
 ---
 
@@ -101,19 +101,19 @@ JAT defines five core backend subsystems (per
 
 **Subsystem Contract:**
 
-- Each subsystem declares dependencies via **constructor parameters** only
-- Subsystems must **not** mutate state outside their responsibility
-- Cross-subsystem communication uses **commands** (State Store) or **events** (EventDispatcher)
-- **No circular dependencies** between subsystems
+    - Each subsystem declares dependencies via **constructor parameters** only
+    - Subsystems must **not** mutate state outside their responsibility
+    - Cross-subsystem communication uses **commands** (State Store) or **events** (EventDispatcher)
+    - **No circular dependencies** between subsystems
 
 **Why This Matters in JAT:**
 
 Modular boundaries enable:
 
-- **Testing:** Each subsystem can be unit tested in isolation with mocks
-- **Determinism:** Clear ownership prevents accidental state mutation
-- **Visibility:** Constructor injection makes dependencies explicit and auditable
-- **Maintainability:** Changes to one subsystem don't cascade unexpectedly
+    - **Testing:** Each subsystem can be unit tested in isolation with mocks
+    - **Determinism:** Clear ownership prevents accidental state mutation
+    - **Visibility:** Constructor injection makes dependencies explicit and auditable
+    - **Maintainability:** Changes to one subsystem don't cascade unexpectedly
 
 **Examples:**
 
@@ -144,8 +144,8 @@ public class TaskStore : ITaskStore
 
 **Related Contracts:**
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Sections 1, 2)
-- [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Sections 1, 2)
+    - [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
 
 ---
 
@@ -161,11 +161,11 @@ The State Store is the **sole owner** of canonical task state.
 
 **Hard Rules:**
 
-- **UI must not mutate** canonical state
-- **Evaluation Engine must not mutate** canonical state
-- **All state changes** occur via commands processed by the State Store
-- **Reducers** implement deterministic transformations (pure functions)
-- **Snapshots** published by State Store are **read-only** and immutable
+    - **UI must not mutate** canonical state
+    - **Evaluation Engine must not mutate** canonical state
+    - **All state changes** occur via commands processed by the State Store
+    - **Reducers** implement deterministic transformations (pure functions)
+    - **Snapshots** published by State Store are **read-only** and immutable
 
 **Command Flow:**
 
@@ -177,10 +177,10 @@ UI Interaction → Command Dispatch → State Store → Reducer → New State �
 
 Centralized control ensures:
 
-- **Determinism:** Same inputs always produce same outputs
-- **Auditability:** All mutations traceable to commands
-- **Testability:** Reducers are pure functions easily tested in isolation
-- **History tracking:** Command log can support undo/redo or replay (future)
+    - **Determinism:** Same inputs always produce same outputs
+    - **Auditability:** All mutations traceable to commands
+    - **Testability:** Reducers are pure functions easily tested in isolation
+    - **History tracking:** Command log can support undo/redo or replay (future)
 
 **Examples:**
 
@@ -202,8 +202,8 @@ public void OnCompleteTaskButtonClicked(string taskId)
 
 **Related Contracts:**
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 2)
-- [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 2)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 2)
+    - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 2)
 
 ---
 
@@ -220,30 +220,30 @@ verification criteria.
 
 **Hard Rules:**
 
-- Implementation plans stored as **flat `.md` files** (no nested subfolders)
-- Phase checklists use `Phase N - Description.md` naming for natural sort order
-- Each phase is broken into **atomic commits** with clear verification steps
-- Session progress tracked in comments or dedicated session log files
+    - Implementation plans stored as **flat `.md` files** (no nested subfolders)
+    - Phase checklists use `Phase N - Description.md` naming for natural sort order
+    - Each phase is broken into **atomic commits** with clear verification steps
+    - Session progress tracked in comments or dedicated session log files
 
 **Why This Matters in JAT:**
 
 JAT is a complex mod with determinism requirements, versioned persistence, and SMAPI integration
 constraints. Organized planning ensures:
 
-- **Incremental progress:** Atomic commits allow safe iteration
-- **Verification gates:** Each commit can be tested before proceeding
-- **Scope containment:** Clear phase boundaries prevent feature creep
-- **Shared context:** Plans serve as documentation for future work
+    - **Incremental progress:** Atomic commits allow safe iteration
+    - **Verification gates:** Each commit can be tested before proceeding
+    - **Scope containment:** Clear phase boundaries prevent feature creep
+    - **Shared context:** Plans serve as documentation for future work
 
 **Examples:**
 
-- [Phase 1 - Atomic Commit Execution Checklist.md](Phase%201%20-%20Atomic%20Commit%20Execution%20Checklist.md)
-- [Phase 2 - Atomic Commit Execution Checklist.md](Phase%202%20-%20Atomic%20Commit%20Execution%20Checklist.md)
+    - [Phase 1 - Atomic Commit Execution Checklist.md](Phase%201%20-%20Atomic%20Commit%20Execution%20Checklist.md)
+    - [Phase 2 - Atomic Commit Execution Checklist.md](Phase%202%20-%20Atomic%20Commit%20Execution%20Checklist.md)
 
 **Related Contracts:**
 
-- [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Section 2)
-- [Implementation Plan README.md](README.md)
+    - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Section 2)
+    - [Implementation Plan README.md](README.md)
 
 ---
 
@@ -259,24 +259,24 @@ confirmation gates for scope-expanding changes.
 
 **Hard Rules:**
 
-- **Plan-first policy:** Complex tasks require Research → Plan → Implementation → Review
-- **Explicit approval required** for:
-  - Multi-file edits
-  - Renaming public types or APIs
-  - Changing persisted data formats
-  - Deleting files
-  - Modifying build/config files
-  - Adding new dependencies
-- **No silent scope expansion:** If solving an issue requires additional changes outside requested
+    - **Plan-first policy:** Complex tasks require Research → Plan → Implementation → Review
+    - **Explicit approval required** for:
+        * Multi-file edits
+        * Renaming public types or APIs
+        * Changing persisted data formats
+        * Deleting files
+        * Modifying build/config files
+        * Adding new dependencies
+    - **No silent scope expansion:** If solving an issue requires additional changes outside requested
   scope, **stop and ask permission**
 
 **Why This Matters in JAT:**
 
 JAT's determinism contract and versioned persistence make scope creep dangerous:
 
-- **Breaking changes** to identifiers or persistence formats require migrations
-- **Cascading edits** across subsystems risk introducing non-deterministic behavior
-- **Unplanned dependencies** can violate SMAPI compatibility or licensing constraints
+    - **Breaking changes** to identifiers or persistence formats require migrations
+    - **Cascading edits** across subsystems risk introducing non-deterministic behavior
+    - **Unplanned dependencies** can violate SMAPI compatibility or licensing constraints
 
 **Examples:**
 
@@ -297,8 +297,8 @@ Agent: "Done! Also improved the architecture while I was there."
 
 **Related Contracts:**
 
-- [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Sections 2-4)
-- [REVIEW-AND-VERIFICATION-CONTRACT.instructions.md](../../.github/instructions/review-and-verification-contract.instructions.md)
+    - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Sections 2-4)
+    - [REVIEW-AND-VERIFICATION-CONTRACT.instructions.md](../../.github/instructions/review-and-verification-contract.instructions.md)
 
 ---
 
@@ -314,36 +314,36 @@ a specific subsystem or design concern with clear diagrams, data structures, and
 
 **Hard Rules:**
 
-- Design Guide sections stored in `.github/Joja AutoTasks Design Guide/`
-- Sections numbered sequentially: `Section NN - Title.md`
-- Each section includes:
-  - **Purpose statement**
-  - **Data structures** with field descriptions
-  - **Flow diagrams** (text-based or Mermaid)
-  - **Examples** showing correct usage
-  - **Anti-patterns** showing what to avoid
-- Main index: `JojaAutoTasks Design Guide.md`
+    - Design Guide sections stored in `.github/Joja AutoTasks Design Guide/`
+    - Sections numbered sequentially: `Section NN - Title.md`
+    - Each section includes:
+        * **Purpose statement**
+        * **Data structures** with field descriptions
+        * **Flow diagrams** (text-based or Mermaid)
+        * **Examples** showing correct usage
+        * **Anti-patterns** showing what to avoid
+    - Main index: `JojaAutoTasks Design Guide.md`
 
 **Why This Matters in JAT:**
 
 JAT's architecture is non-trivial:
 
-- **State flow** crosses multiple subsystems (Engine → State Store → Snapshot → UI)
-- **Identifier derivation** requires understanding determinism contracts
-- **Persistence versioning** needs explicit migration strategy documentation
+    - **State flow** crosses multiple subsystems (Engine → State Store → Snapshot → UI)
+    - **Identifier derivation** requires understanding determinism contracts
+    - **Persistence versioning** needs explicit migration strategy documentation
 
 Visual documentation ensures contributors and reviewers can verify correctness without deep code
 archaeology.
 
 **Examples:**
 
-- [Section 02 - System Architecture.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
-- [Section 03 - Deterministic Identifier Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
-- [Section 04 - Core Data Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
+    - [Section 02 - System Architecture.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
+    - [Section 03 - Deterministic Identifier Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Section 04 - Core Data Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
 
 **Related Contracts:**
 
-- [Design Guide EditingInstructions.md](../../.github/Joja%20AutoTasks%20Design%20Guide/EditingInstructions.md)
+    - [Design Guide EditingInstructions.md](../../.github/Joja%20AutoTasks%20Design%20Guide/EditingInstructions.md)
 
 ---
 
@@ -360,15 +360,15 @@ comments.
 
 **Hard Rules:**
 
-- **Prefer clarity over brevity** — `TaskEvaluator` is better than `TskEvl`
-- **Nouns for types** — `TaskStore`, `RuleEvaluator`, `StateSnapshot`
-- **Verbs for methods** — `EvaluateRules()`, `ApplyCommand()`, `PublishSnapshot()`
-- **Avoid abbreviations** unless widely recognized in domain:
-  - ✅ `HUD` (game UI term), `ID` (standard)
-  - ❌ `TskBldr`, `EvlEng`, `SnapPub`
-- **Domain-specific terms** preferred over generic:
-  - ✅ `TaskID` (JAT domain)
-  - ❌ `Identifier`, `Key`, `UniqueString`
+    - **Prefer clarity over brevity** — `TaskEvaluator` is better than `TskEvl`
+    - **Nouns for types** — `TaskStore`, `RuleEvaluator`, `StateSnapshot`
+    - **Verbs for methods** — `EvaluateRules()`, `ApplyCommand()`, `PublishSnapshot()`
+    - **Avoid abbreviations** unless widely recognized in domain:
+        * ✅ `HUD` (game UI term), `ID` (standard)
+        * ❌ `TskBldr`, `EvlEng`, `SnapPub`
+    - **Domain-specific terms** preferred over generic:
+        * ✅ `TaskID` (JAT domain)
+        * ❌ `Identifier`, `Key`, `UniqueString`
 
 **Why This Matters in JAT:**
 
@@ -399,8 +399,8 @@ public class TskEvl : ITskEvl
 
 **Related Contracts:**
 
-- [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md) (Section 4)
-- [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
+    - [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md) (Section 4)
+    - [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
 
 ---
 
@@ -417,25 +417,25 @@ non-deterministic behavior.
 
 **Hard Rules:**
 
-- **Plan-first for complex features:** New subsystems, persistence format changes, and identifier
+    - **Plan-first for complex features:** New subsystems, persistence format changes, and identifier
   changes require Design Guide sections before implementation
-- **Prototype risky integrations** before committing to architecture:
-  - SMAPI event lifecycle interactions
-  - StardewUI binding patterns
-  - Game state query performance
-- **Design Guide updates before breaking changes:** If architecture must change, update Design
+    - **Prototype risky integrations** before committing to architecture:
+        * SMAPI event lifecycle interactions
+        * StardewUI binding patterns
+        * Game state query performance
+    - **Design Guide updates before breaking changes:** If architecture must change, update Design
   Guide first, then implement
-- **Avoid mid-flight architecture pivots:** If a fundamental flaw is discovered, pause
+    - **Avoid mid-flight architecture pivots:** If a fundamental flaw is discovered, pause
   implementation, update plan, get approval, then resume
 
 **Why This Matters in JAT:**
 
 JAT's constraints make course corrections expensive:
 
-- **Identifier changes** break task history and persistence
-- **State Store refactors** cascade to UI, persistence, and evaluation engine
-- **Persistence format changes** require explicit migrations with version bumps
-- **SMAPI lifecycle changes** affect when evaluation runs and snapshot publishing
+    - **Identifier changes** break task history and persistence
+    - **State Store refactors** cascade to UI, persistence, and evaluation engine
+    - **Persistence format changes** require explicit migrations with version bumps
+    - **SMAPI lifecycle changes** affect when evaluation runs and snapshot publishing
 
 **Examples:**
 
@@ -459,8 +459,8 @@ JAT's constraints make course corrections expensive:
 
 **Related Contracts:**
 
-- [Design Guide Sections 01-21](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
-- [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Section 2.1)
+    - [Design Guide Sections 01-21](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
+    - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Section 2.1)
 
 ---
 
@@ -476,15 +476,15 @@ state** before proceeding to the next phase.
 
 **Hard Rules:**
 
-- **Atomic commits must be verifiable:** Each commit includes verification steps (build passes,
+    - **Atomic commits must be verifiable:** Each commit includes verification steps (build passes,
   tests pass, determinism checks)
-- **No half-implemented features in main branch:** Use feature branches for work-in-progress
-- **Phase completion gates:**
-  - All atomic commits in phase completed
-  - All verification steps passed
-  - No known blockers or regressions
-  - Phase retrospective documented (optional but recommended)
-- **No scope expansion mid-phase:** New feature ideas captured in backlog, not inserted into
+    - **No half-implemented features in main branch:** Use feature branches for work-in-progress
+    - **Phase completion gates:**
+        * All atomic commits in phase completed
+        * All verification steps passed
+        * No known blockers or regressions
+        * Phase retrospective documented (optional but recommended)
+    - **No scope expansion mid-phase:** New feature ideas captured in backlog, not inserted into
   active phase
 
 **Why This Matters in JAT:**
@@ -496,21 +496,21 @@ subtle bugs that only manifest across save/load cycles. Incremental, verified pr
 
 **✅ GOOD progression:**
 
-- Phase 1: Foundation (Domain models, identifiers) → **Verified working, tests pass**
-- Phase 2: State Store + Commands → **Verified working, determinism checks pass**
-- Phase 3: Persistence + Versioning → **Verified working, migration tests pass**
+    - Phase 1: Foundation (Domain models, identifiers) → **Verified working, tests pass**
+    - Phase 2: State Store + Commands → **Verified working, determinism checks pass**
+    - Phase 3: Persistence + Versioning → **Verified working, migration tests pass**
 
 **❌ BAD progression:**
 
-- Phase 1: Half-implemented State Store
-- Phase 2: Started working on UI while State Store has bugs
-- Phase 3: Realized identifier model was wrong, refactored everything
+    - Phase 1: Half-implemented State Store
+    - Phase 2: Started working on UI while State Store has bugs
+    - Phase 3: Realized identifier model was wrong, refactored everything
 
 **Related Contracts:**
 
-- [Phase 1 - Atomic Commit Execution Checklist.md](Phase%201%20-%20Atomic%20Commit%20Execution%20Checklist.md)
-- [Phase 2 - Atomic Commit Execution Checklist.md](Phase%202%20-%20Atomic%20Commit%20Execution%20Checklist.md)
-- [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
+    - [Phase 1 - Atomic Commit Execution Checklist.md](Phase%201%20-%20Atomic%20Commit%20Execution%20Checklist.md)
+    - [Phase 2 - Atomic Commit Execution Checklist.md](Phase%202%20-%20Atomic%20Commit%20Execution%20Checklist.md)
+    - [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
 
 ---
 
@@ -530,27 +530,27 @@ session.
 
 **Hard Rules:**
 
-- **TaskID must be deterministic:**
-  - Derived from stable inputs: source type, rule ID, subject ID, day key
-  - **Never** use `Guid.NewGuid()`, random numbers, or time-based UUIDs for generated tasks
-  - Task IDs must remain stable across reloads and evaluation passes
-- **Reducer functions must be pure:**
-  - Same command + same state → same new state
-  - No side effects (logging is permissible, state mutation is not)
-- **Evaluation order must not affect results:**
-  - Rule evaluation must not depend on traversal order of unordered collections
-  - If ordering is semantically relevant, use **explicit sorting** with stable keys
-- **Persistence reconstruction must be deterministic:**
-  - Loading saved data must produce identical state given identical file contents
+    - **TaskID must be deterministic:**
+        * Derived from stable inputs: source type, rule ID, subject ID, day key
+        * **Never** use `Guid.NewGuid()`, random numbers, or time-based UUIDs for generated tasks
+        * Task IDs must remain stable across reloads and evaluation passes
+    - **Reducer functions must be pure:**
+        * Same command + same state → same new state
+        * No side effects (logging is permissible, state mutation is not)
+    - **Evaluation order must not affect results:**
+        * Rule evaluation must not depend on traversal order of unordered collections
+        * If ordering is semantically relevant, use **explicit sorting** with stable keys
+    - **Persistence reconstruction must be deterministic:**
+        * Loading saved data must produce identical state given identical file contents
 
 **Why This Matters:**
 
 Non-deterministic behavior causes:
 
-- **Duplicate tasks** on reload (different IDs for same logical task)
-- **Lost progress** (completed task not recognized after reload)
-- **Flaky tests** (identifier mismatch in unit tests)
-- **User frustration** (tasks appear/disappear unpredictably)
+    - **Duplicate tasks** on reload (different IDs for same logical task)
+    - **Lost progress** (completed task not recognized after reload)
+    - **Flaky tests** (identifier mismatch in unit tests)
+    - **User frustration** (tasks appear/disappear unpredictably)
 
 **Examples:**
 
@@ -570,14 +570,14 @@ public static TaskId ForBuiltInTask(string generatorName, SubjectID subjectId)
 
 **Verification:**
 
-- Unit tests must verify **identifier stability** across multiple calls
-- Round-trip persistence tests must verify **exact state reconstruction**
+    - Unit tests must verify **identifier stability** across multiple calls
+    - Round-trip persistence tests must verify **exact state reconstruction**
 
 **Related Contracts:**
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 3)
-- [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
-- [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 3)
+    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
 
 ---
 
@@ -590,21 +590,21 @@ mutate snapshot data.
 
 **Hard Rules:**
 
-- State Store publishes **immutable snapshots** to UI
-- UI **reads** from snapshots but **never writes**
-- All state changes flow through **Command → Reducer → State Store** path
-- Snapshot properties should use **read-only collections** where possible:
-  - `IReadOnlyList<T>`, `IReadOnlyDictionary<K,V>`, `ImmutableList<T>` preferred over mutable
+    - State Store publishes **immutable snapshots** to UI
+    - UI **reads** from snapshots but **never writes**
+    - All state changes flow through **Command → Reducer → State Store** path
+    - Snapshot properties should use **read-only collections** where possible:
+        * `IReadOnlyList<T>`, `IReadOnlyDictionary<K,V>`, `ImmutableList<T>` preferred over mutable
     collections
 
 **Why This Matters:**
 
 Violating immutability boundaries causes:
 
-- **Invisible state mutations** (UI changes state without going through reducers)
-- **Lost determinism** (mutations bypass command log)
-- **Concurrency bugs** (snapshot shared across threads)
-- **Untestable behavior** (mutations not captured in reducer tests)
+    - **Invisible state mutations** (UI changes state without going through reducers)
+    - **Lost determinism** (mutations bypass command log)
+    - **Concurrency bugs** (snapshot shared across threads)
+    - **Untestable behavior** (mutations not captured in reducer tests)
 
 **Examples:**
 
@@ -635,8 +635,8 @@ public void OnCompleteTaskClicked(string taskId)
 
 **Related Contracts:**
 
-- [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 2)
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 2.2)
+    - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 2)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 2.2)
 
 ---
 
@@ -649,20 +649,20 @@ driven updates) rather than feature restrictions.
 
 **Hard Rules:**
 
-- **Avoid per-frame work:** Expensive computations (rule evaluation, game state queries) run on
+    - **Avoid per-frame work:** Expensive computations (rule evaluation, game state queries) run on
   **events** or **throttled ticks**, not every frame
-- **Cache expensive lookups:** Game state snapshots cached for evaluation window
-- **Bounded scans:** Avoid unbounded loops; use explicit limits or early exits
-- **UI rebuild throttling:** UI refreshes only on snapshot changes, not continuously
-- **Lazy evaluation:** Defer expensive computations until actually needed
+    - **Cache expensive lookups:** Game state snapshots cached for evaluation window
+    - **Bounded scans:** Avoid unbounded loops; use explicit limits or early exits
+    - **UI rebuild throttling:** UI refreshes only on snapshot changes, not continuously
+    - **Lazy evaluation:** Defer expensive computations until actually needed
 
 **Why This Matters:**
 
 SMAPI mods share the game's main thread. Heavy per-frame work causes:
 
-- **Frame drops** and stuttering gameplay
-- **Slow UI responsiveness**
-- **Player frustration** and mod uninstalls
+    - **Frame drops** and stuttering gameplay
+    - **Slow UI responsiveness**
+    - **Player frustration** and mod uninstalls
 
 JAT's "unlimited tasks" philosophy requires performance discipline at the architectural level.
 
@@ -688,15 +688,15 @@ public void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 
 **Performance Guardrails:**
 
-- **HUD rendering:** Must remain lightweight; cache layout calculations
-- **Menu initialization:** Allowed to be slower; runs once on menu open
-- **Task evaluation:** Throttled to sensible intervals (day start, periodic tick with cooldown)
+    - **HUD rendering:** Must remain lightweight; cache layout calculations
+    - **Menu initialization:** Allowed to be slower; runs once on menu open
+    - **Task evaluation:** Throttled to sensible intervals (day start, periodic tick with cooldown)
 
 **Related Contracts:**
 
-- [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 5)
-- [PERFORMANCE-OPTIMIZATION.instructions.md](../../.github/instructions/performance-optimization.instructions.md)
-- [Design Guide Section 19 - Performance Guardrails](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2019%20-%20Performance%20Guardrails.md)
+    - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 5)
+    - [PERFORMANCE-OPTIMIZATION.instructions.md](../../.github/instructions/performance-optimization.instructions.md)
+    - [Design Guide Section 19 - Performance Guardrails](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2019%20-%20Performance%20Guardrails.md)
 
 ---
 
@@ -709,35 +709,35 @@ include **explicit version identifiers** to support safe migrations.
 
 **Hard Rules:**
 
-- **Do not persist transient caches** or UI state (scroll positions, selection state)
-- **Do not persist derived data** that can be recomputed (task counts, completion percentages)
-- **Do persist:**
-  - Task completion state and user actions
-  - Task Builder rules and definitions
-  - Manual task content
-  - Daily snapshot ledger entries
-  - Monotonic counters (manual task ID counter)
-- **Version all persisted structures:**
-  - Include `Version` field in root of saved data
-  - Bump version on schema changes
-  - Implement explicit migration paths for version upgrades
-- **Safe failure modes:**
-  - Unknown versions should fail loudly with clear error messages
-  - Corrupted data should not crash the mod; fall back to safe defaults
+    - **Do not persist transient caches** or UI state (scroll positions, selection state)
+    - **Do not persist derived data** that can be recomputed (task counts, completion percentages)
+    - **Do persist:**
+        * Task completion state and user actions
+        * Task Builder rules and definitions
+        * Manual task content
+        * Daily snapshot ledger entries
+        * Monotonic counters (manual task ID counter)
+    - **Version all persisted structures:**
+        * Include `Version` field in root of saved data
+        * Bump version on schema changes
+        * Implement explicit migration paths for version upgrades
+    - **Safe failure modes:**
+        * Unknown versions should fail loudly with clear error messages
+        * Corrupted data should not crash the mod; fall back to safe defaults
 
 **Why This Matters:**
 
 Over-persistence causes:
 
-- **Save bloat** (large files, slow load times)
-- **Migration complexity** (more fields = more migration paths)
-- **Fragility** (transient state persisted incorrectly breaks reload)
+    - **Save bloat** (large files, slow load times)
+    - **Migration complexity** (more fields = more migration paths)
+    - **Fragility** (transient state persisted incorrectly breaks reload)
 
 Under-versioning causes:
 
-- **Silent data corruption** when schema changes
-- **Lost user data** when migration fails
-- **Impossible rollbacks** (can't detect version mismatches)
+    - **Silent data corruption** when schema changes
+    - **Lost user data** when migration fails
+    - **Impossible rollbacks** (can't detect version mismatches)
 
 **Examples:**
 
@@ -763,9 +763,9 @@ public class SaveData
 
 **Related Contracts:**
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.3)
-- [Design Guide Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
-- [Design Guide Section 18 - Versioning and Migration Strategy](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2018%20-%20Versioning%20and%20Migration%20Strategy.md)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.3)
+    - [Design Guide Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
+    - [Design Guide Section 18 - Versioning and Migration Strategy](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2018%20-%20Versioning%20and%20Migration%20Strategy.md)
 
 ---
 
@@ -778,12 +778,14 @@ decisions were made, not **what** the code does.
 
 **Hard Rules:**
 
-- **Do not comment obvious code:**
+    - **Do not comment obvious code:**
+
   ```csharp
   // ❌ BAD
   counter++; // Increment counter
   ```
-- **Do comment non-obvious decisions:**
+    - **Do comment non-obvious decisions:**
+
   ```csharp
   // ✅ GOOD
   // SMAPI event order: DayStarted fires before TimeChanged,
@@ -793,14 +795,16 @@ decisions were made, not **what** the code does.
       EvaluateAllRules();
   }
   ```
-- **Do comment complex algorithms:**
+    - **Do comment complex algorithms:**
+
   ```csharp
   // ✅ GOOD
   // TaskID must include DayKey for daily recurring tasks to ensure
   // a new task instance is created each day while remaining deterministic
   var taskId = $"TaskBuilder_{ruleId}_{subjectId}_{dayKey}";
   ```
-- **Do comment performance-critical code:**
+    - **Do comment performance-critical code:**
+
   ```csharp
   // ✅ GOOD
   // Cache game state snapshot to avoid per-rule queries
@@ -816,16 +820,16 @@ decisions were made, not **what** the code does.
 
 Good comments explain **intent and context** that isn't obvious from code alone:
 
-- **SMAPI lifecycle constraints**
-- **Performance optimizations**
-- **Determinism requirements**
-- **Edge case handling**
+    - **SMAPI lifecycle constraints**
+    - **Performance optimizations**
+    - **Determinism requirements**
+    - **Edge case handling**
 
 Bad comments clutter code and become outdated when code changes.
 
 **Related Contracts:**
 
-- [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
+    - [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
 
 ---
 
@@ -838,18 +842,18 @@ no ambient globals.
 
 **Hard Rules:**
 
-- **Constructor injection only** for subsystem dependencies
-- **Validate parameters** with `ArgumentNullException` checks
-- **Composition root** (BootstrapContainer) wires dependencies at startup
-- **No hidden dependencies** via static singletons or service locators
+    - **Constructor injection only** for subsystem dependencies
+    - **Validate parameters** with `ArgumentNullException` checks
+    - **Composition root** (BootstrapContainer) wires dependencies at startup
+    - **No hidden dependencies** via static singletons or service locators
 
 **Why This Matters:**
 
 Explicit dependencies enable:
 
-- **Testability:** Mock dependencies in unit tests
-- **Visibility:** Dependencies clear from constructor signature
-- **Compile-time safety:** Missing dependencies caught at composition, not runtime
+    - **Testability:** Mock dependencies in unit tests
+    - **Visibility:** Dependencies clear from constructor signature
+    - **Compile-time safety:** Missing dependencies caught at composition, not runtime
 
 **Examples:**
 
@@ -880,8 +884,8 @@ public class TaskStore : ITaskStore
 
 **Related Contracts:**
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.5)
-- [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.5)
+    - [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
 
 ---
 
@@ -908,20 +912,20 @@ If any principle is violated, **stop and fix** before proceeding.
 During adaptation of these principles to JAT context, the following risks were identified:
 
 1. **Tension between determinism and flexibility:**
-   - JAT's determinism requirements can conflict with rapid prototyping
-   - **Mitigation:** Design Guide sections and upfront planning reduce mid-flight pivots
+   * JAT's determinism requirements can conflict with rapid prototyping
+   * **Mitigation:** Design Guide sections and upfront planning reduce mid-flight pivots
 
 2. **Performance vs. feature richness:**
-   - "Unlimited tasks" philosophy requires careful performance discipline
-   - **Mitigation:** Event-driven architecture and caching prevent per-frame work
+   * "Unlimited tasks" philosophy requires careful performance discipline
+   * **Mitigation:** Event-driven architecture and caching prevent per-frame work
 
 3. **Persistence migration complexity:**
-   - Explicit versioning is critical but adds upfront design overhead
-   - **Mitigation:** Version from day 1; incremental migrations easier than retroactive fixes
+   * Explicit versioning is critical but adds upfront design overhead
+   * **Mitigation:** Version from day 1; incremental migrations easier than retroactive fixes
 
 4. **Learning curve for contributors:**
-   - JAT's principles are more stringent than typical SMAPI mods
-   - **Mitigation:** This document + Design Guide + contracts provide clear onboarding path
+   * JAT's principles are more stringent than typical SMAPI mods
+   * **Mitigation:** This document + Design Guide + contracts provide clear onboarding path
 
 ---
 
@@ -929,10 +933,10 @@ During adaptation of these principles to JAT context, the following risks were i
 
 This document should be updated when:
 
-- New architectural patterns emerge that warrant principle-level guidance
-- Existing principles prove insufficient or incorrect in practice
-- Contract files are updated with new hard rules
-- Design Guide introduces new subsystems with unique constraints
+    - New architectural patterns emerge that warrant principle-level guidance
+    - Existing principles prove insufficient or incorrect in practice
+    - Contract files are updated with new hard rules
+    - Design Guide introduces new subsystems with unique constraints
 
 **Review Frequency:** After each major phase completion.
 
@@ -942,25 +946,25 @@ This document should be updated when:
 
 ### Architecture Contracts ###
 
-- [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md)
-- [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md)
-- [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md)
+    - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md)
+    - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md)
+    - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md)
 
 ### Style Contracts ###
 
-- [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md)
-- [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
+    - [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md)
+    - [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
 
 ### Design Guide Sections ###
 
-- [JojaAutoTasks Design Guide.md](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
-- [Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
-- [Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
-- [Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
+    - [JojaAutoTasks Design Guide.md](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
+    - [Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
+    - [Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
 
 ### Testing Contracts ###
 
-- [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
+    - [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
 
 ---
 
