@@ -145,7 +145,34 @@ Edit only the artifacts requested. Do not cascade edits into unrelated files unl
 
 If broader edits are needed, state that clearly.
 
-## 4.2 Preserve intent ##
+## 4.2 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+Domain-specific assessment criteria for WorkspaceAgent:
+
+Self-splitting is beneficial when:
+    - updating or auditing multiple documentation files (4+ files)
+    - running large consistency sweeps across independent documentation families
+    - scope naturally partitions by artifact family without narrative coupling
+
+Self-splitting is NOT beneficial when:
+    - editing a single file
+    - the work depends on one continuous narrative flow across files
+    - the scope is small (1-2 files)
+    - maintaining one consistent voice and sequencing is the primary concern
+
+Domain-specific partitioning for WorkspaceAgent:
+
+    - partition by documentation family (design guide sections, implementation plans, user docs, checklist/template docs)
+    - keep tightly-coupled sections in the same partition
+    - after aggregation, reconcile cross-file links, section numbering, and terminology consistency
+
+Execution:
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "WorkspaceAgent"` and partition-scoped prompts. Return one unified documentation result.
+
+## 4.3 Preserve intent ##
 
 When editing existing artifacts, preserve the original intent unless the user explicitly asks to
 change it.
@@ -155,14 +182,14 @@ change it.
     - do not remove rules or sections without explicit approval
     - do not add rules or responsibilities that are not grounded in the design docs or user request
 
-## 4.3 Consistency enforcement ##
+## 4.4 Consistency enforcement ##
 
 When creating or editing artifacts, verify:
     - naming conventions match the workspace standard
     - cross-references between files use correct filenames
     - section numbering is consistent in design guides
 
-## 4.4 Markdown quality ##
+## 4.5 Markdown quality ##
 
 All Markdown output must be:
     - well-structured with clear heading hierarchy
@@ -183,7 +210,7 @@ Markdown lint policy:
     - this policy applies to non-agent Markdown artifacts only; agent customization files are owned by GodAgent
     - for agent customization frontmatter, YAML validity is authoritative and frontmatter-only markdownlint spacing/list-indentation conflicts are ignored
 
-## 4.5 English quality for user-facing documents ##
+## 4.6 English quality for user-facing documents ##
 
 User-facing text must be:
     - clear and direct
@@ -192,7 +219,7 @@ User-facing text must be:
     - concise without being terse
     - consistent in tone with existing project documentation
 
-## 4.6 Reviewer sequencing guard for documentation tasks ##
+## 4.7 Reviewer sequencing guard for documentation tasks ##
 
 When reviewer participation is relevant, use a sequencing guard instead of unconditional review.
 

@@ -100,6 +100,31 @@ Markup mush is still mush.
 
 ## 3. Operating Model ##
 
+## 3.0 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for StarMLAgent:**
+
+Self-splitting is beneficial when:
+- Implementing changes across multiple .sml files (3+ files)
+- Changes span independent menu pages, HUD elements, or template files
+- File dependencies allow natural partitioning by UI surface
+
+Self-splitting is NOT beneficial when:
+- Single .sml file or tightly-coupled template system
+- Changes requiring coordinated layout or interaction behavior across all markup
+- Small scope (1-2 .sml files)
+- Holistic composition or template reuse reasoning required
+
+**Domain-specific partitioning for StarMLAgent:**
+
+Partition by UI surface (menu vs HUD vs templates). Verify cross-partition template consistency and outlet wiring.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "StarMLAgent"` and partition-scoped prompts. Return unified implementation summary.
+
 ## 3.1 Scope discipline ##
 
 Implement only the requested `.sml` / StardewUI scope.

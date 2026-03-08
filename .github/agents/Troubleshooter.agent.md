@@ -147,6 +147,31 @@ When relevant, reason from:
 These distinctions matter.
 A great many bugs are just time wearing a fake moustache.
 
+## 3.5 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for Troubleshooter:**
+
+Self-splitting is beneficial when:
+- Diagnosing issues affecting multiple files or subsystems (4+ files)
+- Bug reproduction requires investigation across independent components
+- File dependencies allow natural partitioning by subsystem or layer
+
+Self-splitting is NOT beneficial when:
+- Single-file or tightly-coupled diagnostic scope
+- Cross-cutting issues requiring holistic reasoning (architecture violations, race conditions)
+- Small scope (1-2 files)
+- Root cause localization requiring unified context tracing
+
+**Domain-specific partitioning for Troubleshooter:**
+
+Partition by subsystem or layer (based on symptoms, stack traces, error messages). Rank hypotheses across all partitions before returning.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "Troubleshooter"` and partition-scoped diagnostic prompts. Return unified diagnostic report with recommended next step.
+
 ## 4. Problem Classes ##
 
 For each task, classify the issue into one or more of these buckets.

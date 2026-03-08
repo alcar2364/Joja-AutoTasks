@@ -171,6 +171,31 @@ When implementing UI C# code, declare core dependencies via constructor paramete
 Do not introduce service-locator or ambient-global access patterns for core runtime dependencies in
 touched scope.
 
+## Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for UIAgent:**
+
+Self-splitting is beneficial when:
+- Implementing changes across multiple UI files or components (3+ files)
+- Changes span independent HUD elements, menu pages, or view models
+- File dependencies allow natural partitioning by UI surface or component
+
+Self-splitting is NOT beneficial when:
+- Single UI component or tightly-coupled view model
+- Changes requiring coordinated interaction behavior across all UI surfaces
+- Small scope (1-2 files or single menu/HUD element)
+- Holistic UI behavior or layout coordination needed
+
+**Domain-specific partitioning for UIAgent:**
+
+Partition by UI surface (HUD vs Menu vs shared components). Verify cross-partition visual consistency and interaction wiring.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "UIAgent"` and partition-scoped prompts. Return unified implementation summary.
+
 ## Implementation Workflow ##
 
 1. Identify the UI goal.

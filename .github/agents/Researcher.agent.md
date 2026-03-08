@@ -144,6 +144,32 @@ research target:
 If the ambiguity is minor, proceed with the most conservative reasonable
 interpretation and state your assumption.
 
+## 3.4 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for Researcher:**
+
+Self-splitting is beneficial when:
+- The task involves scanning or analyzing multiple files (3+ files)
+- The research scope spans multiple subsystems or domains
+- The task requires gathering patterns or evidence from across the codebase
+- File dependencies allow natural partitioning
+
+Self-splitting is NOT beneficial when:
+- Single-file or single-subsystem research
+- Holistic reasoning required (architecture coherence, cross-cutting concerns)
+- The task is already narrowly scoped
+
+**Partitioning strategy:**
+**Domain-specific partitioning for Researcher:**
+
+Partition by subsystem or architectural layer (State Store files, UI files, persistence files, etc.). Files that share core types or implementation patterns should be grouped together.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "Researcher"` and partition-scoped prompts. Return a single unified research brief.
+
 ## 4. What You Must Look For ##
 
 For each request, identify as many of the following as are relevant:

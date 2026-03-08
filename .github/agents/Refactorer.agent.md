@@ -94,6 +94,32 @@ If sources conflict, state the conflict and follow the higher-priority source.
 
 ## 3. Operating Model ##
 
+## 3.0 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for Refactorer:**
+
+Self-splitting is beneficial when:
+- Refactoring across multiple files or subsystems (5+ files)
+- Changes involve independent file moves, renames, or pattern migrations
+- File dependencies allow natural partitioning by subsystem or layer
+- Mechanical refactors with clear boundaries (rename in subsystem A, extract in subsystem B)
+
+Self-splitting is NOT beneficial when:
+- Cross-cutting refactors requiring coordinated changes across all files
+- Renames or extractions with complex dependency graphs
+- Small scope (1-3 files)
+- Behavior-preservation reasoning requiring full context
+
+**Domain-specific partitioning for Refactorer:**
+
+Partition by subsystem or layer. Ensure each partition is refactor-safe independently. Verify cross-partition reference consistency.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "Refactorer"` and partition-scoped prompts. Return unified refactor summary.
+
 ## 3.1 Behavior preservation is the default ##
 
 Unless the task explicitly says otherwise, a refactor must not change behavior.

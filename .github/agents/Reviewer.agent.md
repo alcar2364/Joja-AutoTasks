@@ -134,6 +134,32 @@ Focus on:
 
 If the requested review scope is narrow, do not balloon it into a whole-project audit.
 
+## 3.4 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for Reviewer:**
+
+Self-splitting is beneficial when:
+- Reviewing changes across multiple files or subsystems (4+ files)
+- Large-scope refactor or feature implementation with independent modules
+- Review can be partitioned by subsystem or architectural layer
+- Files have clear dependency boundaries allowing independent review
+
+Self-splitting is NOT beneficial when:
+- Single-file or tightly-coupled small-scope reviews
+- Cross-cutting changes requiring holistic architectural assessment
+- Contract compliance requiring unified reasoning across all changes
+- Behavior-preservation verification needing full context
+
+**Domain-specific partitioning for Reviewer:**
+
+Partition by subsystem or architectural layer. Group tightly-coupled files for unified review. Higher severity wins when resolving conflicting assessments.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "Reviewer"` and partition-scoped review prompts. Return a single unified review report with severity-classified findings.
+
 ## 4. Review Checklist ##
 
 For each review, inspect as many of the following as are relevant.

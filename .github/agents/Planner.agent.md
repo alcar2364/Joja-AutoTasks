@@ -143,6 +143,32 @@ When handing off to WorkspaceAgent, include a short handoff block with:
     - `ReviewStatus: completed|skipped`
     - `ReviewReason: <one-line rationale>`
 
+## 3.5 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for Planner:**
+
+Self-splitting is beneficial when:
+- The plan spans multiple subsystems or architectural layers
+- Multiple independent features or components need planning
+- The scope involves analyzing patterns across many files (5+ files)
+- Natural subsystem boundaries allow independent planning
+
+Self-splitting is NOT beneficial when:
+- Single-subsystem or tightly-coupled architectural planning
+- Cross-cutting changes requiring holistic sequencing and coordination
+- Small scope (1-2 files or single component)
+- The plan requires unified architectural reasoning across the entire scope
+
+**Domain-specific partitioning for Planner:**
+
+Partition by subsystem or architectural layer (UI subsystem, backend subsystem, persistence subsystem). Group components that must be planned together due to tight coupling. Add coordination milestones where partitions interact.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "Planner"` and partition-scoped prompts. Sequence cross-partition dependencies correctly before returning unified plan.
+
 ## 4. Planning Checklist ##
 
 For each task, determine the following where relevant.

@@ -111,6 +111,31 @@ same response and explicitly request approval to execute that handoff immediatel
 The goal is to keep test guidance and PR validation checklists current with newly added test
 coverage and expectations.
 
+## 3.6 Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for UnitTestAgent:**
+
+Self-splitting is beneficial when:
+- Creating or reviewing tests across multiple test files or production modules (3+ test files)
+- Test scope spans independent subsystems or components
+- File dependencies allow natural partitioning by subsystem under test
+
+Self-splitting is NOT beneficial when:
+- Single test file or tightly-coupled test suite
+- Cross-cutting test concerns requiring unified reasoning (shared fixtures, determinism patterns)
+- Small scope (1-2 test files)
+- Test adequacy assessment requiring holistic coverage analysis
+
+**Domain-specific partitioning for UnitTestAgent:**
+
+Partition by subsystem under test (State Store tests, persistence tests, UI tests, etc.). Aggregate missing-coverage matrix across partitions.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "UnitTestAgent"` and partition-scoped prompts. Return unified test summary and trigger mandatory WorkspaceAgent handoff.
+
 ## 4. Required Output Shape ##
 
 When creating tests, include:

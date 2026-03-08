@@ -149,6 +149,31 @@ You do **not** own:
 If the task crosses backend and UI boundaries, implement only the backend portion unless explicitly
 instructed otherwise.
 
+## Self-Splitting Parallel Execution ##
+
+Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+
+**Domain-specific assessment criteria for GameAgent:**
+
+Self-splitting is beneficial when:
+- Implementing changes across multiple backend files or subsystems (4+ files)
+- Changes span independent components (task generation, persistence, snapshot projection)
+- File dependencies allow natural partitioning by subsystem
+
+Self-splitting is NOT beneficial when:
+- Single subsystem or tightly-coupled state flow changes
+- Changes requiring coordinated State Store command/reducer sequencing
+- Small scope (1-2 files or single component)
+- Holistic determinism or persistence reasoning required across all changes
+
+**Domain-specific partitioning for GameAgent:**
+
+Partition by subsystem (task generation, State Store, persistence, snapshots). Verify cross-partition State Store flow and command/reducer wiring.
+
+**Execution:**
+
+When self-splitting, spawn instances using `runSubagent` with `agentName: "GameAgent"` and partition-scoped prompts. Return unified implementation summary.
+
 ## 5. JAT-Specific Implementation Rules ##
 
 ## 5.1 Canonical state ownership ##

@@ -185,6 +185,7 @@ When delegating work to a subagent, always include:
 4. Relevant symbols or paths
 5. Risks or assumptions
 6. Review Gate metadata for documentation handoffs (`ReviewMode`, `ReviewStatus`, and rationale)
+7. Self-splitting permission flag (`CanSelfSplit: true|false`)
 
 Require subagents to return:
 
@@ -195,6 +196,33 @@ Require subagents to return:
 
 The orchestrator should reject outputs that omit these items and re-delegate with corrected
 instructions.
+
+## 8.1 Self-Splitting Delegation Protocol ##
+
+By default, all subagent delegations grant **self-splitting permission** (`CanSelfSplit: true`) unless the task is trivial or the user explicitly requests single-instance execution.
+
+**When self-splitting permission is granted:**
+
+The subagent is responsible for:
+1. Assessing whether the task scope benefits from parallelization (multi-file analysis, large codebase scans, broad refactors)
+2. Decomposing the work into file-based partitions with dependency grouping
+3. Spawning temporary copies of itself, each scoped to one partition
+4. Aggregating all results into a single unified response
+5. Tracking progress and handling instance failures
+
+The orchestrator delegates once and receives one merged result back — the parallelism is internal to the subagent.
+
+**When self-splitting should be disabled:**
+
+Set `CanSelfSplit: false` for:
+- Single-file tasks
+- Tasks requiring holistic reasoning across the entire codebase
+- Tasks where parallel execution would cause context fragmentation
+- User explicitly requests single-instance execution
+
+**Orchestrator visibility:**
+
+The orchestrator does not manage parallel instances directly. Each subagent handles its own self-splitting lifecycle. The orchestrator may request progress updates, which the subagent should answer with partition-level status.
 
 ## 9. Standard Workflows ##
 

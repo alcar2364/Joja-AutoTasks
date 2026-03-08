@@ -1,0 +1,15 @@
+{
+  "$schema": "https://aka.ms/vscode-copilot-hooks-schema",
+  "version": "1.0",
+  "hooks": [
+    {
+      "id": "verify-self-splitting-assessment",
+      "description": "Verify that subagents assess self-splitting when delegated non-trivial tasks",
+      "event": "PostToolUse",
+      "filter": {
+        "toolName": "runSubagent"
+      },
+      "script": "./verify-self-splitting-assessment.sh"
+    }
+  ]
+}
