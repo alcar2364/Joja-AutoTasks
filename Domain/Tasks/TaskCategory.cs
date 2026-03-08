@@ -5,7 +5,7 @@ namespace JojaAutoTasks.Domain.Tasks;
 
 // TODO: Expand as needed
 
-public enum TaskCategory
+internal enum TaskCategory
 {
     Farming,
     Animals,
