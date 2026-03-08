@@ -22,9 +22,9 @@ The system uses several identifier types.
 Primary identifiers include:
 
     - TaskID
-    - RuleID
+    - RuleId
     - DayKey
-    - SubjectID (optional)
+    - SubjectId (optional)
 
 Each identifier serves a specific role in maintaining system stability.
 
@@ -37,7 +37,7 @@ associated subject.
 
 Conceptual structure:
 
-TaskID = `{SourcePrefix}_{RuleID}_{SubjectID?}_{DayKey?}`
+TaskID = `{SourcePrefix}_{RuleId}_{SubjectId?}_{DayKey?}`
 
 Components:
 
@@ -69,7 +69,7 @@ Task Builder tasks derive their identity from the Rule ID and subject.
 
 Conceptual structure:
 
-`TaskBuilder_{RuleID}_{SubjectID?}_{DayKey?}`
+`TaskBuilder_{RuleId}_{SubjectId?}_{DayKey?}`
 
 Examples:
 
@@ -111,19 +111,23 @@ The counter MUST only increment, never reset or regress.
 
 Manual task identifiers persist across sessions and are stored in persistence.
 
-## 3.7 RuleID Model ##
+## 3.7 RuleId Model ##
 
-Each Task Builder rule receives a unique `RuleID` at creation.
+`RuleId` is an immutable value object that wraps a normalized rule token.
 
-`RuleID` values are generated sequentially.
+Current implementation behavior:
 
-Example:
+    - Outer whitespace is trimmed before validation.
+    - Null, empty, and whitespace-only values are rejected.
+    - Equality and hash semantics are ordinal and case-sensitive.
+    - Sequential RuleId issuance is deferred until rule-generation flow is implemented.
 
-    - `RuleID = 17`
+Example values:
 
-`RuleID` values must never change once assigned.
+    - `Rule-Alpha`
+    - `Rule-17`
 
-This ensures that tasks generated from the rule maintain stable identifiers.
+These invariants keep rule-based identity stable across reconstruction and comparison paths.
 
 ## 3.8 DayKey Model ##
 
@@ -144,6 +148,13 @@ Example:
     - Daily snapshot history
     - Deadline calculations
     - Statistics aggregation
+
+Current implementation behavior:
+
+    - Canonical shape is exactly `Year{N}-{Season}{D}`.
+    - Season token must match one of `Spring`, `Summer`, `Fall`, or `Winter` using invariant case.
+    - Year must be a positive integer and day must be in the range 1-28.
+    - Outer whitespace is trimmed, but non-canonical casing or structure is rejected.
 
 ## 3.9 Subject Identifier Model ##
 
@@ -172,7 +183,7 @@ The identifier system must prevent collisions between task sources.
 Rules include:
 
     - `SourceType` prefixes separate manual, built-in, and rule-generated tasks
-    - `RuleID` values remain unique
+    - `RuleId` values remain unique
     - `SubjectIdentifier` values remain stable
     - `ContextIdentifier` values differentiate scoped tasks
 
@@ -212,8 +223,8 @@ Localization must never influence deterministic identity behavior.
 
 Hard invariants:
 
-    - Localized strings MUST NOT participate in `TaskID`, `RuleID`, `DayKey`,
-    or `SubjectID` generation.
+    - Localized strings MUST NOT participate in `TaskID`, `RuleId`, `DayKey`,
+    or `SubjectId` generation.
     - Localized strings MUST NOT participate in identifier equality,
     reconciliation, or collision checks.
     - Localized strings MUST NOT participate in deterministic ordering or sort
