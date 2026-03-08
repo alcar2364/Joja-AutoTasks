@@ -42,6 +42,29 @@ internal sealed class TaskObject
         string sourceIdentifier
     )
     {
+        // Guard clauses for required fields
+        if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException(
+            "Title cannot be null or whitespace.", nameof(title));
+
+        if (string.IsNullOrWhiteSpace(sourceIdentifier)) throw new ArgumentException(
+            "Source identifier cannot be null or whitespace.", nameof(sourceIdentifier));
+
+        if (progressCurrent < 0) throw new ArgumentOutOfRangeException(
+            nameof(progressCurrent), "Progress current cannot be negative.");
+        if (progressMax <= 0) throw new ArgumentOutOfRangeException(
+            nameof(progressMax), "Progress max must be greater than zero.");
+
+        if (status == TaskStatus.Completed && !completionDay.HasValue) throw new ArgumentException(
+            "Completion day must be provided for completed tasks.", nameof(completionDay));
+
+        if (status == TaskStatus.Completed && progressCurrent < progressMax) throw new ArgumentException(
+            "Current progress must be greater than or equal to progress max for completed tasks.",
+            nameof(progressCurrent));
+
+        if (status == TaskStatus.Incomplete && completionDay.HasValue) throw new ArgumentException(
+            "Completion day should not be provided for non-completed tasks.", nameof(completionDay));
+
+        // Property assignments
         Id = id;
         Category = category;
         SourceType = sourceType;
