@@ -16,7 +16,7 @@ Note: If a sub-step expands beyond the stated file scope, stop and open a follow
     only add documentation/contract guardrails.
     * [ ] Manual task ID issuance/counter ownership is deferred to Phase 3 (State Store path).
     * [ ] Completion-marking runtime behavior is deferred (domain structure exists in Phase 2).
-    * [ ] RuleID sequential-generation enforcement is deferred until RuleID generation exists.
+    * [ ] RuleId sequential-generation enforcement is deferred until RuleId generation exists.
     * [ ] Deterministic IDs only; no random/GUID/time-seeded identity generation.
     * [ ] Canonical TaskId forms stay underscore-delimited (`BuiltIn_*`, `TaskBuilder_*`,
     `Manual_{Counter}`).
@@ -51,12 +51,12 @@ Step goal:
     * [x] Must include: `DayKey` type only.
     * [x] Must exclude: factory helpers and task sorting logic.
 
-### 1C - Add `RuleID` and `SubjectID` value types ###
+### 1C - Add `RuleId` and `SubjectId` value types ###
 
-    * [x] Action: add immutable `RuleID` and `SubjectID` wrappers for stable identity composition.
-    * [x] Scope: `Domain/Identifiers/RuleID.cs`, `Domain/Identifiers/SubjectID.cs` (`RuleID`, `SubjectID`).
+    * [x] Action: add immutable `RuleId` and `SubjectId` wrappers for stable identity composition.
+    * [x] Scope: `Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs` (`RuleId`, `SubjectId`).
     * [x] Verify: build succeeds; wrappers expose explicit canonical token forms.
-    * [x] Commit message: `phase2(step1C): add RuleID and SubjectID value wrappers`
+    * [x] Commit message: `phase2(step1C): add RuleId and SubjectId value wrappers`
     * [x] Must include: value wrappers only.
     * [x] Must exclude: task object/enums/factory behavior.
 
@@ -198,8 +198,8 @@ Step goal:
 
 ### 7A - Add identifier value-type tests ###
 
-    * [ ] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleID`, `SubjectID`.
-    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIDTests.cs`, `Tests/Domain/Identifiers/SubjectIDTests.cs`.
+    * [ ] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleId`, `SubjectId`.
+    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIdTests.cs`, `Tests/Domain/Identifiers/SubjectIdTests.cs`.
     * [ ] Verify: tests fail when deterministic equality/validation regresses.
     * [ ] Commit message: `phase2(step7A): add deterministic identifier value-type tests`
     * [ ] Must include: tests and minimal fixtures.
@@ -295,17 +295,17 @@ Step goal:
 ## Final Completion Gate Checklist ##
 
     * [ ] All sub-steps `1A` through `8C` are completed or explicitly deferred.
-    * [ ] Every completed sub-step has a matching atomic commit.
-    * [ ] No commit crosses unrelated file/symbol scopes.
-    * [ ] Core domain types from Section 21.5 are implemented and test-covered.
-    * [ ] Deterministic TaskId/DayKey rules are implemented and regression-tested.
-    * [ ] No random/GUID/non-deterministic identity paths exist.
-    * [ ] `TaskStatus` remains V1-minimal (`Incomplete`, `Completed`).
-    * [ ] Deterministic task-type ordering/comparer implementation and tests are explicitly deferred to Phase 5+.
-    * [ ] No UI, State Store, or persistence logic was introduced.
+    * [x] Every completed sub-step has a matching atomic commit.
+    * [x] No commit crosses unrelated file/symbol scopes.
+    * [x] Core domain types from Section 21.5 are implemented and test-covered.
+    * [x] Deterministic TaskId/DayKey rules are implemented and regression-tested.
+    * [x] No random/GUID/non-deterministic identity paths exist.
+    * [x] `TaskStatus` remains V1-minimal (`Incomplete`, `Completed`).
+    * [x] Deterministic task-type ordering/comparer implementation and tests are explicitly deferred to Phase 5+.
+    * [x] No UI, State Store, or persistence logic was introduced.
     * [x] Manual task ID issuance remains deferred to Phase 3 State Store command flow.
-    * [ ] Completion-marking runtime behavior remains deferred until State Store command flow exists.
-    * [ ] RuleID sequential-generation enforcement remains deferred until RuleID generation exists.
-    * [ ] Translation-impacting implementation remains deferred to Phase 3+.
+    * [x] Completion-marking runtime behavior remains deferred until State Store command flow exists.
+    * [x] RuleId sequential-generation enforcement remains deferred until RuleId generation exists.
+    * [x] Translation-impacting implementation remains deferred to Phase 3+.
     * [x] UpdateTicked guard seam fix remains test-only and passing.
     * [ ] Build/tests pass and Phase 1 safeguards remain intact.
