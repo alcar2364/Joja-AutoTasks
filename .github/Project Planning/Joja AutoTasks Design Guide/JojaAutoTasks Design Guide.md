@@ -10,7 +10,7 @@ Repository: <https://github.com/alcar2364/Joja-AutoTasks>
 
 License: MIT
 
-Last Updated:   2026 Mar 05
+Last Updated:   2026 Mar 08
 
 Instructions:
 
@@ -144,10 +144,10 @@ for future development.
 The following instruction files supplement the design guide with focused reference material.
 
     - [Visual Design Language]
-        * Location: (../Agents/Instructions/visual-design-language.instructions.md)
+        * Location: (../../instructions/visual-design-language.instructions.md)
         * Visual identity, color palette, typography, spacing, animation, iconography,
           HUD/menu/wizard layout concepts.
 
     - [External Resources]
-        * Location: (../Agents/Instructions/external-resources.instructions.md)
+        * Location: (../../instructions/external-resources.instructions.md)
         * Links to Stardew Valley modding documentation, StardewUI, and GMCM.

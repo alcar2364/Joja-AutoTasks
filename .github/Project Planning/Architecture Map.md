@@ -15,7 +15,7 @@ Use this map to:
 
 This is a **developer reference document** focused on implementation details. For conceptual
 architecture and design rationale, see the primary design guide sections in
-`.github/Joja AutoTasks Design Guide/`.
+`.github/Project Planning/Joja AutoTasks Design Guide/`.
 
 ## Document Conventions
 
@@ -79,7 +79,7 @@ Joja AutoTasks follows a **layered architecture** with clear separation of conce
                        ↓
 ┌─────────────────────────────────────────────────────────┐
 │                    Domain Model Layer                   │
-│      TaskObject, TaskID, Identifiers, Enums, etc.       │
+│      TaskObject, TaskId, Identifiers, Enums, etc.       │
 └──────────────────────┬──────────────────────────────────┘
                        │ persisted by
                        ↓
@@ -409,14 +409,37 @@ Uses `StringComparer.Ordinal` for case-sensitive, culture-invariant comparison.
 **Conceptual Structure (from [Section 3.3]):**
 
 ```text
-TaskID = {SourcePrefix}_{RuleID}_{SubjectID?}_{DayKey?}
+TaskId = {SourcePrefix}:{StableSourceId}:{SubjectIdentifier?}:{DayKey?}
 ```
 
 **Examples:**
 
-    - `BuiltIn_WaterCrops_Farm1_20260308`
-    - `TaskBuilder_CustomRule42_NPC_Abigail_20260308`
-    - `Manual_UserTask123`
+    - `BuiltIn:WaterCrops:Farm1:20260308`
+    - `TaskBuilder:CustomRule42:NPC_Abigail:20260308`
+
+---
+
+### 3.1A TaskIdFactory
+
+**Purpose:** Deterministic composition helper for canonical `TaskId` values.
+
+**Namespace:** `JojaAutoTasks.Domain.Identifiers`  
+**Location:** `Domain/Identifiers/TaskIdFactory.cs`  
+**Type:** `internal static class`
+
+**Key Methods:**
+
+```csharp
+public static TaskId CreateBuiltIn(string generatorId, string? subjectIdentifier = null, DayKey? dayKey = null)
+public static TaskId CreateTaskBuilder(string ruleId, string? subjectIdentifier = null, DayKey? dayKey = null)
+```
+
+**Behavior Notes:**
+
+    - Uses stable source prefixes (`BuiltIn`, `TaskBuilder`)
+    - Preserves deterministic part ordering when composing IDs
+    - Omits null/empty optional parts before joining with `:`
+    - Returns validated `TaskId` instances
 
 ---
 
@@ -1806,7 +1829,11 @@ UI Initialized
 
 ---
 
-### Phase 2 (Planned) — State Store & Task Engine Core
+### Phase 2 (In Progress) — State Store & Task Engine Core
+
+**Recently Completed:**
+
+    - ✅ `TaskIdFactory` deterministic constructors for built-in and Task Builder IDs
 
 **Planned Components:**
 

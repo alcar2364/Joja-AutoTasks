@@ -74,7 +74,7 @@ public class task_store : ITaskStore
 **Related Contracts:**
 
     - [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md) (Section 4)
-    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
 
 ---
 
@@ -145,7 +145,7 @@ public class TaskStore : ITaskStore
 **Related Contracts:**
 
     - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Sections 1, 2)
-    - [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
+    - [Design Guide Section 02 - System Architecture](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
 
 ---
 
@@ -314,7 +314,7 @@ a specific subsystem or design concern with clear diagrams, data structures, and
 
 **Hard Rules:**
 
-    - Design Guide sections stored in `.github/Joja AutoTasks Design Guide/`
+    - Design Guide sections stored in `.github/Project Planning/Joja AutoTasks Design Guide/`
     - Sections numbered sequentially: `Section NN - Title.md`
     - Each section includes:
         * **Purpose statement**
@@ -337,13 +337,13 @@ archaeology.
 
 **Examples:**
 
-    - [Section 02 - System Architecture.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
-    - [Section 03 - Deterministic Identifier Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
-    - [Section 04 - Core Data Model.md](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
+    - [Section 02 - System Architecture.md](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
+    - [Section 03 - Deterministic Identifier Model.md](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Section 04 - Core Data Model.md](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
 
 **Related Contracts:**
 
-    - [Design Guide EditingInstructions.md](../../.github/Joja%20AutoTasks%20Design%20Guide/EditingInstructions.md)
+    - [Design Guide EditingInstructions.md](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/EditingInstructions.md)
 
 ---
 
@@ -367,7 +367,7 @@ comments.
         * ✅ `HUD` (game UI term), `ID` (standard)
         * ❌ `TskBldr`, `EvlEng`, `SnapPub`
     - **Domain-specific terms** preferred over generic:
-        * ✅ `TaskID` (JAT domain)
+        * ✅ `TaskId` (JAT domain, C# identifier form)
         * ❌ `Identifier`, `Key`, `UniqueString`
 
 **Why This Matters in JAT:**
@@ -459,7 +459,7 @@ JAT's constraints make course corrections expensive:
 
 **Related Contracts:**
 
-    - [Design Guide Sections 01-21](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
+    - [Design Guide Sections 01-21](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
     - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md) (Section 2.1)
 
 ---
@@ -558,7 +558,7 @@ Non-deterministic behavior causes:
 // ✅ GOOD: Deterministic ID from stable inputs
 public static TaskId ForBuiltInTask(string generatorName, SubjectID subjectId)
 {
-    return new TaskId($"BuiltIn_{generatorName}_{subjectId}");
+    return new TaskId($"BuiltIn:{generatorName}:{subjectId}");
 }
 
 // ❌ BAD: Non-deterministic GUID
@@ -576,7 +576,7 @@ public static TaskId ForBuiltInTask(string generatorName, SubjectID subjectId)
 **Related Contracts:**
 
     - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 3)
-    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Design Guide Section 03 - Deterministic Identifier Model](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
     - [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
 
 ---
@@ -696,7 +696,7 @@ public void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 
     - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md) (Section 5)
     - [PERFORMANCE-OPTIMIZATION.instructions.md](../../.github/instructions/performance-optimization.instructions.md)
-    - [Design Guide Section 19 - Performance Guardrails](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2019%20-%20Performance%20Guardrails.md)
+    - [Design Guide Section 19 - Performance Guardrails](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2019%20-%20Performance%20Guardrails.md)
 
 ---
 
@@ -764,8 +764,8 @@ public class SaveData
 **Related Contracts:**
 
     - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.3)
-    - [Design Guide Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
-    - [Design Guide Section 18 - Versioning and Migration Strategy](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2018%20-%20Versioning%20and%20Migration%20Strategy.md)
+    - [Design Guide Section 09 - Persistence Model](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
+    - [Design Guide Section 18 - Versioning and Migration Strategy](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2018%20-%20Versioning%20and%20Migration%20Strategy.md)
 
 ---
 
@@ -801,7 +801,7 @@ decisions were made, not **what** the code does.
   // ✅ GOOD
   // TaskID must include DayKey for daily recurring tasks to ensure
   // a new task instance is created each day while remaining deterministic
-  var taskId = $"TaskBuilder_{ruleId}_{subjectId}_{dayKey}";
+    var taskId = $"TaskBuilder:{ruleId}:{subjectId}:{dayKey}";
   ```
     - **Do comment performance-critical code:**
 
@@ -885,7 +885,7 @@ public class TaskStore : ITaskStore
 **Related Contracts:**
 
     - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md) (Section 1.5)
-    - [Design Guide Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
+    - [Design Guide Section 02 - System Architecture](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md) (Section 2.4)
 
 ---
 
@@ -957,10 +957,10 @@ This document should be updated when:
 
 ### Design Guide Sections ###
 
-    - [JojaAutoTasks Design Guide.md](../../.github/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
-    - [Section 02 - System Architecture](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
-    - [Section 03 - Deterministic Identifier Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
-    - [Section 09 - Persistence Model](../../.github/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
+    - [JojaAutoTasks Design Guide.md](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
+    - [Section 02 - System Architecture](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
+    - [Section 03 - Deterministic Identifier Model](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
+    - [Section 09 - Persistence Model](../../.github/Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
 
 ### Testing Contracts ###
 
