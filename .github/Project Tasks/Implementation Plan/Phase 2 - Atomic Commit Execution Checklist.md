@@ -158,16 +158,16 @@ Step goal:
 
 Step goal:
 
-    * [ ] Provide canonical day-key builder utilities reused by later phases.
+    * [x] Provide canonical day-key builder utilities reused by later phases.
 
 ### 5A - Add `DayKeyFactory` ###
 
-    * [ ] Action: add deterministic day-key constructor for canonical `Year{N}_{Season}{D}` format using fixed non-localized season tokens and invariant casing.
-    * [ ] Scope: `Domain/Identifiers/DayKeyFactory.cs` (`DayKeyFactory`).
-    * [ ] Verify: outputs match canonical format across repeat runs.
-    * [ ] Commit message: `phase2(step5A): add deterministic DayKey factory`
-    * [ ] Must include: construction/validation logic only.
-    * [ ] Must exclude: history ledger capture logic.
+    * [x] Action: add deterministic day-key constructor for canonical `Year{N}_{Season}{D}` format using fixed non-localized season tokens and invariant casing.
+    * [x] Scope: `Domain/Identifiers/DayKeyFactory.cs` (`DayKeyFactory`).
+    * [x] Verify: outputs match canonical format across repeat runs.
+    * [x] Commit message: `phase2(step5A): add deterministic DayKey factory`
+    * [x] Must include: construction/validation logic only.
+    * [x] Must exclude: history ledger capture logic.
 
 ## 6) Defer Deterministic Task-Type Sorting/Comparison Helper ##
 
