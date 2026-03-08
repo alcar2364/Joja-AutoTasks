@@ -177,37 +177,14 @@ chunk.
 ### 6.5 Control flow ###
 
     - Prefer early returns and guard clauses over deep nesting.
+    - Guard blocks MUST be grouped together before executing the things they guard.
     - Ternaries are fine for simple assignments; nested ternaries are forbidden.
 
 ## 7. Comments and documentation ##
 
-### 7.1 File header comment ###
+All commenting rules are defined in [`self-explanatory-code-commenting.instructions.md`](self-explanatory-code-commenting.instructions.md).
 
-Every `.cs` file MUST start with a brief purpose comment describing the type and its role.
-
-### 7.2 XML docs ###
-
-    - XML doc comments (`///`) are required for **all public + internal types**.
-    - For members, use XML docs when tooling/consumers benefit; otherwise prefer normal comments.
-
-### 7.3 Private method comments ###
-
-Private methods MUST include a comment when:
-    - behavior is non-obvious, OR
-    - the method has many parameters.
-
-### 7.4 Section headers inside types ###
-
-Types MUST be organized with section headers, at minimum:
-    - `// Dependencies`
-    - `// State`
-    - `// Constants`
-    - `// Constructor`
-    - `// Public API`
-    - `// Event Handlers`
-    - `// Private Helpers`
-
-(Event handlers should be grouped near lifecycle/public methods.)
+During code review, comments MUST be validated against those guidelines.
 
 ## 8. Member ordering (required) ##
 
