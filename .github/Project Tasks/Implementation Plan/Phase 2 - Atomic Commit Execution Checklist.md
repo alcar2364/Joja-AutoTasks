@@ -115,7 +115,7 @@ Step goal:
 
 Step goal:
 
-    * [ ] Centralize deterministic TaskId composition for built-in/task-builder forms and canonical parsing.
+    * [x] Centralize deterministic TaskId composition for built-in/task-builder forms and canonical parsing.
 
 ### 4A - Add `TaskIdFactory` for built-in and task-builder IDs ###
 
