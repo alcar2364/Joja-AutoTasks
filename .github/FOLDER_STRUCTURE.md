@@ -2,7 +2,7 @@
 
 # JAT Agent Ecosystem - Folder Structure
 
-This document defines the active customization layout for Joja AutoTasks.
+This document defines the active Agent customization layout for Joja AutoTasks.
 
 ## Directory Layout
 
