@@ -173,16 +173,16 @@ Step goal:
 
 Step goal:
 
-    * [ ] Document explicit defer of task-type sorting/comparer implementation to later phase.
+    * [x] Document explicit defer of task-type sorting/comparer implementation to later phase.
 
 ### 6A - Document defer for deterministic task-type sorting comparer ###
 
-    * [ ] Action: document that deterministic task-type ordering (derived map + fallback chain: `TaskCreationDay`, then canonical `TaskId`) is deferred to Phase 5+ when generator/task-type coverage is stable.
-    * [ ] Scope: this checklist file and optional defer-note artifact.
-    * [ ] Verify: no Phase 2 commit adds task sorting comparer implementation.
-    * [ ] Commit message: `phase2(step6A): defer task-type ordering comparer to phase5+`
-    * [ ] Must include: defer-note updates only.
-    * [ ] Must exclude: comparer implementation, ordering map code, or snapshot ordering logic.
+    * [x] Action: document that deterministic task-type ordering (derived map + fallback chain: `TaskCreationDay`, then canonical `TaskId`) is deferred to Phase 5+ when generator/task-type coverage is stable.
+    * [x] Scope: this checklist file and optional defer-note artifact.
+    * [x] Verify: no Phase 2 commit adds task sorting comparer implementation.
+    * [x] Commit message: `phase2(step6A): defer task-type ordering comparer to phase5+`
+    * [x] Must include: defer-note updates only.
+    * [x] Must exclude: comparer implementation, ordering map code, or snapshot ordering logic.
 
 ## 7) Add Phase 2 Verification Tests ##
 
