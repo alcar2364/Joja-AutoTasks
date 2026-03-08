@@ -93,40 +93,39 @@ Agents MUST follow the official conventions (reference link above), including:
 
 ### 4.2 Acronym / abbreviation conversion rules (JAT-specific) ###
 
-**No special preserved forms** exist in JAT. (Do not “always preserve” UI/HUD/ID/etc. beyond the
-rules below.)
+**All abbreviations follow standard PascalCase/camelCase rules with no special treatment.**
+
+Treat abbreviations and acronyms as normal word chunks for case conversion purposes.
 
 #### 4.2.1 PascalCase acronyms (types/methods/properties) ####
 
-    - Acronyms **2 letters or less** MAY be written in **all caps** at the start of an identifier.
-        * ✅ `UIState`
-        * ✅ `IOBus`
-    - Acronyms **3 letters or less** MUST be written in **normal PascalCase** (not all caps).
-        * ✅ `HudLayout`
-        * ✅ `JsonConfig`
-        * ✅ `ApiClient`
+Abbreviations in PascalCase identifiers follow **normal PascalCase capitalization**:
 
-Project examples (explicit preferences):
-    - ✅ `TaskID` (not `TaskId`)
+    - ✅ `TaskId` (not `TaskID`)
+    - ✅ `ModApi` (not `ModAPI`)
+    - ✅ `UiState` (not `UIState`)
     - ✅ `HudLayout` (not `HUDLayout`)
-    - ✅ `UIState` (not `UiState`)
+    - ✅ `JsonConfig` (not `JSONConfig`)
+    - ✅ `SmartContract` (not `smartcontract`)
     - ✅ `SmapiConfig` (not `SMAPIConfig`)
+
+Each abbreviation is capitalized as the **first letter only**, treating multi-letter abbreviations
+as a single word chunk.
 
 #### 4.2.2 camelCase acronyms (locals/parameters/fields) ####
 
-    - At the **start** of a camelCase identifier, follow normal camelCase:
-        * ✅ `uiState`
-        * ✅ `hudLayout`
-    - In the **middle or end** of an identifier:
-        * Acronyms **2 letters or less** use all-caps within the word chunk:
-            * ✅ `exampleUIExample`
-            * ✅ `exampleExampleUI`
-        * Acronyms **3 letters or less** use normal word casing:
-            * ✅ `exampleHudExample`
-            * ✅ `exampleExampleHud`
+Abbreviations in camelCase identifiers follow **normal camelCase capitalization**:
 
-(Understanding check: “UI” stays uppercase inside camelCase when it is not the leading chunk, but
-“Hud” is treated like a normal word chunk.)
+    - ✅ `taskId` (not `taskID`)
+    - ✅ `modApi` (not `modAPI`)
+    - ✅ `uiState` (not `UIState`)
+    - ✅ `hudLayout` (not `HUDLayout`)
+    - ✅ `exampleModApi` (not `exampleModAPI`)
+    - ✅ `smapiConfig` (not `SMAPIConfig`)
+
+The abbreviation is treated as a **single word chunk**, with only the leading letter lowercase
+when it starts the identifier, or only the first letter capitalized when it follows another word
+chunk.
 
 ## 5. Modifiers and accessibility ##
 
