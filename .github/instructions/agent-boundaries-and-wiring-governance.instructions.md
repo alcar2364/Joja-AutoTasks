@@ -24,7 +24,7 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 | StarMLAgent | .sml layout/template/binding authoring only | No backend logic implementation and no non-markup C# ownership |
 | Refactorer | Structural refactor execution | No behavior-changing feature work unless explicitly authorized |
 | UnitTestAgent | Unit-test creation and test review | No non-test feature implementation ownership |
-| Troubleshooter | Diagnosis and root-cause analysis | No speculative large rewrites by default |
+| Troubleshooter | Diagnosis, root-cause analysis, and documentation-follow-up routing after confirmed cause | No speculative large rewrites by default and no direct ownership of non-agent documentation editing |
 | WorkspaceAgent | Non-agent documentation artifacts | No agent customization files (.agent.md/.instructions.md/.prompt.md/SKILL.md/hooks.json) |
 
 ## Instruction-to-Agent Wiring ##
@@ -49,7 +49,7 @@ Every instruction file below is wired to at least one agent.
 | starml-cheatsheet.instructions.md | StarMLAgent | UIAgent, Researcher |
 | ui-component-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
 | unit-testing-contract.instructions.md | UnitTestAgent | Reviewer, Planner |
-| update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer |
+| update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer, Troubleshooter |
 | visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
 | workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent |
 
@@ -106,6 +106,38 @@ Agents MUST update this instruction file in the same change set when any of the 
 When agent scope changes, update the **Agent Domains (Non-Overlapping)** table first to prevent overlap drift.
 
 Scope change includes edits to agent responsibilities, exclusions, boundaries, or frontmatter that materially changes an agent's functional domain.
+
+## Cross-Cutting Workflow Patterns ##
+
+### Troubleshooter → GodAgent: Recurring Problem Detection ###
+
+When Troubleshooter identifies a recurring problem pattern that indicates agent behavior needs improvement (not code bugs), it delegates to GodAgent with:
+
+- The recurring pattern description
+- Which agent(s) need instruction updates
+- Specific prevention rules to add
+- Concrete examples of the mistake
+
+**Criteria for delegation:**
+- Same mistake type occurred multiple times
+- Root cause is agent behavior, not code logic
+- Fix requires updating agent customization files
+- Can articulate specific prevention rule
+
+This workflow does **not** change Troubleshooter's scope (still diagnosis only) or GodAgent's scope (still agent customization only). It establishes a routing pattern for diagnosis results that indicate systemic agent ecosystem issues.
+
+### Troubleshooter -> WorkspaceAgent: Architecture-Significant Root-Cause Documentation ###
+
+When Troubleshooter confirms a root cause that reveals a major architecture problem (especially from agent-generated code), it delegates to WorkspaceAgent with:
+
+- Problem summary and trigger conditions
+- Confirmed root cause (with emphasis on architectural significance)
+- Fix summary and verification evidence
+- Suggested target docs and exact updates needed
+
+**Threshold for delegation:** Major architecture problems, design-guide gaps, contract violations — not minor coding errors.
+
+This workflow does **not** give Troubleshooter documentation ownership. Troubleshooter routes the documentation task; WorkspaceAgent owns non-agent Markdown editing.
 
 ## Hook enforcement ##
 
