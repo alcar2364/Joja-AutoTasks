@@ -1,7 +1,6 @@
 ﻿---
 name: REVIEW-AND-VERIFICATION-CONTRACT
 description: "Review, verification, and acceptance rules: contract-based review, risk assessment, verification paths, pre-merge checklists. Use when: reviewing code or implementations."
-applyTo: "**/*"
 ---
 
 # REVIEW-AND-VERIFICATION-CONTRACT.instructions.md #

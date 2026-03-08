@@ -54,7 +54,7 @@ When creating or reviewing tests, use this precedence order:
 6. FRONTEND-ARCHITECTURE-CONTRACT.instructions.md
 7. REVIEW-AND-VERIFICATION-CONTRACT.instructions.md
 8. CSHARP-STYLE-CONTRACT.instructions.md
-9. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
+9. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 10. established test patterns already present in the workspace
 
 If sources conflict, call out the conflict and follow the higher-priority source.

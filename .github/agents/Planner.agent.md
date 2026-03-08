@@ -1,4 +1,4 @@
-﻿---
+---
 name: Planner
 description: "Use when: converting research into a detailed step-by-step implementation plan."
 argument-hint:  Describe the feature, bug, refactor, or task; include the Researcher findings if
@@ -81,7 +81,7 @@ When planning, use this precedence order:
 7. JSON-STYLE-CONTRACT.instructions.md
 8. SML-STYLE-CONTRACT.instructions.md
 9. UI-COMPONENT-PATTERNS.instructions.md
-10. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+10. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 11. existing stable code patterns in the touched subsystem
 

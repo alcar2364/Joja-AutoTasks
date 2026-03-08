@@ -11,7 +11,7 @@ if (-not $bashExe) {
     exit 2
 }
 
-$bundles = Get-ChildItem '.local/Agents/Hooks' -Directory | Where-Object { $_.Name -ne 'legacy-md' } | Sort-Object Name
+$bundles = Get-ChildItem '.github/hooks' -Directory | Where-Object { $_.Name -ne 'legacy-md' } | Sort-Object Name
 $results = @()
 
 foreach ($bundle in $bundles) {
@@ -61,7 +61,7 @@ foreach ($bundle in $bundles) {
 }
 
 # Explicit block-mode behavior test
-$sg = '.local/Agents/Hooks/safety-guardrails/safety-guardrails.sh'
+$sg = '.github/hooks/safety-guardrails/safety-guardrails.sh'
 if (Test-Path $sg) {
     $old = $env:BLOCK_ON_SECURITY_THREAT
     $env:BLOCK_ON_SECURITY_THREAT = 'true'

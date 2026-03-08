@@ -1,4 +1,4 @@
-﻿---
+---
 name: Reviewer
 description: "Use when: verifying plans or code for contract compliance and architecture safety."
 argument-hint:  Describe what should be reviewed; include the patch, changed files, target
@@ -6,7 +6,7 @@ argument-hint:  Describe what should be reviewed; include the patch, changed fil
                 implementation review.
 target: vscode
 tools: [vscode, read/readFile, read/problems, agent, search, todo]
-agents: [Planner, Researcher, UIAgent, StarMLAgent, GameAgent, Refactorer, WorkspaceAgent]
+agents: [Planner, Researcher, UIAgent, StarMLAgent, GameAgent, Refactorer, WorkspaceAgent, GodAgent]
 handoffs:
 -   label: Planning clarification handoff
     agent: Planner
@@ -34,7 +34,11 @@ handoffs:
     send: true
 -   label: Workspace artifact follow-up handoff
     agent: WorkspaceAgent
-    prompt: Update workspace artifacts (.md agents/contracts/instructions/docs/plans) identified during review.
+    prompt: Update non-agent workspace artifacts (design docs, plans, task lists, user-facing docs) identified during review.
+    send: true
+-   label: Agent customization follow-up handoff
+    agent: GodAgent
+    prompt: Update agent customization artifacts (.agent.md, .instructions.md, .prompt.md, SKILL.md, hooks.json, copilot-instructions.md, AGENTS.md) identified during review.
     send: true
 ---
 
@@ -78,7 +82,7 @@ When reviewing, use this precedence order:
 8. JSON-STYLE-CONTRACT.instructions.md
 9. SML-STYLE-CONTRACT.instructions.md
 10. UI-COMPONENT-PATTERNS.instructions.md
-11. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 12. established local subsystem patterns
 

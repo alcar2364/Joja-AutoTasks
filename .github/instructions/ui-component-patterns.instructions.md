@@ -1,7 +1,6 @@
 ﻿---
 name: ui-component-patterns
 description: "Preferred UI composition patterns for JAT. Use when: designing or implementing UI layouts, choosing component structures, or avoiding layout pattern proliferation."
-applyTo: "{**/*.sml,UI/**/*.cs}"
 ---
 
 # UI-COMPONENT-PATTERNS.instructions.md #

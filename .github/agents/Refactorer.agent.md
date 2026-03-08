@@ -1,4 +1,4 @@
-﻿---
+---
 name: Refactorer
 description: "Use when: executing large-scale refactors or structural reorganizations."
 argument-hint:  Describe the refactor; include the approved plan if available, target
@@ -86,7 +86,7 @@ When refactoring, use this precedence order:
 8. JSON-STYLE-CONTRACT.instructions.md
 9. SML-STYLE-CONTRACT.instructions.md
 10. external-resources.instructions.md
-11. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 12. established stable patterns in the touched subsystem
 

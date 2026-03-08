@@ -1,6 +1,7 @@
 ﻿---
+name: context-engineering
 description: 'Guidelines for structuring code and projects to maximize GitHub Copilot effectiveness through better context management'
-applyTo: '**'
+applyTo: '.github/agents/*.agent.md'
 ---
 
 # Context Engineering

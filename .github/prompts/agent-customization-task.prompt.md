@@ -9,7 +9,7 @@ Handle this customization request for the JAT agent ecosystem.
 
 Customization Inputs
 - Goal: <create|analyze|tune|debug>
-- Primitive type: <.agent.md|.instructions.md|.skill.md|.prompt.md|hooks|workspace config>
+- Primitive type: <.agent.md|.instructions.md|SKILL.md|.prompt.md|hooks|workspace config>
 - Scope: <single file|cross-file|workspace-level>
 - Constraints: <required>
 

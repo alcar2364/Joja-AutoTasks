@@ -14,7 +14,7 @@ fi
 BLOCK=0
 
 if echo "$PROMPT" | grep -qiE '(rm -rf /|drop database|truncate table|chmod 777|ignore previous instructions|api[_-]?key\s*[:=])'; then
-  echo "[safety-guardrails] Security risk pattern detected. Apply: .local/Agents/Instructions/security-and-owasp.instructions.md"
+  echo "[safety-guardrails] Security risk pattern detected. Apply: .github/instructions/security-and-owasp.instructions.md"
   if [[ "${BLOCK_ON_SECURITY_THREAT:-false}" == "true" ]]; then
     BLOCK=1
   fi
@@ -33,7 +33,7 @@ if echo "$PROMPT" | grep -qiE '(put business logic in ui|ui writes persistence|f
 fi
 
 if echo "$PROMPT" | grep -qiE '(performance|slow|latency|throughput|memory|cpu|n\+1|bottleneck|optimize)'; then
-  echo "[safety-guardrails] Apply: .local/Agents/Instructions/performance-optimization.instructions.md"
+  echo "[safety-guardrails] Apply: .github/instructions/performance-optimization.instructions.md"
 fi
 
 if echo "$PROMPT" | grep -qiE '(comment every line|add lots of comments|comment everything)'; then

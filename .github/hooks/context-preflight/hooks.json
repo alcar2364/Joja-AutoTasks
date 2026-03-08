@@ -4,7 +4,7 @@
     "userPromptSubmitted": [
       {
         "type": "command",
-        "bash": "bash .local/Agents/Hooks/context-preflight/context-preflight.sh",
+        "bash": "bash .github/hooks/context-preflight/context-preflight.sh",
         "cwd": ".",
         "timeoutSec": 8
       }

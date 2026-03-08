@@ -1,63 +1,52 @@
-<!-- markdownlint-disable -->
-
-# JAT Skills Index #
+# JAT Skills Index
 
 This folder contains on-demand skills for the JAT agent ecosystem.
 
-## Skills vs Instructions (Quick Rule) ##
+## Structure
 
-	* Use instruction files when guidance should be always-on for a file type or subsystem.
-	* Use skills when guidance is specialized and should load only for specific tasks.
+- Every skill lives in a folder: `.github/skills/<skill-name>/`
+- The main skill file is always: `SKILL.md`
+- Folder name must exactly match `name:` in `SKILL.md`
+- Optional supporting assets live in `references/`
 
-## Skill Catalog ##
+## Skill Catalog
 
-### Foundation Skills (External Resources & Visual Design)
+| Skill | File |
+| --- | --- |
+| breakdown-feature-implementation | [breakdown-feature-implementation/SKILL.md](breakdown-feature-implementation/SKILL.md) |
+| create-architectural-decision-record | [create-architectural-decision-record/SKILL.md](create-architectural-decision-record/SKILL.md) |
+| create-github-issue-feature-from-specification | [create-github-issue-feature-from-specification/SKILL.md](create-github-issue-feature-from-specification/SKILL.md) |
+| create-github-issues-feature-from-implementation-plan | [create-github-issues-feature-from-implementation-plan/SKILL.md](create-github-issues-feature-from-implementation-plan/SKILL.md) |
+| create-github-pull-request-from-specification | [create-github-pull-request-from-specification/SKILL.md](create-github-pull-request-from-specification/SKILL.md) |
+| create-implementation-plan | [create-implementation-plan/SKILL.md](create-implementation-plan/SKILL.md) |
+| create-readme | [create-readme/SKILL.md](create-readme/SKILL.md) |
+| create-specification | [create-specification/SKILL.md](create-specification/SKILL.md) |
+| csharp-docs | [csharp-docs/SKILL.md](csharp-docs/SKILL.md) |
+| csharp-mstest | [csharp-mstest/SKILL.md](csharp-mstest/SKILL.md) |
+| csharp-xunit | [csharp-xunit/SKILL.md](csharp-xunit/SKILL.md) |
+| dotnet-best-practices | [dotnet-best-practices/SKILL.md](dotnet-best-practices/SKILL.md) |
+| dotnet-upgrade | [dotnet-upgrade/SKILL.md](dotnet-upgrade/SKILL.md) |
+| ef-core | [ef-core/SKILL.md](ef-core/SKILL.md) |
+| git-commit | [git-commit/SKILL.md](git-commit/SKILL.md) |
+| jat-build-debug-and-deployment-workflow | [jat-build-debug-and-deployment-workflow/SKILL.md](jat-build-debug-and-deployment-workflow/SKILL.md) |
+| jat-command-reducer-snapshot-flow | [jat-command-reducer-snapshot-flow/SKILL.md](jat-command-reducer-snapshot-flow/SKILL.md) |
+| jat-dependency-injection-and-composition | [jat-dependency-injection-and-composition/SKILL.md](jat-dependency-injection-and-composition/SKILL.md) |
+| jat-error-handling-and-validation-patterns | [jat-error-handling-and-validation-patterns/SKILL.md](jat-error-handling-and-validation-patterns/SKILL.md) |
+| jat-event-lifecycle-and-game-coupling | [jat-event-lifecycle-and-game-coupling/SKILL.md](jat-event-lifecycle-and-game-coupling/SKILL.md) |
+| jat-external-resources | [jat-external-resources/SKILL.md](jat-external-resources/SKILL.md) |
+| jat-identifier-determinism-patterns | [jat-identifier-determinism-patterns/SKILL.md](jat-identifier-determinism-patterns/SKILL.md) |
+| jat-persistence-migration-and-reconstruction | [jat-persistence-migration-and-reconstruction/SKILL.md](jat-persistence-migration-and-reconstruction/SKILL.md) |
+| jat-smapi-debugging-and-diagnostics | [jat-smapi-debugging-and-diagnostics/SKILL.md](jat-smapi-debugging-and-diagnostics/SKILL.md) |
+| jat-snapshot-binding-and-ui-data-flow | [jat-snapshot-binding-and-ui-data-flow/SKILL.md](jat-snapshot-binding-and-ui-data-flow/SKILL.md) |
+| jat-starml-cheatsheet | [jat-starml-cheatsheet/SKILL.md](jat-starml-cheatsheet/SKILL.md) |
+| jat-task-generation-and-rule-evaluation | [jat-task-generation-and-rule-evaluation/SKILL.md](jat-task-generation-and-rule-evaluation/SKILL.md) |
+| jat-testing-patterns-and-fixtures | [jat-testing-patterns-and-fixtures/SKILL.md](jat-testing-patterns-and-fixtures/SKILL.md) |
+| jat-ui-component-patterns | [jat-ui-component-patterns/SKILL.md](jat-ui-component-patterns/SKILL.md) |
+| jat-visual-design-language | [jat-visual-design-language/SKILL.md](jat-visual-design-language/SKILL.md) |
+| refactor | [refactor/SKILL.md](refactor/SKILL.md) |
+| update-implementation-plan | [update-implementation-plan/SKILL.md](update-implementation-plan/SKILL.md) |
+| update-specification | [update-specification/SKILL.md](update-specification/SKILL.md) |
 
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-external-resources.skill.md](jat-external-resources.skill.md) | jat-external-resources | SMAPI, StardewUI, GMCM, and translation resource lookup |
-| [jat-visual-design-language.skill.md](jat-visual-design-language.skill.md) | jat-visual-design-language | Applying JAT visual tokens and accessibility constraints |
+## Wiring Requirement
 
-### UI & StarML Skills
-
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-starml-cheatsheet.skill.md](jat-starml-cheatsheet.skill.md) | jat-starml-cheatsheet | Fast StarML syntax and binding checks while editing `.sml` |
-| [jat-ui-component-patterns.skill.md](jat-ui-component-patterns.skill.md) | jat-ui-component-patterns | Choosing HUD/menu composition shells and reusable structures |
-| [jat-snapshot-binding-and-ui-data-flow.skill.md](jat-snapshot-binding-and-ui-data-flow.skill.md) | jat-snapshot-binding-and-ui-data-flow | Snapshot binding patterns and read-only UI data flow |
-
-### Architecture & State Management Skills
-
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-command-reducer-snapshot-flow.skill.md](jat-command-reducer-snapshot-flow.skill.md) | jat-command-reducer-snapshot-flow | State mutation boundary and command/reducer/snapshot flow patterns |
-| [jat-identifier-determinism-patterns.skill.md](jat-identifier-determinism-patterns.skill.md) | jat-identifier-determinism-patterns | Deterministic identifier generation (TaskID, RuleID, SubjectID, DayKey) |
-| [jat-persistence-migration-and-reconstruction.skill.md](jat-persistence-migration-and-reconstruction.skill.md) | jat-persistence-migration-and-reconstruction | Persistence, versioning, migration, and state reconstruction patterns |
-| [jat-task-generation-and-rule-evaluation.skill.md](jat-task-generation-and-rule-evaluation.skill.md) | jat-task-generation-and-rule-evaluation | Deterministic task generation and rule evaluation patterns |
-
-### Implementation & Testing Skills
-
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-testing-patterns-and-fixtures.skill.md](jat-testing-patterns-and-fixtures.skill.md) | jat-testing-patterns-and-fixtures | JAT-specific unit test patterns, fixtures, and determinism verification |
-| [jat-error-handling-and-validation-patterns.skill.md](jat-error-handling-and-validation-patterns.skill.md) | jat-error-handling-and-validation-patterns | Validation, null safety, error handling, and recovery patterns |
-| [jat-dependency-injection-and-composition.skill.md](jat-dependency-injection-and-composition.skill.md) | jat-dependency-injection-and-composition | Constructor injection, dependency graphs, and composition root wiring |
-
-### Lifecycle & Integration Skills
-
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-event-lifecycle-and-game-coupling.skill.md](jat-event-lifecycle-and-game-coupling.skill.md) | jat-event-lifecycle-and-game-coupling | Game lifecycle integration and event dispatch patterns |
-
-### Maintenance & Debugging Skills
-
-| File | Skill Name | Best Use |
-| --- | --- | --- |
-| [jat-build-debug-and-deployment-workflow.skill.md](jat-build-debug-and-deployment-workflow.skill.md) | jat-build-debug-and-deployment-workflow | Build variants, SMAPI integration, debugging, and mod deployment |
-| [jat-smapi-debugging-and-diagnostics.skill.md](jat-smapi-debugging-and-diagnostics.skill.md) | jat-smapi-debugging-and-diagnostics | SMAPI logging, diagnostic techniques, and game state inspection |
-
-## Notes ##
-
-	* Keep skill file names lowercase with hyphens and `.skill.md` suffix.
-	* Ensure each `name` field matches the skill file stem.
-	* Keep each skill focused on one repeatable workflow.
+Every skill above must be mapped to at least one agent in `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`.

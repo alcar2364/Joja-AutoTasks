@@ -1,6 +1,6 @@
 # JAT Agent Hooks System #
 
-Hooks are now implemented as executable bundles under `.local/Agents/Hooks/*/`.
+Hooks are now implemented as executable bundles under `.github/hooks/*/`.
 Each bundle contains:
 
     * `hooks.json` (runtime trigger registration)
@@ -12,7 +12,7 @@ This matches the runnable hook format and keeps hooks local to the JAT workspace
 
 ### 1) context-preflight ###
 
-Path: `.local/Agents/Hooks/context-preflight/`
+Path: `.github/hooks/context-preflight/`
 
 Runtime trigger:
 
@@ -30,7 +30,7 @@ Domain:
 
 ### 2) safety-guardrails ###
 
-Path: `.local/Agents/Hooks/safety-guardrails/`
+Path: `.github/hooks/safety-guardrails/`
 
 Runtime trigger:
 
@@ -49,7 +49,7 @@ Domain:
 
 ### 3) validation-postflight ###
 
-Path: `.local/Agents/Hooks/validation-postflight/`
+Path: `.github/hooks/validation-postflight/`
 
 Runtime trigger:
 
@@ -66,7 +66,7 @@ Domain:
 
 ### 4) ecosystem-maintenance ###
 
-Path: `.local/Agents/Hooks/ecosystem-maintenance/`
+Path: `.github/hooks/ecosystem-maintenance/`
 
 Runtime trigger:
 
@@ -77,16 +77,34 @@ Domain:
     * customization ecosystem integrity and index sync reminders
     * combines former intent from:
         - agent-capability-freshness
+        - agent-boundaries-wiring-sync
         - agent-ecosystem-sync
         - design-guide-contract-sync
         - prompt-index-auto-sync
         - skills-index-auto-sync
 
+### 5) legacy-coverage-audit ###
+
+Path: `.github/hooks/legacy-coverage-audit/`
+
+Runtime trigger:
+
+    * `sessionEnd`
+
+Domain:
+
+    * validates that every legacy markdown hook scenario maps to an executable runtime bundle
+    * enforces `.github/hooks/LEGACY_COVERAGE_MAP.md`
+
 ## Legacy Hook Specs ##
 
 Previous markdown-only hook specs were archived (not deleted) at:
 
-    * `.local/Agents/Hooks/legacy-md/`
+    * `.github/hooks/legacy-md/`
+
+Legacy coverage mapping is maintained in:
+
+    * `.github/hooks/LEGACY_COVERAGE_MAP.md`
 
 These files are reference material and do not execute directly.
 

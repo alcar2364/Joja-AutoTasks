@@ -1,7 +1,6 @@
-﻿---
+---
 name: WORKSPACE-CONTRACTS
 description: "Operational contract for AI agents in JAT workspace: scope interpretation, planning, delegation, permissions, file creation. Use when: working in JAT workspace."
-applyTo: "**/*"
 ---
 
 # WORKSPACE-CONTRACTS.instructions.md #
@@ -262,44 +261,45 @@ task-generator-rules.instructions.md
 
 ## 8.2 Agent customization frontmatter formatting ##
 
-For agent customization Markdown files (`.agent.md`, `.instructions.md`, `.prompt.md`, `.skill.md`, `copilot-instructions.md`, `AGENTS.md`):
+For agent customization Markdown files (`.agent.md`, `.instructions.md`, `.prompt.md`, `SKILL.md`, `copilot-instructions.md`, `AGENTS.md`):
 
     - YAML frontmatter validity is authoritative for frontmatter formatting
     - agents MUST follow YAML indentation/structure rules for frontmatter
     - agents MUST ignore markdownlint spacing/list-indentation violations that affect frontmatter only when those rules conflict with valid YAML
     - markdownlint still applies to the Markdown body content after frontmatter
 
-## 9. Skill Files (.skill.md) Convention ##
+## 9. Skill Files (SKILL.md) Convention ##
 
-JAT uses on-demand skills for specialized workflows, stored as flat `.skill.md` files in `.local/Agents/Skills/`.
+JAT uses on-demand skills for specialized workflows, stored as skill folders under `.github/skills/`.
 
 ### 9.1 File structure ###
 
-The JAT skill ecosystem uses a **flat file convention** (not per-skill subdirectories):
+The JAT skill ecosystem uses the awesome-copilot folder convention:
 
-    .local/Agents/Skills/
-    ├── README.md
-    ├── jat-skill-name.skill.md
-    ├── jat-another-skill.skill.md
+    .github/skills/
+    ├── skill-name-1/
+    │   ├── SKILL.md
+    │   └── references/
+    ├── skill-name-2/
+    │   ├── SKILL.md
+    │   └── references/
     └── ... (more skills)
-
-All reference material is embedded inline in the `.skill.md` file; no separate `/references/` subdirectories are used.
 
 ### 9.2 Naming and discovery ###
 
-Skill files must follow these rules:
+Skill folders must follow these rules:
 
-    * File name: lowercase-with-hyphens + `.skill.md` (e.g., `jat-command-reducer-snapshot-flow.skill.md`)
-    * YAML `name:` field must match the file stem (e.g., `jat-command-reducer-snapshot-flow`)
-    * `description:` field MUST include trigger keywords (e.g., "Use when: command, reducer, snapshot, State Store")
-    * Trigger keywords enable agent discovery when your request mentions them
+    * Folder name: lowercase-with-hyphens (e.g., `jat-command-reducer-snapshot-flow`)
+    * Main file name: exactly `SKILL.md`
+    * YAML `name:` field in `SKILL.md` MUST exactly match the folder name
+    * `description:` field MUST include trigger keywords (e.g., "Use when: command, reducer, snapshot")
 
 ### 9.3 When to create skills ##
 
 Create a new skill when:
 
     * A workflow is specialized and should load only for specific tasks (not always-on)
-    * Implementation patterns are complex or repetitive and would benefit from bundled reference material
+    * Implementation patterns are complex or repetitive and benefit from bundled references
     * Domain knowledge is missing from existing contracts or instructions
     * Maintenance or debugging guidance would reduce context overhead for agents
 
@@ -307,21 +307,19 @@ Do NOT create a skill for guidance that should always apply to a subsystem; use 
 
 ### 9.4 Skill catalog maintenance ###
 
-The `README.md` in `.local/Agents/Skills/` maintains a comprehensive catalog.
+The `README.md` in `.github/skills/` maintains the catalog.
 
-This catalog is automatically synchronized by the `skills-index-auto-sync.hook.md` when `.skill.md` files are created, renamed, or deleted.
-
-Agents SHOULD NOT manually edit the skill catalog; the hook ensures consistency.
+Agents SHOULD keep this catalog aligned whenever skills are added, renamed, or removed.
 
 ### 9.5 Linking to contracts and instructions ###
 
-Each skill should link back to related contracts or instructions at the end:
+Each skill should link back to related contracts or instructions when relevant.
 
-    ## Links ##
-    - [BACKEND-ARCHITECTURE-CONTRACT](../Contracts/BACKEND-ARCHITECTURE-CONTRACT.instructions.md)
-    - [related-instruction-name](../Instructions/related-instruction-name.instructions.md)
+### 9.6 Skill-to-agent wiring requirement ###
 
-This keeps skills grounded in authoritative guidance and helps developers navigate the ecosystem.
+Every skill in `.github/skills/` MUST be mapped to at least one agent in `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`.
+
+No orphan skills are allowed.
 
 ## 10. Maintainer Authority ##
 

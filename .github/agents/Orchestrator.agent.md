@@ -47,7 +47,7 @@ handoffs:
     send: true
   - label: Manage agent customization files
     agent: GodAgent
-    prompt: Create, analyze, tune, or debug agent customization files (.agent.md, .instructions.md, .skill.md, .prompt.md, hooks.json, copilot-instructions.md, AGENTS.md). Ensure agent ecosystem coherence and discoverability.
+    prompt: Create, analyze, tune, or debug agent customization files (.agent.md, .instructions.md, SKILL.md, .prompt.md, hooks.json, copilot-instructions.md, AGENTS.md). Ensure agent ecosystem coherence and discoverability.
     send: true
   - label: Manage workspace documentation
     agent: WorkspaceAgent
@@ -101,7 +101,7 @@ Routing rules:
 | validation or code correctness check | Reviewer |
 | large-scale refactoring (rename, extract, move, pattern migration) | Refactorer |
 | build failures, runtime bugs, tooling issues | Troubleshooter |
-| agent customization files (.agent.md, .instructions.md, .skill.md, hooks, agent debugging) | GodAgent |
+| agent customization files (.agent.md, .instructions.md, SKILL.md, hooks, agent debugging) | GodAgent |
 | design docs, implementation plans, task lists, user-facing documentation | WorkspaceAgent |
 
 Prefer using **one subagent at a time** unless the problem clearly splits into parallel tasks.
@@ -126,7 +126,7 @@ The orchestrator owns continuity and coordination, not execution.
 
 The orchestrator is responsible for ensuring all work follows workspace contracts.
 
-Contract files are located in `Contracts/` and must be treated as authoritative:
+Contract files are located in `instructions/` and must be treated as authoritative:
 
     - `WORKSPACE-CONTRACTS.instructions.md` — workspace interaction, scope, editing, delegation
     - `BACKEND-ARCHITECTURE-CONTRACT.instructions.md` — state store, determinism, persistence,
@@ -137,6 +137,7 @@ Contract files are located in `Contracts/` and must be treated as authoritative:
     - `SML-STYLE-CONTRACT.instructions.md` — StarML markup conventions
     - `UNIT-TESTING-CONTRACT.instructions.md` — deterministic unit-testing and test review rules
     - `REVIEW-AND-VERIFICATION-CONTRACT.instructions.md` — review, verification, acceptance
+    - `agent-boundaries-and-wiring-governance.instructions.md` — authoritative no-overlap domains plus instruction/skill wiring
 
 When routing work and validating delegated outputs, enforce these contracts. If a subagent's output violates a contract,
 redirect the task.
@@ -146,6 +147,7 @@ redirect the task.
 The orchestrator must keep all specialists synchronized:
 
   - Carry forward constraints, assumptions, and user scope across every handoff.
+  - Enforce `agent-boundaries-and-wiring-governance.instructions.md` so each agent stays in its exclusive function.
   - Resolve cross-agent conflicts by targeted re-delegation (usually Planner or Reviewer).
   - Keep one canonical status narrative in todo tracking.
   - Prevent silent scope expansion by stopping and requesting approval when needed.
@@ -153,7 +155,7 @@ The orchestrator must keep all specialists synchronized:
 
 ## 6. Markdown-authoring rule ##
 
-WorkspaceAgent owns non-agent Markdown artifacts (design docs, implementation plans, task lists, user-facing documentation). GodAgent owns agent customization Markdown artifacts (`.agent.md`, `.instructions.md`, `.prompt.md`, `.skill.md`, `copilot-instructions.md`, `AGENTS.md`).
+WorkspaceAgent owns non-agent Markdown artifacts (design docs, implementation plans, task lists, user-facing documentation). GodAgent owns agent customization Markdown artifacts (`.agent.md`, `.instructions.md`, `.prompt.md`, `SKILL.md`, `copilot-instructions.md`, `AGENTS.md`).
 
 For agent customization files, frontmatter must follow YAML formatting rules. Ignore markdownlint spacing/list-indentation violations in frontmatter when they conflict with valid YAML. Apply markdownlint rules to Markdown body content.
 

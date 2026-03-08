@@ -1,4 +1,4 @@
-﻿---
+---
 name: WorkspaceAgent
 description: "Use when: managing design guides, plans, task lists, or user documentation (not agent files)."
 argument-hint:  Describe what workspace artifact to create, edit, or revise; include the target
@@ -105,7 +105,7 @@ When managing workspace artifacts, use this precedence order:
 2. WORKSPACE-CONTRACTS.instructions.md (Section 8 — file creation and naming rules)
 3. existing conventions already established in the workspace
 4. VS Code / GitHub Copilot custom agent conventions
-5. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+5. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
    Guide.md`)
 6. standard Markdown best practices
 
@@ -115,7 +115,7 @@ If sources conflict, state the conflict and follow the higher-priority source.
 
 ## 3.1 Design guide sections ##
 
-Location: `.local/Joja AutoTasks Design Guide/`
+Location: `.github/Joja AutoTasks Design Guide/`
 
 Naming: `Section NN - Title.md`
 

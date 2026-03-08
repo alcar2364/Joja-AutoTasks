@@ -8,8 +8,8 @@ agent: "Orchestrator"
 Synchronize the prompt index README with the current prompt files.
 
 Maintenance Inputs
-- Prompt directory: <default .local/Agents/Prompts>
-- README file: <default .local/Agents/Prompts/README.md>
+- Prompt directory: <default .github/prompts>
+- README file: <default .github/prompts/README.md>
 - Sort mode: <filename|prompt-name|agent>
 - Update mode: <preview changes|apply changes>
 

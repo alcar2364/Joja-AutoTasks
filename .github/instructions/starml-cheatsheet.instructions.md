@@ -1,7 +1,6 @@
 ﻿---
 name: starml-cheatsheet
 description: "Quick reference for StarML (.sml) syntax and patterns. Use when: editing StarML files or need quick syntax lookup without reading full SML-STYLE-CONTRACT."
-applyTo: "**/*.sml"
 ---
 
 # STARML QUICK REFERENCE — JAT #

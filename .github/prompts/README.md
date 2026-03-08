@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # JAT Prompt Index
 
 This folder contains reusable prompt templates for the current JAT custom-agent architecture.
@@ -20,6 +22,8 @@ If unsure where to start, use [choose-workflow-prompt.prompt.md](choose-workflow
   - Refactor: [safe-structural-refactor.prompt.md](safe-structural-refactor.prompt.md)
   - Troubleshoot: [troubleshoot-build-or-runtime.prompt.md](troubleshoot-build-or-runtime.prompt.md)
   - Agent customization: [agent-customization-task.prompt.md](agent-customization-task.prompt.md)
+  - Ecosystem audit: [audit-customization-ecosystem.prompt.md](audit-customization-ecosystem.prompt.md)
+  - Legacy hook coverage: [verify-hook-legacy-coverage.prompt.md](verify-hook-legacy-coverage.prompt.md)
   - Prompt index sync: [refresh-prompt-index.prompt.md](refresh-prompt-index.prompt.md)
   - Workspace docs/plans: [workspace-documentation-task.prompt.md](workspace-documentation-task.prompt.md)
 
@@ -39,6 +43,8 @@ If unsure where to start, use [choose-workflow-prompt.prompt.md](choose-workflow
 | [safe-structural-refactor.prompt.md](safe-structural-refactor.prompt.md) | Safe Structural Refactor | Behavior-safe structural refactors | Refactorer |
 | [troubleshoot-build-or-runtime.prompt.md](troubleshoot-build-or-runtime.prompt.md) | Troubleshoot Build Or Runtime Issue | Root-cause analysis for build/runtime/tooling issues | Troubleshooter |
 | [agent-customization-task.prompt.md](agent-customization-task.prompt.md) | Agent Customization Task | Create/tune/debug customization assets and ecosystem coherence | GodAgent |
+| [audit-customization-ecosystem.prompt.md](audit-customization-ecosystem.prompt.md) | Audit Customization Ecosystem | Full .github customization-system audit with overlap and coverage checks | GodAgent |
+| [verify-hook-legacy-coverage.prompt.md](verify-hook-legacy-coverage.prompt.md) | Verify Hook Legacy Coverage | Validate that every legacy hook scenario maps to executable runtime hooks | GodAgent |
 | [refresh-prompt-index.prompt.md](refresh-prompt-index.prompt.md) | Refresh Prompt Index | Sync prompt README catalog after prompt add/rename/remove changes | Orchestrator |
 | [workspace-documentation-task.prompt.md](workspace-documentation-task.prompt.md) | Workspace Documentation Task | Plans, design docs, and user-facing workspace artifacts | WorkspaceAgent |
 
@@ -48,5 +54,5 @@ If unsure where to start, use [choose-workflow-prompt.prompt.md](choose-workflow
 - Update `description` and `argument-hint` when your preferred intake changes.
 - Keep `agent` aligned to an existing file in [..](..) under `.agent.md`.
 - Add new prompts to this index so future sessions can discover them quickly.
-- Event-driven sync is provided by [../Hooks/prompt-index-auto-sync.hook.md](../Hooks/prompt-index-auto-sync.hook.md).
+- Event-driven sync reminders are emitted by [../hooks/ecosystem-maintenance/ecosystem-maintenance.sh](../hooks/ecosystem-maintenance/ecosystem-maintenance.sh).
 - Use [refresh-prompt-index.prompt.md](refresh-prompt-index.prompt.md) as manual fallback for preview/apply repair.

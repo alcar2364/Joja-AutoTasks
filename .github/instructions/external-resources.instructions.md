@@ -1,7 +1,6 @@
 ﻿---
 name: external-resources
 description: "External documentation and reference sources for JAT development. Use when: implementing SMAPI features, UI framework integration, or consulting official modding/library documentation."
-applyTo: "{**/*.cs,**/*.sml}"
 ---
 
 # External Resources — JAT #

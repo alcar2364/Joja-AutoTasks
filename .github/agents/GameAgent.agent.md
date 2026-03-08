@@ -1,4 +1,4 @@
-﻿---
+---
 name: GameAgent
 description: "Use when: implementing backend/engine logic (state, rules, persistence, snapshots)."
 argument-hint:  Describe the backend feature, fix, or refactor; include the approved plan if
@@ -81,7 +81,7 @@ When implementing, use this precedence order:
 6. CSHARP-STYLE-CONTRACT.instructions.md
 7. JSON-STYLE-CONTRACT.instructions.md
 8. external-resources.instructions.md
-9. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+9. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
    Guide.md`)
 10. established stable patterns in the touched subsystem
 

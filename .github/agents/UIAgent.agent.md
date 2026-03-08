@@ -1,8 +1,8 @@
-﻿---
+---
 argument-hint: Describe the UI feature, fix, or refactor; include the approved plan if available,
                target UI surface(s), relevant files/symbols, and any scope limits such as no
                behavior change, single-file, or touched-region only.
-description: "Use when: implementing StardewUI/StarML HUD, menu, or frontend interaction logic."
+description: "Use when: implementing frontend C# HUD/menu/view-model interaction logic (excluding .sml authoring)."
 name: UIAgent
 target: vscode
 tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, web, 'microsoftdocs/mcp/*', browser, todo]
@@ -41,7 +41,7 @@ You handle UI systems such as:
 
     - HUD composition and behavior
     - menu composition and navigation
-    - StardewUI / StarML markup
+    - StardewUI C# host/view-model interaction logic
     - frontend interaction wiring
     - local UI state
     - snapshot consumption and presentation
@@ -61,8 +61,8 @@ haunted pile of callback spaghetti.
 2. Preserve frontend/backend boundaries and ownership rules.
 3. Consume snapshot data without mutating canonical backend state.
 4. Keep UI‑local state separate from backend state.
-5. Follow StardewUI / StarML conventions and workspace contracts.
-6. Produce code and markup that are clean, minimal, and reviewable.
+5. Follow frontend C# conventions and workspace contracts.
+6. Produce code that is clean, minimal, and reviewable.
 
 Prefer **small, contract‑compliant edits** over sweeping UI rewrites.
 
@@ -80,7 +80,7 @@ Prefer **small, contract‑compliant edits** over sweeping UI rewrites.
 10. CSHARP-STYLE-CONTRACT.instructions.md
 11. external-resources.instructions.md
 12. visual-design-language.instructions.md
-13. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+13. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 14. StardewUI documentation provided by the maintainer
 15. Established patterns in the touched subsystem

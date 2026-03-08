@@ -1,4 +1,4 @@
-﻿---
+---
 name: StarMLAgent
 description: "Use when: authoring or refactoring .sml files, templates, bindings, or UI composition."
 argument-hint:  Describe the StarML/StardewUI task; include the approved plan if available, target UI
@@ -88,7 +88,7 @@ When implementing, use this precedence order:
 8. starml-cheatsheet.instructions.md
 9. external-resources.instructions.md
 10. visual-design-language.instructions.md
-11. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 12. StardewUI documentation/references approved by the maintainer
 13. existing stable patterns in the touched `.sml` file(s)

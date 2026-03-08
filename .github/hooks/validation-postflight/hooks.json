@@ -4,7 +4,7 @@
     "sessionEnd": [
       {
         "type": "command",
-        "bash": "bash .local/Agents/Hooks/validation-postflight/validation-postflight.sh",
+        "bash": "bash .github/hooks/validation-postflight/validation-postflight.sh",
         "cwd": ".",
         "timeoutSec": 15
       }

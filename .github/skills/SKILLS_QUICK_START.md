@@ -1,83 +1,43 @@
+<!-- markdownlint-disable -->
+
 # Skills Quick Start for JAT
 
-You now have **35 skills** ready to use. Here's the simplest way to understand them:
+This workspace currently has 33 skills under `.github/skills/`.
 
-## What Are Skills?
+## What a Skill Is
 
-**Skills** = Reusable knowledge packages that appear as slash commands (`/skill-name`).
+- A reusable workflow package that can be invoked by name.
+- Stored as `.github/skills/<skill-name>/SKILL.md`.
+- Optionally includes supporting assets in `references/`.
 
-Think of them as:
-- Specialized guides for complex tasks
-- Can include documentation, templates, checklists
-- Agents can reference them to guide your work
+## Use a Skill in Chat
 
-## Your 35 Skills
+1. Open Copilot Chat.
+2. Type `/`.
+3. Search for a skill name such as:
+   - `/csharp-xunit`
+   - `/jat-build-debug-and-deployment-workflow`
+   - `/jat-command-reducer-snapshot-flow`
+4. Select the skill.
 
-| Category | Count | What They Do |
-|----------|-------|--------------|
-| **JAT-Specific** (15 skills) | Custom for your Stardew Valley mod | Build workflow, testing patterns, UI components, state management, SMAPI APIs |
-| **General .NET** (20 skills) | From awesome-copilot | C# docs, unit testing, git workflow, planning, refactoring |
+## Use a Skill in Agent Workflow
 
-## How to Use a Skill Right Now
+- Agent ownership for each skill is defined in `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`.
+- Every skill is mapped to at least one agent.
 
-1. Open VS Code chat (Copilot)
-2. Type `/` (forward slash)
-3. Start typing a skill name:
-   - `/csharp-xunit` ← Find xUnit testing guidance
-   - `/jat-build` ← Find build & deployment info
-   - `/breakdown-feature` ← Find feature planning
+## Add a New Skill
 
-4. Select the skill → it loads with full documentation
-
-## How Agents Will Use Skills
-
-Each agent (GameAgent, UIAgent, Planner, etc.) now guidelines like:
-
-> "When implementing game state, follow the **jat-command-reducer-snapshot-flow skill** for proper structure."
-
-You click that link, and the skill opens with detailed guidance.
-
-## Files to Read
-
-Learn more in these order:
-
-1. **SKILLS_EXPLAINED.md** ← Start here for understanding
-2. **SKILLS_PRACTICAL_EXAMPLES.md** ← See how agents use them
-3. **FOLDER_STRUCTURE.md** ← Full directory layout
-4. **[.local/Agents/GodAgent.agent.md](./GodAgent.agent.md)** Section 6.1 ← Behind-the-scenes details
-
-## The Key Insight
-
-**Before:** Your agents said "follow best practices" (vague)
-
-**After:** Your agents say "Use the jat-command-reducer-snapshot-flow skill" (specific, discoverable, bundled with docs)
-
----
+1. Create `.github/skills/<new-skill>/SKILL.md`.
+2. Ensure `name:` in frontmatter exactly matches `<new-skill>`.
+3. Add optional support docs to `.github/skills/<new-skill>/references/`.
+4. Add the skill to:
+   - `.github/skills/README.md`
+   - `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Skill doesn't appear in `/` list | Restart VS Code |
-| Agent references a skill that doesn't exist | Check folder name matches `name:` in SKILL.md |
-| Want to add a new skill? | Create `.local/Agents/Skills/my-skill/SKILL.md` |
-| Want to update a skill? | Edit `.local/Agents/Skills/skill-name/SKILL.md` directly |
-
----
-
-## Next Steps (Optional)
-
-If you want to enhance agents with skill references:
-
-1. Open an agent file (e.g., [GameAgent.agent.md](./GameAgent.agent.md))
-2. Add lines like:
-   ```
-   For state management, use the [jat-command-reducer-snapshot-flow skill](/skill:jat-command-reducer-snapshot-flow).
-   ```
-3. Save the file
-
-See [SKILLS_PRACTICAL_EXAMPLES.md](./SKILLS_PRACTICAL_EXAMPLES.md) for more patterns.
-
----
-
-**That's it!** Your 35 skills are discoverable and ready to guide your work.
+| Problem | Check |
+| --- | --- |
+| Skill not discoverable | Folder name matches `name:` in `SKILL.md` |
+| Skill opens but seems wrong | Verify the correct skill was mapped in the wiring file |
+| Agent does not use a skill | Update `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md` |

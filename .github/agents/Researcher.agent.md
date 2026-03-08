@@ -1,4 +1,4 @@
-﻿---
+---
 argument-hint: Describe the feature, bug, refactor, or question; include target subsystem(s),
                relevant files/symbols if known, and any scope limits such as analysis-only or
                single-file.
@@ -6,7 +6,7 @@ description: "Use when: finding relevant files, patterns, and context before pla
 name: Researcher
 target: vscode
 tools: [vscode, read/problems, read/readFile, agent, search, web, browser, 'microsoftdocs/mcp/*', todo]
-agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, WorkspaceAgent]
+agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, WorkspaceAgent, GodAgent]
 handoffs:
   - label: Planner follow-up
     agent: Planner
@@ -38,7 +38,11 @@ handoffs:
     send: true
   - label: Workspace artifact handoff
     agent: WorkspaceAgent
-    prompt: Route when the request is about agents, contracts, instructions, design docs, plans, or other workspace artifacts.
+    prompt: Route when the request is about non-agent workspace artifacts (design docs, plans, task lists, user-facing docs).
+    send: true
+  - label: Agent customization artifact handoff
+    agent: GodAgent
+    prompt: Route when the request is about agents, instructions, prompts, skills, hooks, or copilot entrypoint files.
     send: true
 
 ---
@@ -95,7 +99,7 @@ When researching, use this precedence order:
 7. SML-STYLE-CONTRACT.instructions.md
 8. UI-COMPONENT-PATTERNS.instructions.md
 9. external-resources.instructions.md
-10. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+10. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 11. existing stable code patterns in the touched subsystem
 12. approved external sources provided by the maintainer

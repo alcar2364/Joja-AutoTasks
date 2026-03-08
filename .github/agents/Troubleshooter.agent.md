@@ -1,4 +1,4 @@
-﻿---
+---
 name: Troubleshooter
 description: "Use when: diagnosing build errors, runtime bugs, or performance issues (no speculative fixes)."
 
@@ -95,7 +95,7 @@ When diagnosing, use this precedence order:
 9. SML-STYLE-CONTRACT.instructions.md
 10. UI-COMPONENT-PATTERNS.instructions.md
 11. external-resources.instructions.md
-12. Joja AutoTasks Design Guide (start from `.local/Joja AutoTasks Design Guide/JojaAutoTasks Design
+12. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
 13. stable local patterns in the affected subsystem
 14. approved external docs when framework behavior needs verification

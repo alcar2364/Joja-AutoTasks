@@ -2,14 +2,14 @@
 name: GodAgent
 description:    "Meta-agent for VS Code agent customization ecosystem. Creates, analyzes, tunes, and
                 debugs agent files (.agent.md), instruction files (.instructions.md), skills
-                (.skill.md), prompts (.prompt.md), hooks (hooks.json), and workspace agent configuration.
+                (SKILL.md), prompts (.prompt.md), hooks (hooks.json), and workspace agent configuration.
                 Handles agent invocation debugging, YAML frontmatter fixes, description keyword
                 optimization, tool restriction design, handoff pattern tuning, and agent ecosystem
                 consistency audits. Includes self-analysis and bootstrap discovery. Use when: creating
                 new agents, fixing why agent not invoked, tuning agent effectiveness, agent ecosystem
                 maintenance, customization primitive selection guidance, analyzing own instructions."
 argument-hint:  "Describe the customization goal (create/analyze/tune/debug), target primitive
-                (.agent.md / .instructions.md / .skill.md / .prompt.md / hooks.json), specific
+                (.agent.md / .instructions.md / SKILL.md / .prompt.md / hooks.json), specific
                 operation (new agent, fix YAML, improve description, ecosystem audit, invocation
                 debug, self-analysis), scope (single file / cross-file / workspace-level),
                 and portability intent (JAT-specific vs portable to other projects)."
@@ -82,7 +82,7 @@ Do **not** silently expand scope. If broader changes are needed, state what and 
 GodAgent must work across projects with different agent ecosystems. Operating principles:
 
 **Bootstrap Discovery (on startup or first use in a new project):**
-1. Scan the project for agent files (check `.local/agents/`, `.github/agents/`, `.agents/`, `.claude/agents/`)
+1. Scan the project for agent files (check `.github/agents/`, `.local/agents/`, `.agents/`, `.claude/agents/`)
 2. Extract agent `name:` fields and handoff references
 3. Build a local agent registry (name → filepath, capabilities)
 4. Detect which agents exist (e.g., does this project have a Researcher? A custom Reviewer?)
@@ -130,7 +130,7 @@ Apply these criteria to ALL agents, across ALL projects:
 
 **Universal (applies everywhere):**
 1. Explicit user instructions in the current task
-2. [agent-customization skill](copilot-skill:/agent-customization/SKILL.md) — decision flow, frontmatter templates, anti-patterns
+2. agent-customization skill (`copilot-skill:/agent-customization/SKILL.md`) — decision flow, frontmatter templates, anti-patterns
 3. VS Code / GitHub Copilot official documentation
 4. This GodAgent instruction file (meta-agent principles)
 
@@ -157,7 +157,7 @@ Always validate YAML frontmatter syntax before finalizing any customization file
 - Applying markdownlint spacing/list-indent auto-fixes inside YAML frontmatter can break valid frontmatter
 
 **Frontmatter formatting precedence (agent customization files):**
-- For `.agent.md`, `.instructions.md`, `.prompt.md`, `.skill.md`, `copilot-instructions.md`, and `AGENTS.md`, YAML parser validity is authoritative inside frontmatter
+- For `.agent.md`, `.instructions.md`, `.prompt.md`, `SKILL.md`, `copilot-instructions.md`, and `AGENTS.md`, YAML parser validity is authoritative inside frontmatter
 - Ignore markdownlint spacing/indentation violations that affect frontmatter only when those rules conflict with valid YAML
 - Apply markdownlint formatting rules to Markdown body content after frontmatter
 
@@ -174,35 +174,37 @@ Always validate YAML frontmatter syntax before finalizing any customization file
 
 ### 6.1 JAT Agent Organization ###
 
-Agents are stored at `.local/Agents/` (capital A). Workspace configuration at `.github/copilot-instructions.md`.
+Agents are stored at `.github/agents/`. Workspace configuration is `.github/copilot-instructions.md`.
 
 **Folder Structure:**
 ```
-.local/Agents/
-├── *.agent.md                 # Individual agent files
-├── Contracts/                 # Style and architecture contracts
+.github/
+├── agents/
+│   └── *.agent.md
+├── instructions/
 │   └── *.instructions.md
-├── Instructions/              # Coding standards & best practices
-│   └── *.instructions.md
-├── Hooks/                     # Automated workflow hooks
-│   └── *.hook.md
-├── Prompts/                   # Reusable prompt templates
+├── prompts/
 │   └── *.prompt.md
-└── Skills/                    # Skill subfolders (awesome-copilot standard)
+├── hooks/
+│   ├── <bundle>/
+│   │   ├── hooks.json
+│   │   └── *.sh
+│   └── legacy-md/
+│       └── *.hook.md
+└── skills/
     ├── skill-name-1/
-    │   ├── SKILL.md           # Main skill definition
-    │   └── references/        # Supporting files & docs
-    ├── skill-name-2/
     │   ├── SKILL.md
     │   └── references/
     └── ...
 ```
 
 **Bootstrap discovers agents at:**
-- `.local/Agents/*.agent.md`
-- `.github/*.instructions.md`
+- `.github/agents/*.agent.md`
+- `.github/instructions/*.instructions.md`
 
-**Skill discovery:** Skills are discovered by scanning `.local/Agents/Skills/*/SKILL.md` (each skill in its own subfolder)
+**Skill discovery:** Skills are discovered by scanning `.github/skills/*/SKILL.md` (each skill in its own subfolder)
+
+**No-overlap and wiring authority:** `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`
 
 **Handoff targets in JAT ecosystem:**
 - WorkspaceAgent: planning, design guides, user-facing documentation
@@ -235,7 +237,7 @@ When editing an agent that is referenced elsewhere:
 - Update `.github/copilot-instructions.md`
 
 **Skill folder renames:**
-- Create a new folder with the new skill name under `.local/Agents/Skills/`
+- Create a new folder with the new skill name under `.github/skills/`
 - Ensure `name:` field in SKILL.md matches the folder name (e.g., folder `my-skill/` has `name: my-skill`)
 - Update any agents or instructions referencing it by name
 - Delete the old skill folder
@@ -399,8 +401,8 @@ Use this as a checklist when bootstrapping or maintaining the agent ecosystem:
 ## Agent Ecosystem Health Check
 
 ### Discovery Phase
-- [ ] All agent files found (check `.local/agents/`, `.github/agents/`, `.agents/`)
-- [ ] All skill files found (check `.local/Agents/Skills/*.skill.md`)
+- [ ] All agent files found (check `.github/agents/`, `.local/agents/`, `.agents/`)
+- [ ] All skill files found (check `.github/skills/*/SKILL.md`)
 - [ ] All instructions found (check `.github/instructions/`)
 
 ### Reference Validation
@@ -431,7 +433,7 @@ Use this as a checklist when bootstrapping or maintaining the agent ecosystem:
 Before using GodAgent in a new project, customize these sections:
 
 1. **Update Section 6 (Project Adapter):**
-   - Document agent storage location (e.g., `.local/agents/` or `.github/agents/`)
+    - Document agent storage location (e.g., `.github/agents/` or `.local/agents/`)
    - List discovered agents and their handoff targets
    - Document project's style contracts (if any)
    - Add project-specific cross-file consistency rules
