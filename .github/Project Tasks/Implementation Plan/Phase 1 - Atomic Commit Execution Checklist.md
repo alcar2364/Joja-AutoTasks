@@ -294,12 +294,12 @@ Step goal:
 
 ## Final Completion Gate Checklist ##
 
-    * [ ] All sub-steps `1A` through `8C` are completed or explicitly deferred.
-    * [ ] Every completed sub-step has a matching atomic commit.
-    * [ ] No commit crosses unrelated file/symbol scopes.
-    * [ ] No task/store mutation logic exists in Phase 1.
-    * [ ] `OnSaving` remains signal-only with zero writes/checkpoints.
-    * [ ] `OnUpdateTicked` remains throttled no-op guard only.
-    * [ ] `ConfigVersion` handling is explicit and test-covered.
-    * [ ] Build/tests pass with deterministic, bounded logging.
-    * [ ] Phase 1 is complete without architectural drift.
+    * [x] All sub-steps `1A` through `8C` are completed or explicitly deferred.
+    * [x] Every completed sub-step has a matching atomic commit.
+    * [x] No commit crosses unrelated file/symbol scopes.
+    * [x] No task/store mutation logic exists in Phase 1.
+    * [x] `OnSaving` remains signal-only with zero writes/checkpoints.
+    * [x] `OnUpdateTicked` remains throttled no-op guard only.
+    * [x] `ConfigVersion` handling is explicit and test-covered.
+    * [x] Build/tests pass with deterministic, bounded logging.
+    * [x] Phase 1 is complete without architectural drift.
