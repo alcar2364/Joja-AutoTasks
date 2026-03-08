@@ -146,13 +146,13 @@ Step goal:
 
 ### 4D - Document Phase 3 defer for translation-impacting implementation ###
 
-    * [ ] Action: add an explicit defer note that translation handling changes impacting runtime
+    * [x] Action: add an explicit defer note that translation handling changes impacting runtime
     behavior are owned by Phase 3+.
-    * [ ] Scope: this checklist file and optional existing defer-note file.
-    * [ ] Verify: Phase 2 commits do not introduce translation plumbing that changes behavior.
-    * [ ] Commit message: `phase2(step4D): defer translation-impacting implementation to phase3+`
-    * [ ] Must include: defer-note updates only.
-    * [ ] Must exclude: production code changes.
+    * [x] Scope: this checklist file and optional existing defer-note file.
+    * [x] Verify: Phase 2 commits do not introduce translation plumbing that changes behavior.
+    * [x] Commit message: `phase2(step4D): defer translation-impacting implementation to phase3+`
+    * [x] Must include: defer-note updates only.
+    * [x] Must exclude: production code changes.
 
 ## 5) Add DayKey Construction Utilities ##
 
