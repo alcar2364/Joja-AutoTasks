@@ -1,4 +1,4 @@
-// Purpose: Factory for creating TaskIds. 
+// Purpose: Factory for creating TaskIds.
 
 namespace JojaAutoTasks.Domain.Identifiers;
 
@@ -9,6 +9,7 @@ internal static class TaskIdFactory
 {
     private const string BuiltInPrefix = "BuiltIn";
     private const string TaskBuilderPrefix = "TaskBuilder";
+
     // Builds TaskIds for built-in generators.
     public static TaskId CreateBuiltIn(
         string generatorId,
@@ -22,7 +23,7 @@ internal static class TaskIdFactory
             throw new ArgumentException("Generator ID cannot be null, empty, or whitespace.", nameof(generatorId));
         }
 
-        // Constructs a TaskId in the format: "BuiltIn:{GeneratorId}:{SubjectIdentifier}:{DayKey}"
+        // Constructs a TaskId in the format: "BuiltIn_{GeneratorId}_{SubjectIdentifier}_{DayKey}"
         return TaskIdFromParts(
             BuiltInPrefix,
             generatorId,
@@ -42,7 +43,7 @@ internal static class TaskIdFactory
             throw new ArgumentException("Rule ID cannot be null, empty, or whitespace.", nameof(ruleId));
         }
 
-        // Constructs a TaskId in the format: "TaskBuilder:{RuleId}:{SubjectIdentifier}:{DayKey}"
+        // Constructs a TaskId in the format: "TaskBuilder_{RuleId}_{SubjectIdentifier}_{DayKey}"
         return TaskIdFromParts(
             TaskBuilderPrefix,
             ruleId,
@@ -54,7 +55,7 @@ internal static class TaskIdFactory
     // more components are needed in the future, they can be added to generators above
     private static TaskId TaskIdFromParts(params string?[] parts)
     {
-        string taskId = string.Join(":", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
+        string taskId = string.Join("_", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
         return new TaskId(taskId);
     }
 }

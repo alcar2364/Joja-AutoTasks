@@ -9,8 +9,8 @@ internal static class TaskIdFormat
 
     public const string BuiltInPrefix = "BuiltIn";
     public const string TaskBuilderPrefix = "TaskBuilder";
-    private const string ManualPrefix = "Manual";
-    private const char Separator = ':';
+    public const string ManualPrefix = "Manual";
+    private const char Separator = '_';
 
     // -- Public API --
     internal static string Format(TaskId taskId) => taskId.Value;
@@ -31,7 +31,7 @@ internal static class TaskIdFormat
         bool shapeIsValid = prefix switch
         {
             BuiltInPrefix => IsValidBuiltInShape(parts),
-            TaskBuilderPrefix => IsValidTaskBuilderShape(parts),
+            TaskBuilderPrefix => IsValidBuiltInShape(parts),
             ManualPrefix => IsValidManualShape(parts),
             _ => false
         };
@@ -55,27 +55,21 @@ internal static class TaskIdFormat
     private static bool IsValidBuiltInShape(string[] parts)
     {
         // Must have at least: [BuiltIn, GeneratorId]
-        // May have at most: [BuiltIn, GeneratorId, SubjectIdentifier, DayKey]
+        // Optional suffix components may contain underscores.
 
-        if (parts.Length < 2 || parts.Length > 4)
+        if (parts.Length < 2)
             return false;
 
-        return !string.IsNullOrWhiteSpace(parts[1]);
-    }
-
-    // IsValidTaskBuilderShape has the same shape requirements as IsValidBuiltInShape, just with a 
-    // different prefix. Building separate methods for clarity and future-proofing in case TaskBuilder
-    // shapes diverge from BuiltIn shapes later on.
-
-    private static bool IsValidTaskBuilderShape(string[] parts)
-    {
-        // Must have at least: [RuleId, GeneratorId]
-        // May have at most: [RuleId, GeneratorId, SubjectIdentifier, DayKey]
-
-        if (parts.Length < 2 || parts.Length > 4)
+        if (string.IsNullOrWhiteSpace(parts[1]))
             return false;
 
-        return !string.IsNullOrWhiteSpace(parts[1]);
+        for (int i = 2; i < parts.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(parts[i]))
+                return false;
+        }
+
+        return true;
     }
 
     private static bool IsValidManualShape(string[] parts)

@@ -19,7 +19,7 @@ internal static class DayKeyFactory
                 nameof(seasonToken));
         }
 
-        string rawKey = $"Year{year}_{seasonToken}{day}";
+        string rawKey = $"Year{year}-{seasonToken}{day}";
         return new DayKey(rawKey);
     }
 }

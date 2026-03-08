@@ -1,0 +1,55 @@
+// Purpose: Verifies TaskId parser behavior for underscore-containing suffix components while preserving
+// structural prefix and generator validation.
+using JojaAutoTasks.Domain.Identifiers;
+
+namespace JojaAutoTasks.Tests.Domain.Identifiers;
+
+/// <summary>TaskIdFormat parsing tests for underscore-containing subject identifiers.</summary>
+public class TaskIdFormatTests
+{
+    // Dependencies
+
+    // State
+
+    // Constants
+
+    // Constructor
+
+    // Public API
+    [Fact]
+    public void TryParse_WhenBuiltInSubjectContainsUnderscoresAndDayKey_RoundTripsSuccessfully()
+    {
+        DayKey dayKey = DayKeyFactory.Create(1, "Summer", 15);
+        TaskId original = TaskIdFactory.CreateBuiltIn("ForageSweep", "forest_dropoff_route", dayKey);
+
+        bool parsed = TaskIdFormat.TryParse(original.Value, out TaskId reparsed);
+
+        Assert.True(parsed);
+        Assert.Equal(original, reparsed);
+    }
+
+    [Fact]
+    public void TryParse_WhenTaskBuilderSubjectContainsUnderscores_RoundTripsSuccessfully()
+    {
+        TaskId original = TaskIdFactory.CreateTaskBuilder("RuleA", "barn_animal_feed_slot");
+
+        bool parsed = TaskIdFormat.TryParse(original.Value, out TaskId reparsed);
+
+        Assert.True(parsed);
+        Assert.Equal(original, reparsed);
+    }
+
+    [Fact]
+    public void TryParse_WhenBuiltInGeneratorSegmentMissing_ReturnsFalse()
+    {
+        const string rawId = "BuiltIn__forest_dropoff_route_Year1-Summer15";
+
+        bool parsed = TaskIdFormat.TryParse(rawId, out TaskId _);
+
+        Assert.False(parsed);
+    }
+
+    // Event Handlers
+
+    // Private Helpers
+}

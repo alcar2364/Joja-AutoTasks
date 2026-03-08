@@ -1,4 +1,4 @@
-// Purpose: Defines the immutable TaskID value type used for deterministic date-based identifiers.
+// Purpose: Defines the immutable DayKey value type used for deterministic date-based identifiers.
 namespace JojaAutoTasks.Domain.Identifiers;
 
 internal readonly struct DayKey : IEquatable<DayKey>
@@ -31,52 +31,55 @@ internal readonly struct DayKey : IEquatable<DayKey>
 
     private static void ValidateDayKey(string? dayKey)
     {
-        // TODO: Add additional validation if necessary (e.g., check for invalid characters, length constraints, etc.)
-
         IdentifierUtility.ValidateIdentifier(dayKey);
 
-        // Allows nullable input, as null is handled by ValidateIdentifier above. Further validation
-        // assumes non-null input.
-        string[] parts = dayKey?.Split('_') ?? Array.Empty<string>();
+        // Expected format: Year{N}-{Season}{D} (e.g., "Year1-Summer15")
+        string[] parts = dayKey?.Split('-') ?? Array.Empty<string>();
         if (parts.Length != 2)
         {
-            throw new ArgumentException("DayKey must match canonical format 'Year{N}_{Season}{D}'.", nameof(dayKey));
+            throw new ArgumentException(
+                "DayKey must match canonical format 'Year{N}-{Season}{D}' (example: 'Year1-Summer15').",
+                nameof(dayKey));
         }
 
         string yearPart = parts[0];
         string seasonDayPart = parts[1];
 
-        if (!yearPart.StartsWith("Year", StringComparison.Ordinal))
+        const string YearPrefix = "Year";
+        if (!yearPart.StartsWith(YearPrefix, StringComparison.Ordinal))
         {
-            throw new ArgumentException("DayKey year part must start with 'Year'.", nameof(dayKey));
+            throw new ArgumentException("DayKey must start with 'Year'.", nameof(dayKey));
         }
 
-        string yearNumber = yearPart["Year".Length..];
-        if (!int.TryParse(yearNumber, out int year) || year < 1)
+        string yearNumberStr = yearPart[YearPrefix.Length..];
+        if (!int.TryParse(yearNumberStr, out int year) || year < 1)
         {
             throw new ArgumentException("DayKey year value must be a positive integer.", nameof(dayKey));
         }
 
-        
+        // Extract season and day from seasonDayPart
         string[] allowedSeasons = { "Spring", "Summer", "Fall", "Winter" };
-
         string? matchedSeason = null;
+        string? dayPartStr = null;
+
         foreach (string season in allowedSeasons)
         {
             if (seasonDayPart.StartsWith(season, StringComparison.Ordinal))
             {
                 matchedSeason = season;
+                dayPartStr = seasonDayPart[season.Length..];
                 break;
             }
         }
 
         if (matchedSeason == null)
         {
-            throw new ArgumentException($"DayKey season must be one of: {string.Join(", ", allowedSeasons)}.", nameof(dayKey));
+            throw new ArgumentException(
+                $"DayKey season must be one of: {string.Join(", ", allowedSeasons)}.",
+                nameof(dayKey));
         }
 
-        string dayText = seasonDayPart[matchedSeason.Length..];
-        if (!int.TryParse(dayText, out int day) || day < 1 || day > 28)
+        if (!int.TryParse(dayPartStr, out int day) || day < 1 || day > 28)
         {
             throw new ArgumentException("DayKey day value must be an integer between 1 and 28.", nameof(dayKey));
         }
