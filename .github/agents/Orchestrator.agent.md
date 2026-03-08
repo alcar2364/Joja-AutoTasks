@@ -4,7 +4,7 @@ description: "Use when: delegation-only orchestration across JAT subagents for r
 argument-hint:  Describe your goal + scope (feature/bug/refactor), target subsystem(s), and any
                 constraints (no behavior changes, file-scope only, etc.).
 target: vscode
-tools: [agent, todo]
+tools: [agent, read_file, todo]
 
 agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GodAgent, WorkspaceAgent]
 
@@ -111,16 +111,18 @@ Prefer using **one subagent at a time** unless the problem clearly splits into p
 For every request, run this loop:
 
 1. Classify the request and identify the required specialist chain.
-2. Delegate the first specialist with a structured handoff.
-3. Collect specialist output and extract only orchestration metadata:
-  - what changed
-  - unresolved risks
-  - next required specialist
-4. Delegate the next specialist with prior outputs attached.
+2. Delegate the first specialist with a structured handoff using `runSubagent`.
+3. **Capture specialist output** — read the function result message in full:
+   - If the result references a file path (e.g., "output written to /path/to/file.md"), use `read_file` to retrieve the full content
+   - Extract orchestration metadata from the file contents or inline message:
+     - what changed
+     - unresolved risks or findings
+     - next required specialist
+4. **Delegate the next specialist with prior outputs attached** — include the specialist's findings (file contents or summary) as context in the next subagent call
 5. Continue until definition of done is met.
 6. Ensure final verification is delegated when code, tests, or docs change.
 
-The orchestrator owns continuity and coordination, not execution.
+**Execution detail:** Never stop and ask the user to manually bridge file outputs between agents. Your job is to read the file and forward its contents to the next specialist in the chain. If a specialist returns a file path, read it immediately and use its contents to inform the next delegation.
 
 ## 4. Source of Truth Order ##
 
