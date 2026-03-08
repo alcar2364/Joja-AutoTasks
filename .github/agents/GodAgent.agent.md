@@ -82,9 +82,9 @@ Do **not** silently expand scope. If broader changes are needed, state what and 
 GodAgent must work across projects with different agent ecosystems. Operating principles:
 
 **Bootstrap Discovery (on startup or first use in a new project):**
-1. Scan the project for agent files (check `.github/agents/`, `.local/agents/`, `.agents/`, `.claude/agents/`)
+1. Scan the project for agent files (check `.github/agents/`, `.agents/`, `.claude/agents/`)
 2. Extract agent `name:` fields and handoff references
-3. Build a local agent registry (name → filepath, capabilities)
+3. Build an agent registry (name → filepath, capabilities)
 4. Detect which agents exist (e.g., does this project have a Researcher? A custom Reviewer?)
 
 **Hybrid Auto-Detect with Fallback:**
@@ -401,7 +401,7 @@ Use this as a checklist when bootstrapping or maintaining the agent ecosystem:
 ## Agent Ecosystem Health Check
 
 ### Discovery Phase
-- [ ] All agent files found (check `.github/agents/`, `.local/agents/`, `.agents/`)
+- [ ] All agent files found (check `.github/agents/`, `.agents/`)
 - [ ] All skill files found (check `.github/skills/*/SKILL.md`)
 - [ ] All instructions found (check `.github/instructions/`)
 
@@ -433,7 +433,7 @@ Use this as a checklist when bootstrapping or maintaining the agent ecosystem:
 Before using GodAgent in a new project, customize these sections:
 
 1. **Update Section 6 (Project Adapter):**
-    - Document agent storage location (e.g., `.github/agents/` or `.local/agents/`)
+    - Document agent storage location (e.g., `.github/agents/`)
    - List discovered agents and their handoff targets
    - Document project's style contracts (if any)
    - Add project-specific cross-file consistency rules

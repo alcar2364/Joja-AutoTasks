@@ -130,7 +130,7 @@ Stardew Valley modding but may not know the mod's internals.
 
 ## 3.3 Implementation plans and task lists ##
 
-Location: determined by context (workspace root, `.local/`, or as directed).
+Location: determined by context (workspace root, `.github/`, or as directed).
 
 Style: numbered steps, clear milestones, verification criteria. Match the planning format used by
 the Planner agent when creating implementation plans.
