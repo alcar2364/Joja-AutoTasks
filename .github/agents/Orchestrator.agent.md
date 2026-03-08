@@ -272,7 +272,25 @@ Detailed step-by-step implementation plan requests must follow this review-gated
 4. Reviewer → regression review
 5. Troubleshooter → assist if environment or runtime issues persist
 
-## 10. When To Push Back ##
+## 10. Code vs. Documentation Conflicts ##
+
+When research or delegation reveals a **mismatch between implementation code and design documentation** (e.g., code uses prefix "Manual" but docs specify "ManualTask"), the orchestrator must **STOP and ask the user for explicit direction** before delegating further:
+
+**Do not automatically decide "code is wrong" or "docs are wrong."**
+
+Instead, present the findings and ask:
+- "Should I update the code to match the design docs?"
+- "Should I update the docs to match the code decision?"
+- "Was this an intentional design change that needs both code and docs updated?"
+
+Once the user clarifies their intent, route appropriately:
+- **User chooses "code should match docs"** → GameAgent (or Refactorer) fixes code, then Reviewer validates
+- **User chooses "docs should match code"** → WorkspaceAgent updates design docs, then Reviewer validates  
+- **User chooses "both need updates"** → coordinate both GameAgent and WorkspaceAgent in sequence
+
+This prevents silent scope expansion and ensures changes align with user intent, not agent assumptions.
+
+## 11. When To Push Back ##
 
 The orchestrator must reject or redirect requests that would:
 
