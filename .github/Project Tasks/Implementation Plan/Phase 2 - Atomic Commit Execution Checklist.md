@@ -168,7 +168,7 @@ Step goal:
 
 ### 5A - Add `DayKeyFactory` ###
 
-    * [x] Action: add deterministic day-key constructor for canonical `Year {N}-{Season}-{D}` format using fixed non-localized season tokens and invariant casing.
+    * [x] Action: add deterministic day-key constructor for canonical `Year{N}-{Season}{D}` format using fixed non-localized season tokens and invariant casing.
     * [x] Scope: `Domain/Identifiers/DayKeyFactory.cs` (`DayKeyFactory`).
     * [x] Verify: outputs match canonical format across repeat runs.
     * [x] Commit message: `phase2(step5A): add deterministic DayKey factory`
