@@ -6,5 +6,5 @@ namespace JojaAutoTasks.Domain.Tasks;
 public enum TaskStatus
 {
     Incomplete,
-    Complete
+    Completed
 }
