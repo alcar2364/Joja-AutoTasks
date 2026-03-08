@@ -4,14 +4,14 @@ description: "Use when: delegation-only orchestration across JAT subagents for r
 argument-hint:  Describe your goal + scope (feature/bug/refactor), target subsystem(s), and any
                 constraints (no behavior changes, file-scope only, etc.).
 target: vscode
-tools: [agent, read_file, todo]
+tools: [agent, read/readFile, todo]
 
 agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GodAgent, WorkspaceAgent]
 
 handoffs:
   - label: Research first
     agent: Researcher
-    prompt: Gather relevant codebase context, patterns, and references for the request. Return findings with citations to files and symbols.
+    prompt: Gather relevant codebase context, patterns, and references for the request. Return findings with citations to files and symbols. For large outputs, write a workspace handoff file and include the path in your response.
     send: true
   - label: Create an implementation plan
     agent: Planner
@@ -113,8 +113,10 @@ For every request, run this loop:
 1. Classify the request and identify the required specialist chain.
 2. Delegate the first specialist with a structured handoff using `runSubagent`.
 3. **Capture specialist output** — read the function result message in full:
-   - If the result references a file path (e.g., "output written to /path/to/file.md"), use `read_file` to retrieve the full content
-   - Extract orchestration metadata from the file contents or inline message:
+   - Accept both inline content and workspace file references as valid handoff formats.
+   - If the result references a workspace file path (e.g., "output written to /path/to/file.md" or terminal output at .../content.txt), use `read_file` to retrieve the full content.
+   - If the result references an inaccessible external artifact AND provides insufficient inline content, do **not** automatically re-run the same full task. Stop and ask the user whether to retry with different output constraints.
+  - Extract orchestration metadata from the retrieved file contents or inline message:
      - what changed
      - unresolved risks or findings
      - next required specialist
@@ -122,7 +124,7 @@ For every request, run this loop:
 5. Continue until definition of done is met.
 6. Ensure final verification is delegated when code, tests, or docs change.
 
-**Execution detail:** Never stop and ask the user to manually bridge file outputs between agents. Your job is to read the file and forward its contents to the next specialist in the chain. If a specialist returns a file path, read it immediately and use its contents to inform the next delegation.
+**Execution detail:** Never stop and ask the user to manually bridge file outputs between agents. Your job is to read retrievable file outputs and forward their contents to the next specialist in the chain. Do not trigger duplicate full-task re-runs solely because an external artifact is inaccessible.
 
 ## 4. Source of Truth Order ##
 
@@ -189,6 +191,7 @@ When delegating work to a subagent, always include:
 
 Require subagents to return:
 
+    - response content (inline OR workspace file path with inline summary)
     - summary of actions
     - concrete next steps
     - referenced files or symbols
