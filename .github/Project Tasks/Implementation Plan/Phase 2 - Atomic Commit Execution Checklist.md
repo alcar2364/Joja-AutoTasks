@@ -27,13 +27,13 @@ Step goal:
 
     * [x] Add strongly-typed deterministic identity primitives for domain modeling.
 
-### 1A - Add `TaskID` value type ###
+### 1A - Add `TaskId` value type ###
 
-    * [x] Action: add immutable `TaskID` value type with explicit canonical string normalization/validation entry points.
-    * [x] Scope: `Domain/Identifiers/TaskID.cs` (`TaskID`).
+    * [x] Action: add immutable `TaskId` value type with explicit canonical string normalization/validation entry points.
+    * [x] Scope: `Domain/Identifiers/TaskId.cs` (`TaskId`).
     * [x] Verify: build succeeds; equality semantics are deterministic.
-    * [x] Commit message: `phase2(step1A): add immutable TaskID value type`
-    * [x] Must include: `TaskID` only.
+    * [x] Commit message: `phase2(step1A): add immutable TaskId value type`
+    * [x] Must include: `TaskId` only.
     * [x] Must exclude: factories/parsers/day-key logic.
 
 ### 1B - Add `DayKey` value type ###
@@ -95,7 +95,7 @@ Step goal:
 
 ### 3A - Add `TaskObject` shell with conceptual fields ###
 
-    * [x] Action: create immutable `TaskObject` type with explicit fields for `TaskID`, `TaskCategory`, `TaskSourceType`, title/description, `TaskStatus`, progress/target, creation day, completion day, and source identifier.
+    * [x] Action: create immutable `TaskObject` type with explicit fields for `TaskId`, `TaskCategory`, `TaskSourceType`, title/description, `TaskStatus`, progress/target, creation day, completion day, and source identifier.
     * [x] Scope: `Domain/Tasks/TaskObject.cs` (`TaskObject`).
     * [x] Verify: type compiles and reflects Section 4.2 field model without introducing State Store concerns.
     * [x] Commit message: `phase2(step3A): add immutable TaskObject core fields`
@@ -111,27 +111,27 @@ Step goal:
     * [x] Must include: guard clauses only.
     * [x] Must exclude: status transition workflow logic.
 
-## 4) Add Deterministic TaskID Construction and Format Utilities ##
+## 4) Add Deterministic TaskId Construction and Format Utilities ##
 
 Step goal:
 
-    * [ ] Centralize deterministic TaskID composition for built-in/task-builder forms and canonical parsing.
+    * [ ] Centralize deterministic TaskId composition for built-in/task-builder forms and canonical parsing.
 
-### 4A - Add `TaskIDFactory` for built-in and task-builder IDs ###
+### 4A - Add `TaskIdFactory` for built-in and task-builder IDs ###
 
-    * [ ] Action: add explicit deterministic constructors for built-in and task-builder task ID composition.
-    * [ ] Scope: `Domain/Identifiers/TaskIDFactory.cs` (`TaskIDFactory`).
-    * [ ] Verify: repeated inputs produce identical IDs; source prefixes remain collision-safe.
-    * [ ] Commit message: `phase2(step4A): add deterministic built-in and task-builder TaskID constructors`
-    * [ ] Must include: construction API for built-in/task-builder only.
-    * [ ] Must exclude: manual counter issuance/storage behavior (Phase 3).
+    * [x] Action: add explicit deterministic constructors for built-in and task-builder task ID composition.
+    * [x] Scope: `Domain/Identifiers/TaskIdFactory.cs` (`TaskIdFactory`).
+    * [x] Verify: repeated inputs produce identical IDs; source prefixes remain collision-safe.
+    * [x] Commit message: `phase2(step4A): add deterministic built-in and task-builder TaskId constructors`
+    * [x] Must include: construction API for built-in/task-builder only.
+    * [x] Must exclude: manual counter issuance/storage behavior (Phase 3).
 
-### 4B - Add canonical `TaskID` parser/formatter ###
+### 4B - Add canonical `TaskId` parser/formatter ###
 
-    * [ ] Action: add centralized formatting and `TryParse` helper for canonical TaskID token handling, including manual ID shape validation without issuing manual IDs.
-    * [ ] Scope: `Domain/Identifiers/TaskIDFormat.cs` (`TaskIDFormat`).
+    * [ ] Action: add centralized formatting and `TryParse` helper for canonical TaskId token handling, including manual ID shape validation without issuing manual IDs.
+    * [ ] Scope: `Domain/Identifiers/TaskIdFormat.cs` (`TaskIdFormat`).
     * [ ] Verify: format/parse round-trip is stable for canonical forms.
-    * [ ] Commit message: `phase2(step4B): add canonical TaskID format parser`
+    * [ ] Commit message: `phase2(step4B): add canonical TaskId format parser`
     * [ ] Must include: parser/formatter only.
     * [ ] Must exclude: engine reconciliation or migration handling.
 
@@ -177,7 +177,7 @@ Step goal:
 
 ### 6A - Document defer for deterministic task-type sorting comparer ###
 
-    * [ ] Action: document that deterministic task-type ordering (derived map + fallback chain: `TaskCreationDay`, then canonical `TaskID`) is deferred to Phase 5+ when generator/task-type coverage is stable.
+    * [ ] Action: document that deterministic task-type ordering (derived map + fallback chain: `TaskCreationDay`, then canonical `TaskId`) is deferred to Phase 5+ when generator/task-type coverage is stable.
     * [ ] Scope: this checklist file and optional defer-note artifact.
     * [ ] Verify: no Phase 2 commit adds task sorting comparer implementation.
     * [ ] Commit message: `phase2(step6A): defer task-type ordering comparer to phase5+`
@@ -192,8 +192,8 @@ Step goal:
 
 ### 7A - Add identifier value-type tests ###
 
-    * [ ] Action: add tests for equality, normalization, and invalid input handling in `TaskID`, `DayKey`, `RuleID`, `SubjectID`.
-    * [ ] Scope: `Tests/Domain/Identifiers/TaskIDTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIDTests.cs`, `Tests/Domain/Identifiers/SubjectIDTests.cs`.
+    * [ ] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleID`, `SubjectID`.
+    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIDTests.cs`, `Tests/Domain/Identifiers/SubjectIDTests.cs`.
     * [ ] Verify: tests fail when deterministic equality/validation regresses.
     * [ ] Commit message: `phase2(step7A): add deterministic identifier value-type tests`
     * [ ] Must include: tests and minimal fixtures.
@@ -208,12 +208,12 @@ Step goal:
     * [ ] Must include: domain tests only.
     * [ ] Must exclude: store/evaluator logic tests.
 
-### 7C - Add deterministic TaskID factory/parser tests ###
+### 7C - Add deterministic TaskId factory/parser tests ###
 
     * [ ] Action: add repeatability/collision and round-trip tests for canonical built-in/task-builder/manual ID string forms.
-    * [ ] Scope: `Tests/Domain/Identifiers/TaskIDFactoryTests.cs`, `Tests/Domain/Identifiers/TaskIDFormatTests.cs`.
+    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdFactoryTests.cs`, `Tests/Domain/Identifiers/TaskIdFormatTests.cs`.
     * [ ] Verify: identical inputs produce identical outputs and parse/format remains stable.
-    * [ ] Commit message: `phase2(step7C): add deterministic TaskID factory and parser tests`
+    * [ ] Commit message: `phase2(step7C): add deterministic TaskId factory and parser tests`
     * [ ] Must include: deterministic ID tests only.
     * [ ] Must exclude: persistence counter storage tests.
 
@@ -292,7 +292,7 @@ Step goal:
     * [ ] Every completed sub-step has a matching atomic commit.
     * [ ] No commit crosses unrelated file/symbol scopes.
     * [ ] Core domain types from Section 21.5 are implemented and test-covered.
-    * [ ] Deterministic TaskID/DayKey rules are implemented and regression-tested.
+    * [ ] Deterministic TaskId/DayKey rules are implemented and regression-tested.
     * [ ] No random/GUID/non-deterministic identity paths exist.
     * [ ] `TaskStatus` remains V1-minimal (`Incomplete`, `Completed`).
     * [ ] Deterministic task-type ordering/comparer implementation and tests are explicitly deferred to Phase 5+.
