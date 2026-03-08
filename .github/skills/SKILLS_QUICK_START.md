@@ -27,10 +27,11 @@ This workspace currently has 33 skills under `.github/skills/`.
 
 ## Add a New Skill
 
-1. Create `.github/skills/<new-skill>/SKILL.md`.
-2. Ensure `name:` in frontmatter exactly matches `<new-skill>`.
-3. Add optional support docs to `.github/skills/<new-skill>/references/`.
-4. Add the skill to:
+1. Follow the official authoring reference: https://code.visualstudio.com/docs/copilot/customization/agent-skills
+2. Create `.github/skills/<new-skill>/SKILL.md`.
+3. Ensure `name:` in frontmatter exactly matches `<new-skill>`.
+4. Add optional support docs to `.github/skills/<new-skill>/references/`.
+5. Add the skill to:
    - `.github/skills/README.md`
    - `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`
 

@@ -1,6 +1,6 @@
 ﻿---
 name: dotnet-best-practices
-description: 'Ensure .NET/C# code meets best practices for the solution/project.'
+Description: Ensure .NET/C# code meets best practices for the solution/project.
 ---
 
 # .NET/C# Best Practices

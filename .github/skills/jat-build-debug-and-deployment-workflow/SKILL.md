@@ -1,6 +1,6 @@
 ---
 name: jat-build-debug-and-deployment-workflow
-description: "Build variants, property flags, SMAPI discovery, build output locations, debug workflow, mod deployment, release packaging, troubleshooting. Use when: building and running the mod, debugging in-game, creating releases, or troubleshooting build issues."
+Description: Build variants, property flags, SMAPI discovery, build output locations, debug workflow, mod deployment, release packaging, troubleshooting. Use when: building and running the mod, debugging in-game, creating releases, or troubleshooting build issues.
 argument-hint: "Describe the build task: Do you need to build for debugging, deploy to SMAPI, create a release package, or troubleshoot a build failure?"
 target: vscode
 ---
