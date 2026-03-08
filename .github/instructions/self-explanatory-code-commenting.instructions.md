@@ -59,8 +59,8 @@ var orderedTasks = tasks.OrderBy(static task => task.TaskId.Value, StringCompare
 
 **Regex Patterns**
 ```csharp
-// Matches "Year 1-Spring-15" style day keys.
-var dayKeyPattern = new Regex(@"^Year \d+\-[A-Za-z]+\-\d+$", RegexOptions.Compiled);
+// Matches "Year1-Summer15" style day keys.
+var dayKeyPattern = new Regex(@"^Year\d+\-[A-Za-z]+\d+$", RegexOptions.Compiled);
 ```
 
 **API Constraints or Gotchas**
