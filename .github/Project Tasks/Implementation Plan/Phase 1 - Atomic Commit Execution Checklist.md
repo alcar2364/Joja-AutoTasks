@@ -285,12 +285,12 @@ Step goal:
 
 ### 8C - Validate atomic boundaries and defer list ###
 
-    * [] Action: validate commit boundaries and list deferred non-Phase-1 work.
-    * [ ] Scope: checklist updates and optional status note files.
-    * [ ] Verify: each sub-step maps to one clean scope-respecting commit.
-    * [ ] Commit message: `phase1(step8C): finalize atomic boundary review and defer list`
-    * [ ] Must include: final checklist state and defer notes.
-    * [ ] Must exclude: Phase 2 code and broad documentation rewrites.
+    * [x] Action: validate commit boundaries and list deferred non-Phase-1 work.
+    * [x] Scope: checklist updates and optional status note files.
+    * [x] Verify: each sub-step maps to one clean scope-respecting commit.
+    * [x] Commit message: `phase1(step8C): finalize atomic boundary review and defer list`
+    * [x] Must include: final checklist state and defer notes.
+    * [x] Must exclude: Phase 2 code and broad documentation rewrites.
 
 ## Final Completion Gate Checklist ##
 
