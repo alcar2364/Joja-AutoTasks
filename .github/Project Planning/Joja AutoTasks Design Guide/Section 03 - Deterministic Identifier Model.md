@@ -47,6 +47,7 @@ Components:
         * `BuiltIn`
         * `TaskBuilder`
         * `Manual`
+    Note: Both `TaskSourceType` enum and manual `TaskID` source prefix use `Manual`.
     - `RuleOrGeneratorID`
     Identifies the rule or generator responsible for producing the task.
     - `SubjectIdentifier`
@@ -68,12 +69,12 @@ Task Builder tasks derive their identity from the Rule ID and subject.
 
 Conceptual structure:
 
-`TaskBuilder_{RuleID}{SubjectID?}{DayKey?}`
+`TaskBuilder_{RuleID}_{SubjectID?}_{DayKey?}`
 
 Examples:
 
     - Persistent rule: `TaskBuilder_17_ItemWood`
-    - Daily rule: `TaskBuilder_42_Daily_Year2_Spring12`
+    - Daily rule: `TaskBuilder_42_Daily_Year2-Spring12`
 
 Including the day key ensures that daily recurring tasks generate a new task
 instance for each day while still remaining deterministic.
@@ -99,9 +100,9 @@ Manual task IDs are generated using a monotonically incrementing counter.
 
 Example:
 
-    - `ManualTask_3`
-    - `ManualTask_4`
-    - `ManualTask_5`
+    - `Manual_3`
+    - `Manual_4`
+    - `Manual_5`
 
 The counter MUST be persisted as part of the `StoreUserState` structure
 (Section 9.8) to ensure it survives across sessions.
@@ -130,12 +131,12 @@ Daily tasks and history snapshots rely on a deterministic `DayKey`.
 
 Conceptual structure:
 
-    - `Year{Year}_{Season}{Day}`
+    - `Year{N}-{Season}{D}`
 
 Example:
 
-    - `Year2_Spring12`
-    - `Year3_Fall28`
+    - `Year1-Summer15`
+    - `Year3-Fall28`
 
 `DayKey` is used in several systems:
 

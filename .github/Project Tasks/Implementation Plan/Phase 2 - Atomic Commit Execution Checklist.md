@@ -15,10 +15,16 @@ Note: If a sub-step expands beyond the stated file scope, stop and open a follow
     * [ ] Localization changes that alter runtime behavior are deferred to Phase 3+; Phase 2 may
     only add documentation/contract guardrails.
     * [ ] Manual task ID issuance/counter ownership is deferred to Phase 3 (State Store path).
+    * [ ] Completion-marking runtime behavior is deferred (domain structure exists in Phase 2).
+    * [ ] RuleID sequential-generation enforcement is deferred until RuleID generation exists.
     * [ ] Deterministic IDs only; no random/GUID/time-seeded identity generation.
+    * [ ] Canonical TaskId forms stay underscore-delimited (`BuiltIn_*`, `TaskBuilder_*`,
+    `Manual_{Counter}`).
     * [ ] `TaskStatus` is V1-minimal (`Incomplete`, `Completed`) only.
     * [ ] Sorting/comparison is deterministic and cannot depend on unordered traversal or insertion order.
-    * [ ] DayKey uses fixed non-localized season tokens with invariant casing.
+    * [ ] DayKey uses canonical `Year{N}-{Season}{D}` style (for example,
+    `Year1-Summer15`) with fixed non-localized season tokens and invariant casing.
+    * [x] UpdateTicked guard seam fix remains test-only and passing.
     * [ ] All new C# files/types satisfy `CSHARP-STYLE-CONTRACT.instructions.md`.
 
 ## 1) Establish Core Identifier Value Types ##
@@ -162,7 +168,7 @@ Step goal:
 
 ### 5A - Add `DayKeyFactory` ###
 
-    * [x] Action: add deterministic day-key constructor for canonical `Year{N}_{Season}{D}` format using fixed non-localized season tokens and invariant casing.
+    * [x] Action: add deterministic day-key constructor for canonical `Year {N}-{Season}-{D}` format using fixed non-localized season tokens and invariant casing.
     * [x] Scope: `Domain/Identifiers/DayKeyFactory.cs` (`DayKeyFactory`).
     * [x] Verify: outputs match canonical format across repeat runs.
     * [x] Commit message: `phase2(step5A): add deterministic DayKey factory`
@@ -298,5 +304,8 @@ Step goal:
     * [ ] Deterministic task-type ordering/comparer implementation and tests are explicitly deferred to Phase 5+.
     * [ ] No UI, State Store, or persistence logic was introduced.
     * [x] Manual task ID issuance remains deferred to Phase 3 State Store command flow.
+    * [ ] Completion-marking runtime behavior remains deferred until State Store command flow exists.
+    * [ ] RuleID sequential-generation enforcement remains deferred until RuleID generation exists.
     * [ ] Translation-impacting implementation remains deferred to Phase 3+.
+    * [x] UpdateTicked guard seam fix remains test-only and passing.
     * [ ] Build/tests pass and Phase 1 safeguards remain intact.

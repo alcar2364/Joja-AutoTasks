@@ -184,7 +184,7 @@ CompletedTasks
 
 PinnedTasks
 
-    - ManualTask_3
+    - Manual_3
 
 These flags are applied after tasks are reconstructed during initialization.
 

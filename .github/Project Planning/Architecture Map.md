@@ -409,13 +409,14 @@ Uses `StringComparer.Ordinal` for case-sensitive, culture-invariant comparison.
 **Conceptual Structure (from [Section 3.3]):**
 
 ```text
-TaskId = {SourcePrefix}:{StableSourceId}:{SubjectIdentifier?}:{DayKey?}
+TaskId = {SourcePrefix}_{StableSourceId}_{SubjectIdentifier?}_{DayKey?}
 ```
 
 **Examples:**
 
-    - `BuiltIn:WaterCrops:Farm1:20260308`
-    - `TaskBuilder:CustomRule42:NPC_Abigail:20260308`
+    - `BuiltIn_WaterCrops_Farm1_Year1-Summer15`
+    - `TaskBuilder_CustomRule42_NPC_Abigail_Year1-Summer15`
+    - `Manual_3`
 
 ---
 
@@ -438,7 +439,8 @@ public static TaskId CreateTaskBuilder(string ruleId, string? subjectIdentifier 
 
     - Uses stable source prefixes (`BuiltIn`, `TaskBuilder`)
     - Preserves deterministic part ordering when composing IDs
-    - Omits null/empty optional parts before joining with `:`
+    - Omits null/empty optional parts before joining with `_`
+    - Manual task IDs use canonical `Manual_{Counter}` shape (issuance deferred to Phase 3)
     - Returns validated `TaskId` instances
 
 ---
@@ -466,13 +468,13 @@ public string Value { get; }
 **Format (from [Section 3.6]):**
 
 ```text
-DayKey = YYYYMMDD (e.g., "20260308" for Year 6 Spring 8)
+DayKey = Year{N}-{Season}{D} (e.g., "Year1-Summer15")
 ```
 
 **Key Characteristics:**
 
-    - Sortable lexicographically
     - Stable across save loads
+    - Uses fixed non-localized season tokens with invariant casing
     - Used for task creation timestamps and snapshot ledger keys
 
 ---
@@ -497,13 +499,11 @@ public RuleID(string ruleId)
 public string Value { get; }
 ```
 
-**Format (from [Section 3.4]):**
+**Model (from [Section 3.7]):**
 
-Deterministic string derived from:
-
-    - Rule creation timestamp
-    - Rule configuration hash (for uniqueness)
-    - Optional user-defined name component
+    - `RuleID` is a deterministic canonical token assigned to each Task Builder rule.
+    - Pre-Step-7 status: `RuleID` is implemented as a validated wrapper value type.
+    - Sequential-generation enforcement is deferred until RuleID generation exists.
 
 **Stability Requirement:**
 
@@ -684,12 +684,12 @@ public enum TaskStatus
 
 **Namespace:** `JojaAutoTasks.Domain.Tasks`  
 **Location:** `Domain/Tasks/TaskCategory.cs`  
-**Type:** `enum`
+**Type:** `internal enum`
 
 **Values:**
 
 ```csharp
-public enum TaskCategory
+internal enum TaskCategory
 {
     Farming,
     Animals,
@@ -697,10 +697,6 @@ public enum TaskCategory
     Social,
     Exploration,
     Resources,
-    Crafting,
-    Fishing,
-    Mining,
-    Other
 }
 ```
 
@@ -740,6 +736,7 @@ public enum TaskSourceType
     - Determines evaluation behavior
     - Affects persistence strategy
     - Influences UI presentation
+    - `TaskSourceType.Manual` maps to `Manual` as the canonical TaskId source prefix
 
 **Related Design Guide:** **[Section 5.2]** — Task Sources and Engine Inputs
 
@@ -1164,7 +1161,7 @@ public interface IRuleEvaluator
 
     - Fully persisted (not derived from rules)
     - No automatic evaluation
-    - Manual completion only (Phase 1)
+    - Completion-marking structure exists, but runtime behavior is deferred
     - Follows same `TaskObject` structure as generated tasks
 
 **Lifecycle:**
@@ -1172,7 +1169,7 @@ public interface IRuleEvaluator
 1. Player creates task via UI
 2. Task persisted to save data
 3. Task loaded into State Store on save load
-4. Task remains until manually completed or deleted
+4. Task remains until completion/deletion command flow applies a state change
 
 ---
 

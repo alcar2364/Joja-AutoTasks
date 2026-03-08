@@ -33,7 +33,7 @@ independently while referencing the same task data.
 
 ## 4.3 Task Status ##
 
-Version 1 of the system supports two task states:
+The system supports two core task states:
 
     - Incomplete
     - Completed
@@ -41,20 +41,14 @@ Version 1 of the system supports two task states:
 Tasks transition from Incomplete → Completed when their completion condition is
 satisfied.
 
-Completion behavior varies depending on task type.
+Completion behavior varies depending on task type:
 
     - Automatic Tasks complete when their associated game condition becomes true.
     - Task Builder Tasks complete when their defined rule condition is satisfied.
     - Manual Tasks are completed manually by the player.
 
-Future versions may introduce additional status types such as:
-
-    - Dismissed
-    - Hidden
-    - Failed
-    - Snoozed
-
-However these are intentionally excluded from Version 1 to reduce system complexity.
+Additional status types such as Dismissed, Hidden, Failed, or Snoozed are
+intentionally excluded from Version 1 to reduce system complexity.
 
 ## 4.4 Task Progress Model ##
 
@@ -83,7 +77,7 @@ This section defines the data model fields only.
 
 ### 4.4.1 Progress Fields as Tracking Metrics ###
 
-ProgressCurrent and ProgressTarget are **tracking metrics only**.
+ProgressCurrent and ProgressTarget are **tracking metrics** used to communicate progress state to the UI and rule evaluation systems.
 
 These fields serve three purposes:
 
