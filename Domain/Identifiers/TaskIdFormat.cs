@@ -13,9 +13,9 @@ internal static class TaskIdFormat
     private const char Separator = ':';
 
     // -- Public API --
-    public static string Format(TaskId taskId) => taskId.Value;
+    internal static string Format(TaskId taskId) => taskId.Value;
 
-    public static bool TryParse(string? rawId, out TaskId result)
+    internal static bool TryParse(string? rawId, out TaskId result)
     {
         result = default;
         if (string.IsNullOrWhiteSpace(rawId))
@@ -69,8 +69,8 @@ internal static class TaskIdFormat
 
     private static bool IsValidTaskBuilderShape(string[] parts)
     {
-        // Must have at least: [BuiltIn, GeneratorId]
-        // May have at most: [BuiltIn, GeneratorId, SubjectIdentifier, DayKey]
+        // Must have at least: [RuleId, GeneratorId]
+        // May have at most: [RuleId, GeneratorId, SubjectIdentifier, DayKey]
 
         if (parts.Length < 2 || parts.Length > 4)
             return false;
@@ -80,8 +80,7 @@ internal static class TaskIdFormat
 
     private static bool IsValidManualShape(string[] parts)
     {
-        // Must have at least: [Manual, GeneratorId]
-        // May have at most: [Manual, GeneratorId, SubjectIdentifier, DayKey]
+        // Must have exactly: [Manual, Counter]
 
         if (parts.Length != 2)
             return false;
@@ -89,10 +88,3 @@ internal static class TaskIdFormat
         return int.TryParse(parts[1], out int counter) && counter >= 0;
     }
 }
-
-
-
-
-    
-
-    
