@@ -91,7 +91,7 @@ Step goal:
 
 Step goal:
 
-    * [ ] Introduce the canonical task data container from Section 4 without engine/store logic.
+    * [x] Introduce the canonical task data container from Section 4 without engine/store logic.
 
 ### 3A - Add `TaskObject` shell with conceptual fields ###
 
@@ -128,21 +128,21 @@ Step goal:
 
 ### 4B - Add canonical `TaskId` parser/formatter ###
 
-    * [ ] Action: add centralized formatting and `TryParse` helper for canonical TaskId token handling, including manual ID shape validation without issuing manual IDs.
-    * [ ] Scope: `Domain/Identifiers/TaskIdFormat.cs` (`TaskIdFormat`).
-    * [ ] Verify: format/parse round-trip is stable for canonical forms.
-    * [ ] Commit message: `phase2(step4B): add canonical TaskId format parser`
-    * [ ] Must include: parser/formatter only.
-    * [ ] Must exclude: engine reconciliation or migration handling.
+    * [x] Action: add centralized formatting and `TryParse` helper for canonical TaskId token handling, including manual ID shape validation without issuing manual IDs.
+    * [x] Scope: `Domain/Identifiers/TaskIdFormat.cs` (`TaskIdFormat`).
+    * [x] Verify: format/parse round-trip is stable for canonical forms.
+    * [x] Commit message: `phase2(step4B): add canonical TaskId format parser`
+    * [x] Must include: parser/formatter only.
+    * [x] Must exclude: engine reconciliation or migration handling.
 
 ### 4C - Document Phase 3 defer for manual ID issuance ###
 
-    * [ ] Action: add a clear defer note in checklist/audit notes that manual task ID issuance is owned by Phase 3 State Store command flow.
-    * [ ] Scope: this checklist file and optional existing defer-note file.
-    * [ ] Verify: no Phase 2 commit introduces manual counter state ownership.
-    * [ ] Commit message: `phase2(step4C): document manual id issuance defer to phase3`
-    * [ ] Must include: defer-note updates only.
-    * [ ] Must exclude: production code changes.
+    * [x] Action: add a clear defer note in checklist/audit notes that manual task ID issuance is owned by Phase 3 State Store command flow.
+    * [x] Scope: this checklist file and optional existing defer-note file.
+    * [x] Verify: no Phase 2 commit introduces manual counter state ownership.
+    * [x] Commit message: `phase2(step4C): document manual id issuance defer to phase3`
+    * [x] Must include: defer-note updates only.
+    * [x] Must exclude: production code changes.
 
 ### 4D - Document Phase 3 defer for translation-impacting implementation ###
 
@@ -297,6 +297,6 @@ Step goal:
     * [ ] `TaskStatus` remains V1-minimal (`Incomplete`, `Completed`).
     * [ ] Deterministic task-type ordering/comparer implementation and tests are explicitly deferred to Phase 5+.
     * [ ] No UI, State Store, or persistence logic was introduced.
-    * [ ] Manual task ID issuance remains deferred to Phase 3 State Store command flow.
+    * [x] Manual task ID issuance remains deferred to Phase 3 State Store command flow.
     * [ ] Translation-impacting implementation remains deferred to Phase 3+.
     * [ ] Build/tests pass and Phase 1 safeguards remain intact.
