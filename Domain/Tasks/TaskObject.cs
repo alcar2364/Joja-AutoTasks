@@ -3,7 +3,7 @@ using JojaAutoTasks.Domain.Identifiers;
 namespace JojaAutoTasks.Domain.Tasks;
 
 /// <summary>Represents an immutable task snapshot in the domain model.</summary>
-internal sealed class TaskObject
+public sealed class TaskObject
 {
     // -- Public API -- //
     public TaskId Id { get; }
