@@ -32,12 +32,12 @@ Step goal:
 
 ### 1A - Add base command infrastructure ###
 
-    * [ ] Action: add `IStateCommand` interface or `StateCommandBase` abstract class defining command contract.
-    * [ ] Scope: `StateStore/Commands/IStateCommand.cs` or `StateStore/Commands/StateCommandBase.cs`.
-    * [ ] Verify: interface/base compiles and establishes command contract pattern; uses most restrictive access level (prefer internal).
-    * [ ] Commit message: `phase3(step1A): add base command infrastructure`
-    * [ ] Must include: command contract definition only.
-    * [ ] Must exclude: concrete command implementations, handler logic.
+    * [x] Action: add `IStateCommand` interface or `StateCommandBase` abstract class defining command contract.
+    * [x] Scope: `StateStore/Commands/IStateCommand.cs` or `StateStore/Commands/StateCommandBase.cs`.
+    * [x] Verify: interface/base compiles and establishes command contract pattern; uses most restrictive access level (prefer internal).
+    * [x] Commit message: `phase3(step1A): add base command infrastructure`
+    * [x] Must include: command contract definition only.
+    * [x] Must exclude: concrete command implementations, handler logic.
 
 ### 1B - Add AddOrUpdateTaskCommand ###
 
