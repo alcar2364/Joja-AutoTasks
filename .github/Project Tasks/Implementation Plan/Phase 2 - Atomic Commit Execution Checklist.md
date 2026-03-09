@@ -194,7 +194,7 @@ Step goal:
 
 Step goal:
 
-    * [ ] Lock deterministic identity and domain-model invariants before Phase 3.
+    * [x] Lock deterministic identity and domain-model invariants before Phase 3.
 
 ### 7A - Add identifier value-type tests ###
 
