@@ -1,5 +1,3 @@
-// Purpose: Verifies that LifecycleCoordinator forwards each lifecycle signal to IEventDispatcher in
-// deterministic order while preserving signal-only boundaries.
 using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
@@ -9,20 +7,10 @@ using Xunit;
 
 namespace JojaAutoTasks.Tests.Lifecycle;
 
-/// <summary>
-/// LifecycleCoordinator signal forwarding tests.
-/// </summary>
+/// <summary>Tests lifecycle signal forwarding through <see cref="LifecycleCoordinator" />.</summary>
 public class LifecycleCoordinatorTests
 {
-    // Dependencies
-
-    // State
-
-    // Constants
-
-    // Constructor
-
-    // Public API
+    // -- Public API -- //
     [Fact]
     public void HandleGameLaunched_ForwardsSignalToDispatcher()
     {
@@ -90,18 +78,13 @@ public class LifecycleCoordinatorTests
         Assert.Equal(nameof(IEventDispatcher.DispatchSaveLoaded), dispatcher.Calls[1]);
     }
 
-    // Event Handlers
-
-    // Private Helpers
-
+    // -- Private Helpers -- //
     private static LifecycleCoordinator CreateSut(IEventDispatcher eventDispatcher)
     {
         Mock<IMonitor> monitor = new Mock<IMonitor>(MockBehavior.Loose);
         ModLogger logger = new ModLogger(monitor.Object);
         return new LifecycleCoordinator(logger, eventDispatcher);
     }
-
-    // Nested types
 
     private sealed class RecordingEventDispatcher : IEventDispatcher
     {
