@@ -225,12 +225,12 @@ Step goal:
 
 ### 7D - Add reconstruction-stability seam tests ###
 
-    * [ ] Action: add tests that reconstruct IDs/day-keys from canonical serialized forms and assert stable equality/order semantics across reconstruction paths.
-    * [ ] Scope: `Tests/Domain/Identifiers/IdentifierReconstructionStabilityTests.cs`.
-    * [ ] Verify: reconstruction cannot change canonical identity.
-    * [ ] Commit message: `phase2(step7D): add identifier reconstruction stability tests`
-    * [ ] Must include: seam stability tests only.
-    * [ ] Must exclude: full save/load integration tests (Phase 7).
+    * [x] Action: add tests that reconstruct IDs/day-keys from canonical serialized forms and assert stable equality/order semantics across reconstruction paths.
+    * [x] Scope: `Tests/Domain/Identifiers/IdentifierReconstructionStabilityTests.cs`.
+    * [x] Verify: reconstruction cannot change canonical identity.
+    * [x] Commit message: `phase2(step7D): add identifier reconstruction stability tests`
+    * [x] Must include: seam stability tests only.
+    * [x] Must exclude: full save/load integration tests (Phase 7).
 
 ### 7E - Add DayKey factory tests ###
 
