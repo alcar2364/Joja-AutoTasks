@@ -1,9 +1,9 @@
 ---
-name: daily-repo-status-copilot-fallback
-description: "Final fallback daily report workflow when Claude is unavailable or fails."
+name: daily-repo-status
+description: "Provides a daily status report for the repo"
 on:
   workflow_run:
-    workflows: [daily-repo-status-claude-fallback]
+    workflows: [daily-repo-status]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -24,14 +24,14 @@ tools:
 safe-outputs:
   create-issue:
     title-prefix: "[daily repo report] "
-    labels: [agentic-workflow, daily-report, fallback-copilot]
+    labels: [agentic-workflow, daily-report]
     close-older-issues: true
     max: 1
 ---
 
 # Daily Repo Status Report (Copilot Final Fallback)
 
-Run this report when the Claude fallback workflow fails or when manually triggered.
+Run this report daily
 
 Context:
 - Repository: `${{ github.repository }}`
