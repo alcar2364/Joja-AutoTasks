@@ -1,25 +1,13 @@
-// Purpose: Validates that EventDispatcher dispatch members remain deterministic no-ops with no mutable
-// instance state or operational IL side effects across invocation orders.
 using System.Reflection;
 using JojaAutoTasks.Events;
 using Xunit;
 
 namespace JojaAutoTasks.Tests.Events;
 
-/// <summary>
-/// EventDispatcher no-op determinism tests.
-/// </summary>
+/// <summary>Tests deterministic no-op behavior in <see cref="EventDispatcher" />.</summary>
 public class EventDispatcherTests
 {
-    // Dependencies
-
-    // State
-
-    // Constants
-
-    // Constructor
-
-    // Public API
+    // -- Public API -- //
     [Fact]
     public void DispatchMethods_WhenInvokedInCanonicalOrder_DoNotThrow()
     {
@@ -96,11 +84,12 @@ public class EventDispatcherTests
 
         foreach (byte opcode in il)
         {
-            // No-op contract: allow only NOP (0x00) and RET (0x2A).
+            // Phase 1 dispatchers are intentionally empty, so only nop and ret opcodes are valid here.
             Assert.True(opcode is 0x00 or 0x2A, $"Method '{methodName}' contains non-no-op opcode 0x{opcode:X2}.");
         }
     }
 
+    // -- Private Helpers -- //
     private static object?[] CaptureInstanceFieldValues(EventDispatcher dispatcher)
     {
         FieldInfo[] fields = typeof(EventDispatcher).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
@@ -113,8 +102,4 @@ public class EventDispatcherTests
 
         return values;
     }
-
-    // Event Handlers
-
-    // Private Helpers
 }

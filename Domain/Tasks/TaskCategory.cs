@@ -1,10 +1,6 @@
-// Defines categories for tasks, used for menu organization and filtering, optional HUD grouping,
-// and other purposes. 
-
 namespace JojaAutoTasks.Domain.Tasks;
 
-// TODO: Expand as needed
-
+/// <summary>Defines high-level categories used to group tasks.</summary>
 internal enum TaskCategory
 {
     Farming,

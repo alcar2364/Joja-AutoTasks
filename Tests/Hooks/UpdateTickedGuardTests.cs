@@ -1,5 +1,3 @@
-// Purpose: Verifies ModEntry update-tick throttling and guarded forwarding behavior so Phase 1 stays
-// no-op on the tick path while preserving deterministic dispatcher signaling.
 using System.Reflection;
 using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Events;
@@ -12,18 +10,10 @@ using StardewModdingAPI.Events;
 
 namespace JojaAutoTasks.Tests.Hooks;
 
-/// <summary>ModEntry update-tick throttle and guard tests.</summary>
+/// <summary>Tests throttled update-tick forwarding through <see cref="ModEntry" />.</summary>
 public class UpdateTickedGuardTests
 {
-    // Dependencies
-
-    // State
-
-    // Constants
-
-    // Constructor
-
-    // Public API
+    // -- Public API -- //
     [Fact]
     public void ShouldForwardUpdateTick_ThrottlesSignalsToConfiguredInterval()
     {
@@ -69,10 +59,7 @@ public class UpdateTickedGuardTests
         Assert.Equal(1, dispatcher.UpdateTickedDispatchCount);
     }
 
-    // Event Handlers
-
-    // Private Helpers
-
+    // -- Private Helpers -- //
     private static ModEntry CreateEntryWithRuntime(out RecordingEventDispatcher dispatcher)
     {
         Mock<IMonitor> monitor = new(MockBehavior.Loose);
@@ -105,7 +92,6 @@ public class UpdateTickedGuardTests
         }
 
         FieldInfo runtimeField = runtimeFields[0];
-
         runtimeField.SetValue(entry, runtime);
     }
 
@@ -170,7 +156,6 @@ public class UpdateTickedGuardTests
     private static object? CreateDefault(Type type)
     {
         Type normalizedType = Nullable.GetUnderlyingType(type) ?? type;
-
         if (!normalizedType.IsValueType)
         {
             return null;
@@ -178,8 +163,6 @@ public class UpdateTickedGuardTests
 
         return Activator.CreateInstance(normalizedType);
     }
-
-    // Nested types
 
     private sealed class RecordingEventDispatcher : IEventDispatcher
     {

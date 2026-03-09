@@ -1,21 +1,11 @@
-// Purpose: Verifies TaskId parser behavior for underscore-containing suffix components while preserving
-// structural prefix and generator validation.
 using JojaAutoTasks.Domain.Identifiers;
 
 namespace JojaAutoTasks.Tests.Domain.Identifiers;
 
-/// <summary>TaskIdFormat parsing tests for underscore-containing subject identifiers.</summary>
+/// <summary>Tests underscore-preserving parsing behavior in <see cref="TaskIdFormat" />.</summary>
 public class TaskIdFormatTests
 {
-    // Dependencies
-
-    // State
-
-    // Constants
-
-    // Constructor
-
-    // Public API
+    // -- Public API -- //
     [Fact]
     public void TryParse_WhenBuiltInSubjectContainsUnderscoresAndDayKey_RoundTripsSuccessfully()
     {
@@ -89,8 +79,4 @@ public class TaskIdFormatTests
 
         Assert.False(parsed);
     }
-
-    // Event Handlers
-
-    // Private Helpers
 }

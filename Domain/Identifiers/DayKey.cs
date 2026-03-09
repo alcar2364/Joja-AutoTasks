@@ -1,21 +1,19 @@
-// Purpose: Defines the immutable DayKey value type used for deterministic date-based identifiers.
 namespace JojaAutoTasks.Domain.Identifiers;
 
+/// <summary>Represents a canonical in-game day identifier.</summary>
 internal readonly struct DayKey : IEquatable<DayKey>
 {
-
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _dayKey;
 
-    // Gets canonical DayKey string
     public string Value => _dayKey ?? string.Empty;
-
 
     /// <summary>Initializes a new <see cref="DayKey"/> from a raw identifier string.</summary>
     /// <param name="dayKey">The raw day key identifier.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="dayKey"/> is null.</exception>
     /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="dayKey"/> cannot be validated for format, season, or day value.</exception>
+    /// Thrown when <paramref name="dayKey"/> cannot be validated for format, season, or day value.
+    /// </exception>
     public DayKey(string dayKey)
     {
         string normalizedDayKey = IdentifierUtility.NormalizeIdentifier(dayKey);
@@ -24,17 +22,23 @@ internal readonly struct DayKey : IEquatable<DayKey>
     }
 
     public bool Equals(DayKey other) => Comparer.Equals(_dayKey, other._dayKey);
+
     public override bool Equals(object? obj) => obj is DayKey other && Equals(other);
+
     public override int GetHashCode() => Comparer.GetHashCode(_dayKey ?? string.Empty);
+
     public static bool operator ==(DayKey left, DayKey right) => left.Equals(right);
+
     public static bool operator !=(DayKey left, DayKey right) => !left.Equals(right);
+
     public override string ToString() => _dayKey ?? string.Empty;
 
     private static void ValidateDayKey(string? dayKey)
     {
+        // -- Guards -- //
         IdentifierUtility.ValidateIdentifier(dayKey);
 
-        // Expected format: Year{N}-{Season}{D} (e.g., "Year1-Summer15")
+        // Canonical day keys keep persistence and equality checks stable across save/load boundaries.
         string[] parts = dayKey?.Split('-') ?? Array.Empty<string>();
         if (parts.Length != 2)
         {
@@ -58,7 +62,6 @@ internal readonly struct DayKey : IEquatable<DayKey>
             throw new ArgumentException("DayKey year value must be a positive integer.", nameof(dayKey));
         }
 
-        // Extract season and day from seasonDayPart
         string[] allowedSeasons = { "Spring", "Summer", "Fall", "Winter" };
         string? matchedSeason = null;
         string? dayPartStr = null;

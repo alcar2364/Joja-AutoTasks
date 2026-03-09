@@ -1,33 +1,23 @@
-// Purpose: Coordinates approved lifecycle signal sequencing by logging and forwarding each hook event
-// to the dispatcher while enforcing Phase 1 signal-only boundaries.
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Events;
 
 namespace JojaAutoTasks.Lifecycle;
 
-/// <summary>
-/// Lifecycle signal sequencer and dispatcher forwarder.
-/// </summary>  
+/// <summary>Coordinates lifecycle logging and dispatcher forwarding.</summary>
 internal sealed class LifecycleCoordinator
 {
-    // Dependencies
-
+    // -- Dependencies -- //
     private readonly ModLogger _logger;
     private readonly IEventDispatcher _eventDispatcher;
 
-    // State
-
-    // Constants
-
-    // Constructor
+    // -- Constructor -- //
     internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher)
     {
         _logger = logger;
         _eventDispatcher = eventDispatcher;
     }
 
-    // Public API
-
+    // -- Public API -- //
     internal void HandleGameLaunched()
     {
         _logger.Debug(LogEvents.LifecycleGameLaunched, "Lifecycle event: Game launched");
@@ -64,10 +54,7 @@ internal sealed class LifecycleCoordinator
         {
             _logger.Debug(LogEvents.LifecycleUpdateTickedGuard, "Forwarding throttled tick lifecycle");
         }
+
         _eventDispatcher.DispatchUpdateTicked();
     }
-
-    // Event Handlers
-
-    // Private Helpers
 }

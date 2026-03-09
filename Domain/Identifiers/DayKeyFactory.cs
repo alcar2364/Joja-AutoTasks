@@ -1,17 +1,12 @@
-// Purpose: Factory for constructing canonical DayKey instances from component parts.
-
-
 namespace JojaAutoTasks.Domain.Identifiers;
 
-/// <summary>
-/// Factory for constructing <see cref="DayKey"/> instances from explicit year, season, and day
-/// components.
-/// </summary>
+/// <summary>Builds canonical <see cref="DayKey"/> values from explicit components.</summary>
 internal static class DayKeyFactory
 {
+    // -- Public API -- //
     public static DayKey Create(int year, string seasonToken, int day)
     {
-        // Guard Clause
+        // -- Guards -- //
         if (string.IsNullOrWhiteSpace(seasonToken))
         {
             throw new ArgumentException(
