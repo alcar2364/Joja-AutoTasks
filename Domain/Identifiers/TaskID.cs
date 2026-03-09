@@ -11,7 +11,7 @@ internal readonly struct TaskId : IEquatable<TaskId>
     private readonly string _taskId;
 
     public string Value => _taskId ?? string.Empty;
-    
+
 
     /// <summary>
     /// Initializes a new <see cref="TaskId"/> from a raw identifier string.
