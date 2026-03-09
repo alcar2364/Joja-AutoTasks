@@ -1,7 +1,7 @@
 namespace JojaAutoTasks.Domain.Tasks;
 
 /// <summary>Defines high-level categories used to group tasks.</summary>
-internal enum TaskCategory
+public enum TaskCategory
 {
     Farming,
     Animals,
