@@ -1,7 +1,7 @@
 namespace JojaAutoTasks.Domain.Identifiers;
 
 /// <summary>Represents a canonical, immutable identifier for a task.</summary>
-internal readonly struct TaskId : IEquatable<TaskId>
+public readonly struct TaskId : IEquatable<TaskId>
 {
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _taskId;
