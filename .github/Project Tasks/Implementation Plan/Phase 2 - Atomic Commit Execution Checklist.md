@@ -252,12 +252,12 @@ Step goal:
 
 ### 7G - Add phase-boundary tests/audit checks ###
 
-    * [ ] Action: add lightweight boundary assertions that domain layer stays independent of UI/store/persistence concerns.
-    * [ ] Scope: `Tests/Domain/Phase2BoundaryTests.cs`.
-    * [ ] Verify: tests fail if forbidden dependencies are introduced.
-    * [ ] Commit message: `phase2(step7G): add phase2 boundary guard tests`
-    * [ ] Must include: boundary tests only.
-    * [ ] Must exclude: broad architecture rewrites.
+    * [x] Action: add lightweight boundary assertions that domain layer stays independent of UI/store/persistence concerns.
+    * [x] Scope: `Tests/Domain/Phase2BoundaryTests.cs`.
+    * [x] Verify: boundary tests fail when forbidden namespaces appear in type metadata/signatures.
+    * [x] Commit message: `phase2(step7G): add phase2 boundary guard tests`
+    * [x] Must include: boundary tests only.
+    * [x] Must exclude: broad architecture rewrites.
 
 ## 8) Phase 2 Completion Gate ##
 
