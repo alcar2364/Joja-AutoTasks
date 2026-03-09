@@ -86,16 +86,16 @@ Step goal:
 
 ### 1G - Add UnpinTaskCommand ###
 
-    * [ ] Action: add command representing user unpin intent.
-    * [ ] Scope: `StateStore/Commands/UnpinTaskCommand.cs`.
-    * [ ] Verify: command type compiles with TaskId field.
-    * [ ] Commit message: `phase3(step1G): add UnpinTaskCommand`
-    * [ ] Must include: command type only.
-    * [ ] Must exclude: handler implementation.
+    * [x] Action: add command representing user unpin intent.
+    * [x] Scope: `StateStore/Commands/UnpinTaskCommand.cs`.
+    * [x] Verify: command type compiles with TaskId field.
+    * [x] Commit message: `phase3(step1G): add UnpinTaskCommand`
+    * [x] Must include: command type only.
+    * [x] Must exclude: handler implementation.
 
 ## Step 1 Completion ##
 
-    * [ ] All substeps in Step 1 complete (1A, 1B, 1C, 1D, 1E, 1F, 1G).
+    * [x] All substeps in Step 1 complete (1A, 1B, 1C, 1D, 1E, 1F, 1G).
 
 ## 2) State Container and Task Records ##
 
