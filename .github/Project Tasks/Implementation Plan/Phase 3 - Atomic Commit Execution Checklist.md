@@ -538,58 +538,56 @@ Step goal:
 
     * [ ] All substeps in Step 10 complete (10A, 10B, 10C).
 
----
 
 ## Deferred Items ##
 
 **Deferred to Phase 4 (ViewModels):**
-- Actual subscription to `SnapshotChanged` event
-- INPC property updates from snapshots
-- UI-local state (selection, filters, scroll)
+    - Actual subscription to `SnapshotChanged` event
+    - INPC property updates from snapshots
+    - UI-local state (selection, filters, scroll)
 
 **Deferred to Phase 5+ (Generators/Engine):**
-- Task generation logic producing commands
-- Built-in task generators
-- Deadline field population
-- Task-type ordering/comparison
+    - Task generation logic producing commands
+    - Built-in task generators
+    - Deadline field population
+    - Task-type ordering/comparison
 
 **Deferred to Phase 6 (Rule Engine):**
-- Task Builder rule evaluation
-- Rule-driven command generation
+    - Task Builder rule evaluation
+    - Rule-driven command generation
 
 **Deferred to Phase 7 (Persistence):**
-- Save/load of State Store state
-- Manual task counter persistence across sessions
-- Version migration logic
-- Baseline value storage
+    - Save/load of State Store state
+    - Manual task counter persistence across sessions
+    - Version migration logic
+    - Baseline value storage
 
 **Deferred to Phase 8+ (Menu/HUD):**
-- UI interactions dispatching commands
-- Visual feedback on state changes
+    - UI interactions dispatching commands
+    - Visual feedback on state changes
 
 **Deferred to V2:**
-- Batch command transactions
-- Undo history
-- Dismissed task tracking
-- Multiplayer synchronization
-
----
+    - Batch command transactions
+    - Undo history
+    - Dismissed task tracking
+    - Multiplayer synchronization
 
 ## Key Planning Decisions ##
 
-**TaskRecord vs TaskObject:** Created lightweight internal `TaskRecord` as State Store's storage structure, separate from `TaskObject` domain model. Keeps store implementation details isolated from domain contracts.
+**TaskRecord vs TaskObject:** Created lightweight internal `TaskRecord` as State Store's storage
+structure, separate from `TaskObject` domain model. Keeps store implementation details isolated from
+domain contracts.
 
-**TaskView Definition:** `TaskView` is a read-only record mirroring `TaskObject` fields needed for UI consumption. Prevents accidental mutation and enforces snapshot immutability contract.
+**TaskView Definition:** `TaskView` is a read-only record mirroring `TaskObject` fields needed for
+UI consumption. Prevents accidental mutation and enforces snapshot immutability contract.
 
-**Command Handler Naming:** Use `CommandHandler` suffix consistently (e.g., `AddOrUpdateTaskCommandHandler`). "Reducer" is banned by C# style contract; "CommandHandler" is clear, explicit, and action-oriented.
+**Command Handler Naming:** Use `CommandHandler` suffix consistently (e.g.,
+`AddOrUpdateTaskCommandHandler`). "Reducer" is banned by C# style contract; "CommandHandler" is
+clear, explicit, and action-oriented.
 
 **Namespace Structure:** Use `JojaAutoTasks.StateStore` as primary namespace with subfolders:
-- `StateStore/Commands/` — all command types (6 command types + base infrastructure)
-- `StateStore/Handlers/` — all command handlers
-- `StateStore/Models/` — TaskRecord, TaskView, TaskSnapshot
-- `StateStore/DayBoundary/` — expiration logic
-- `StateStore/StateStore.cs` — main API class
-
----
-
-**END OF PHASE 3 CHECKLIST**
+    - `StateStore/Commands/` — all command types (6 command types + base infrastructure)
+    - `StateStore/Handlers/` — all command handlers
+    - `StateStore/Models/` — TaskRecord, TaskView, TaskSnapshot
+    - `StateStore/DayBoundary/` — expiration logic
+    - `StateStore/StateStore.cs` — main API class
