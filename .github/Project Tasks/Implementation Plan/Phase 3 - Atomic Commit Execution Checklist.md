@@ -50,12 +50,12 @@ Step goal:
 
 ### 1C - Add CompleteTaskCommand ###
 
-    * [ ] Action: add command representing task completion intent.
-    * [ ] Scope: `StateStore/Commands/CompleteTaskCommand.cs`.
-    * [ ] Verify: command type compiles with TaskId and completion day fields.
-    * [ ] Commit message: `phase3(step1C): add CompleteTaskCommand`
-    * [ ] Must include: command type only.
-    * [ ] Must exclude: handler implementation.
+    * [x] Action: add command representing task completion intent.
+    * [x] Scope: `StateStore/Commands/CompleteTaskCommand.cs`.
+    * [x] Verify: command type compiles with TaskId and completion day fields.
+    * [x] Commit message: `phase3(step1C): add CompleteTaskCommand`
+    * [x] Must include: command type only.
+    * [x] Must exclude: handler implementation.
 
 ### 1D - Add UncompleteTaskCommand ###
 
