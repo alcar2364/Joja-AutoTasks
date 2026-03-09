@@ -1,7 +1,7 @@
 ---
 name: atomic-commit-execution-checklist-creation
 description: "Create an atomic commit execution checklist from a design guide phase specification. Use when: creating a step-by-step checklist to guide implementation of a specific phase or feature with minimal atomic commits and design-guide compliance."
-applyTo: ""
+applyTo: "**/*Atomic Commit Execution Checklist*.md"
 ---
 
 # Atomic Commit Execution Checklist Creation #
