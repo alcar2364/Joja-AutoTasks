@@ -1,7 +1,7 @@
 namespace JojaAutoTasks.Domain.Identifiers;
 
 /// <summary>Represents a canonical in-game day identifier.</summary>
-internal readonly struct DayKey : IEquatable<DayKey>
+public readonly struct DayKey : IEquatable<DayKey>
 {
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _dayKey;
