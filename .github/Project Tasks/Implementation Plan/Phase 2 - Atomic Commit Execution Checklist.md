@@ -207,12 +207,12 @@ Step goal:
 
 ### 7B - Add TaskObject invariant tests ###
 
-    * [ ] Action: add tests for constructor guards and legal state combinations.
-    * [ ] Scope: `Tests/Domain/Tasks/TaskObjectTests.cs`.
-    * [ ] Verify: invalid combinations fail fast and legal combinations pass.
-    * [ ] Commit message: `phase2(step7B): add TaskObject invariant tests`
-    * [ ] Must include: domain tests only.
-    * [ ] Must exclude: store/evaluator logic tests.
+    * [x] Action: add tests for constructor guards and legal state combinations.
+    * [x] Scope: `Tests/Domain/Tasks/TaskObjectTests.cs`.
+    * [x] Verify: invalid combinations fail fast and legal combinations pass.
+    * [x] Commit message: `phase2(step7B): add TaskObject invariant tests`
+    * [x] Must include: domain tests only.
+    * [x] Must exclude: store/evaluator logic tests.
 
 ### 7C - Add deterministic TaskId factory/parser tests ###
 
