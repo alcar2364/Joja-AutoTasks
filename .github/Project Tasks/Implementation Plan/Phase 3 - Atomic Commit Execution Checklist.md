@@ -68,12 +68,12 @@ Step goal:
 
 ### 1E - Add RemoveTaskCommand ###
 
-    * [ ] Action: add command representing task removal intent.
-    * [ ] Scope: `StateStore/Commands/RemoveTaskCommand.cs`.
-    * [ ] Verify: command type compiles with TaskId field.
-    * [ ] Commit message: `phase3(step1E): add RemoveTaskCommand`
-    * [ ] Must include: command type only.
-    * [ ] Must exclude: handler implementation, expiration logic.
+    * [x] Action: add command representing task removal intent.
+    * [x] Scope: `StateStore/Commands/RemoveTaskCommand.cs`.
+    * [x] Verify: command type compiles with TaskId field.
+    * [x] Commit message: `phase3(step1E): add RemoveTaskCommand`
+    * [x] Must include: command type only.
+    * [x] Must exclude: handler implementation, expiration logic.
 
 ### 1F - Add PinTaskCommand ###
 
