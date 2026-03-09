@@ -13,12 +13,12 @@ internal sealed class CompleteTaskCommand : IStateCommand
 
     internal CompleteTaskCommand(TaskId taskId, DayKey completionDay)
     {
-        if (taskId.Equals(default(TaskId)))
+        if (taskId == default)
         {
             throw new ArgumentException("taskId cannot be the default value.", nameof(taskId));
         }
 
-        if (completionDay.Equals(default(DayKey)))
+        if (completionDay == default)
         {
             throw new ArgumentException("completionDay cannot be the default value.", nameof(completionDay));
         }

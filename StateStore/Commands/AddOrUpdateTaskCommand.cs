@@ -49,7 +49,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
         string sourceIdentifier)
     {
         // -- Guards -- //
-        if (string.IsNullOrWhiteSpace(taskId.Value))
+        if (taskId == default)
         {
             throw new ArgumentException("TaskId cannot be null or empty.", nameof(taskId));
         }
@@ -74,9 +74,9 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
             throw new ArgumentOutOfRangeException(nameof(progressMax), "Progress max must be greater than zero.");
         }
 
-        if (string.IsNullOrWhiteSpace(creationDay.Value))
+        if (creationDay == default)
         {
-            throw new ArgumentException("CreationDay cannot be null or whitespace.", nameof(creationDay));
+            throw new ArgumentException("CreationDay cannot be the default value.", nameof(creationDay));
         }
 
         if (string.IsNullOrWhiteSpace(sourceIdentifier))
