@@ -34,6 +34,7 @@ Every instruction file below is wired to at least one agent.
 | Instruction | Primary Agent | Also Used By |
 | --- | --- | --- |
 | agent-boundaries-and-wiring-governance.instructions.md | GodAgent | Orchestrator, Reviewer |
+| atomic-commit-execution-checklist-creation.instructions.md | Planner | Researcher, Reviewer, WorkspaceAgent, Orchestrator |
 | backend-architecture-contract.instructions.md | GameAgent | Planner, Reviewer, Refactorer |
 | context-engineering.instructions.md | Researcher | Planner, Orchestrator |
 | csharp-style-contract.instructions.md | GameAgent | UIAgent, Refactorer, UnitTestAgent, Reviewer |

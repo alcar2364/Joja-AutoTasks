@@ -17,6 +17,10 @@ handoffs:
     agent: Planner
     prompt: Produce a step-by-step implementation plan with milestones, decisions, and verification steps. Do not edit code.
     send: true
+  - label: Create atomic commit execution checklist
+    agent: Researcher
+    prompt: "Research the design guide phase specification and any previous checklists to determine atomic commit boundaries, dependencies, and test coverage requirements. Collect: phase responsibilities, key subsystems, commit granularity, guardrails, and any overlap with completed phases. Return findings with citations. Next: delegate to Planner."
+    send: true
   - label: Implement (UI)
     agent: UIAgent
     prompt: Implement UI changes described above. Follow workspace contracts and UI mutation boundaries. Keep edits minimal and compile-safe.
