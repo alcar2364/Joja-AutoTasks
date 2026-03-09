@@ -9,6 +9,8 @@ internal readonly struct TaskId : IEquatable<TaskId>
 {
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _taskId;
+
+    public string Value => _taskId ?? string.Empty;
     
 
     /// <summary>
@@ -28,8 +30,6 @@ internal readonly struct TaskId : IEquatable<TaskId>
         _taskId = normalizedTaskId;
 
     }
-
-    public string Value => _taskId ?? string.Empty;
 
     public bool Equals(TaskId other) => Comparer.Equals(_taskId, other._taskId);
     public override bool Equals(object? obj) => obj is TaskId other && Equals(other);

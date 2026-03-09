@@ -7,6 +7,8 @@ internal readonly struct RuleId : IEquatable<RuleId>
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _ruleId;
 
+    public string Value => _ruleId ?? string.Empty;
+
     /// <summary>
     /// Initializes a new <see cref="RuleId"/> from a raw identifier string.
     /// </summary>
@@ -24,7 +26,6 @@ internal readonly struct RuleId : IEquatable<RuleId>
         _ruleId = normalizedRuleId;
     }
 
-    public string Value => _ruleId ?? string.Empty;
     public bool Equals(RuleId other) => Comparer.Equals(_ruleId, other._ruleId);
     public override bool Equals(object? obj) => obj is RuleId other && Equals(other);
     public override int GetHashCode() => Comparer.GetHashCode(_ruleId ?? string.Empty);

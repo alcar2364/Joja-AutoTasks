@@ -7,6 +7,9 @@ internal readonly struct DayKey : IEquatable<DayKey>
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _dayKey;
 
+    // Gets canonical DayKey string
+    public string Value => _dayKey ?? string.Empty;
+
 
     /// <summary>Initializes a new <see cref="DayKey"/> from a raw identifier string.</summary>
     /// <param name="dayKey">The raw day key identifier.</param>
@@ -20,8 +23,6 @@ internal readonly struct DayKey : IEquatable<DayKey>
         _dayKey = normalizedDayKey;
     }
 
-    // Gets canonical DayKey string
-    public string Value => _dayKey ?? string.Empty;
     public bool Equals(DayKey other) => Comparer.Equals(_dayKey, other._dayKey);
     public override bool Equals(object? obj) => obj is DayKey other && Equals(other);
     public override int GetHashCode() => Comparer.GetHashCode(_dayKey ?? string.Empty);

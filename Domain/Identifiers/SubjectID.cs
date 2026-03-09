@@ -8,6 +8,8 @@ internal readonly struct SubjectId : IEquatable<SubjectId>
     private static readonly StringComparer Comparer = StringComparer.Ordinal;
     private readonly string _subjectId;
 
+    public string Value => _subjectId ?? string.Empty;
+
     /// <summary>
     /// Initializes a new <see cref="SubjectId"/> from a raw identifier string.
     /// Initializes a new <see cref="SubjectId"/> from a raw identifier string.
@@ -22,8 +24,6 @@ internal readonly struct SubjectId : IEquatable<SubjectId>
         IdentifierUtility.ValidateIdentifier(normalizedSubjectId);
         _subjectId = normalizedSubjectId;
     }
-
-    public string Value => _subjectId ?? string.Empty;
 
     public bool Equals(SubjectId other) => Comparer.Equals(_subjectId, other._subjectId);
 
