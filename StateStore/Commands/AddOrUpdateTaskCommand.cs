@@ -74,7 +74,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
             throw new ArgumentOutOfRangeException(nameof(progressMax), "Progress max must be greater than zero.");
         }
 
-        if (DayKey.IsNullOrWhiteSpace(creationDay))
+        if (string.IsNullOrWhiteSpace(creationDay.Value))
         {
             throw new ArgumentException("CreationDay cannot be null or whitespace.", nameof(creationDay));
         }
