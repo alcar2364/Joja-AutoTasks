@@ -198,12 +198,12 @@ Step goal:
 
 ### 7A - Add identifier value-type tests ###
 
-    * [ ] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleId`, `SubjectId`.
-    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIdTests.cs`, `Tests/Domain/Identifiers/SubjectIdTests.cs`.
-    * [ ] Verify: tests fail when deterministic equality/validation regresses.
-    * [ ] Commit message: `phase2(step7A): add deterministic identifier value-type tests`
-    * [ ] Must include: tests and minimal fixtures.
-    * [ ] Must exclude: production behavior refactors outside identifiers.
+    * [x] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleId`, `SubjectId`.
+    * [x] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIdTests.cs`, `Tests/Domain/Identifiers/SubjectIdTests.cs`.
+    * [x] Verify: tests fail when deterministic equality/validation regresses, including `DayKey` canonical shape `Year{N}-{Season}{D}`, strict season token casing, and `RuleId`/`SubjectId` ordinal case-sensitive equality.
+    * [x] Commit message: `phase2(step7A): add deterministic identifier value-type tests`
+    * [x] Must include: tests and minimal fixtures.
+    * [x] Must exclude: production behavior refactors outside identifiers.
 
 ### 7B - Add TaskObject invariant tests ###
 
