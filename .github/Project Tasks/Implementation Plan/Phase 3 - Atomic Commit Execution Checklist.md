@@ -541,6 +541,18 @@ Step goal:
 
 ## Deferred Items ##
 
+** Deferred to Phase 4 **
+    -Determine if two TaskObject Properties are ambiguous and should be refactored:
+        - TaskSourceType
+        - SourceIdentifier
+    -Both terms are used for different purposes but could be confusing. TaskSourceType indicates
+    what type of source produced this task (BuiltIn, TaskBuilder, or Manual), while SourceIdentifier
+    indicated "which specific source instance?" For example, a BuiltIn task might have
+    TaskSourceType=BuiltIn and SourceIdentifier=DailyLuckTask, while a TaskBuilder task might have
+    TaskSourceType=TaskBuilder and SourceIdentifier=QuestGiver_123. If we keep both, we should
+    ensure their purposes are clearly documented and consider renaming for clarity (e.g.,
+    TaskOriginType and TaskSourceId).
+
 **Deferred to Phase 4 (ViewModels):**
     - Actual subscription to `SnapshotChanged` event
     - INPC property updates from snapshots
