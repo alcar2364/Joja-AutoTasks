@@ -35,7 +35,6 @@ Run this report when the Claude fallback workflow fails or when manually trigger
 
 Context:
 - Repository: `${{ github.repository }}`
-- Trigger event: `${{ github.event_name }}`
 - Upstream workflow conclusion: `${{ github.event.workflow_run.conclusion }}`
 
 Tasks:

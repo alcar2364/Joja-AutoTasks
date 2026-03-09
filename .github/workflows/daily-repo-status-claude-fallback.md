@@ -35,7 +35,6 @@ Run this report when the Codex workflow fails or when manually triggered.
 
 Context:
 - Repository: `${{ github.repository }}`
-- Trigger event: `${{ github.event_name }}`
 - Upstream workflow conclusion: `${{ github.event.workflow_run.conclusion }}`
 
 Tasks:
