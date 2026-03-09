@@ -77,12 +77,12 @@ Step goal:
 
 ### 1F - Add PinTaskCommand ###
 
-    * [ ] Action: add command representing user pin intent.
-    * [ ] Scope: `StateStore/Commands/PinTaskCommand.cs`.
-    * [ ] Verify: command type compiles with TaskId field.
-    * [ ] Commit message: `phase3(step1F): add PinTaskCommand`
-    * [ ] Must include: command type only.
-    * [ ] Must exclude: handler implementation.
+    * [x] Action: add command representing user pin intent.
+    * [x] Scope: `StateStore/Commands/PinTaskCommand.cs`.
+    * [x] Verify: command type compiles with TaskId field.
+    * [x] Commit message: `phase3(step1F): add PinTaskCommand`
+    * [x] Must include: command type only.
+    * [x] Must exclude: handler implementation.
 
 ### 1G - Add UnpinTaskCommand ###
 
