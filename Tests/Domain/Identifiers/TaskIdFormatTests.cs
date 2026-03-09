@@ -49,6 +49,47 @@ public class TaskIdFormatTests
         Assert.False(parsed);
     }
 
+    [Fact]
+    public void TryParse_WhenManualCounterIsNonNegative_RoundTripsSuccessfully()
+    {
+        TaskId original = new TaskId("Manual_42");
+
+        bool parsed = TaskIdFormat.TryParse(original.Value, out TaskId reparsed);
+
+        Assert.True(parsed);
+        Assert.Equal(original, reparsed);
+    }
+
+    [Fact]
+    public void TryParse_WhenManualCounterIsNegative_ReturnsFalse()
+    {
+        const string rawId = "Manual_-1";
+
+        bool parsed = TaskIdFormat.TryParse(rawId, out TaskId _);
+
+        Assert.False(parsed);
+    }
+
+    [Fact]
+    public void TryParse_WhenManualShapeContainsExtraSegments_ReturnsFalse()
+    {
+        const string rawId = "Manual_42_extra";
+
+        bool parsed = TaskIdFormat.TryParse(rawId, out TaskId _);
+
+        Assert.False(parsed);
+    }
+
+    [Fact]
+    public void TryParse_WhenRawIdHasOuterWhitespace_ReturnsFalse()
+    {
+        const string rawId = "  BuiltIn_ForageSweep  ";
+
+        bool parsed = TaskIdFormat.TryParse(rawId, out TaskId _);
+
+        Assert.False(parsed);
+    }
+
     // Event Handlers
 
     // Private Helpers

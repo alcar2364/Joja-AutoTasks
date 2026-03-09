@@ -216,12 +216,12 @@ Step goal:
 
 ### 7C - Add deterministic TaskId factory/parser tests ###
 
-    * [ ] Action: add repeatability/collision and round-trip tests for canonical built-in/task-builder/manual ID string forms.
-    * [ ] Scope: `Tests/Domain/Identifiers/TaskIdFactoryTests.cs`, `Tests/Domain/Identifiers/TaskIdFormatTests.cs`.
-    * [ ] Verify: identical inputs produce identical outputs and parse/format remains stable.
-    * [ ] Commit message: `phase2(step7C): add deterministic TaskId factory and parser tests`
-    * [ ] Must include: deterministic ID tests only.
-    * [ ] Must exclude: persistence counter storage tests.
+    * [x] Action: add repeatability/collision and round-trip tests for canonical built-in/task-builder/manual ID string forms.
+    * [x] Scope: `Tests/Domain/Identifiers/TaskIdFactoryTests.cs`, `Tests/Domain/Identifiers/TaskIdFormatTests.cs`.
+    * [x] Verify: identical inputs produce identical outputs and parse/format remains stable.
+    * [x] Commit message: `phase2(step7C): add deterministic TaskId factory and parser tests`
+    * [x] Must include: deterministic ID tests only.
+    * [x] Must exclude: persistence counter storage tests.
 
 ### 7D - Add reconstruction-stability seam tests ###
 
