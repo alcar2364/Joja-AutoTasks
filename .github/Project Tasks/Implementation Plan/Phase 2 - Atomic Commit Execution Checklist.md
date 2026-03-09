@@ -234,12 +234,12 @@ Step goal:
 
 ### 7E - Add DayKey factory tests ###
 
-    * [ ] Action: add tests for canonical format, token casing, and invalid date-part handling.
-    * [ ] Scope: `Tests/Domain/Identifiers/DayKeyFactoryTests.cs`.
-    * [ ] Verify: canonical and invalid cases are both covered.
-    * [ ] Commit message: `phase2(step7E): add DayKey factory determinism tests`
-    * [ ] Must include: day-key tests only.
-    * [ ] Must exclude: history ledger integration.
+    * [x] Action: add tests for canonical format, token casing, and invalid date-part handling.
+    * [x] Scope: `Tests/Domain/Identifiers/DayKeyFactoryTests.cs`.
+    * [x] Verify: canonical and invalid cases are both covered.
+    * [x] Commit message: `phase2(step7E): add DayKey factory determinism tests`
+    * [x] Must include: day-key tests only.
+    * [x] Must exclude: history ledger integration.
 
 ### 7F - Document deferred task-type ordering comparer tests ###
 
