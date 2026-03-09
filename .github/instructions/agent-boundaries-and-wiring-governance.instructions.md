@@ -19,6 +19,7 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 | Researcher | Context discovery and evidence gathering only | No implementation and no final review verdicts |
 | Planner | Step-by-step implementation planning only | No direct code edits and no markdown drafting |
 | Reviewer | Contract/risk review only | No direct implementation or markdown drafting |
+| CSharpMentor | C# mentorship and guidance-only coaching with optional explicit user-requested edits | No autonomous large-scope implementation ownership and no bypass of architecture/style contracts |
 | GameAgent | Backend/engine/state/persistence C# implementation | No StarML authoring and no documentation ownership |
 | UIAgent | Frontend C# view-model/UI interaction implementation | No .sml authoring and no backend canonical-state ownership |
 | StarMLAgent | .sml layout/template/binding authoring only | No backend logic implementation and no non-markup C# ownership |
@@ -37,7 +38,7 @@ Every instruction file below is wired to at least one agent.
 | atomic-commit-execution-checklist-creation.instructions.md | Planner | Researcher, Reviewer, WorkspaceAgent, Orchestrator |
 | backend-architecture-contract.instructions.md | GameAgent | Planner, Reviewer, Refactorer |
 | context-engineering.instructions.md | Researcher | Planner, Orchestrator |
-| csharp-style-contract.instructions.md | GameAgent | UIAgent, Refactorer, UnitTestAgent, Reviewer |
+| csharp-style-contract.instructions.md | GameAgent | UIAgent, Refactorer, UnitTestAgent, Reviewer, CSharpMentor |
 | external-resources.instructions.md | Researcher | GameAgent, UIAgent, StarMLAgent, Troubleshooter |
 | frontend-architecture-contract.instructions.md | UIAgent | StarMLAgent, Reviewer, Planner |
 | github-actions-ci-cd-best-practices.instructions.md | Troubleshooter | WorkspaceAgent, GodAgent |
@@ -52,7 +53,7 @@ Every instruction file below is wired to at least one agent.
 | unit-testing-contract.instructions.md | UnitTestAgent | Reviewer, Planner |
 | update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer, Troubleshooter |
 | visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
-| workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent |
+| workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor |
 
 ## Skill-to-Agent Wiring ##
 
