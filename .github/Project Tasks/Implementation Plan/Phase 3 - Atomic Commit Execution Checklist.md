@@ -41,12 +41,12 @@ Step goal:
 
 ### 1B - Add AddOrUpdateTaskCommand ###
 
-    * [ ] Action: add command representing task creation or engine/user update intent.
-    * [ ] Scope: `StateStore/Commands/AddOrUpdateTaskCommand.cs`.
-    * [ ] Verify: command type compiles with required fields (TaskId, task data, source type); constructor guards prevent invalid construction.
-    * [ ] Commit message: `phase3(step1B): add AddOrUpdateTaskCommand`
-    * [ ] Must include: command type with required fields and constructor guards only.
-    * [ ] Must exclude: handler implementation, validation logic beyond constructor guards.
+    * [x] Action: add command representing task creation or engine/user update intent.
+    * [x] Scope: `StateStore/Commands/AddOrUpdateTaskCommand.cs`.
+    * [x] Verify: command type compiles with required fields (TaskId, task data, source type); constructor guards prevent invalid construction.
+    * [x] Commit message: `phase3(step1B): add AddOrUpdateTaskCommand`
+    * [x] Must include: command type with required fields and constructor guards only.
+    * [x] Must exclude: handler implementation, validation logic beyond constructor guards.
 
 ### 1C - Add CompleteTaskCommand ###
 
