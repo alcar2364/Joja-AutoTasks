@@ -28,6 +28,10 @@ if echo "$PROMPT" | grep -qiE '(handoff|delegate|subagent|route to)'; then
   echo "[context-preflight] Apply handoff optimization and avoid circular routing."
 fi
 
+if echo "$PROMPT" | grep -qiE '(atomic commit|execution checklist|step-by-step checklist|phase checklist|implementation checklist)'; then
+  echo "[context-preflight] Load: .github/instructions/atomic-commit-execution-checklist-creation.instructions.md"
+fi
+
 if echo "$PROMPT" | grep -qiE '(troubleshoot|troubleshooting|diagnose|diagnosis|debug|root cause|bug)'; then
   echo "[context-preflight] If root cause reveals major architecture problem (especially from agent code), route to WorkspaceAgent. Minor bugs: no doc routing."
 fi

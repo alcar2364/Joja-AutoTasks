@@ -24,6 +24,7 @@ If unsure where to start, use [choose-workflow-prompt.prompt.md](choose-workflow
   - Agent customization: [agent-customization-task.prompt.md](agent-customization-task.prompt.md)
   - Ecosystem audit: [audit-customization-ecosystem.prompt.md](audit-customization-ecosystem.prompt.md)
   - Legacy hook coverage: [verify-hook-legacy-coverage.prompt.md](verify-hook-legacy-coverage.prompt.md)
+  - Atomic commit checklist: [create-atomic-commit-execution-checklist.prompt.md](create-atomic-commit-execution-checklist.prompt.md)
   - Prompt index sync: [refresh-prompt-index.prompt.md](refresh-prompt-index.prompt.md)
   - Workspace docs/plans: [workspace-documentation-task.prompt.md](workspace-documentation-task.prompt.md)
 
@@ -45,6 +46,7 @@ If unsure where to start, use [choose-workflow-prompt.prompt.md](choose-workflow
 | [agent-customization-task.prompt.md](agent-customization-task.prompt.md) | Agent Customization Task | Create/tune/debug customization assets and ecosystem coherence | GodAgent |
 | [audit-customization-ecosystem.prompt.md](audit-customization-ecosystem.prompt.md) | Audit Customization Ecosystem | Full .github customization-system audit with overlap and coverage checks | GodAgent |
 | [verify-hook-legacy-coverage.prompt.md](verify-hook-legacy-coverage.prompt.md) | Verify Hook Legacy Coverage | Validate that every legacy hook scenario maps to executable runtime hooks | GodAgent |
+| [create-atomic-commit-execution-checklist.prompt.md](create-atomic-commit-execution-checklist.prompt.md) | Create Atomic Commit Execution Checklist | Generate step-by-step atomic commit checklist from design guide phase | Orchestrator |
 | [refresh-prompt-index.prompt.md](refresh-prompt-index.prompt.md) | Refresh Prompt Index | Sync prompt README catalog after prompt add/rename/remove changes | Orchestrator |
 | [workspace-documentation-task.prompt.md](workspace-documentation-task.prompt.md) | Workspace Documentation Task | Plans, design docs, and user-facing workspace artifacts | WorkspaceAgent |
 

@@ -111,9 +111,11 @@ The Reviewer checks the Planner's structured plan against:
 
 ### 5. WorkspaceAgent (Checklist Drafting) ###
 
-The WorkspaceAgent produces the **final Markdown checklist document** from the Reviewer-approved plan.
+The WorkspaceAgent **creates the final Markdown checklist file directly** from the Reviewer-approved plan.
 
-**Output:** A complete checklist file ready for user or agent execution.
+**Critical:** WorkspaceAgent must **use the createFile tool** to write the checklist immediately. Do NOT draft content and hand back to Orchestrator. WorkspaceAgent's default mode is direct editing for documentation artifacts.
+
+**Output:** A complete checklist file written to the target location (e.g., `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`).
 
 ## Checklist Structure Requirements ##
 
@@ -427,17 +429,19 @@ The Reviewer should verify:
 
 ## WorkspaceAgent Drafting Checklist ##
 
-The WorkspaceAgent should produce:
+The WorkspaceAgent should:
 
-- [ ] Complete Markdown file with all sections
-- [ ] Correct naming (`Phase N - Atomic Commit Execution Checklist.md`)
-- [ ] Proper checkbox formatting (unchecked `[ ]` for checkboxes)
-- [ ] Clear, readable language suited for both human and AI execution
-- [ ] Explicit scope/file references in each substep
-- [ ] Verification criteria that can be verified without guesswork
-- [ ] Unit test section clear enough for human or UnitTestAgent
-- [ ] Final review section clear enough for human or Reviewer
-- [ ] Final completion gate checklist summarizing all prerequisites
+- [ ] **CREATE THE FILE DIRECTLY** using create_file tool (do NOT hand content back to Orchestrator)
+- [ ] Use correct file path (e.g., `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`)
+- [ ] Produce complete Markdown file with all sections
+- [ ] Use correct naming (`Phase N - Atomic Commit Execution Checklist.md`)
+- [ ] Use proper checkbox formatting (unchecked `[ ]` for checkboxes)
+- [ ] Use clear, readable language suited for both human and AI execution
+- [ ] Include explicit scope/file references in each substep
+- [ ] Include verification criteria that can be verified without guesswork
+- [ ] Ensure unit test section is clear enough for human or UnitTestAgent
+- [ ] Ensure final review section is clear enough for human or Reviewer
+- [ ] Include final completion gate checklist summarizing all prerequisites
 
 ## Important Notes for Project Portability ##
 

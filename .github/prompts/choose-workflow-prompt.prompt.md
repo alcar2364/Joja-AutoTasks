@@ -26,6 +26,7 @@ Prompt Catalog Mapping (customizable)
 - safe-structural-refactor.prompt.md -> rename/extract/move refactor work
 - troubleshoot-build-or-runtime.prompt.md -> build/runtime/tooling diagnostics
 - agent-customization-task.prompt.md -> .agent/.instructions/.prompt/SKILL/hooks customization
+- create-atomic-commit-execution-checklist.prompt.md -> atomic commit execution checklist from design phase
 - workspace-documentation-task.prompt.md -> plans, docs, and task-list artifacts
 - refresh-prompt-index.prompt.md -> sync prompt README catalog with current prompt files
 
@@ -34,8 +35,9 @@ Selection Rules
 2. If user explicitly asks for planning only, choose create-implementation-plan.prompt.md.
 3. If scope constraint says analysis only, prefer research-codebase-context.prompt.md or review-for-contract-compliance.prompt.md based on intent.
 4. If task type is prompt-maintenance, choose refresh-prompt-index.prompt.md.
-5. If execution mode is recommend and execute, run the selected workflow end-to-end.
-6. If execution mode is recommend only, do not edit files unless explicitly asked.
+5. If request mentions atomic commit checklist or step-by-step execution from design phase, choose create-atomic-commit-execution-checklist.prompt.md.
+6. If execution mode is recommend and execute, run the selected workflow end-to-end.
+7. If execution mode is recommend only, do not edit files unless explicitly asked.
 
 Required Output
 1. Primary prompt choice with brief rationale
