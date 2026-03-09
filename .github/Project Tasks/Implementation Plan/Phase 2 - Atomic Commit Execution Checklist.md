@@ -243,12 +243,12 @@ Step goal:
 
 ### 7F - Document deferred task-type ordering comparer tests ###
 
-    * [ ] Action: document that deterministic task-type ordering comparer tests are deferred with the comparer implementation to Phase 5+.
-    * [ ] Scope: this checklist file and optional test planning note.
-    * [ ] Verify: Phase 2 test scope excludes task-type ordering comparer tests.
-    * [ ] Commit message: `phase2(step7F): defer task-type ordering comparer tests to phase5+`
-    * [ ] Must include: defer-note updates only.
-    * [ ] Must exclude: comparer test implementation.
+    * [x] Action: document that deterministic task-type ordering comparer tests are deferred with the comparer implementation to Phase 5+; Step 7F remains docs-only in this phase.
+    * [x] Scope: this checklist file and optional test planning note.
+    * [x] Verify: Phase 2 test scope excludes task-type ordering comparer tests, and no comparer tests are implemented in Step 7.
+    * [x] Commit message: `phase2(step7F): defer task-type ordering comparer tests to phase5+`
+    * [x] Must include: defer-note updates only.
+    * [x] Must exclude: comparer test implementation.
 
 ### 7G - Add phase-boundary tests/audit checks ###
 
