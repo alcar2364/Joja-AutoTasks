@@ -101,16 +101,16 @@ Step goal:
 
 Step goal:
 
-    * [ ] Create internal task storage structure distinct from domain model.
+    * [x] Create internal task storage structure distinct from domain model.
 
 ### 2A - Add TaskRecord internal storage structure ###
 
-    * [ ] Action: create internal `TaskRecord` structure distinct from `TaskObject` for state storage.
-    * [ ] Scope: `StateStore/Models/TaskRecord.cs`.
-    * [ ] Verify: TaskRecord compiles with fields for TaskId, status, progress, metadata, user flags (IsPinned), creation day, completion day; uses most restrictive access level (internal).
-    * [ ] Commit message: `phase3(step2A): add TaskRecord internal storage structure`
-    * [ ] Must include: internal record type only.
-    * [ ] Must exclude: conversion to/from TaskObject, handler logic.
+    * [x] Action: create internal `TaskRecord` structure distinct from `TaskObject` for state storage.
+    * [x] Scope: `StateStore/Models/TaskRecord.cs`.
+    * [x] Verify: TaskRecord compiles with fields for TaskId, status, progress, metadata, user flags (IsPinned), creation day, completion day; uses most restrictive access level (internal).
+    * [x] Commit message: `phase3(step2A): add TaskRecord internal storage structure`
+    * [x] Must include: internal record type only.
+    * [x] Must exclude: conversion to/from TaskObject, handler logic.
 
 ### 2B - Add field separation model ###
 
