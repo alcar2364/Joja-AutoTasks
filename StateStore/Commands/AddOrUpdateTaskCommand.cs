@@ -31,7 +31,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
         "S107:Methods should not have too many parameters",
-        Justification = "Domain model constructor requires explicit parameters for immutable TaskObject fields.")]
+        Justification = "Command constructor requires explicit parameters for all TaskObject fields to ensure immutability and clarity of command intent.")]
 
     internal AddOrUpdateTaskCommand(
         TaskId taskId,
