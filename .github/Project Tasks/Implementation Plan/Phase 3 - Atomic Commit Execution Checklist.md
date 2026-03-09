@@ -59,12 +59,12 @@ Step goal:
 
 ### 1D - Add UncompleteTaskCommand ###
 
-    * [ ] Action: add command representing task un-completion intent.
-    * [ ] Scope: `StateStore/Commands/UncompleteTaskCommand.cs`.
-    * [ ] Verify: command type compiles with TaskId field.
-    * [ ] Commit message: `phase3(step1D): add UncompleteTaskCommand`
-    * [ ] Must include: command type only.
-    * [ ] Must exclude: handler implementation.
+    * [x] Action: add command representing task un-completion intent.
+    * [x] Scope: `StateStore/Commands/UncompleteTaskCommand.cs`.
+    * [x] Verify: command type compiles with TaskId field.
+    * [x] Commit message: `phase3(step1D): add UncompleteTaskCommand`
+    * [x] Must include: command type only.
+    * [x] Must exclude: handler implementation.
 
 ### 1E - Add RemoveTaskCommand ###
 
