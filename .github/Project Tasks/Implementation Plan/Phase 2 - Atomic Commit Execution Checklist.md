@@ -263,40 +263,81 @@ Step goal:
 
 Step goal:
 
-    * [ ] Confirm Phase 2 is complete, atomic, deterministic, and contract-aligned.
+    * [x] Confirm Phase 2 is complete, atomic, deterministic, and contract-aligned.
 
 ### 8A - Run clean build and full tests ###
 
-    * [ ] Action: run clean build and full test suite, including existing Phase 1 regressions.
-    * [ ] Scope: no source edits expected.
-    * [ ] Verify: build succeeds; all tests pass.
-    * [ ] Commit message: `phase2(step8A): record phase2 build and test evidence`
-    * [ ] Must include: durable evidence/docs only if maintained in repo.
-    * [ ] Must exclude: opportunistic production edits.
+    * [x] Action: run clean build and full test suite, including existing Phase 1 regressions.
+    * [x] Scope: no source edits expected.
+    * [x] Verify: build succeeds; all tests pass.
+    * [x] Commit message: `phase2(step8A): record phase2 build and test evidence` (marked
+    complete per user-audited commit/message waiver).
+    * [x] Must include: durable evidence/docs only if maintained in repo.
+    * [x] Must exclude: opportunistic production edits.
+    * [x] Command outcomes (2026-03-08):
+        * [x] `dotnet clean JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false` succeeded.
+        * [x] `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false` succeeded.
+        * [x] `dotnet test "Tests\\JojaAutoTasks.Tests.csproj" -c Debug` succeeded (110 passed,
+        0 failed, 0 skipped).
+        * [x] `dotnet test "Tests\\JojaAutoTasks.Tests.csproj" -c Debug --filter "FullyQualifiedName~UpdateTickedGuardTests"` succeeded (3 passed,
+        0 failed, 0 skipped).
 
 ### 8B - Complete checklist and contract audit ###
 
-    * [ ] Action: audit against this checklist and confirm Section 3/4/21 + workspace/backend/testing/style contract compliance.
-    * [ ] Scope: this checklist file and optional audit notes.
-    * [ ] Verify: no UI/store/persistence drift; determinism guarantees remain explicit.
-    * [ ] Commit message: `phase2(step8B): complete phase2 contract and scope audit`
-    * [ ] Must include: checklist/audit updates only.
-    * [ ] Must exclude: Phase 3 feature work.
+    * [x] Action: audit against this checklist and confirm Section 3/4/21 + workspace/backend/testing/style contract compliance.
+    * [x] Scope: this checklist file and optional audit notes.
+    * [x] Verify: no UI/store/persistence drift; determinism guarantees remain explicit.
+    * [x] Evidence map (Section/contract -> proof points):
+        * [x] Section 3 deterministic identifier model: Steps `1A-1C`, `4A-4B`, `5A`; tests
+        `7A`, `7C`, `7D`, `7E` (`Domain/Identifiers/*.cs`,
+        `Tests/Domain/Identifiers/*Tests.cs`).
+        * [x] Section 4 task domain model: Steps `3A-3B`; test `7B`
+        (`Domain/Tasks/TaskObject.cs`, `Tests/Domain/Tasks/TaskObjectTests.cs`).
+        * [x] Section 21 (including 21.5 core domain types): Steps `1A-5A` and tests `7A-7G`;
+        corroborated by the Final Completion Gate item for Section 21.5 coverage.
+        * [x] Workspace contract proof: guardrails and phase-scope clauses remain enforced in
+        this checklist; atomic commit-boundary clauses remain completed/waived per explicit user
+        direction in Step `8C`.
+        * [x] Backend architecture contract proof: Step `8B` no UI/store/persistence drift
+        verification and Step `7G` boundary guard tests
+        (`Tests/Domain/Phase2BoundaryTests.cs`).
+        * [x] Testing contract proof: Steps `7A-7G` deterministic/invariant/boundary tests and
+        Step `8A` full-suite evidence (`dotnet test ...` succeeded, 110 passed).
+        * [x] Style contract proof: Phase 2 touched C# artifacts audited in Step `8B` against
+        `CSHARP-STYLE-CONTRACT.instructions.md`.
+        * [x] Phase 1 safeguard guard-test proof:
+        `Tests/Lifecycle/LifecycleCoordinatorTests.cs` (`OnSaving` signal-only forwarding) and
+        `Tests/Hooks/UpdateTickedGuardTests.cs` (throttled `OnUpdateTicked` guard), plus Step
+        `8A` targeted `UpdateTickedGuardTests` execution (3 passed).
+    * [x] Commit message: `phase2(step8B): complete phase2 contract and scope audit` (marked
+    complete per user-audited commit/message waiver).
+    * [x] Must include: checklist/audit updates only.
+    * [x] Must exclude: Phase 3 feature work.
 
 ### 8C - Validate atomic boundaries and create Phase 3 defer list ###
 
-    * [ ] Action: verify each completed sub-step maps to one atomic commit and list explicitly deferred Phase 3 work.
-    * [ ] Scope: checklist updates and optional status note files.
-    * [ ] Verify: no commit crosses unrelated file/symbol scopes.
-    * [ ] Commit message: `phase2(step8C): finalize phase2 atomic boundaries and phase3 defer list`
-    * [ ] Must include: final checklist status and defer notes.
-    * [ ] Must exclude: state-store implementation.
+    * [x] Action: verify each completed sub-step maps to one atomic commit and list explicitly
+    deferred Phase 3 work (commit-boundary verification treated as completed/waived per explicit
+    user direction).
+    * [x] Scope: checklist updates and optional status note files.
+    * [x] Verify: no commit crosses unrelated file/symbol scopes (treated as completed/waived per
+    explicit user direction).
+    * [x] Commit message: `phase2(step8C): finalize phase2 atomic boundaries and phase3 defer list`
+    (marked complete per user-audited commit/message waiver).
+    * [x] Must include: final checklist status and defer notes.
+    * [x] Must exclude: state-store implementation.
 
 ## Final Completion Gate Checklist ##
 
-    * [ ] All sub-steps `1A` through `8C` are completed or explicitly deferred.
-    * [x] Every completed sub-step has a matching atomic commit.
-    * [x] No commit crosses unrelated file/symbol scopes.
+Closure note: Guardrails above are continuous constraints audited throughout Phase 2 and
+re-checked in Step `8B`; completion is determined by Step `8A-8C` evidence plus this final gate,
+not by converting every guardrail checkbox to a completion marker.
+
+    * [x] All sub-steps `1A` through `8C` are completed or explicitly deferred.
+    * [x] Every completed sub-step has a matching atomic commit (treated as completed/waived per
+    explicit user direction: commit messages/history audited by user).
+    * [x] No commit crosses unrelated file/symbol scopes (treated as completed/waived per explicit
+    user direction: commit messages/history audited by user).
     * [x] Core domain types from Section 21.5 are implemented and test-covered.
     * [x] Deterministic TaskId/DayKey rules are implemented and regression-tested.
     * [x] No random/GUID/non-deterministic identity paths exist.
@@ -308,4 +349,6 @@ Step goal:
     * [x] RuleId sequential-generation enforcement remains deferred until RuleId generation exists.
     * [x] Translation-impacting implementation remains deferred to Phase 3+.
     * [x] UpdateTicked guard seam fix remains test-only and passing.
-    * [ ] Build/tests pass and Phase 1 safeguards remain intact.
+    * [x] Build/tests pass and Phase 1 safeguards remain intact (proof:
+    `Tests/Lifecycle/LifecycleCoordinatorTests.cs`,
+    `Tests/Hooks/UpdateTickedGuardTests.cs`, and Step `8A` targeted guard-test run).
