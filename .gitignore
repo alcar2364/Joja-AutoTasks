@@ -64,3 +64,4 @@ nunit-*.xml
 *.zip
 .markdownlint*
 .tmp*
+.dotnet/
