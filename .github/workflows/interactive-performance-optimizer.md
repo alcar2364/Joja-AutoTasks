@@ -13,7 +13,7 @@ strict: true
 network:
   allowed: [defaults, github]
 engine:
-  id: codex
+  id: copilot
 if: |
     contains(github.event.comment.body, '/optimize') &&
     (github.event.issue.pull_request || github.event_name == 'issue_comment')

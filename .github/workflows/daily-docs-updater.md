@@ -13,7 +13,7 @@ strict: true
 network:
   allowed: [defaults, github]
 engine:
-  id: codex
+  id: copilot
 jobs:
   detect_changes:
     runs-on: ubuntu-latest

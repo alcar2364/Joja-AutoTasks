@@ -14,7 +14,7 @@ strict: true
 network:
   allowed: [defaults, github]
 engine:
-  id: codex
+  id: copilot
 tools:
   github:
     toolsets: [default]
