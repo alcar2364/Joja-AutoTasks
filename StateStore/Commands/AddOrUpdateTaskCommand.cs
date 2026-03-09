@@ -51,7 +51,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
         // -- Guards -- //
         if (string.IsNullOrWhiteSpace(taskId.Value))
         {
-            throw new ArgumentException("Task ID cannot be null or empty.", nameof(taskId));
+            throw new ArgumentException("TaskId cannot be null or empty.", nameof(taskId));
         }
 
         if (string.IsNullOrWhiteSpace(title))
@@ -81,7 +81,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
 
         if (string.IsNullOrWhiteSpace(sourceIdentifier))
         {
-            throw new ArgumentException("Source identifier cannot be null or whitespace.", nameof(sourceIdentifier));
+            throw new ArgumentException("SourceIdentifier cannot be null or whitespace.", nameof(sourceIdentifier));
         }
 
         // -- Properties -- //
