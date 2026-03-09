@@ -127,7 +127,7 @@ No UI or engine logic should exist yet.
 
 ## 21.6 Phase 3 — State Store ##
 
-Phase 3 introduces the centralized State Store defined in Section 4.9. fileciteturn1file18
+Phase 3 introduces the centralized State Store defined in Section 4.9.
 
 Responsibilities:
 
