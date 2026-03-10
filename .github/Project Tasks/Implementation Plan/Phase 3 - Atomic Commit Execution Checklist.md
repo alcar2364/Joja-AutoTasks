@@ -214,12 +214,12 @@ Step goal:
 
 ### 3F - Implement PinTaskCommandHandler ###
 
-    * [ ] Action: implement handler for PinTaskCommand.
-    * [ ] Scope: `StateStore/Handlers/PinTaskCommandHandler.cs`.
-    * [ ] Verify: handler sets IsPinned flag to true; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step3F): implement PinTaskCommandHandler`
-    * [ ] Must include: handler implementation only.
-    * [ ] Must exclude: snapshot publishing, UI feedback.
+    * [x] Action: implement handler for PinTaskCommand.
+    * [x] Scope: `StateStore/Handlers/PinTaskCommandHandler.cs`.
+    * [x] Verify: handler sets IsPinned flag to true; handler is deterministic and side-effect free.
+    * [x] Suggested commit: `phase3(step3F): implement PinTaskCommandHandler`
+    * [x] Must include: handler implementation only.
+    * [x] Must exclude: snapshot publishing, UI feedback.
 
 ### 3G - Implement UnpinTaskCommandHandler ###
 
