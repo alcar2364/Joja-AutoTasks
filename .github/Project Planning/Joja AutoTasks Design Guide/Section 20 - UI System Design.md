@@ -29,10 +29,20 @@ The mod provides the following UI surfaces:
 - Menu surface
     * Opened on demand
     * Supports complex interaction flows including task browsing, task
-    details, the Task Builder Wizard, and history browsing
+    details, the Task Builder Wizard, and staged history browsing
 - Configuration entry surface
     * A minimal access layer exposed via GMCM
     * Opens the full configuration menu implemented using StardewUI
+```
+
+Version 1 delivery rule:
+
+```text
+- Both HUD and Menu surfaces are required in Version 1.
+- Neither surface may be dropped; sequencing only affects polish depth.
+- Both surfaces must remain parity-aligned through shared snapshot data.
+- Task Builder in Now remains rule-definition only and follows
+    command/snapshot boundaries.
 ```
 
 ## 20.3 Shared UI data model ##
@@ -235,6 +245,14 @@ Menus provide comprehensive task and rule management including:
 - reviewing task history
 ```
 
+Task Builder boundary in the Menu surface:
+
+```text
+- Menu-hosted Task Builder interactions are limited to rule-definition authoring,
+  validation, and persistence intents.
+- Task Builder interactions must not directly mutate runtime task entities.
+```
+
 ### 20.7.1 Tasks section (combined list + details) ###
 
 The Tasks section must display the task list and task details together.
@@ -262,7 +280,8 @@ History section requirements:
 ```text
 - browse previous days
 - view incomplete and completed tasks for a selected day
-- support date navigation and quick jump to a specific day
+- support date navigation as the Version 1 (Now) baseline
+- stage quick-jump depth to a specific day as Next hardening scope
 ```
 
 History must not alter deterministic task identity. This view is a
@@ -305,6 +324,13 @@ HUD.
 
 Menu interactions must not directly mutate task state. Instead, the menu
 must dispatch commands to the State Store.
+
+Task Builder-specific command constraint:
+
+```text
+- Task Builder UI emits rule-definition commands only.
+- Runtime task state changes happen after rule evaluation through the State Store.
+```
 
 Menu-local state (selection, filters, sorting state, current history
 date) must remain within the menu subsystem and must not be persisted as
@@ -417,3 +443,20 @@ Rules:
 - Locale changes should trigger UI refresh through normal snapshot/view update paths without mutating canonical task state.
 - Deterministic IDs, equality, and ordering remain locale-neutral and must never depend on translated text.
 ```
+
+## 20.13 No-drop UI delivery staging ##
+
+UI sequencing follows the no-drop Now/Next/Later model in Section 21.
+
+Capability-level mapping is canonical in Section 21.3.1.
+
+```text
+- Now: deliver required Version 1 HUD + Menu capabilities, including Task Builder
+    rule-definition flow and baseline history/debug entry points.
+- Next: deliver remaining Phase 11 and Phase 12 UX depth (history filtering,
+    quick jump, debug ergonomics) without removing capabilities.
+- Later: deliver post-Version-1 UI expansion such as statistics dashboards.
+```
+
+Promotion from Now to Next requires passing boundary, parity, performance,
+and documentation-sync gates defined in Section 21.3.2.

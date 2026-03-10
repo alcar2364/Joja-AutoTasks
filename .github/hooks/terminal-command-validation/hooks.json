@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeToolInvoke": [
+      {
+        "type": "command",
+        "bash": "bash .github/hooks/terminal-command-validation/terminal-command-validation.sh",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "filter": {
+          "toolNames": ["run_in_terminal"]
+        }
+      }
+    ]
+  }
+}

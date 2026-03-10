@@ -307,7 +307,40 @@ Once the user clarifies their intent, route appropriately:
 
 This prevents silent scope expansion and ensures changes align with user intent, not agent assumptions.
 
-## 11. When To Push Back ##
+## 11. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future orchestration sessions.
+
+**When to store a memory:**
+
+- Workflow routing patterns or conventions specific to this codebase
+- Non-obvious delegation rules or agent coordination requirements
+- Important facts about task sequencing or dependency flow
+- Lessons learned from orchestration mistakes or edge cases
+- Verified orchestration patterns that improve agent coordination
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": [".github/file.md#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 12. When To Push Back ##
 
 The orchestrator must reject or redirect requests that would:
 

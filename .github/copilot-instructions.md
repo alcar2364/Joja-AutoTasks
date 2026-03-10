@@ -213,7 +213,6 @@ There are no checked-in GitHub Actions workflows to mirror, so use this local pr
 * `Domain/Identifiers/`: canonical value types (`TaskId`, `RuleId`, `SubjectId`, `DayKey`) and format/factory helpers.
 * `Domain/Tasks/`: immutable task domain object and enums.
 * `StateStore/Commands/`: command contracts (for state mutation boundary evolution).
-* `.github/agents/BrainAgent.agent.md`: memory-system agent that owns indexed store operations under `.github/memory/`.
 * `Tests/`: unit tests grouped by subsystem (`Configuration`, `Lifecycle`, `Events`, `Hooks`, `Domain`).
 
 ### Documentation and contracts location

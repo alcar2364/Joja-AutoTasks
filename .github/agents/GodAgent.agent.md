@@ -373,7 +373,40 @@ handoffs: []
 
 [Domain-specific prohibitions]
 
-## 5. Output Format ##
+## 5. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future agent ecosystem customization sessions.
+
+**When to store a memory:**
+
+- Agent customization patterns or conventions specific to this workspace
+- Non-obvious YAML frontmatter or tool routing requirements
+- Important facts about agent ecosystem structure or governance
+- Lessons learned from agent customization mistakes or edge cases
+- Verified agent patterns that improve ecosystem coherence
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": [".github/agents/file.agent.md#L123", ".github/instructions/other.instructions.md#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 6. Output Format ##
 
 [Structure of artifacts the agent produces, if any]
 ```

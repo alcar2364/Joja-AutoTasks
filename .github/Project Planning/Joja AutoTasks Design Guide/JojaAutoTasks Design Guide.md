@@ -10,7 +10,15 @@ Repository: <https://github.com/alcar2364/Joja-AutoTasks>
 
 License: MIT
 
-Last Updated:   2026 Mar 08
+Last Updated:   2026 Mar 10
+
+Delivery Model: No-drop Now/Next/Later sequencing with mandatory stage gates
+                (see Section 21).
+
+Sync Policy:    Design guide sections are canonical and updated first;
+                Architecture Map is reconciled second (see Section 21.3.3).
+
+Variance Register: Section 21.3.3 (template + seeded VAR-001 baseline entry).
 
 Instructions:
 
@@ -151,3 +159,15 @@ The following instruction files supplement the design guide with focused referen
     - [External Resources]
         * Location: (../../instructions/external-resources.instructions.md)
         * Links to Stardew Valley modding documentation, StardewUI, and GMCM.
+
+## Related Planning References ##
+
+    - [Architecture Map]
+        * Location: (../Architecture Map.md)
+        * Code-level architecture map reconciled from canonical design sections
+          after Section 21 updates.
+
+    - [Section 21 - Implementation Plan]
+        * Location: (./Section 21 - Implementation Plan.md)
+        * Canonical no-drop staged delivery model, capability mapping table
+          (Section 21.3.1), and variance policy/register (Section 21.3.3).

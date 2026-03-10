@@ -26,13 +26,20 @@ The HUD is not responsible for:
 
 These belong in the Menu dashboard.
 
+Delivery constraint:
+
+    - HUD and Menu are both required in Version 1 and must stay behaviorally
+    aligned through shared snapshot consumption.
+    - Phase 8 through Phase 12 capabilities follow the no-drop mapping in
+    Section 21.3.1; deferral is depth-only and stage-bounded.
+
 #### Main Menu (Full Dashboard) ####
 
 The main menu is the primary “management UI” for the mod.
 
 Menu capabilities:
 
-    - Full task list management (today + history browsing)
+    - Full task list management (today + staged history browsing)
     - Task details view
     - Manual task creation/editing
     - Task Builder wizard launch and management of Task Builder rules
@@ -42,14 +49,23 @@ Menu capabilities:
     - Task tracking options (turn on/off automatic tracking of built-in tasks)
     - HUD display configuration
 
+History staging note:
+
+    - Baseline day browsing and day navigation ship in the Phase 11 Now
+    slice.
+    - Filtering and quick-jump depth are delivered in the Phase 11 Next
+    slice.
+
 ## 2.2 Task Builder UI Model ##
 
 The Task Builder is implemented as a wizard-based interface.
 
+The Now-stage Task Builder scope is rule-definition flow only.
+
 Wizard characteristics:
 
     - Step-by-step guided creation of rule-driven tasks
-    - Step-based task creation
+    - Step-based rule-definition authoring
 
     Each wizard step collects:
 
@@ -58,6 +74,15 @@ Wizard characteristics:
         * presentation settings (name/category/icon)
         * scheduling/reminders (optional)
         * persistence behavior (daily vs persistent)
+
+Boundary constraints:
+
+    - The wizard dispatches rule-definition intents through command/persistence
+    boundaries.
+    - The wizard must not directly create, complete, or mutate runtime
+    task entities.
+    - Runtime task mutation remains owned by the State Store command path
+    after rule evaluation.
 
 The wizard approach is chosen to support:
 
@@ -136,6 +161,7 @@ This wiring pattern enables:
     * Provide rule validation
     * Provide rule evaluation (in engine)
     * Provide wizard authoring UI (in menu)
+    * Preserve rule-definition boundaries (no direct runtime task mutation)
 
 5. State Store
 

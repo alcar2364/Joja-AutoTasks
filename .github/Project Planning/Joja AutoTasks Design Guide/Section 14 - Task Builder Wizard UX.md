@@ -5,9 +5,12 @@
 The Task Builder Wizard provides a guided interface allowing players to
 create custom task rules without directly editing rule definitions.
 
+Task Builder is a core differentiator and must remain on the Version 1
+critical path.
+
 The wizard translates player input into deterministic rule definitions
 consumed by the rule engine described in Section 7.1. The resulting rules
-must produce stable `TaskID` values as defined in Section 3.3.
+must produce stable `TaskId` values as defined in Section 3.3.
 
 The wizard must prioritize clarity and error prevention over speed of
 entry.
@@ -20,6 +23,7 @@ The wizard is responsible for:
     - Validating rule inputs before rule persistence.
     - Translating UI selections into canonical rule definitions.
     - Ensuring generated rules comply with rule evaluation constraints.
+    - Maintaining rule-definition boundaries during Now-stage delivery.
 
 The wizard must not:
 
@@ -29,6 +33,14 @@ The wizard must not:
 
 The wizard only produces rule definitions that are later evaluated by
 the rule engine.
+
+Now-stage constraint:
+
+    - The wizard is limited to rule-definition authoring, validation,
+    confirmation, and persistence.
+    - The wizard is menu-hosted; the HUD provides launch-to-menu only.
+    - Runtime task mutation remains owned by the State Store command path
+    after rule evaluation.
 
 ## 14.3 Wizard interaction model ##
 
@@ -99,7 +111,7 @@ Examples include:
     - Location activity
 
 The wizard must translate subject selections into deterministic
-`SubjectID` values compatible with the identity rules described in
+`SubjectId` values compatible with the identity rules described in
 Section 3.9.
 
 ## 14.7 Progress definition ##
@@ -142,7 +154,7 @@ Examples include:
     - Category label
     - Icon selection
 
-Metadata must not influence `TaskID` generation unless explicitly
+Metadata must not influence `TaskId` generation unless explicitly
 defined as an identity field. See Section 3.3.
 
 ## 14.10 Validation rules ##
@@ -180,6 +192,10 @@ it to the persistence system described in Section 9.
 
 The rule then becomes part of the rule evaluation pipeline described in
 Section 7.9 and may generate tasks during the next evaluation cycle.
+
+The wizard does not write runtime task state directly. Runtime task
+entities change only through evaluation and State Store command
+application.
 
 ## 14.13 Rule template library ##
 
@@ -233,3 +249,20 @@ The preview renders a mock task row using the current wizard inputs
 appearance before committing.
 
 The preview is cosmetic and must not create or evaluate any actual task.
+
+## 14.16 Command and snapshot boundary flow ##
+
+Task Builder execution flow must remain boundary-safe.
+
+```text
+Wizard interaction -> Rule-definition command -> Rule persistence ->
+Rule evaluation engine -> State Store command application -> Snapshot publish
+```
+
+In this flow:
+
+    - the wizard authors intent
+    - the engine evaluates rules deterministically
+    - the State Store owns canonical runtime mutation
+    - HUD and Menu render the resulting snapshot
+    - no direct runtime task mutation occurs inside wizard steps

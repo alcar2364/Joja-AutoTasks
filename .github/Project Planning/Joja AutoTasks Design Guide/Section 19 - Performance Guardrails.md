@@ -78,7 +78,7 @@ tasks involved.
 
 Design constraints:
 
-    - use deterministic `TaskID` lookup tables
+    - use deterministic `TaskId` lookup tables
     - avoid repeated list scans
     - avoid allocating large temporary collections
 
@@ -87,8 +87,10 @@ as the number of tasks grows.
 
 ## 19.7 HUD rendering constraints ##
 
-The HUD described in Section 21 is rendered during the game's draw
-cycle.
+The HUD design and rendering model are defined in Section 20.6, while
+Section 21 defines delivery staging and gate checks.
+
+HUD rendering occurs during the game's draw cycle.
 
 HUD rendering must remain lightweight and avoid unnecessary
 recomputation.
@@ -156,3 +158,26 @@ The system must follow these performance constraints:
 
 These constraints ensure the mod operates smoothly even in complex save
 files with large numbers of entities.
+
+## 19.12 Stage-gate performance checks ##
+
+Performance is evaluated as part of delivery stage gates in Section 21.3.2.
+
+Gate G5 is primary, with G1, G3, and G7 used as supporting safeguards
+for boundary integrity, dual-surface parity, and documentation closure.
+
+Required evidence for gate closure:
+
+    - Evaluation paths remain event-driven and do not regress into
+    per-frame heavy work.
+    - State reconciliation remains linear relative to task count.
+    - HUD and menu rebuild behavior remains change-driven, not frame-driven.
+    - Debug diagnostics are bounded and can be disabled without impacting
+    gameplay correctness.
+
+Scope-budget coupling rule:
+
+    - If performance risk exceeds the stage budget, the team may defer
+    polish depth to Next but may not drop mapped capabilities.
+    - Any deferment must be recorded in the variance register with
+    justification and closure target.

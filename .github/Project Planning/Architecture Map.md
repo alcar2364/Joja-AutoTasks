@@ -479,18 +479,18 @@ DayKey = Year{N}-{Season}{D} (e.g., "Year1-Summer15")
 
 ---
 
-### 3.3 RuleID
+### 3.3 RuleId
 
 **Purpose:** Unique identifier for a Task Builder rule.
 
 **Namespace:** `JojaAutoTasks.Domain.Identifiers`  
-**Location:** `Domain/Identifiers/RuleID.cs`  
+**Location:** `Domain/Identifiers/RuleId.cs`  
 **Type:** `readonly struct`
 
 **Constructor:**
 
 ```csharp
-public RuleID(string ruleId)
+public RuleId(string ruleId)
 ```
 
 **Properties:**
@@ -501,13 +501,13 @@ public string Value { get; }
 
 **Model (from [Section 3.7]):**
 
-    - `RuleID` is a deterministic canonical token assigned to each Task Builder rule.
-    - Pre-Step-7 status: `RuleID` is implemented as a validated wrapper value type.
-    - Sequential-generation enforcement is deferred until RuleID generation exists.
+    - `RuleId` is a deterministic canonical token assigned to each Task Builder rule.
+    - Pre-Step-7 status: `RuleId` is implemented as a validated wrapper value type.
+    - Sequential-generation enforcement is deferred until RuleId generation exists.
 
 **Stability Requirement:**
 
-RuleID must remain stable across:
+RuleId must remain stable across:
 
     - Save loads
     - Configuration changes
@@ -515,18 +515,18 @@ RuleID must remain stable across:
 
 ---
 
-### 3.4 SubjectID
+### 3.4 SubjectId
 
 **Purpose:** Optional identifier for the target entity of a task (e.g., NPC, crop, location).
 
 **Namespace:** `JojaAutoTasks.Domain.Identifiers`  
-**Location:** `Domain/Identifiers/SubjectID.cs`  
+**Location:** `Domain/Identifiers/SubjectId.cs`  
 **Type:** `readonly struct`
 
 **Constructor:**
 
 ```csharp
-public SubjectID(string subjectId)
+public SubjectId(string subjectId)
 ```
 
 **Properties:**
@@ -543,7 +543,7 @@ public string Value { get; }
 
 **Usage:**
 
-SubjectID is embedded in TaskID when tasks target specific entities, ensuring unique task
+SubjectId is embedded in TaskId when tasks target specific entities, ensuring unique task
 instances per subject.
 
 ---
@@ -1133,7 +1133,7 @@ All generators are invoked during task evaluation cycle, producing a unified tas
 ```csharp
 public sealed class RuleDefinition
 {
-    public RuleID RuleId { get; }
+    public RuleId RuleId { get; }
     public RuleMetadata Metadata { get; }
     public TriggerConfiguration Trigger { get; }
     public ConditionTree Conditions { get; }
@@ -1806,7 +1806,10 @@ UI Initialized
 
 ## 13. Implementation Status
 
-### Phase 1 (Current) — Foundation
+### 13.1 Current implemented baseline
+
+Completed implementation currently reflects the Phase 1 foundation plus
+deterministic identifier/domain primitives.
 
 **Completed:**
 
@@ -1814,75 +1817,55 @@ UI Initialized
     - ✅ `BootstrapContainer` dependency composition
     - ✅ `ModRuntime` container
     - ✅ `LifecycleCoordinator` event sequencing
-    - ✅ `EventDispatcher` interface (stub)
-    - ✅ `ModConfig` schema
-    - ✅ `ConfigLoader` implementation
-    - ✅ Domain model: `TaskObject`, `TaskId`, `DayKey`, `RuleID`, `SubjectID`
+    - ✅ `EventDispatcher` contract and deterministic stub implementation
+    - ✅ `ModConfig` schema and `ConfigLoader`
+    - ✅ Domain model primitives: `TaskObject`, `TaskId`, `DayKey`, `RuleId`, `SubjectId`
     - ✅ Domain enums: `TaskStatus`, `TaskCategory`, `TaskSourceType`
-    - ✅ `IdentifierUtility` validation
+    - ✅ `IdentifierUtility` validation and normalization
+    - ✅ Deterministic `TaskIdFactory` constructors
     - ✅ `ModLogger` infrastructure
 
-**Status:** Phase 1 complete — signal-only lifecycle wiring validated
+**Status:** Foundation complete; no-drop staged delivery continues from Phase 2 onward.
 
 ---
 
-### Phase 2 (In Progress) — State Store & Task Engine Core
+### 13.2 No-drop staged roadmap alignment
 
-**Recently Completed:**
+Implementation sequencing follows Design Guide Section 21.
 
-    - ✅ `TaskIdFactory` deterministic constructors for built-in and Task Builder IDs
+| Stage | Scope | Status intent |
+| ---- | ---- | ---- |
+| Now | Phase 1 through Phase 10, plus required Phase 11 and Phase 12 baseline slices | Build Version 1 without dropping Task Builder or either UI surface |
+| Next | Remaining Phase 11 and Phase 12 depth | Hardening and UX depth without scope reduction |
+| Later | Post-Version-1 expansion (for example, statistics dashboards) | Extend safely on top of stable Version 1 architecture |
 
-**Planned Components:**
+Capability-level ownership is canonical in Design Guide Section 21.3.1.
 
-    - ⬜ State Store implementation
-    - ⬜ Command pattern (commands + reducers)
-    - ⬜ Snapshot publishing
-    - ⬜ Evaluation Context
-    - ⬜ Game State Abstraction (`IGameStateProvider`)
-    - ⬜ Built-in task generators (basic set)
-    - ⬜ Task evaluation pipeline
-    - ⬜ Persistence manager (save/load)
-    - ⬜ Migration system foundation
-
----
-
-### Phase 3 (Planned) — Task Builder System
-
-**Planned Components:**
-
-    - ⬜ Rule definition serialization
-    - ⬜ Rule evaluation engine
-    - ⬜ Task Builder wizard UI
-    - ⬜ Condition tree model
-    - ⬜ Baseline persistence
-    - ⬜ Rule validation
+| Capability | Phase owner | Stage |
+| ---- | ---- | ---- |
+| Menu dashboard management surface | Phase 8 | Now |
+| HUD in-game task surface | Phase 9 | Now |
+| Task Builder wizard rule-definition flow | Phase 10 | Now |
+| History day browsing and day navigation baseline | Phase 11 | Now |
+| History filtering and quick-jump depth | Phase 11 | Next |
+| Debug diagnostics and manual trigger tooling baseline | Phase 12 | Now |
+| Debug ergonomics and tuning depth | Phase 12 | Next |
 
 ---
 
-### Phase 4 (Planned) — UI Layer
+### 13.3 Documentation synchronization status
 
-**Planned Components:**
+This map follows design-guide-first reconciliation:
 
-    - ⬜ StardewUI integration
-    - ⬜ View Model architecture (INPC)
-    - ⬜ HUD implementation
-    - ⬜ Task menu dashboard
-    - ⬜ Manual task creation UI
-    - ⬜ Day browser
-    - ⬜ Settings panel
+1. Canonical design sections are updated first.
+2. Architecture Map wording is reconciled against canonical sections.
+3. Accepted divergence is tracked in the Section 21 variance register.
 
----
+Seeded baseline variance tracked by design docs:
 
-### Phase 5+ (Future) — Advanced Features
-
-**Planned:**
-
-    - ⬜ Statistics dashboard
-    - ⬜ Task analytics
-    - ⬜ Advanced filtering/sorting
-    - ⬜ Task Builder advanced conditions
-    - ⬜ Custom categories
-    - ⬜ Export/import functionality
+    - `VAR-001`: legacy `RuleID`/`SubjectID` naming in some older docs vs
+    code canonical `RuleId`/`SubjectId` naming and file paths
+    (`Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs`).
 
 ---
 
@@ -1917,15 +1900,16 @@ UI Initialized
 
 ## Document Maintenance
 
-**Last Updated:** 2026-03-08
+**Last Updated:** 2026-03-10
 
 **Maintenance Notes:**
 
-    - Update this document as Phase 2+ components are implemented
+    - Update this document after canonical design guide updates are merged
     - Add actual class signatures when code is written
     - Include code location paths for new components
     - Mark sections ✅ complete as phases progress
     - Add new architectural patterns as they emerge
+    - Record justified design-vs-map drift in the Section 21 variance register
 
 **Coordination with Design Guide:**
 

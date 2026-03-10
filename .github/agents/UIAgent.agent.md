@@ -247,6 +247,39 @@ Architecture placement, snapshot usage, StarML considerations.
 
 Only genuine concerns.
 
+## Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future UI implementation sessions.
+
+**When to store a memory:**
+
+- UI architecture patterns or conventions specific to this codebase
+- Non-obvious StardewUI or view-model rules
+- Important facts about UI data flow or snapshot consumption
+- Lessons learned from UI mistakes or edge cases
+- Verified UI patterns that align with project architecture
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.cs#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
 ## Anti‑Slop Rules ##
 
 You must not:

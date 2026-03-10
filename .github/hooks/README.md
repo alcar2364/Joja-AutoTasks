@@ -21,7 +21,7 @@ Runtime trigger:
 Domain:
 
     * context loading and planning preflight
-    * memory-operation routing reminder (route memory tasks to BrainAgent)
+    * native Copilot memory usage guidance
     * combines former intent from:
         - contract-auto-loader
         - context-engineering-loader

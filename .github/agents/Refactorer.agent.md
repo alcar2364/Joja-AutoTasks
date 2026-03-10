@@ -5,7 +5,7 @@ argument-hint:  Describe the refactor; include the approved plan if available, t
                 files/subsystems, scope limits (no behavior change, touched-region only, etc.), and whether this is
                 a structural refactor, rename, extraction, or consolidation.
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, todo]
+tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
 agents: [Reviewer, Planner, Researcher, StarMLAgent, GameAgent, UIAgent]
 handoffs:
 -   label: Refactor validation handoff
@@ -316,7 +316,40 @@ Include checks relevant to the refactor:
     - genuine remaining concerns
     - deferred cleanup items
 
-## 7. Anti-Slop Rules ##
+## 8. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future refactoring sessions.
+
+**When to store a memory:**
+
+- Refactoring patterns or invariants discovered that aren't obvious from limited code samples
+- Non-obvious structural constraints specific to this codebase
+- Important facts about code organization or module boundaries
+- Lessons learned from refactoring mistakes or edge cases
+- Verified safe refactoring sequences
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 9. Anti-Slop Rules ##
 
 You must not:
 

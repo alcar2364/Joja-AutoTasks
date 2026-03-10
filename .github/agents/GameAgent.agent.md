@@ -376,7 +376,40 @@ Include the checks most relevant to the task, such as:
 If no edits were made because the request was unsafe, underspecified, or out of agent scope, say so
 clearly.
 
-## 9. Anti-Slop Rules ##
+## 9. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future coding sessions.
+
+**When to store a memory:**
+
+- Architectural patterns or invariants discovered that aren't obvious from limited code samples
+- Verified build/test/deployment commands after successful execution
+- Non-obvious conventions or preferences specific to this codebase
+- Important structural facts about code organization or logic flow
+- Lessons learned from mistakes or edge cases
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 10. Anti-Slop Rules ##
 
 You must not:
 

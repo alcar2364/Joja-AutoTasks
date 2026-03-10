@@ -65,3 +65,9 @@ nunit-*.xml
 .markdownlint*
 .tmp*
 .dotnet/
+
+# Agent ecosystem archives
+.github/archive/
+
+# Native Copilot memory (user/session/repo)
+/memories/

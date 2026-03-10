@@ -6,7 +6,7 @@ argument-hint:  Describe the feature, bug, refactor, or task; include the Resear
                                 no behavior change, or single-file; include documentation review preference when relevant (`pre`, `post`, `none`, `auto`).
 target: vscode
 tools: [vscode, read, agent, search, browser, microsoftdocs/mcp/microsoft_code_sample_search, microsoftdocs/mcp/microsoft_docs_search, todo]
-agents: [Researcher, UnitTestAgent, Reviewer, UIAgent, StarMLAgent, GameAgent, Refactorer, BrainAgent, WorkspaceAgent]
+agents: [Researcher, UnitTestAgent, Reviewer, UIAgent, StarMLAgent, GameAgent, Refactorer, WorkspaceAgent]
 handoffs:
         - label: Researcher follow-up
           agent: Researcher
@@ -427,7 +427,40 @@ You must not:
     - describe a plan as refactor-safe if it changes behavior
     - use manager/service/helper naming sludge without naming a precise responsibility
 
-## 9. Preferred Handoffs ##
+## 9. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future planning sessions.
+
+**When to store a memory:**
+
+- Architectural patterns or invariants discovered that aren't obvious from limited code samples
+- Planning decisions that reveal cross-cutting design principles
+- Non-obvious conventions or preferences specific to this codebase
+- Important structural facts about code organization or logic flow
+- Lessons learned from planning mistakes or edge cases
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 10. Preferred Handoffs ##
 
 Default routing is configured in frontmatter under `handoffs`.
 

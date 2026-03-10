@@ -291,7 +291,40 @@ For consistency audits, provide a structured report:
     - issues that need user decision
     - items deferred by scope
 
-## 7. Anti-Slop Rules ##
+## 8. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future documentation sessions.
+
+**When to store a memory:**
+
+- Documentation conventions or patterns specific to this codebase
+- Non-obvious project structure or organization rules
+- Important facts about documentation flow or cross-references
+- Lessons learned from documentation mistakes or edge cases
+- Verified documentation workflows or commands
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 9. Anti-Slop Rules ##
 
 You must not:
 

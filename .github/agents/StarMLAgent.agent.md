@@ -536,7 +536,40 @@ Include checks such as:
 If no edits were made because the task was out of scope, unsafe, or not truly a StarML problem, say
 so clearly.
 
-## 11. Anti-Slop Rules ##
+## 11. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future StarML authoring sessions.
+
+**When to store a memory:**
+
+- StarML patterns or conventions specific to this codebase
+- Non-obvious StardewUI binding or layout rules
+- Important facts about StarML structure or organization
+- Lessons learned from StarML mistakes or edge cases
+- Verified StarML idioms that align with project architecture
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.sml#L123", "other/file.sml#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 12. Anti-Slop Rules ##
 
 You must not:
 

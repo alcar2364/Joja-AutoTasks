@@ -4,7 +4,7 @@ description: "Use when: designing, implementing, or reviewing C# unit tests for 
 argument-hint:  Describe the target code under test, requested test scope (new tests, review,
                 or both), framework constraints, and whether edits are allowed.
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, todo]
+tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
 agents: [WorkspaceAgent, Reviewer]
 
 handoffs:
@@ -175,7 +175,40 @@ Prioritize tests that protect:
     - event-driven evaluation and bounded update behavior
     - rule evaluation correctness for edge conditions
 
-## 6. Editing Policy ##
+## 7. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future unit testing sessions.
+
+**When to store a memory:**
+
+- Testing patterns or conventions specific to this codebase
+- Non-obvious test setup or fixture requirements
+- Important facts about determinism requirements or test isolation
+- Lessons learned from testing mistakes or edge cases
+- Verified test patterns that align with project architecture
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["Tests/file.cs#L123", "Tests/other.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 8. Editing Policy ##
 
 Your default mode is implementation guidance.
 

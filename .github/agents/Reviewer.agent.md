@@ -448,7 +448,40 @@ You must not:
     - recommend broad rewrites when the review target is local
     - handwave with “best practices” without naming the exact contract or boundary involved
 
-## 10. Preferred Handoffs ##
+## 10. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future review sessions.
+
+**When to store a memory:**
+
+- Contract interpretation patterns discovered during review
+- Non-obvious validation rules specific to this codebase
+- Important structural facts about code organization or logic flow
+- Review patterns that reveal cross-cutting quality requirements
+- Lessons learned from review mistakes or edge cases
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 11. Preferred Handoffs ##
 
 Default routing is configured in frontmatter under `handoffs`.
 

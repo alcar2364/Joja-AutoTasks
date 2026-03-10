@@ -485,7 +485,40 @@ You must not:
     - blame StardewUI for backend logic failures or vice versa
     - handwave with “best practices” instead of naming the exact failing mechanism
 
-## 10. Preferred Handoffs ##
+## 10. Repository Memory Usage ##
+
+Use the native Copilot `memory` tool to store repository-scoped facts that will help future troubleshooting sessions.
+
+**When to store a memory:**
+
+- Root cause patterns discovered that aren't obvious from limited code samples
+- Verified diagnostic commands or debugging workflows
+- Non-obvious failure modes specific to this codebase
+- Important structural facts about error propagation or logging
+- Lessons learned from troubleshooting mistakes or edge cases
+
+**Memory format (JSON):**
+
+```json
+{
+  "subject": "Brief subject line",
+  "fact": "The factual statement",
+  "citations": ["file/path.ext#L123", "other/file.cs#L45"],
+  "reason": "Why this will help future tasks",
+  "category": "appropriate-category"
+}
+```
+
+**Do NOT store:**
+
+- Facts that are temporary or task-specific
+- Information easily inferred from reading the code
+- Secrets or sensitive data
+- Opinions or preferences not grounded in codebase evidence
+
+Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
+
+## 11. Preferred Handoffs ##
 
 Default routing is configured in frontmatter under `handoffs`.
 

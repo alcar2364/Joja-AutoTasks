@@ -36,8 +36,8 @@ if echo "$PROMPT" | grep -qiE '(troubleshoot|troubleshooting|diagnose|diagnosis|
   echo "[context-preflight] If root cause reveals major architecture problem (especially from agent code), route to WorkspaceAgent. Minor bugs: no doc routing."
 fi
 
-if echo "$PROMPT" | grep -qiE '(memory|remember|recall|store memory|retrieve memory|episodic|knowledge index|archive memory|rebuild index)'; then
-  echo "[context-preflight] Route memory operations to BrainAgent (`.github/agents/BrainAgent.agent.md`) and keep `.github/memory/` indexes consistent."
+if echo "$PROMPT" | grep -qiE '(memory|remember|recall|store memory|retrieve memory)'; then
+  echo "[context-preflight] Use native Copilot memory tool for storing/retrieving repository facts (subject/fact/citations/reason/category format under /memories/repo/)."
 fi
 
 exit 0
