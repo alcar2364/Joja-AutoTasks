@@ -114,12 +114,12 @@ Step goal:
 
 ### 2B - Add field separation model ###
 
-    * [ ] Action: define which fields are engine-controlled vs user-controlled in TaskRecord.
-    * [ ] Scope: `StateStore/Models/TaskRecord.cs` (comments/documentation) or separate `FieldOwnership.cs` helper.
-    * [ ] Verify: clear documentation of field ownership boundaries exists.
-    * [ ] Commit message: `phase3(step2B): document engine vs user field ownership`
-    * [ ] Must include: field ownership documentation or helper types only.
-    * [ ] Must exclude: handler implementation.
+    * [x] Action: define which fields are engine-controlled vs user-controlled in TaskRecord.
+    * [x] Scope: `StateStore/Models/TaskRecord.cs` (comments/documentation) or separate `FieldOwnership.cs` helper.
+    * [x] Verify: clear documentation of field ownership boundaries exists.
+    * [x] Commit message: `phase3(step2B): document engine vs user field ownership`
+    * [x] Must include: field ownership documentation or helper types only.
+    * [x] Must exclude: handler implementation.
 
 ### 2C - Add state dictionary container with version tracking ###
 

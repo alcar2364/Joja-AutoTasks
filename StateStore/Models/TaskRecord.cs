@@ -6,18 +6,26 @@ namespace JojaAutoTasks.StateStore.Models;
 
 internal sealed class TaskRecord
 {
+    // -- Identity (immutable) -- //
     internal TaskId Id { get; }
+
+    // -- Engine-Owned Fields -- //
     internal TaskCategory Category { get; }
     internal TaskSourceType SourceType { get; }
     internal string Title { get; set; }
     internal string? Description { get; set; }
-    internal TaskStatus Status { get; set; }
-    internal int ProgressCurrent { get; set; }
-    internal int ProgressMax { get; set; }
-    internal DayKey CreationDay { get; }
-    internal DayKey? CompletionDay { get; set; }
     internal string SourceIdentifier { get; }
+    internal int ProgressCurrent { get; set; }
+    internal int ProgressMax { get; }
+    internal DayKey CreationDay { get; }
+
+    // -- User-Owned Fields -- //
     internal bool IsPinned { get; set; }
+
+    // -- Command-Specific Fields -- //
+    internal TaskStatus Status { get; set; }
+    internal DayKey? CompletionDay { get; set; }
+
 
     internal TaskRecord(
         TaskId id,
