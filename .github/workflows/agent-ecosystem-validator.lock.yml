@@ -21,28 +21,34 @@
 #
 # For more information: https://github.github.com/gh-aw/introduction/overview/
 #
-# Daily documentation synchronization: detects code changes and identifies design doc updates needed.
+# Validates agent/instruction/skill ecosystem consistency: detects unmapped files and frontmatter issues.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"c1c16655e4980fc008a04d2a9bc1ab4db21b0886a61c7f6fe97c258275304b29","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"022e2109244ec51f4deb5f1b0d4f478a13115a1e4e062806a26c81e02ac2447b","compiler_version":"v0.57.0","strict":true}
 
-name: "daily-docs-updater"
+name: "agent-ecosystem-validator"
 "on":
+  push:
+    paths:
+    - .github/agents/*.agent.md
+    - .github/instructions/*.instructions.md
+    - .github/skills/*/SKILL.md
+    - .github/instructions/agent-boundaries-and-wiring-governance.instructions.md
   schedule:
-  - cron: "38 10 * * *"
-    # Friendly format: daily (scattered)
+  - cron: "14 3 * * 4"
+    # Friendly format: weekly (scattered)
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: "gh-aw-${{ github.workflow }}"
+  group: "gh-aw-${{ github.workflow }}-${{ github.ref || github.run_id }}"
 
-run-name: "daily-docs-updater"
+run-name: "agent-ecosystem-validator"
 
 jobs:
   activation:
-    needs: detect_changes
-    if: ${{ needs.detect_changes.outputs.has_changes == 'true' }}
+    needs: pre_activation
+    if: needs.pre_activation.outputs.activated == 'true'
     runs-on: ubuntu-slim
     permissions:
       contents: read
@@ -65,7 +71,7 @@ jobs:
           GH_AW_INFO_VERSION: ""
           GH_AW_INFO_AGENT_VERSION: "latest"
           GH_AW_INFO_CLI_VERSION: "v0.57.0"
-          GH_AW_INFO_WORKFLOW_NAME: "daily-docs-updater"
+          GH_AW_INFO_WORKFLOW_NAME: "agent-ecosystem-validator"
           GH_AW_INFO_EXPERIMENTAL: "false"
           GH_AW_INFO_SUPPORTS_TOOLS_ALLOWLIST: "true"
           GH_AW_INFO_STAGED: "false"
@@ -97,7 +103,7 @@ jobs:
       - name: Check workflow file timestamps
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          GH_AW_WORKFLOW_FILE: "daily-docs-updater.lock.yml"
+          GH_AW_WORKFLOW_FILE: "agent-ecosystem-validator.lock.yml"
         with:
           script: |
             const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
@@ -113,12 +119,9 @@ jobs:
           GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
           GH_AW_GITHUB_EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          GH_AW_GITHUB_EVENT_REPOSITORY_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
           GH_AW_GITHUB_RUN_ID: ${{ github.run_id }}
           GH_AW_GITHUB_WORKSPACE: ${{ github.workspace }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_CHANGED_FILES: ${{ needs.detect_changes.outputs.changed_files }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_SINCE_UTC: ${{ needs.detect_changes.outputs.since_utc }}
         run: |
           bash /opt/gh-aw/actions/create_prompt_first.sh
           {
@@ -166,17 +169,14 @@ jobs:
           </system>
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/workflows/daily-docs-updater.md}}
+          {{#runtime-import .github/workflows/agent-ecosystem-validator.md}}
           GH_AW_PROMPT_EOF
           } > "$GH_AW_PROMPT"
       - name: Interpolate variables and render templates
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_PROMPT: /tmp/gh-aw/aw-prompts/prompt.txt
-          GH_AW_GITHUB_EVENT_REPOSITORY_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_CHANGED_FILES: ${{ needs.detect_changes.outputs.changed_files }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_SINCE_UTC: ${{ needs.detect_changes.outputs.since_utc }}
         with:
           script: |
             const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
@@ -192,12 +192,10 @@ jobs:
           GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
           GH_AW_GITHUB_EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          GH_AW_GITHUB_EVENT_REPOSITORY_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
           GH_AW_GITHUB_RUN_ID: ${{ github.run_id }}
           GH_AW_GITHUB_WORKSPACE: ${{ github.workspace }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_CHANGED_FILES: ${{ needs.detect_changes.outputs.changed_files }}
-          GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_SINCE_UTC: ${{ needs.detect_changes.outputs.since_utc }}
+          GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED: ${{ needs.pre_activation.outputs.activated }}
         with:
           script: |
             const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
@@ -214,12 +212,10 @@ jobs:
                 GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: process.env.GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER,
                 GH_AW_GITHUB_EVENT_ISSUE_NUMBER: process.env.GH_AW_GITHUB_EVENT_ISSUE_NUMBER,
                 GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: process.env.GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER,
-                GH_AW_GITHUB_EVENT_REPOSITORY_DEFAULT_BRANCH: process.env.GH_AW_GITHUB_EVENT_REPOSITORY_DEFAULT_BRANCH,
                 GH_AW_GITHUB_REPOSITORY: process.env.GH_AW_GITHUB_REPOSITORY,
                 GH_AW_GITHUB_RUN_ID: process.env.GH_AW_GITHUB_RUN_ID,
                 GH_AW_GITHUB_WORKSPACE: process.env.GH_AW_GITHUB_WORKSPACE,
-                GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_CHANGED_FILES: process.env.GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_CHANGED_FILES,
-                GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_SINCE_UTC: process.env.GH_AW_NEEDS_DETECT_CHANGES_OUTPUTS_SINCE_UTC
+                GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED: process.env.GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED
               }
             });
       - name: Validate prompt placeholders
@@ -241,18 +237,10 @@ jobs:
           retention-days: 1
 
   agent:
-    needs:
-      - activation
-      - detect_changes
-    if: ${{ needs.detect_changes.outputs.has_changes == 'true' }}
+    needs: activation
     runs-on: ubuntu-latest
     permissions:
-      actions: read
       contents: read
-      issues: read
-      pull-requests: read
-    concurrency:
-      group: "gh-aw-copilot-${{ github.workflow }}"
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       GH_AW_ASSETS_ALLOWED_EXTS: ""
@@ -262,7 +250,7 @@ jobs:
       GH_AW_SAFE_OUTPUTS: /opt/gh-aw/safeoutputs/outputs.jsonl
       GH_AW_SAFE_OUTPUTS_CONFIG_PATH: /opt/gh-aw/safeoutputs/config.json
       GH_AW_SAFE_OUTPUTS_TOOLS_PATH: /opt/gh-aw/safeoutputs/tools.json
-      GH_AW_WORKFLOW_ID_SANITIZED: dailydocsupdater
+      GH_AW_WORKFLOW_ID_SANITIZED: agentecosystemvalidator
     outputs:
       checkout_pr_success: ${{ steps.checkout-pr.outputs.checkout_pr_success || 'true' }}
       detection_conclusion: ${{ steps.detection_conclusion.outputs.conclusion }}
@@ -331,12 +319,12 @@ jobs:
           mkdir -p /tmp/gh-aw/safeoutputs
           mkdir -p /tmp/gh-aw/mcp-logs/safeoutputs
           cat > /opt/gh-aw/safeoutputs/config.json << 'GH_AW_SAFE_OUTPUTS_CONFIG_EOF'
-          {"create_issue":{"max":3},"missing_data":{},"missing_tool":{},"noop":{"max":1}}
+          {"create_issue":{"max":1},"missing_data":{},"missing_tool":{},"noop":{"max":1}}
           GH_AW_SAFE_OUTPUTS_CONFIG_EOF
           cat > /opt/gh-aw/safeoutputs/tools.json << 'GH_AW_SAFE_OUTPUTS_TOOLS_EOF'
           [
             {
-              "description": "Create a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. CONSTRAINTS: Maximum 3 issue(s) can be created. Title will be prefixed with \"[docs] \". Labels [\"agentic-workflow\" \"documentation\" \"needs-review\"] will be automatically added.",
+              "description": "Create a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[ecosystem] \". Labels [\"agentic-workflow\" \"agent-ecosystem\" \"governance\"] will be automatically added.",
               "inputSchema": {
                 "additionalProperties": false,
                 "properties": {
@@ -885,8 +873,8 @@ jobs:
         if: always() && steps.detection_guard.outputs.run_detection == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          WORKFLOW_NAME: "daily-docs-updater"
-          WORKFLOW_DESCRIPTION: "Daily documentation synchronization: detects code changes and identifies design doc updates needed."
+          WORKFLOW_NAME: "agent-ecosystem-validator"
+          WORKFLOW_DESCRIPTION: "Validates agent/instruction/skill ecosystem consistency: detects unmapped files and frontmatter issues."
           HAS_PATCH: ${{ steps.collect_output.outputs.has_patch }}
         with:
           script: |
@@ -982,7 +970,7 @@ jobs:
       contents: read
       issues: write
     concurrency:
-      group: "gh-aw-conclusion-daily-docs-updater"
+      group: "gh-aw-conclusion-agent-ecosystem-validator"
       cancel-in-progress: false
     outputs:
       noop_message: ${{ steps.noop.outputs.noop_message }}
@@ -1012,7 +1000,7 @@ jobs:
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
           GH_AW_NOOP_MAX: "1"
-          GH_AW_WORKFLOW_NAME: "daily-docs-updater"
+          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
@@ -1025,7 +1013,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "daily-docs-updater"
+          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
@@ -1038,10 +1026,10 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "daily-docs-updater"
+          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
           GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
-          GH_AW_WORKFLOW_ID: "daily-docs-updater"
+          GH_AW_WORKFLOW_ID: "agent-ecosystem-validator"
           GH_AW_SECRET_VERIFICATION_RESULT: ${{ needs.activation.outputs.secret_verification_result }}
           GH_AW_CHECKOUT_PR_SUCCESS: ${{ needs.agent.outputs.checkout_pr_success }}
           GH_AW_INFERENCE_ACCESS_ERROR: ${{ needs.agent.outputs.inference_access_error }}
@@ -1059,7 +1047,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "daily-docs-updater"
+          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
           GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
           GH_AW_NOOP_MESSAGE: ${{ steps.noop.outputs.noop_message }}
@@ -1072,38 +1060,28 @@ jobs:
             const { main } = require('/opt/gh-aw/actions/handle_noop_message.cjs');
             await main();
 
-  detect_changes:
-    runs-on: ubuntu-latest
+  pre_activation:
+    runs-on: ubuntu-slim
     outputs:
-      changed_files: ${{ steps.detect.outputs.changed_files }}
-      has_changes: ${{ steps.detect.outputs.has_changes }}
-      since_utc: ${{ steps.detect.outputs.since_utc }}
+      activated: ${{ steps.check_membership.outputs.is_team_member == 'true' }}
+      matched_command: ''
     steps:
-      - name: Check for code changes since UTC midnight
-        id: detect
-        run: |
-          since="$(date -u '+%Y-%m-%dT00:00:00Z')"
-          repo="$REPO"
-          default_branch="$DEFAULT_BRANCH"
-
-          # Get commits since midnight
-          files="$(gh api "repos/${repo}/commits?sha=${default_branch}&since=${since}&per_page=100" --jq '[.[].files[].filename] | unique | @csv' | tr -d '"')"
-
-          if [ -n "$files" ]; then
-            has_changes=true
-          else
-            has_changes=false
-          fi
-
-          {
-            echo "has_changes=${has_changes}"
-            echo "changed_files=${files}"
-            echo "since_utc=${since}"
-          } >> "$GITHUB_OUTPUT"
+      - name: Setup Scripts
+        uses: github/gh-aw/actions/setup@902845080df391b1f71845fcd7c303dfc0ac90b3 # v0.57.0
+        with:
+          destination: /opt/gh-aw/actions
+      - name: Check team membership for workflow
+        id: check_membership
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
+          GH_AW_REQUIRED_ROLES: admin,maintainer,write
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
+            setupGlobals(core, github, context, exec, io);
+            const { main } = require('/opt/gh-aw/actions/check_membership.cjs');
+            await main();
 
   safe_outputs:
     needs: agent
@@ -1114,10 +1092,10 @@ jobs:
       issues: write
     timeout-minutes: 15
     env:
-      GH_AW_CALLER_WORKFLOW_ID: "${{ github.repository }}/daily-docs-updater"
+      GH_AW_CALLER_WORKFLOW_ID: "${{ github.repository }}/agent-ecosystem-validator"
       GH_AW_ENGINE_ID: "copilot"
-      GH_AW_WORKFLOW_ID: "daily-docs-updater"
-      GH_AW_WORKFLOW_NAME: "daily-docs-updater"
+      GH_AW_WORKFLOW_ID: "agent-ecosystem-validator"
+      GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
     outputs:
       code_push_failure_count: ${{ steps.process_safe_outputs.outputs.code_push_failure_count }}
       code_push_failure_errors: ${{ steps.process_safe_outputs.outputs.code_push_failure_errors }}
@@ -1153,7 +1131,7 @@ jobs:
           GH_AW_ALLOWED_DOMAINS: "*.githubusercontent.com,api.business.githubcopilot.com,api.enterprise.githubcopilot.com,api.github.com,api.githubcopilot.com,api.individual.githubcopilot.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,codeload.github.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,github-cloud.githubusercontent.com,github-cloud.s3.amazonaws.com,github.com,github.githubassets.com,host.docker.internal,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,lfs.github.com,objects.githubusercontent.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,ppa.launchpad.net,raw.githubusercontent.com,registry.npmjs.org,s.symcb.com,s.symcd.com,security.ubuntu.com,telemetry.enterprise.githubcopilot.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com"
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_API_URL: ${{ github.api_url }}
-          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"create_issue\":{\"close_older_issues\":false,\"labels\":[\"agentic-workflow\",\"documentation\",\"needs-review\"],\"max\":3,\"title_prefix\":\"[docs] \"},\"missing_data\":{},\"missing_tool\":{}}"
+          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"create_issue\":{\"close_older_issues\":true,\"labels\":[\"agentic-workflow\",\"agent-ecosystem\",\"governance\"],\"max\":1,\"title_prefix\":\"[ecosystem] \"},\"missing_data\":{},\"missing_tool\":{}}"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
