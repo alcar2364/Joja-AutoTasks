@@ -48,8 +48,8 @@ merge on build failure.
 ## Context
 
 - Repository: `${{ github.repository }}`
-- PR branch: `${{ github.head_ref }}`
-- Base branch: `${{ github.base_ref }}`
+- PR head commit: `${{ github.event.pull_request.head.sha }}`
+- PR base commit: `${{ github.event.pull_request.base.sha }}`
 - Build command: `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
 - Target frameworks: mod net6.0, tests net8.0
 - Trigger: code changes only (`.cs`, `.csproj`, `.sln`, `manifest.json`)
@@ -73,8 +73,8 @@ merge on build failure.
 ## Cache Strategy
 
 - Cache NuGet global packages directory (`~/.nuget/packages`)
-- Key: `nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}`
-- Restore key: `nuget-${{ runner.os }}-`
+- Key: `nuget-ubuntu-latest-<csproj-hash>`
+- Restore key: `nuget-ubuntu-latest-`
 
 ## Notes
 
