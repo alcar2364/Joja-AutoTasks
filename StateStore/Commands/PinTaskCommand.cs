@@ -8,9 +8,11 @@ internal sealed class PinTaskCommand : IStateCommand
 
     internal PinTaskCommand(TaskId taskId)
     {
-        // -- Guard --//
+        // -- Guards -- //
         if (taskId == default)
+        {
             throw new ArgumentException("TaskId cannot be default.", nameof(taskId));
+        }
 
         TaskId = taskId;
     }

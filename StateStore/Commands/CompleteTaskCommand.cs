@@ -9,10 +9,11 @@ internal sealed class CompleteTaskCommand : IStateCommand
 {
     public TaskId TaskId { get; }
 
-    public DayKey CompletionDay { get; }
+    internal DayKey CompletionDay { get; }
 
     internal CompleteTaskCommand(TaskId taskId, DayKey completionDay)
     {
+        // -- Guards -- //
         if (taskId == default)
         {
             throw new ArgumentException("taskId cannot be the default value.", nameof(taskId));
