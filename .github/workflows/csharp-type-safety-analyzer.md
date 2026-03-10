@@ -17,6 +17,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[type-safety] "
     labels: [agentic-workflow, type-safety, needs-review]

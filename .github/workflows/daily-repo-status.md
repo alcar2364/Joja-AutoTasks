@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   issues: read
   pull-requests: read
 
@@ -24,6 +25,8 @@ tools:
     lockdown: false
 
 safe-outputs:
+  noop:
+    report-as-issue: false
   mentions: false
   allowed-github-references: []
   create-issue:
@@ -42,6 +45,7 @@ Create an upbeat daily status report for the repo as a GitHub issue.
 - Progress tracking, goal reminders and highlights
 - Project status and recommendations
 - Actionable next steps for maintainers
+- **No-op workflow run summary**: list any agentic workflows that ran as no-ops in the last 24 hours (i.e., found nothing to do), so maintainers have daily visibility into idle workflow activity
 
 ## Style
 
@@ -53,4 +57,5 @@ Create an upbeat daily status report for the repo as a GitHub issue.
 
 1. Gather recent activity from the repository
 2. Study the repository, its issues and its pull requests
-3. Create a new GitHub issue with your findings and insights
+3. Check the recent workflow runs (last 24 hours) for any workflows that completed as no-ops (no action taken)
+4. Create a new GitHub issue with your findings and insights, including a brief "Workflow No-Op Summary" section listing any workflows that ran but had nothing to do

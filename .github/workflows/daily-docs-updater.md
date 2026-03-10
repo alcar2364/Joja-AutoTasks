@@ -52,6 +52,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[docs] "
     labels: [agentic-workflow, documentation, needs-review]
