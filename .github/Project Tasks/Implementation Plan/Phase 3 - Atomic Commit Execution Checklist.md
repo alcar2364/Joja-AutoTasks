@@ -55,7 +55,7 @@ Purpose: This checklist guides Phase 3 implementation of the State Store foundat
 
 Step goal:
 
-    * [ ] Define command types representing all state mutation intents.
+    * [x] Define command types representing all state mutation intents.
 
 ### 1A - Add base command infrastructure ###
 
