@@ -17,6 +17,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[quality] "
     labels: [agentic-workflow, quality, needs-review]

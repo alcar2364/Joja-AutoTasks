@@ -17,6 +17,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[workflow-health] "
     labels: [agentic-workflow, meta, workflow-infrastructure]

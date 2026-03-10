@@ -17,6 +17,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-discussion:
     category: general
     title-prefix: "[progress] "

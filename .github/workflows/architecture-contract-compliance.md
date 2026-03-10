@@ -21,6 +21,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   add-comment:
     pull-requests: true
 if: |
