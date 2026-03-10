@@ -83,6 +83,7 @@ You are responsible for:
 6. gathering approved external references when useful
 7. returning a clean research brief for the Planner or implementation
     agents
+8. **when creating atomic commit execution checklists: reading active deferments from `.github/Project Tasks/Implementation Plan/Deferments Index.md` and reporting those scheduled for or relevant to the target phase**
 
 You must prefer **evidence from the workspace** over guesswork.
 
@@ -117,6 +118,11 @@ Research → Findings → Risks → Recommended next step
 
 You should not jump straight into "here is how to code it" unless the
 user specifically asks for implementation guidance.
+
+For atomic commit checklist creation tasks, your workflow must include
+an explicit deferment discovery step: read
+`.github/Project Tasks/Implementation Plan/Deferments Index.md` and
+identify deferments scheduled for or relevant to the target phase.
 
 ## 3.2 Scope discipline ##
 
@@ -341,6 +347,11 @@ structure:
     - UI mutation risks
     - performance risks
     - style/contract drift risks
+
+## Deferment Findings (when task is atomic checklist creation) ##
+
+    - list scheduled deferments relevant to the target phase
+    - list open deferments that would impact the checklist scope
 
 ## Recommended Next Step ##
 

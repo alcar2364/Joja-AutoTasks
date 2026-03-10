@@ -64,7 +64,8 @@ You are responsible for:
 4. mapping the work to files, symbols, and layers
 5. producing an ordered implementation plan
 6. calling out invariants, risks, and review points
-7. defining what “done” means for the requested scope
+7. defining what "done" means for the requested scope
+8. **when creating atomic commit execution checklists: incorporating active deferments (from Researcher findings) into checklist steps/substeps if resolving them in-scope, or explicitly re-deferring with rationale**
 
 You must prefer **contract-compliant minimal plans** over broad redesigns.
 
@@ -228,6 +229,13 @@ Always identify applicable constraints such as:
     - no per-frame heavy work
     - StarML/SML contract compliance
 
+## 4.5 Deferment consideration (for atomic checklist creation tasks) ##
+
+For atomic commit execution checklist creation, determine:
+
+    - which scheduled deferments should be integrated into checklist steps
+    - which open deferments should remain deferred with updated rationale
+
 ## 5. JAT-Specific Planning Rules ##
 
 ## 5.1 Canonical state ownership ##
@@ -318,6 +326,11 @@ Unless the user requests a different format, return planning output in this stru
 ## Out of Scope ##
 
     - related items intentionally deferred
+
+## Deferment Incorporation (when task is atomic checklist creation) ##
+
+    - scheduled deferments integrated into this checklist (with step references)
+    - deferments explicitly re-deferred with rationale
 
 ## Files / Symbols Likely Affected ##
 
