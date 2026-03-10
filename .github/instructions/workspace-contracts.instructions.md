@@ -187,6 +187,7 @@ The JAT workspace uses specialized subagents such as:
     - Planner
     - UI Agent
     - Game Agent
+    - BrainAgent
     - UnitTestAgent
     - Reviewer
     - Troubleshooter

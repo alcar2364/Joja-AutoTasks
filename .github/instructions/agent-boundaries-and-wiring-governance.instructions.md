@@ -16,6 +16,7 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 | --- | --- | --- |
 | Orchestrator | Delegation and workflow routing only | No direct research, planning, implementation, testing, troubleshooting, or review work |
 | GodAgent | Agent customization ecosystem files only | No gameplay/UI/business implementation and no general code reviews |
+| BrainAgent | Memory store ownership, indexing, and retrieval operations inside `.github/memory/` | No implementation, planning, or codebase research outside `.github/memory/` and no agent customization ownership |
 | Researcher | Context discovery and evidence gathering only | No implementation and no final review verdicts |
 | Planner | Step-by-step implementation planning only | No direct code edits and no markdown drafting |
 | Reviewer | Contract/risk review only | No direct implementation or markdown drafting |
@@ -53,7 +54,7 @@ Every instruction file below is wired to at least one agent.
 | unit-testing-contract.instructions.md | UnitTestAgent | Reviewer, Planner |
 | update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer, Troubleshooter |
 | visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
-| workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor |
+| workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor, BrainAgent |
 
 ## Skill-to-Agent Wiring ##
 

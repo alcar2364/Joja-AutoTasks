@@ -2,6 +2,7 @@
 set -euo pipefail
 
 CHANGED=$( (git diff --name-only; git diff --name-only --cached) 2>/dev/null | sort -u || true)
+FAIL=0
 
 if [[ -z "$CHANGED" ]]; then
   exit 0
@@ -25,6 +26,18 @@ CODE_CHANGED=$(echo "$CHANGED" | grep -Ei '\.(cs|sml|json|csproj)$' || true)
 DOC_CHANGED=$(echo "$CHANGED" | grep -Ei '(^README\.md$|\.md$)' || true)
 if [[ -n "$CODE_CHANGED" && -z "$DOC_CHANGED" ]]; then
   echo "[validation-postflight] Code changed without markdown updates. Check docs sync requirements."
+fi
+
+CUSTOMIZATION_CHANGED=$(echo "$CHANGED" | grep -E '^\.github/(agents|instructions|prompts|hooks|skills)/' || true)
+MEMORY_CHANGED=$(echo "$CHANGED" | grep -E '^\.github/memory/' || true)
+if [[ -n "$CUSTOMIZATION_CHANGED" && -z "$MEMORY_CHANGED" ]]; then
+  echo "[validation-postflight] ERROR: Customization changed without `.github/memory/` updates."
+  echo "[validation-postflight] Required: invoke BrainAgent to store episodic/knowledge memory and refresh `.github/memory/INDEX.md`."
+  FAIL=1
+fi
+
+if [[ "$FAIL" -eq 1 ]]; then
+  exit 1
 fi
 
 exit 0

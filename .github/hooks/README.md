@@ -21,6 +21,7 @@ Runtime trigger:
 Domain:
 
     * context loading and planning preflight
+    * memory-operation routing reminder (route memory tasks to BrainAgent)
     * combines former intent from:
         - contract-auto-loader
         - context-engineering-loader
@@ -58,6 +59,7 @@ Runtime trigger:
 Domain:
 
     * post-edit validation and quality checks
+    * memory sync enforcement: block on session end when customization changes occur without `.github/memory/` updates
     * combines former intent from:
         - identifier-validation
         - persistence-safety-validator
@@ -125,5 +127,5 @@ When adding or modifying hooks:
 4. Keep scripts deterministic, fast, and non-destructive.
 
 Created by: GodAgent
-Version: 3.0
-Last Updated: 2026-03-07
+Version: 3.2
+Last Updated: 2026-03-10
