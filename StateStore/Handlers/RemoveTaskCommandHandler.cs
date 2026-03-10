@@ -1,6 +1,4 @@
-using TaskStatus = JojaAutoTasks.Domain.Tasks.TaskStatus;
 using JojaAutoTasks.StateStore.Commands;
-using JojaAutoTasks.StateStore.Models;
 
 namespace JojaAutoTasks.StateStore.Handlers;
 
