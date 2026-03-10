@@ -1,6 +1,6 @@
 ---
 name: architecture-contract-compliance
-description: "Validates architectural boundary contracts on PRs; detects command/state/UI boundary violations."
+description: "Validates architectural boundary contracts and determinism safety on PRs; detects command/state/UI boundary violations and non-deterministic patterns."
 on:
   pull_request:
     branches: [main]
@@ -29,10 +29,14 @@ if: |
   (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/arch-check'))
 ---
 
-# Architecture Contract Compliance — PR Boundary Checker
+# Architecture Contract Compliance & Determinism — PR Boundary Checker
 
-Analyze changed C# files in pull requests for violations of JAT's strict architectural boundaries.
-Posts findings as a PR review comment; does not auto-block (requires human sign-off for Blockers).
+Analyze changed C# files in pull requests for violations of JAT's strict architectural boundaries
+and determinism contract. Posts findings as a PR review comment; does not auto-block (requires
+human sign-off for Blockers).
+
+This workflow incorporates the PR-triggered determinism regression detection previously handled
+by the separate `determinism-regression-detector` workflow (now consolidated here).
 
 ## Context
 
@@ -40,6 +44,7 @@ Posts findings as a PR review comment; does not auto-block (requires human sign-
 - Architecture contracts:
   - `.github/instructions/backend-architecture-contract.instructions.md`
   - `.github/instructions/frontend-architecture-contract.instructions.md`
+- Determinism reference: `.github/Project Planning/Joja AutoTasks Design Guide/Section 03 - Deterministic Identifier Model.md`
 - Key boundaries:
   - State Store is the sole owner of canonical task state
   - All mutations go through command/reducer path only
@@ -64,13 +69,25 @@ Check that state changes flow through commands:
 - Any method named `Set*`, `Update*`, `Mutate*` outside `StateStore/` should be flagged
 - Direct field assignments to canonical state fields outside designated reducers
 
-### 3. Non-Deterministic ID Generation
+### 3. Non-Deterministic ID Generation (from `determinism-regression-detector`)
 
-Check for forbidden ID generation patterns in non-test source:
+Check changed files (production code only, exclude `Tests/`) for forbidden non-deterministic
+patterns that violate the JAT determinism contract:
 
-- `Guid.NewGuid()` usage in `Domain/`, `StateStore/`, `Lifecycle/`, `Configuration/` directories
-- `new Random()` without an explicit deterministic seed in production code paths
-- `Environment.TickCount` or `DateTime.Now`-based identifiers
+**Pattern 1 — Random GUID:** `Guid.NewGuid()` in `Domain/`, `StateStore/`, `Lifecycle/`, `Configuration/`
+→ Severity: **Blocker**. Task IDs must be derived from stable, deterministic inputs.
+
+**Pattern 2 — Unseeded Randomness:** `new Random()` without an explicit deterministic seed
+→ Severity: **Blocker** in state paths, **Major** in others.
+
+**Pattern 3 — Wall-Clock Time in ID/Ordering:** `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now`, `Environment.TickCount`
+→ Severity: **Major**. Flag for manual review; acceptable only in logging/diagnostics.
+
+**Pattern 4 — Unordered Collection Traversal:** `foreach` over `Dictionary`/`HashSet` directly feeding a sort or snapshot projection without an explicit stable key
+→ Severity: **Minor**. Advisory; verify the sort key is stable.
+
+**Pattern 5 — Environment-Dependent Identifiers:** `Environment.MachineName`, `Environment.UserName`
+→ Severity: **Major**. Breaks reproducibility across machines.
 
 ### 4. UI / Backend Boundary
 
@@ -92,7 +109,7 @@ Check that canonical identifiers use correct value types:
 Post a single PR review comment with sections:
 
 ```
-## Architecture Contract Compliance Report
+## Architecture & Determinism Compliance Report
 
 ### Blockers (must fix before merge)
 [list of violations that break hard contracts]
@@ -110,6 +127,7 @@ Post a single PR review comment with sections:
 ## Notes
 
 - This workflow complements the interactive `/review` command (interactive-code-reviewer)
+- Determinism patterns are also scanned weekly across the full codebase by `weekly-codebase-health`
 - Blockers should be flagged as a review request requiring explicit maintainer dismissal
 - If no PR diff is available (workflow_dispatch), scan all files in Domain/, StateStore/, Lifecycle/
 - Reference the contract files when explaining each finding (link to the relevant contract section)
