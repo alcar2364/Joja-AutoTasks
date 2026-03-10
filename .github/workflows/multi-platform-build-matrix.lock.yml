@@ -27,16 +27,6 @@
 
 name: "multi-platform-build-matrix"
 "on":
-  push:
-    branches:
-    - main
-    paths:
-    - "**/*.cs"
-    - "**/*.csproj"
-    - "**/*.sln"
-  schedule:
-  - cron: "35 17 * * 3"
-    # Friendly format: weekly (scattered)
   workflow_dispatch:
 
 permissions: {}
