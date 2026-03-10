@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.StateStore.Models;
 
@@ -13,7 +14,7 @@ internal sealed class StateContainer
 
     // -- State Accessors -- //
 
-    internal bool TryGet(TaskId id, out TaskRecord? record)
+    internal bool TryGet(TaskId id, [NotNullWhen(true)] out TaskRecord? record)
     => _tasksMap.TryGetValue(id, out record);
 
     internal void Set(TaskId id, TaskRecord newRecord)
