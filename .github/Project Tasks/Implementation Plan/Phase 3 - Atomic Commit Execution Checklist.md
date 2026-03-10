@@ -150,16 +150,16 @@ Step goal:
 
 ### 2C - Add state dictionary container with version tracking ###
 
-    * [ ] Action: add internal `Dictionary<TaskId, TaskRecord>` and version counter for snapshot invalidation.
-    * [ ] Scope: `StateStore/StateContainer.cs` or embedded in `StateStore.cs`.
-    * [ ] Verify: container compiles with dictionary and version increment logic; uses most restrictive access level.
-    * [ ] Suggested commit: `phase3(step2C): add state dictionary container with version tracking`
-    * [ ] Must include: dictionary, version counter, basic accessor patterns only.
-    * [ ] Must exclude: command processing logic, snapshot generation.
+    * [x] Action: add internal `Dictionary<TaskId, TaskRecord>` and version counter for snapshot invalidation.
+    * [x] Scope: `StateStore/StateContainer.cs` or embedded in `StateStore.cs`.
+    * [x] Verify: container compiles with dictionary and version increment logic; uses most restrictive access level.
+    * [x] Suggested commit: `phase3(step2C): add state dictionary container with version tracking`
+    * [x] Must include: dictionary, version counter, basic accessor patterns only.
+    * [x] Must exclude: command processing logic, snapshot generation.
 
 ## Step 2 Completion ##
 
-    * [ ] All substeps in Step 2 complete (2A, 2B, 2C).
+    * [x] All substeps in Step 2 complete (2A, 2B, 2C).
 
 ## 3) Command Handler Implementation ##
 
