@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  security-events: write
+  security-events: read
   actions: read
 strict: true
 network:
@@ -84,6 +84,6 @@ Search for common secret patterns in source files:
 
 - CodeQL results appear in the GitHub Security → Code Scanning tab
 - Results are also annotated inline on PR diffs when scanning PRs
-- `security-events: write` permission is required for CodeQL upload
+- CodeQL findings are reported via `safe-outputs.create-issue`; direct security-events upload is not used in strict mode
 - This workflow enforces the OWASP guidance in `.github/instructions/security-and-owasp.instructions.md`
 - Mod reads/writes SMAPI save data — deserialization paths deserve careful CodeQL review
