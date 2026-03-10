@@ -5,7 +5,7 @@ argument-hint: Describe the feature, bug, refactor, or question; include target 
 description: "Use when: finding relevant files, patterns, and context before planning or coding."
 name: Researcher
 target: vscode
-tools: [vscode, read/problems, read/readFile, agent, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode, read/problems, read/readFile, agent, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', todo]
 agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, BrainAgent, WorkspaceAgent, GodAgent]
 handoffs:
         - label: Planner follow-up
