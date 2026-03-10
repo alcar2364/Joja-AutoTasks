@@ -165,16 +165,16 @@ Step goal:
 
 Step goal:
 
-    * [ ] Implement deterministic state transformation logic for each command.
+    * [x] Implement deterministic state transformation logic for each command.
 
 ### 3A - Add command handler infrastructure ###
 
-    * [ ] Action: add `ICommandHandler<TCommand>` interface or `CommandHandlerBase<TCommand>` abstract class.
-    * [ ] Scope: `StateStore/Handlers/ICommandHandler.cs` or `StateStore/Handlers/CommandHandlerBase.cs`.
-    * [ ] Verify: handler contract compiles and establishes deterministic transformation pattern; uses most restrictive access level.
-    * [ ] Suggested commit: `phase3(step3A): add command handler infrastructure`
-    * [ ] Must include: handler contract definition only.
-    * [ ] Must exclude: concrete handler implementations.
+    * [x] Action: add `ICommandHandler<TCommand>` interface or `CommandHandlerBase<TCommand>` abstract class.
+    * [x] Scope: `StateStore/Handlers/ICommandHandler.cs` or `StateStore/Handlers/CommandHandlerBase.cs`.
+    * [x] Verify: handler contract compiles and establishes deterministic transformation pattern; uses most restrictive access level.
+    * [x] Suggested commit: `phase3(step3A): add command handler infrastructure`
+    * [x] Must include: handler contract definition only.
+    * [x] Must exclude: concrete handler implementations.
 
 ### 3B - Implement AddOrUpdateTaskCommandHandler with field separation ###
 
