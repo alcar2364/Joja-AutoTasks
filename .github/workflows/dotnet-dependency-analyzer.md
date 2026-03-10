@@ -16,9 +16,9 @@ tools:
     toolsets: [default]
   dotnet: {}
 safe-outputs:
-  create-discussion:
-    category: general
+  create-issue:
     title-prefix: "[dependencies] "
+    labels: [agentic-workflow, dependencies, needs-review]
 ---
 
 # .NET Dependency Analyzer
@@ -55,11 +55,11 @@ Weekly analysis of NuGet packages for usage patterns, version currency, and depe
 2. **Fetch package metadata** from NuGet.org
 3. **Analyze usage patterns** in code
 4. **Compile recommendations** for review
-5. **Create discussion** with findings and suggestions
+5. **Create issue** with findings and suggestions
 
 ## Output
 
-- Weekly discussion with dependency analysis
+- Weekly issue with dependency analysis
 - Group by: Mod project, Test project, Transitive
 - Include: Current version, available updates, recommendations
 - Note any security advisories or maintenance concerns

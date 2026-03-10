@@ -15,9 +15,9 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
-  create-discussion:
-    category: general
+  create-issue:
     title-prefix: "[type-safety] "
+    labels: [agentic-workflow, type-safety, needs-review]
 ---
 
 # C# Type Safety Analyzer
@@ -53,12 +53,12 @@ Analyze C# code for opportunities to improve type safety through nullable refere
 1. **Scan all .cs files** for nullable and type patterns
 2. **Analyze recent changes** to domain and core modules
 3. **Identify improvement opportunities** without breaking changes
-4. **Create discussion** with recommendations (not implementations)
+4. **Create issue** with recommendations (not implementations)
 5. **Post weekly summary** of patterns found
 
 ## Output
 
-- Create 1 discussion per week with type-safety findings
+- Create 1 issue per week with type-safety findings
 - Group findings by category (nullable refs, generics, consistency)
 - Include code examples and suggested improvements
 - Reference nullable reference type best practices from C# docs
