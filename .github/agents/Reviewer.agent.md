@@ -346,6 +346,19 @@ Unless the user requests another format, return review results in this structure
     - review mode used
     - any scope limits or assumptions
 
+## Context Gathered (if applicable) ##
+
+**If you performed searches, file reads, or pattern analysis during this review, list what you found here.**
+
+This ensures downstream agents (Planner, WorkspaceAgent, implementation agents) can reuse this context without repeating the same searches.
+
+Example:
+- Searched for deferment references: found in files X, Y, Z
+- Identified update locations: file A line 42, file B line 103
+- Read design guide section N: confirmed phase responsibilities
+
+**Omit this section if you did not gather new context during review.**
+
 ## Governing Sources ##
 
     - contracts, design sections, plan references, and user constraints used for review

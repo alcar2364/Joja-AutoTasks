@@ -1,8 +1,35 @@
 # Phase 3 - Atomic Commit Execution Checklist #
 
-Purpose: execute Phase 3 (State Store) in strict, linear, atomic commits with explicit file/symbol scope.
+Purpose: This checklist guides Phase 3 implementation of the State Store foundation with command/handler architecture and snapshot generation.
 
-Note: If a sub-step expands beyond the stated file scope, stop and open a follow-up commit.
+**Commit workflow reminder**: Each substep includes a suggested commit message to help track progress. Commits are workflow practice, not acceptance criteria—feel free to batch or adjust granularity as needed.
+
+> **Policy Update (2026-03-09)**: Commit labels in this checklist were changed from "Commit message" to "Suggested commit" to clarify that commits are workflow reminders, not completion gate requirements.
+
+## Phase Overview ##
+
+**Phase Goal**: Implement the State Store foundation with command/handler architecture, enabling deterministic state mutation and immutable snapshot generation for downstream consumers.
+
+**Architecture Components**:
+- `StateContainer`: canonical in-memory state holder with task dictionary and manual task counter
+- Command contracts: `IStateCommand` and concrete command types (`AddOrUpdateTaskCommand`, `CompleteTaskCommand`, `UncompleteTaskCommand`, `RemoveTaskCommand`, `PinTaskCommand`, `UnpinTaskCommand`)
+- Command handler layer: deterministic mutation logic and ownership boundaries
+- Snapshot projection: read-only `TaskSnapshot`/`TaskView` generated from mutable state
+- Internal storage model: `TaskRecord` and field-ownership separation
+
+**Prerequisites**:
+- Phase 1: lifecycle/event/bootstrap foundation
+- Phase 2: deterministic identifiers (`TaskId`, `RuleId`, `SubjectId`, `DayKey`)
+
+**Architecture Relationships**:
+- Builds on deterministic IDs from Phase 2 for stable dictionary keys and ordering behavior
+- Provides authoritative runtime state and snapshot publication consumed by Phase 4 ViewModels
+- Establishes the canonical mutation boundary used by future generator/rule/persistence phases
+
+**Design Guide References**:
+- [Section 04 - Core Data Model](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
+- [Section 08 - State Store Command Model](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2008%20-%20State%20Store%20Command%20Model.md)
+- [Section 21 - Implementation Plan](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2021%20-%20Implementation%20Plan.md)
 
 ## Guardrails (Must Stay True) ##
 
@@ -35,7 +62,7 @@ Step goal:
     * [x] Action: add `IStateCommand` interface or `StateCommandBase` abstract class defining command contract.
     * [x] Scope: `StateStore/Commands/IStateCommand.cs` or `StateStore/Commands/StateCommandBase.cs`.
     * [x] Verify: interface/base compiles and establishes command contract pattern; uses most restrictive access level (prefer internal).
-    * [x] Commit message: `phase3(step1A): add base command infrastructure`
+    * [x] Suggested commit: `phase3(step1A): add base command infrastructure`
     * [x] Must include: command contract definition only.
     * [x] Must exclude: concrete command implementations, handler logic.
 
@@ -44,7 +71,7 @@ Step goal:
     * [x] Action: add command representing task creation or engine/user update intent.
     * [x] Scope: `StateStore/Commands/AddOrUpdateTaskCommand.cs`.
     * [x] Verify: command type compiles with required fields (TaskId, task data, source type); constructor guards prevent invalid construction.
-    * [x] Commit message: `phase3(step1B): add AddOrUpdateTaskCommand`
+    * [x] Suggested commit: `phase3(step1B): add AddOrUpdateTaskCommand`
     * [x] Must include: command type with required fields and constructor guards only.
     * [x] Must exclude: handler implementation, validation logic beyond constructor guards.
 
@@ -53,7 +80,7 @@ Step goal:
     * [x] Action: add command representing task completion intent.
     * [x] Scope: `StateStore/Commands/CompleteTaskCommand.cs`.
     * [x] Verify: command type compiles with TaskId and completion day fields.
-    * [x] Commit message: `phase3(step1C): add CompleteTaskCommand`
+    * [x] Suggested commit: `phase3(step1C): add CompleteTaskCommand`
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
@@ -62,7 +89,7 @@ Step goal:
     * [x] Action: add command representing task un-completion intent.
     * [x] Scope: `StateStore/Commands/UncompleteTaskCommand.cs`.
     * [x] Verify: command type compiles with TaskId field.
-    * [x] Commit message: `phase3(step1D): add UncompleteTaskCommand`
+    * [x] Suggested commit: `phase3(step1D): add UncompleteTaskCommand`
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
@@ -71,7 +98,7 @@ Step goal:
     * [x] Action: add command representing task removal intent.
     * [x] Scope: `StateStore/Commands/RemoveTaskCommand.cs`.
     * [x] Verify: command type compiles with TaskId field.
-    * [x] Commit message: `phase3(step1E): add RemoveTaskCommand`
+    * [x] Suggested commit: `phase3(step1E): add RemoveTaskCommand`
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation, expiration logic.
 
@@ -80,7 +107,7 @@ Step goal:
     * [x] Action: add command representing user pin intent.
     * [x] Scope: `StateStore/Commands/PinTaskCommand.cs`.
     * [x] Verify: command type compiles with TaskId field.
-    * [x] Commit message: `phase3(step1F): add PinTaskCommand`
+    * [x] Suggested commit: `phase3(step1F): add PinTaskCommand`
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
@@ -89,7 +116,7 @@ Step goal:
     * [x] Action: add command representing user unpin intent.
     * [x] Scope: `StateStore/Commands/UnpinTaskCommand.cs`.
     * [x] Verify: command type compiles with TaskId field.
-    * [x] Commit message: `phase3(step1G): add UnpinTaskCommand`
+    * [x] Suggested commit: `phase3(step1G): add UnpinTaskCommand`
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
@@ -108,7 +135,7 @@ Step goal:
     * [x] Action: create internal `TaskRecord` structure distinct from `TaskObject` for state storage.
     * [x] Scope: `StateStore/Models/TaskRecord.cs`.
     * [x] Verify: TaskRecord compiles with fields for TaskId, status, progress, metadata, user flags (IsPinned), creation day, completion day; uses most restrictive access level (internal).
-    * [x] Commit message: `phase3(step2A): add TaskRecord internal storage structure`
+    * [x] Suggested commit: `phase3(step2A): add TaskRecord internal storage structure`
     * [x] Must include: internal record type only.
     * [x] Must exclude: conversion to/from TaskObject, handler logic.
 
@@ -117,7 +144,7 @@ Step goal:
     * [x] Action: define which fields are engine-controlled vs user-controlled in TaskRecord.
     * [x] Scope: `StateStore/Models/TaskRecord.cs` (comments/documentation) or separate `FieldOwnership.cs` helper.
     * [x] Verify: clear documentation of field ownership boundaries exists.
-    * [x] Commit message: `phase3(step2B): document engine vs user field ownership`
+    * [x] Suggested commit: `phase3(step2B): document engine vs user field ownership`
     * [x] Must include: field ownership documentation or helper types only.
     * [x] Must exclude: handler implementation.
 
@@ -126,7 +153,7 @@ Step goal:
     * [ ] Action: add internal `Dictionary<TaskId, TaskRecord>` and version counter for snapshot invalidation.
     * [ ] Scope: `StateStore/StateContainer.cs` or embedded in `StateStore.cs`.
     * [ ] Verify: container compiles with dictionary and version increment logic; uses most restrictive access level.
-    * [ ] Commit message: `phase3(step2C): add state dictionary container with version tracking`
+    * [ ] Suggested commit: `phase3(step2C): add state dictionary container with version tracking`
     * [ ] Must include: dictionary, version counter, basic accessor patterns only.
     * [ ] Must exclude: command processing logic, snapshot generation.
 
@@ -145,7 +172,7 @@ Step goal:
     * [ ] Action: add `ICommandHandler<TCommand>` interface or `CommandHandlerBase<TCommand>` abstract class.
     * [ ] Scope: `StateStore/Handlers/ICommandHandler.cs` or `StateStore/Handlers/CommandHandlerBase.cs`.
     * [ ] Verify: handler contract compiles and establishes deterministic transformation pattern; uses most restrictive access level.
-    * [ ] Commit message: `phase3(step3A): add command handler infrastructure`
+    * [ ] Suggested commit: `phase3(step3A): add command handler infrastructure`
     * [ ] Must include: handler contract definition only.
     * [ ] Must exclude: concrete handler implementations.
 
@@ -154,7 +181,7 @@ Step goal:
     * [ ] Action: implement handler for AddOrUpdateTaskCommand with engine/user field separation logic.
     * [ ] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs`.
     * [ ] Verify: if task does not exist → create new TaskRecord; if task exists and command is engine-sourced → update engine fields only, preserve user fields; if task exists and command is user-sourced → update user fields only, preserve engine fields; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3B): implement AddOrUpdateTaskCommandHandler with field separation`
+    * [ ] Suggested commit: `phase3(step3B): implement AddOrUpdateTaskCommandHandler with field separation`
     * [ ] Must include: complete handler implementation with field separation logic.
     * [ ] Must exclude: snapshot publishing, persistence.
 
@@ -163,7 +190,7 @@ Step goal:
     * [ ] Action: implement handler for CompleteTaskCommand.
     * [ ] Scope: `StateStore/Handlers/CompleteTaskCommandHandler.cs`.
     * [ ] Verify: handler sets TaskStatus to Completed and records completion day; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3C): implement CompleteTaskCommandHandler`
+    * [ ] Suggested commit: `phase3(step3C): implement CompleteTaskCommandHandler`
     * [ ] Must include: handler implementation only.
     * [ ] Must exclude: snapshot publishing, persistence, UI feedback.
 
@@ -172,7 +199,7 @@ Step goal:
     * [ ] Action: implement handler for UncompleteTaskCommand.
     * [ ] Scope: `StateStore/Handlers/UncompleteTaskCommandHandler.cs`.
     * [ ] Verify: handler sets TaskStatus to Incomplete and clears completion day; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3D): implement UncompleteTaskCommandHandler`
+    * [ ] Suggested commit: `phase3(step3D): implement UncompleteTaskCommandHandler`
     * [ ] Must include: handler implementation only.
     * [ ] Must exclude: snapshot publishing, UI feedback.
 
@@ -181,7 +208,7 @@ Step goal:
     * [ ] Action: implement handler for RemoveTaskCommand.
     * [ ] Scope: `StateStore/Handlers/RemoveTaskCommandHandler.cs`.
     * [ ] Verify: handler removes TaskRecord from dictionary; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3E): implement RemoveTaskCommandHandler`
+    * [ ] Suggested commit: `phase3(step3E): implement RemoveTaskCommandHandler`
     * [ ] Must include: handler implementation only.
     * [ ] Must exclude: expiration logic, day-boundary behavior.
 
@@ -190,7 +217,7 @@ Step goal:
     * [ ] Action: implement handler for PinTaskCommand.
     * [ ] Scope: `StateStore/Handlers/PinTaskCommandHandler.cs`.
     * [ ] Verify: handler sets IsPinned flag to true; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3F): implement PinTaskCommandHandler`
+    * [ ] Suggested commit: `phase3(step3F): implement PinTaskCommandHandler`
     * [ ] Must include: handler implementation only.
     * [ ] Must exclude: snapshot publishing, UI feedback.
 
@@ -199,7 +226,7 @@ Step goal:
     * [ ] Action: implement handler for UnpinTaskCommand.
     * [ ] Scope: `StateStore/Handlers/UnpinTaskCommandHandler.cs`.
     * [ ] Verify: handler sets IsPinned flag to false; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step3G): implement UnpinTaskCommandHandler`
+    * [ ] Suggested commit: `phase3(step3G): implement UnpinTaskCommandHandler`
     * [ ] Must include: handler implementation only.
     * [ ] Must exclude: snapshot publishing, UI feedback.
 
@@ -218,7 +245,7 @@ Step goal:
     * [ ] Action: add `TaskView` read-only record/class mirroring TaskObject fields needed for UI.
     * [ ] Scope: `StateStore/Models/TaskView.cs`.
     * [ ] Verify: TaskView compiles with immutable fields, exposes no mutators; uses most restrictive access level (prefer internal or public readonly).
-    * [ ] Commit message: `phase3(step4A): add TaskView read-only projection`
+    * [ ] Suggested commit: `phase3(step4A): add TaskView read-only projection`
     * [ ] Must include: read-only view type only.
     * [ ] Must exclude: snapshot container, generation logic.
 
@@ -227,7 +254,7 @@ Step goal:
     * [ ] Action: add `TaskSnapshot` containing `IReadOnlyList<TaskView>` and version number.
     * [ ] Scope: `StateStore/Models/TaskSnapshot.cs`.
     * [ ] Verify: TaskSnapshot compiles with immutable collection; exposes no mutators.
-    * [ ] Commit message: `phase3(step4B): add TaskSnapshot immutable collection wrapper`
+    * [ ] Suggested commit: `phase3(step4B): add TaskSnapshot immutable collection wrapper`
     * [ ] Must include: snapshot container type only.
     * [ ] Must exclude: generation logic.
 
@@ -236,7 +263,7 @@ Step goal:
     * [ ] Action: add method to project `Dictionary<TaskId, TaskRecord>` to `TaskSnapshot`.
     * [ ] Scope: `StateStore/StateStore.cs` or separate `SnapshotProjector.cs`.
     * [ ] Verify: method produces defensive copy with stable ordering (by TaskId or creation day); no shared references with canonical state.
-    * [ ] Commit message: `phase3(step4C): add snapshot generation from state dictionary`
+    * [ ] Suggested commit: `phase3(step4C): add snapshot generation from state dictionary`
     * [ ] Must include: projection logic with defensive copy only.
     * [ ] Must exclude: event publishing, subscription handling.
 
@@ -255,7 +282,7 @@ Step goal:
     * [ ] Action: add `StateStore` class with dependencies declared via constructor.
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive access level for internal members.
-    * [ ] Commit message: `phase3(step5A): add StateStore class shell with constructor injection`
+    * [ ] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
     * [ ] Must include: class shell, constructor, field declarations only.
     * [ ] Must exclude: command processing pipeline, event wiring.
 
@@ -264,7 +291,7 @@ Step goal:
     * [ ] Action: add internal command dispatch logic routing commands to appropriate handlers.
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: commands route correctly to handlers, state updates applied; routing is deterministic.
-    * [ ] Commit message: `phase3(step5B): wire command routing to handlers`
+    * [ ] Suggested commit: `phase3(step5B): wire command routing to handlers`
     * [ ] Must include: command dispatch logic only.
     * [ ] Must exclude: snapshot publishing, external API methods.
 
@@ -273,7 +300,7 @@ Step goal:
     * [ ] Action: add `public event Action<TaskSnapshot>? SnapshotChanged;` and wire snapshot generation after state changes.
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: event fires after successful command processing with current snapshot; event declaration is public.
-    * [ ] Commit message: `phase3(step5C): wire snapshot generation and SnapshotChanged event`
+    * [ ] Suggested commit: `phase3(step5C): wire snapshot generation and SnapshotChanged event`
     * [ ] Must include: event declaration and invocation logic only.
     * [ ] Must exclude: subscription handling (Phase 4 responsibility).
 
@@ -282,7 +309,7 @@ Step goal:
     * [ ] Action: add public methods for dispatching commands (e.g., `Dispatch(IStateCommand command)` or individual methods per command type).
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: public API surface is minimal and explicit; methods are public, implementation details are private/internal.
-    * [ ] Commit message: `phase3(step5D): add public command dispatch methods`
+    * [ ] Suggested commit: `phase3(step5D): add public command dispatch methods`
     * [ ] Must include: public dispatch methods only.
     * [ ] Must exclude: internal implementation changes.
 
@@ -301,7 +328,7 @@ Step goal:
     * [ ] Action: add logic to identify day-keyed tasks (TaskId contains day component) that are expired relative to current day.
     * [ ] Scope: `StateStore/DayBoundary/ExpirationDetector.cs` or embedded in `StateStore.cs`.
     * [ ] Verify: logic correctly identifies daily tasks past their expiration day; detection is deterministic.
-    * [ ] Commit message: `phase3(step6A): add expired task detection logic`
+    * [ ] Suggested commit: `phase3(step6A): add expired task detection logic`
     * [ ] Must include: expiration detection logic only.
     * [ ] Must exclude: removal execution.
 
@@ -310,7 +337,7 @@ Step goal:
     * [ ] Action: add handler or method to remove expired tasks on day start.
     * [ ] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
     * [ ] Verify: expired tasks removed from state, snapshot regenerated; handler is deterministic and side-effect free.
-    * [ ] Commit message: `phase3(step6B): add day-transition cleanup handler`
+    * [ ] Suggested commit: `phase3(step6B): add day-transition cleanup handler`
     * [ ] Must include: cleanup handler only.
     * [ ] Must exclude: lifecycle wiring.
 
@@ -319,7 +346,7 @@ Step goal:
     * [ ] Action: add public method for day-start event (e.g., `OnDayStarted(DayKey newDay)`).
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: method triggers expiration cleanup and snapshot rebuild; method is public.
-    * [ ] Commit message: `phase3(step6C): wire day-transition trigger into State Store`
+    * [ ] Suggested commit: `phase3(step6C): wire day-transition trigger into State Store`
     * [ ] Must include: public day-transition method only.
     * [ ] Must exclude: lifecycle coordinator wiring (Step 8).
 
@@ -338,7 +365,7 @@ Step goal:
     * [ ] Action: add private counter field for tracking next manual task ID.
     * [ ] Scope: `StateStore/StateStore.cs` or `StateStore/Models/ManualTaskCounter.cs`.
     * [ ] Verify: counter field compiles and initializes to deterministic start value (e.g., 1); uses most restrictive access level (private).
-    * [ ] Commit message: `phase3(step7A): add internal manual task counter state`
+    * [ ] Suggested commit: `phase3(step7A): add internal manual task counter state`
     * [ ] Must include: counter field only.
     * [ ] Must exclude: increment logic, persistence.
 
@@ -347,7 +374,7 @@ Step goal:
     * [ ] Action: add method to generate next manual TaskId using counter.
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: method produces TaskId in canonical `ManualTask_{N}` format; method is deterministic.
-    * [ ] Commit message: `phase3(step7B): add IssueNextManualTaskId method`
+    * [ ] Suggested commit: `phase3(step7B): add IssueNextManualTaskId method`
     * [ ] Must include: ID issuance method only.
     * [ ] Must exclude: counter persistence.
 
@@ -356,7 +383,7 @@ Step goal:
     * [ ] Action: add logic to call IssueNextManualTaskId when command creates manual task without pre-assigned ID.
     * [ ] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs` or `StateStore.cs`.
     * [ ] Verify: manual tasks receive unique sequential IDs; integration is deterministic.
-    * [ ] Commit message: `phase3(step7C): wire manual ID issuance into AddOrUpdateTaskCommand`
+    * [ ] Suggested commit: `phase3(step7C): wire manual ID issuance into AddOrUpdateTaskCommand`
     * [ ] Must include: ID issuance integration only.
     * [ ] Must exclude: counter persistence.
 
@@ -365,7 +392,7 @@ Step goal:
     * [ ] Action: ensure counter increments deterministically (no race conditions, stable ordering).
     * [ ] Scope: `StateStore/StateStore.cs`.
     * [ ] Verify: sequential calls produce sequential IDs; no threading issues introduced.
-    * [ ] Commit message: `phase3(step7D): add deterministic counter increment logic`
+    * [ ] Suggested commit: `phase3(step7D): add deterministic counter increment logic`
     * [ ] Must include: increment logic only.
     * [ ] Must exclude: persistence (Phase 7).
 
@@ -384,7 +411,7 @@ Step goal:
     * [ ] Action: wire State Store into dependency injection container.
     * [ ] Scope: `Startup/BootstrapContainer.cs`.
     * [ ] Verify: State Store registered as singleton and resolved correctly; registration compiles.
-    * [ ] Commit message: `phase3(step8A): wire State Store into bootstrap composition`
+    * [ ] Suggested commit: `phase3(step8A): wire State Store into bootstrap composition`
     * [ ] Must include: DI registration only.
     * [ ] Must exclude: lifecycle wiring.
 
@@ -393,7 +420,7 @@ Step goal:
     * [ ] Action: add State Store initialization call in lifecycle coordinator's startup flow.
     * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
     * [ ] Verify: State Store initialized on game launch or save load; initialization is deterministic.
-    * [ ] Commit message: `phase3(step8B): wire State Store initialization into lifecycle`
+    * [ ] Suggested commit: `phase3(step8B): wire State Store initialization into lifecycle`
     * [ ] Must include: initialization hookup only.
     * [ ] Must exclude: teardown logic.
 
@@ -402,7 +429,7 @@ Step goal:
     * [ ] Action: add State Store cleanup/disposal call in lifecycle coordinator's teardown flow.
     * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
     * [ ] Verify: State Store cleared when returning to title screen; teardown is safe and deterministic.
-    * [ ] Commit message: `phase3(step8C): wire State Store teardown on return-to-title`
+    * [ ] Suggested commit: `phase3(step8C): wire State Store teardown on return-to-title`
     * [ ] Must include: teardown/disposal hookup only.
     * [ ] Must exclude: persistence save logic (Phase 7).
 
@@ -421,7 +448,7 @@ Step goal:
     * [ ] Action: add tests for command construction, required fields, and invariants.
     * [ ] Scope: `Tests/StateStore/Commands/CommandValidationTests.cs`.
     * [ ] Verify: tests fail if commands allow invalid construction (null TaskId, negative progress, etc.); all command types covered.
-    * [ ] Commit message: `phase3(step9A): add command validation tests`
+    * [ ] Suggested commit: `phase3(step9A): add command validation tests`
     * [ ] Must include: command construction guard tests only.
     * [ ] Must exclude: handler tests.
 
@@ -430,7 +457,7 @@ Step goal:
     * [ ] Action: add tests verifying same command + same state = same result.
     * [ ] Scope: `Tests/StateStore/Handlers/CommandHandlerDeterminismTests.cs`.
     * [ ] Verify: repeated handler invocations produce identical state; all handlers covered.
-    * [ ] Commit message: `phase3(step9B): add command handler determinism tests`
+    * [ ] Suggested commit: `phase3(step9B): add command handler determinism tests`
     * [ ] Must include: determinism assertions only.
     * [ ] Must exclude: integration tests.
 
@@ -439,7 +466,7 @@ Step goal:
     * [ ] Action: add tests verifying engine updates preserve user pins and user updates preserve engine progress.
     * [ ] Scope: `Tests/StateStore/Handlers/FieldSeparationTests.cs`.
     * [ ] Verify: tests fail if field separation is violated; AddOrUpdateTaskCommandHandler covered comprehensively.
-    * [ ] Commit message: `phase3(step9C): add engine/user field separation tests`
+    * [ ] Suggested commit: `phase3(step9C): add engine/user field separation tests`
     * [ ] Must include: field separation assertions for AddOrUpdateTaskCommandHandler only.
     * [ ] Must exclude: snapshot tests.
 
@@ -448,7 +475,7 @@ Step goal:
     * [ ] Action: add tests verifying snapshots are defensive copies and mutations do not affect canonical state.
     * [ ] Scope: `Tests/StateStore/Models/SnapshotImmutabilityTests.cs`.
     * [ ] Verify: tests fail if snapshot allows mutation of canonical state; defensive copy verified.
-    * [ ] Commit message: `phase3(step9D): add snapshot immutability tests`
+    * [ ] Suggested commit: `phase3(step9D): add snapshot immutability tests`
     * [ ] Must include: immutability assertions only.
     * [ ] Must exclude: publishing tests.
 
@@ -457,7 +484,7 @@ Step goal:
     * [ ] Action: add tests verifying SnapshotChanged event fires correctly after state changes.
     * [ ] Scope: `Tests/StateStore/SnapshotPublishingTests.cs`.
     * [ ] Verify: event fires with correct snapshot after command processing; event subscription and invocation verified.
-    * [ ] Commit message: `phase3(step9E): add snapshot publishing tests`
+    * [ ] Suggested commit: `phase3(step9E): add snapshot publishing tests`
     * [ ] Must include: event subscription and assertion tests only.
     * [ ] Must exclude: UI subscription tests (Phase 4).
 
@@ -466,7 +493,7 @@ Step goal:
     * [ ] Action: add tests verifying expired daily tasks are removed on day transition.
     * [ ] Scope: `Tests/StateStore/DayBoundary/DayBoundaryTests.cs`.
     * [ ] Verify: tests confirm day-keyed tasks expire correctly; expiration detection and removal verified.
-    * [ ] Commit message: `phase3(step9F): add day boundary behavior tests`
+    * [ ] Suggested commit: `phase3(step9F): add day boundary behavior tests`
     * [ ] Must include: expiration detection and removal tests only.
     * [ ] Must exclude: persistence tests.
 
@@ -475,7 +502,7 @@ Step goal:
     * [ ] Action: add tests verifying manual task IDs are unique, sequential, and deterministic.
     * [ ] Scope: `Tests/StateStore/ManualTaskCounterTests.cs`.
     * [ ] Verify: counter produces non-colliding IDs in correct format; sequential calls produce sequential IDs.
-    * [ ] Commit message: `phase3(step9G): add manual ID counter tests`
+    * [ ] Suggested commit: `phase3(step9G): add manual ID counter tests`
     * [ ] Must include: counter determinism and uniqueness tests only.
     * [ ] Must exclude: persistence tests (Phase 7).
 
@@ -484,7 +511,7 @@ Step goal:
     * [ ] Action: add tests verifying State Store enforces mutation-only-via-commands boundary.
     * [ ] Scope: `Tests/StateStore/StateStoreBoundaryTests.cs`.
     * [ ] Verify: tests confirm no direct state mutation paths exist; boundary enforcement verified.
-    * [ ] Commit message: `phase3(step9H): add State Store boundary tests`
+    * [ ] Suggested commit: `phase3(step9H): add State Store boundary tests`
     * [ ] Must include: boundary enforcement assertions only.
     * [ ] Must exclude: performance tests.
 
@@ -493,7 +520,7 @@ Step goal:
     * [ ] Action: add tests verifying State Store integrates correctly with lifecycle coordinator.
     * [ ] Scope: `Tests/Lifecycle/LifecycleCoordinatorIntegrationTests.cs`.
     * [ ] Verify: initialization and teardown execute correctly; lifecycle flow verified.
-    * [ ] Commit message: `phase3(step9I): add lifecycle integration tests`
+    * [ ] Suggested commit: `phase3(step9I): add lifecycle integration tests`
     * [ ] Must include: integration tests for init/teardown only.
     * [ ] Must exclude: full game simulation.
 
@@ -512,7 +539,7 @@ Step goal:
     * [ ] Action: execute clean build and run all Phase 3 tests.
     * [ ] Scope: no source changes expected.
     * [ ] Verify: build succeeds without warnings, all Phase 3 tests pass.
-    * [ ] Commit message: `phase3(step10A): record successful build and test completion`
+    * [ ] Suggested commit: `phase3(step10A): record successful build and test completion`
     * [ ] Must include: build log or test output confirmation.
     * [ ] Must exclude: opportunistic code edits.
 
@@ -521,22 +548,31 @@ Step goal:
     * [ ] Action: review implementation against each guardrail from checklist start.
     * [ ] Scope: this checklist file.
     * [ ] Verify: all guardrails preserved, no scope drift.
-    * [ ] Commit message: `phase3(step10B): audit guardrails and mark checklist complete`
+    * [ ] Suggested commit: `phase3(step10B): audit guardrails and mark checklist complete`
     * [ ] Must include: guardrail review notes.
     * [ ] Must exclude: new implementation work.
 
-### 10C - Review atomic commit boundaries and defer list ###
+### 10C - Validate implementation scope ###
 
-    * [ ] Action: confirm all substeps were atomic and review deferred items.
-    * [ ] Scope: this checklist file.
-    * [ ] Verify: deferred items documented for future phases.
-    * [ ] Commit message: `phase3(step10C): review atomic boundaries and defer list`
-    * [ ] Must include: defer list and boundary review notes.
-    * [ ] Must exclude: production code changes.
+    * [ ] Action: review implementation to ensure no unintended scope expansion beyond Phase 3 requirements.
+    * [ ] Scope: all changed files and symbols from phase start.
+    * [ ] Verify: no changes outside State Store domain; no premature ViewModel or UI wiring; architecture boundaries preserved.
+    * [ ] Suggested commit: `phase3(step10C): confirm scope boundaries and architecture contract compliance`
+    * [ ] Must include: scope validation notes.
+    * [ ] Must exclude: rewriting code unrelated to phase requirements.
+
+### 10D - Reconcile deferments ###
+
+    * [ ] Action: review checklist for newly identified deferments and reconcile with `.github/Project Tasks/Implementation Plan/Deferments Index.md`.
+    * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
+    * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
+    * [ ] Suggested commit: `phase3(step10D): reconcile deferments after Phase 3 completion`
+    * [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
+    * [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
 
 ## Step 10 Completion ##
 
-    * [ ] All substeps in Step 10 complete (10A, 10B, 10C).
+    * [ ] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
 
 
 ## Deferred Items ##

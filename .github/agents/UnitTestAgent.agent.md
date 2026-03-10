@@ -61,6 +61,20 @@ If sources conflict, call out the conflict and follow the higher-priority source
 
 ## 3. Operating Model ##
 
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Planner, Researcher, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes test scope, target files, edge cases, contract constraints, or coverage requirements, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Planner provides a test plan with specific classes and scenarios, use those directly
+  - If Researcher provides determinism patterns and constraint rules, use them directly
+  - If Orchestrator includes test-coverage expectations, follow them directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block test creation. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires broad exploration (use handoffs to Researcher or Planner).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **create or review tests based on that context**, not to re-validate or re-gather it.
+
 ## 3.1 Scope-first testing ##
 
 Stay inside the requested test scope (single class, subsystem, review-only, no prod edits, etc.).

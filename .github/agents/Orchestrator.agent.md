@@ -125,6 +125,9 @@ For every request, run this loop:
      - unresolved risks or findings
      - next required specialist
 4. **Delegate the next specialist with prior outputs attached** — include the specialist's findings (file contents or summary) as context in the next subagent call
+   - **Critical:** When chaining specialists (e.g., Researcher → Planner, or Reviewer → Planner), pass the complete context forward. Example: "Reviewer found these locations: [list]. Plan updates using these locations."
+   - **Anti-pattern:** Delegating with vague instructions like "plan the updates" without including what the prior specialist found
+   - Downstream specialists should NOT repeat searches or analysis already completed by upstream specialists
 5. Continue until definition of done is met.
 6. Ensure final verification is delegated when code, tests, or docs change.
 

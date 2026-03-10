@@ -110,6 +110,20 @@ which higher-priority source controls.
 
 ## 3. Operating Model ##
 
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (typically Orchestrator):**
+
+- **Use any provided context directly.** If the handoff includes prior research findings, scope boundaries, architectural context, or specific questions to answer, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Orchestrator provides architectural boundaries or subsystem hints, use those directly
+  - If a prior Researcher invocation provided partial findings, build on them rather than starting over
+- **Only perform additional searches** when you identify specific gaps in the provided context that block research completion. If the context is incomplete, state what additional research is needed and why.
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **gather missing context**, not to re-validate already-provided context.
+
+**Special case:** Researcher is often the **first agent in the chain**, so you may frequently receive minimal upstream context. That's expected — your role is to build the initial context foundation.
+
 ## 3.1 Research-first behavior ##
 
 For any non-trivial request, your default workflow is:

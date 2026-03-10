@@ -94,7 +94,21 @@ If sources conflict, state the conflict and follow the higher-priority source.
 
 ## 3. Operating Model ##
 
-## 3.0 Self-Splitting Parallel Execution ##
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Planner, Researcher, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes refactoring scope, affected files, symbol mappings, caller references, or behavior-preservation constraints, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Planner provides a refactoring plan with file paths and rename targets, use those directly
+  - If Researcher provides subsystem boundaries and reference patterns, use them directly
+  - If Orchestrator includes scope boundaries, respect them directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block refactoring. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires broad exploration (use handoffs to Researcher or Planner).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **refactor based on that context**, not to re-validate or re-gather it.
+
+## 3.0a Self-Splitting Parallel Execution ##
 
 Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
 

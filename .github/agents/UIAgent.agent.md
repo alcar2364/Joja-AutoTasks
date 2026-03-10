@@ -90,6 +90,20 @@ conflict.
 
 ## JAT-Specific UI Implementation Rules ##
 
+## 3.1 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Planner, Researcher, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes an approved plan, design guide excerpts, file locations, symbol references, or pattern analysis, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Planner provides an implementation plan with file paths and symbols, use those directly
+  - If Researcher provides relevant patterns and contracts, use them directly
+  - If Orchestrator includes architectural guidance, follow it directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block implementation. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires broad exploration (use handoffs to Researcher or Planner).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **implement based on that context**, not to re-validate or re-gather it.
+
 ## Snapshot Consumption Only ##
 
 UI reads snapshot data and emits commands.

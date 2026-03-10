@@ -11,7 +11,7 @@ applyTo: "**/*Atomic Commit Execution Checklist*.md"
 An **atomic commit execution checklist** is a detailed, implementation-ready plan that breaks down a design phase into small, individually-testable commits. Its goal is to:
 
 - Guide developers (human or AI) through a phase incrementally
-- Ensure each commit represents a minimal, scope-respecting change
+- Ensure each substep represents a minimal, scope-respecting change
 - Catch architectural drift early via explicit verification steps and test coverage
 - Produce a working checkpoint at the end of the phase
 - Remain portable and reusable across phases and projects
@@ -74,6 +74,7 @@ The Planner creates a **step-by-step breakdown** of the phase:
 **Output structure:**
 - **Guardrails section** — principles/constraints that must remain true throughout the phase (not checkboxes during planning)
 - **Steps (N)** — major milestones (e.g., "Bootstrap SMAPI Skeleton", "Add Logging Foundation")
+- **Phase Overview section** — architectural context for the phase (goal, components, prerequisites, relationships, and design guide citations)
 - **Substeps (NA, NB, NC, ...)** — granular, atomic commits (one per substep)
 - **Unit Tests section** — tests that lock constraints and catch drift
 - **Final Review section** — verification checkpoints before phase completion
@@ -140,6 +141,21 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
 
 **Key point:** Guardrails are NOT execution checkboxes. They are design principles to preserve. They are checked OFF only during final review after coding is complete.
 
+### Phase Overview ###
+
+**Purpose:** Provide architectural context for this implementation phase.
+
+**Required content:**
+
+* [ ] **Phase Goal**: One-paragraph summary of what this phase delivers and why
+* [ ] **Architecture Components**: List of major systems/classes/boundaries being implemented
+* [ ] **Prerequisites**: What prior phases must be complete and what they provide
+* [ ] **Architecture Relationships**: How this phase's components relate to:
+  - Prior phases (what they build on)
+  - Future phases (what foundation they provide)
+  - Overall system architecture (where they fit)
+* [ ] **Design Guide References**: Citations to relevant design guide sections
+
 ### Steps (Major Milestones) ###
 
 **Format:** `## N) [Step Title] ##`
@@ -151,7 +167,7 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
    * [ ] [Goal description]
    ```
 
-2. **Substeps** — Atomic commits (see below)
+2. **Substeps** — Implementation checkpoints (see below)
 
 3. **Step completion checkpoint** — After all substeps (NA, NB, NC, etc.) are done
    ```
@@ -180,7 +196,7 @@ Step goal:
 * [ ] All substeps in Step 1 complete (1A, 1B, 1C).
 ```
 
-### Substeps (Atomic Commits) ###
+### Substeps (Implementation Checkpoints) ###
 
 **Format:** `### NA - [Substep title] ###`
 
@@ -201,11 +217,11 @@ Step goal:
    * [ ] Verify: [testable criterion]
    ```
 
-4. **Commit message (suggested)** — Guided format (NOT mandatory)
+4. **Suggested commit** — Workflow reminder (optional, not enforced)
    ```
-   * [ ] Commit message: `[suggested message]`
+   * [ ] Suggested commit: `[suggested message]`
    ```
-   **Important:** Agents ignore commit message verification. Users may use a different message. The goal is readability, not strict adherence.
+   **Important:** This is a workflow reminder, not a verification requirement. Committing after each substep is recommended for progress tracking and easier rollback, but is not checked during phase completion. Developers may use different commit messages as long as work is traceable.
 
 5. **Must include** — What the change must add/change
    ```
@@ -224,7 +240,7 @@ Step goal:
 * [ ] Action: add `ModEntry : Mod` and minimal `Entry(IModHelper helper)` startup wiring.
 * [ ] Scope: `src/JojaAutoTasks/ModEntry.cs` (`ModEntry`, `Entry`).
 * [ ] Verify: build succeeds and one startup log appears.
-* [ ] Commit message: `phase1(step1A): add minimal ModEntry shell`
+* [ ] Suggested commit: `phase1(step1A): add minimal ModEntry shell`
 * [ ] Must include: baseline `ModEntry` and minimal startup code.
 * [ ] Must exclude: config/lifecycle/dispatcher internals.
 ```
@@ -256,7 +272,7 @@ Step goal:
 * [ ] Action: add tests for defaulting/validation and ConfigVersion handling.
 * [ ] Scope: `tests/JojaAutoTasks.Tests/Configuration/ConfigLoaderTests.cs`.
 * [ ] Verify: tests compile and fail if ConfigVersion behavior regresses.
-* [ ] Commit message: `phase1(step7A): add ConfigLoader tests with ConfigVersion coverage`
+* [ ] Suggested commit: `phase1(step7A): add ConfigLoader tests with ConfigVersion coverage`
 * [ ] Must include: default value tests, validation edge cases, ConfigVersion round-trip tests.
 * [ ] Must exclude: production logic changes.
 
@@ -265,7 +281,7 @@ Step goal:
 * [ ] Action: add signal flow tests including assertions that OnSaving writes no state.
 * [ ] Scope: `tests/JojaAutoTasks.Tests/Lifecycle/LifecycleCoordinatorTests.cs`.
 * [ ] Verify: tests fail if OnSaving writes or checkpoints are introduced.
-* [ ] Commit message: `phase1(step7B): add lifecycle tests for signal-only OnSaving`
+* [ ] Suggested commit: `phase1(step7B): add lifecycle tests for signal-only OnSaving`
 * [ ] Must include: signal sequencing tests, OnSaving read-only assertions, required test doubles/mocks.
 * [ ] Must exclude: dispatcher-specific tests and production refactors.
 ```
@@ -297,7 +313,7 @@ Step goal:
 * [ ] Action: run clean build and full test suite.
 * [ ] Scope: no source edits expected.
 * [ ] Verify: build succeeds without warnings and all Phase 1 tests pass.
-* [ ] Commit message: `phase1(step8A): record build and test completion evidence`
+* [ ] Suggested commit: `phase1(step8A): record build and test completion evidence`
 * [ ] Must include: build log evidence (if persisting) or test output confirmation.
 * [ ] Must exclude: opportunistic code edits.
 
@@ -306,18 +322,18 @@ Step goal:
 * [ ] Action: review implementation against each guardrail from the start of this checklist.
 * [ ] Scope: this checklist file and the implemented code.
 * [ ] Verify: each guardrail is preserved (e.g., no task mutation, OnSaving is signal-only).
-* [ ] Commit message: `phase1(step8B): confirm guardrails preserved in Phase 1`
+* [ ] Suggested commit: `phase1(step8B): confirm guardrails preserved in Phase 1`
 * [ ] Must include: explicit check against each guardrail.
 * [ ] Must exclude: design guide rewrites or Phase 2 work.
 
-### 8C - Validate atomic boundaries ###
+### 8C - Validate implementation scope ###
 
-* [ ] Action: audit commit history to ensure each substep is a minimal, scope-respecting commit.
-* [ ] Scope: review commit set from phase start to completion.
-* [ ] Verify: no commit spans unrelated file/symbol scopes.
-* [ ] Commit message: `phase1(step8C): finalize atomic boundary audit`
-* [ ] Must include: validation notes (or checklist updates) if proceeding.
-* [ ] Must exclude: rewriting Phase 1 code for unrelated cleanup.
+* [ ] Action: review implementation to ensure no unintended scope expansion beyond phase requirements.
+* [ ] Scope: review changed files and symbols from phase start to completion.
+* [ ] Verify: no changes outside documented phase scope; architecture boundaries preserved.
+* [ ] Suggested commit: `phase1(step8C): finalize scope validation audit`
+* [ ] Must include: scope validation notes.
+* [ ] Must exclude: rewriting code unrelated to phase requirements.
 
 ### 8D - Reconcile deferments ###
 
@@ -336,7 +352,7 @@ At the end, add a completion summary:
 ## Final Completion Gate Checklist ##
 
 * [ ] All substeps 1A through NC are complete.
-* [ ] Each completed substep is represented by one atomic commit.
+* [ ] Implementation scope matches phase requirements (no unintended expansion).
 * [ ] All guardrails are preserved.
 * [ ] Unit tests pass and cover all Phase constraints.
 * [ ] Final review checklist is complete and signed off.
@@ -384,7 +400,7 @@ Deferments are tracked centrally to ensure work items deferred during one phase 
 * [ ] Action: review checklist for newly identified deferments and reconcile with `.github/Project Tasks/Implementation Plan/Deferments Index.md`.
 * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
 * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
-* [ ] Commit message: `phase2(step8D): reconcile deferments after Phase 2 completion`
+* [ ] Suggested commit: `phase2(step8D): reconcile deferments after Phase 2 completion`
 * [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
 * [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
 ```
@@ -397,7 +413,7 @@ Deferments are tracked centrally to ensure work items deferred during one phase 
 
 ## Key Principles ##
 
-### Atomic Scope per Substep ###
+### Implementation Checkpoints per Substep ###
 
 Each substep should represent ONE logical change:
 - One new file or class
@@ -406,6 +422,8 @@ Each substep should represent ONE logical change:
 - One test file or test suite
 
 If a substep description says "and also refactor X", split it into two substeps.
+
+This scope discipline applies to substeps as planning units. Commits may be structured differently based on developer preference, but substeps define the recommended implementation granularity.
 
 ### No Scope Creep ###
 
@@ -421,13 +439,14 @@ Every "Verify" line should be testable:
 - "tests pass" ✓ (automated)
 - "implementation follows design guide" ✗ (too vague; be specific about what to check)
 
-### Commit Messages as Guidance, Not Law ###
+### Commits as Workflow Reminders, Not Requirements ###
 
-Suggested commit messages help with readability:
-- Format: `phase(step): brief description`
+Suggested commits are workflow reminders to help track progress:
+- Format guidance: `phase(step): brief description`
 - Example: `phase1(step1A): add minimal ModEntry shell`
-- Agents IGNORE commit message verification
-- Users may use different messages; that's fine
+- **Not verified or enforced**: Commit history structure is not checked during phase completion gates
+- **Acceptance criteria focus**: Phase completion validated by scope boundaries, tests passing, and guardrails preserved — not by commit history
+- **Recommended workflow**: Commit after completing each substep for progress tracking and easier rollback; use descriptive messages that reference substep IDs (e.g., `phase3(step1A): ...`)
 
 ### Guardrails Checked After Coding ###
 
@@ -450,7 +469,7 @@ When the Researcher gathers context, they should answer:
 - [ ] What are the edge cases or constraints mentioned in the design guide?
 - [ ] What previous phases/checklists exist (to check for overlap)?
 - [ ] What external dependencies exist (libraries, APIs)?
-- [ ] What atomic commit boundaries make sense (one file? one responsibility boundary)?
+- [ ] What implementation scope boundaries make sense (one file? one responsibility boundary)?
 - [ ] Are there listed guardrails/constraints in the design guide to preserve?
 - [ ] What test coverage is recommended or implied?
 - [ ] **What active deferments (from `.github/Project Tasks/Implementation Plan/Deferments Index.md`) are scheduled for this phase or marked "Open" with applicable scope?**
@@ -461,7 +480,7 @@ The Planner should produce:
 
 - [ ] Step titles and goals (major milestones)
 - [ ] Substep list with action, scope, verify, and must-include/exclude rules
-- [ ] Atomic commit granularity decisions
+- [ ] Implementation checkpoint granularity decisions
 - [ ] Dependencies or ordering constraints between substeps
 - [ ] Unit test substeps (which constraints to test)
 - [ ] **Deferment incorporation plan: which active deferments (from Researcher findings) are resolved in-scope, and which are explicitly re-deferred with rationale (defer note in checklist or proposed update to Deferments Index)**
@@ -485,7 +504,7 @@ The Reviewer should verify:
 - [ ] Substep actions are precise and scope-limited
 - [ ] Verification criteria are testable
 - [ ] Unit test substeps are comprehensive
-- [ ] Final review section checks guardrails and atomic boundaries
+- [ ] Final review section checks guardrails and scope boundaries
 - [ ] Both human and AI agents can follow the instructions
 
 **Plan Quality:**

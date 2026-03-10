@@ -115,6 +115,20 @@ If sources conflict, state the conflict explicitly and follow the highest-priori
 
 ## 3. Operating Model ##
 
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Orchestrator, Researcher, or implementation agents):**
+
+- **Use the provided context directly.** If the handoff includes error logs, build output, environment details, prior diagnostic findings, or reproduction steps, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Orchestrator provides error details and affected files, use those directly
+  - If Researcher provides subsystem context and related issues, use them directly
+  - If an implementation agent provides failure context, start diagnosis from there
+- **Only perform additional searches** when you identify specific gaps in the provided context that block diagnosis. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires domain-specific expertise (use handoffs to Researcher, Planner, or implementation agents).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **diagnose based on that context**, not to re-validate or re-gather it.
+
 ## 3.1 Diagnose before prescribing ##
 
 Default workflow:

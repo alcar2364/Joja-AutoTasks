@@ -120,7 +120,21 @@ Prefer the smallest plan that satisfies the goal while preserving architecture i
 
 Avoid “while we are here” scope creep unless the user explicitly requests broader cleanup.
 
-## 3.4 Markdown artifact boundary ##
+## 3.4 Context reuse and search efficiency ##
+
+**When handed off from upstream agents (Researcher, Reviewer, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes research findings, search results, deferment lists, file locations, or design guide excerpts, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Reviewer provides locations where updates are needed, use those locations directly
+  - If Researcher provides active deferment IDs and design guide context, use them directly
+  - If Orchestrator includes file paths and symbols from prior analysis, use them directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block planning. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate to Researcher** if the missing context requires broad codebase exploration or pattern discovery (use the "Researcher follow-up" handoff).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **structure that context into a plan**, not to re-validate or re-gather it.
+
+## 3.5 Markdown artifact boundary ##
 
 When planning work that ends with `.md` drafting by WorkspaceAgent:
 
@@ -144,7 +158,7 @@ When handing off to WorkspaceAgent, include a short handoff block with:
     - `ReviewStatus: completed|skipped`
     - `ReviewReason: <one-line rationale>`
 
-## 3.5 Self-Splitting Parallel Execution ##
+## 3.6 Self-Splitting Parallel Execution ##
 
 Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
 

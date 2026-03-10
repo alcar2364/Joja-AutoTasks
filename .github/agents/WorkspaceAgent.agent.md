@@ -111,6 +111,22 @@ When managing workspace artifacts, use this precedence order:
 
 If sources conflict, state the conflict and follow the higher-priority source.
 
+## 3. Operating Model ##
+
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Planner, Reviewer, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes plan content, review findings, file locations, design guide excerpts, or structural requirements, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Planner provides a structured plan with steps and verification criteria, use that content directly
+  - If Reviewer provides update locations and compliance findings, use those directly
+  - If Orchestrator includes documentation scope, follow it directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block documentation work. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires broad exploration (use handoffs to Researcher or Planner).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **draft or edit workspace artifacts based on that context**, not to re-validate or re-gather it.
+
 ## 3. Artifact Types and Conventions ##
 
 ## 3.1 Design guide sections ##

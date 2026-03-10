@@ -100,7 +100,21 @@ Markup mush is still mush.
 
 ## 3. Operating Model ##
 
-## 3.0 Self-Splitting Parallel Execution ##
+## 3.0 Context Reuse and Search Efficiency ##
+
+**When handed off from upstream agents (Planner, Researcher, or Orchestrator):**
+
+- **Use the provided context directly.** If the handoff includes an approved plan, markup patterns, file locations, UI composition guidance, or interaction requirements, treat them as authoritative input.
+- **DO NOT repeat searches** that upstream agents already performed. For example:
+  - If Planner provides a StarML implementation plan with specific .sml files and elements, use those directly
+  - If Researcher provides SML patterns and contract references, use them directly
+  - If UIAgent provides interaction context, use it directly
+- **Only perform additional searches** when you identify specific gaps in the provided context that block implementation. If you need additional context, state explicitly what is missing and why before searching.
+- **Delegate back to the source agent** if the missing context requires broad exploration (use handoffs to Researcher or UIAgent).
+
+**Rationale:** Repeating searches wastes time, increases token usage, and risks inconsistent results. Upstream agents are authoritative for the context they provide. Your job is to **implement based on that context**, not to re-validate or re-gather it.
+
+## 3.0a Self-Splitting Parallel Execution ##
 
 Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
 
