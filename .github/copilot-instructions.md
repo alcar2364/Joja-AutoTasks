@@ -30,7 +30,7 @@ Current implemented core is a Phase 1 foundation:
 		* Tests project: net8.0
 * Core build dependency: Pathoschild.Stardew.ModBuildConfig 4.4.0
 * Test stack: xUnit, Moq, Microsoft.NET.Test.Sdk, coverlet.collector
-* CI/workflows: no .github/workflows YAML files are currently present
+* CI/workflows: `.github/workflows/ci.yml` runs build + tests on every push and PR to `main`
 
 ## Bootstrap and Environment Setup (Validated)
 
@@ -131,7 +131,8 @@ Stop-Process -Force
 
 ## Lint/Formatting/Static Analysis
 
-No dedicated lint command or CI linter workflow is currently defined in repository-tracked files.
+No dedicated lint command or CI linter workflow is currently defined. The CI workflow
+(`.github/workflows/ci.yml`) enforces build and test success only.
 
 Operational validation gate for this repo is:
 
@@ -184,7 +185,7 @@ VS Code tasks notes:
 
 ## Pre-PR Validation (Replicate Locally)
 
-There are no checked-in GitHub Actions workflows to mirror, so use this local pre-PR checklist:
+The CI workflow (`.github/workflows/ci.yml`) mirrors these local steps. Run them before opening a PR:
 
 1. `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
 2. `dotnet test "Tests\JojaAutoTasks.Tests.csproj"`
