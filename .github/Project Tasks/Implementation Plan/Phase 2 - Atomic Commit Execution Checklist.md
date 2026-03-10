@@ -7,25 +7,25 @@ Note: If a sub-step expands beyond the stated file scope, stop and open a follow
 
 ## Guardrails (Must Stay True) ##
 
-    * [ ] Phase 2 only.
-    * [ ] Preserve all Phase 1 invariants (`OnSaving` signal-only, throttled `OnUpdateTicked`, bounded logging).
-    * [ ] No State Store command/reducer/snapshot logic in this phase.
-    * [ ] No UI/HUD/Menu/ViewModel/StarML work in this phase.
-    * [ ] No persistence schema/migration work in this phase.
-    * [ ] Localization changes that alter runtime behavior are deferred to Phase 3+; Phase 2 may
+    * [x] Phase 2 only.
+    * [x] Preserve all Phase 1 invariants (`OnSaving` signal-only, throttled `OnUpdateTicked`, bounded logging).
+    * [x] No State Store command/reducer/snapshot logic in this phase.
+    * [x] No UI/HUD/Menu/ViewModel/StarML work in this phase.
+    * [x] No persistence schema/migration work in this phase.
+    * [x] Localization changes that alter runtime behavior are deferred to Phase 3+; Phase 2 may
     only add documentation/contract guardrails.
-    * [ ] Manual task ID issuance/counter ownership is deferred to Phase 3 (State Store path).
-    * [ ] Completion-marking runtime behavior is deferred (domain structure exists in Phase 2).
-    * [ ] RuleId sequential-generation enforcement is deferred until RuleId generation exists.
-    * [ ] Deterministic IDs only; no random/GUID/time-seeded identity generation.
-    * [ ] Canonical TaskId forms stay underscore-delimited (`BuiltIn_*`, `TaskBuilder_*`,
+    * [x] Manual task ID issuance/counter ownership is deferred to Phase 3 (State Store path).
+    * [x] Completion-marking runtime behavior is deferred (domain structure exists in Phase 2).
+    * [x] RuleId sequential-generation enforcement is deferred until RuleId generation exists.
+    * [x] Deterministic IDs only; no random/GUID/time-seeded identity generation.
+    * [x] Canonical TaskId forms stay underscore-delimited (`BuiltIn_*`, `TaskBuilder_*`,
     `Manual_{Counter}`).
-    * [ ] `TaskStatus` is V1-minimal (`Incomplete`, `Completed`) only.
-    * [ ] Sorting/comparison is deterministic and cannot depend on unordered traversal or insertion order.
-    * [ ] DayKey uses canonical `Year{N}-{Season}{D}` style (for example,
+    * [x] `TaskStatus` is V1-minimal (`Incomplete`, `Completed`) only.
+    * [x] Sorting/comparison is deterministic and cannot depend on unordered traversal or insertion order.
+    * [x] DayKey uses canonical `Year{N}-{Season}{D}` style (for example,
     `Year1-Summer15`) with fixed non-localized season tokens and invariant casing.
     * [x] UpdateTicked guard seam fix remains test-only and passing.
-    * [ ] All new C# files/types satisfy `CSHARP-STYLE-CONTRACT.instructions.md`.
+    * [x] All new C# files/types satisfy `CSHARP-STYLE-CONTRACT.instructions.md`.
 
 ## 1) Establish Core Identifier Value Types ##
 

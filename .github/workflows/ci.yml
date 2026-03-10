@@ -18,21 +18,29 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Compilation Check
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up .NET 8.0.x
+      - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: |
+            6.0.x
+            8.0.x
 
-      - name: Add Stardew Valley reference assemblies
+      - name: Add reference assemblies
         uses: Pathoschild/SMAPI-ModBuildWorkflow/add-reference-assemblies@v0
 
-      - name: Build (compilation check)
-        run: dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
+      - name: Restore
+        run: dotnet restore JojaAutoTasks.sln
+
+      - name: Build
+        run: dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false --no-restore
+
+      - name: Test
+        run: dotnet test "Tests/JojaAutoTasks.Tests.csproj"
