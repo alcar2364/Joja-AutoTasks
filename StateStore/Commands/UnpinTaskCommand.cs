@@ -8,9 +8,11 @@ internal sealed class UnpinTaskCommand : IStateCommand
 
     internal UnpinTaskCommand(TaskId taskId)
     {
-        // -- Guard --//
+        // -- Guards -- //
         if (taskId == default)
+        {
             throw new ArgumentException("TaskId cannot be default.", nameof(taskId));
+        }
 
         TaskId = taskId;
     }

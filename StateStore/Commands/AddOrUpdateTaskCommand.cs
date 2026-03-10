@@ -84,8 +84,6 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
             throw new ArgumentException("SourceIdentifier cannot be null or whitespace.", nameof(sourceIdentifier));
         }
 
-        // -- Properties -- //
-
         TaskId = taskId;
         Category = category;
         SourceType = sourceType;

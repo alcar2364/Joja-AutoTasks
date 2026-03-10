@@ -8,9 +8,11 @@ internal sealed class RemoveTaskCommand : IStateCommand
 
     internal RemoveTaskCommand(TaskId taskId)
     {
-        // -- Guard --//
+        // -- Guards -- //
         if (taskId == default)
+        {
             throw new ArgumentException("TaskId cannot be default.", nameof(taskId));
+        }
 
         TaskId = taskId;
     }
