@@ -178,12 +178,12 @@ Step goal:
 
 ### 3B - Implement AddOrUpdateTaskCommandHandler with field separation ###
 
-    * [ ] Action: implement handler for AddOrUpdateTaskCommand with engine/user field separation logic.
-    * [ ] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs`.
-    * [ ] Verify: if task does not exist → create new TaskRecord; if task exists and command is engine-sourced → update engine fields only, preserve user fields; if task exists and command is user-sourced → update user fields only, preserve engine fields; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step3B): implement AddOrUpdateTaskCommandHandler with field separation`
-    * [ ] Must include: complete handler implementation with field separation logic.
-    * [ ] Must exclude: snapshot publishing, persistence.
+    * [x] Action: implement handler for AddOrUpdateTaskCommand with engine/user field separation logic.
+    * [x] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs`.
+    * [x] Verify: if task does not exist → create new TaskRecord; if task exists and command is engine-sourced → update engine fields only, preserve user fields; if task exists and command is user-sourced → update user fields only, preserve engine fields; handler is deterministic and side-effect free.
+    * [x] Suggested commit: `phase3(step3B): implement AddOrUpdateTaskCommandHandler with field separation`
+    * [x] Must include: complete handler implementation with field separation logic.
+    * [x] Must exclude: snapshot publishing, persistence.
 
 ### 3C - Implement CompleteTaskCommandHandler ###
 
