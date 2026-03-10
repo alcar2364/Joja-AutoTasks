@@ -2,11 +2,11 @@
 name: daily-repo-status
 description: "Provides a daily status report for the repo"
 on:
-  workflow_run:
-    workflows: [daily-repo-status]
-    types: [completed]
-    branches: [main]
+  schedule: daily
   workflow_dispatch:
+  workflow_run:
+    workflows: [build-health-monitor, daily-docs-updater]
+    types: [completed]
 permissions:
   contents: read
   actions: read
@@ -15,7 +15,6 @@ permissions:
 strict: true
 network:
   allowed: [defaults, github]
-if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
 engine:
   id: copilot
 tools:
