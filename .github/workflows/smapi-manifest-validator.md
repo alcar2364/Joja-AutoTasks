@@ -15,8 +15,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pull-requests: write
-  checks: write
+  pull-requests: read
+  checks: read
 strict: true
 network:
   allowed: [defaults, github]

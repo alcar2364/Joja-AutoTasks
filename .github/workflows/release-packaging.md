@@ -12,7 +12,7 @@ on:
         required: true
         type: string
 permissions:
-  contents: write
+  contents: read
 strict: true
 network:
   allowed: [defaults, github]
@@ -53,12 +53,11 @@ Build a release zip artifact and create a GitHub Release whenever a version tag 
 4. **Validate csproj version** matches tag version
 5. **Build** release zip with `EnableModZip=true`
 6. **Verify zip** contains the expected mod files
-7. **Create GitHub Release:**
-   - Tag: `${{ github.ref_name }}`
-   - Title: `JojaAutoTasks v<VERSION>`
-   - Body: Auto-generated changelog from commits since last tag
-   - Attach: `JojaAutoTasks-v<VERSION>.zip`
-   - Mark as draft if triggered via `workflow_dispatch` (manual review before publish)
+7. **Create release issue** via `safe-outputs.create-issue`:
+   - Title: `JojaAutoTasks v<VERSION> — Release Ready`
+   - Body: Auto-generated changelog from commits since last tag, zip artifact name, and instructions for the maintainer to manually create the GitHub Release and attach the zip
+   - Include release checklist and tag reference
+   - Note: GitHub Release creation requires a maintainer to publish manually after reviewing the issue
 
 ## Changelog Generation
 
@@ -81,5 +80,6 @@ Auto-generate release notes from commits since the previous tag:
 - Workflow must be triggered from the main branch (not from a detached HEAD)
 - Tags must follow semantic versioning (`v0.1.0`, `v1.0.0-beta.1`)
 - Release drafts require manual publish; full tags auto-publish
+- GitHub Release creation is a manual step; this workflow creates a `[release]` issue with all details for the maintainer to act on
 - The NuGet package cache should be warmed before this workflow runs (use pr-ci cache)
 - Stardew Valley Nexus Mods distribution can be done manually after GitHub Release is created

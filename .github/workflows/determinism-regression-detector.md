@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
 strict: true
 network:
   allowed: [defaults, github]
@@ -19,6 +19,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  add-comment:
+    type: pr-review
   create-discussion:
     category: general
     title-prefix: "[determinism] "
