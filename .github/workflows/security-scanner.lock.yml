@@ -23,7 +23,7 @@
 #
 # CodeQL static analysis and NuGet vulnerability scanning for security enforcement.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"a3a27dba752e3aec99fa34175ac5352e1740440edb02b1753163780a3ca16d6d","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"250c04d1cdb0e57ce324a6f673481e3e28306639abf795724fbd0b197d9f60b4","compiler_version":"v0.57.0","strict":true}
 
 name: "security-scanner"
 "on":
@@ -256,6 +256,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
       security-events: read
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}

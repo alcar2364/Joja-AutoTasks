@@ -23,7 +23,7 @@
 #
 # Monitors build and test pipeline health, identifying failures and regressions.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"e40fb1fbaff9b70c30bcaa20cdf0d2e3ce10bd7f9394fd76d8e35fc3d7547798","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"c9f6b42ec297ec410553a04714145f9c87e7421748f113f76d917d6f34e9f3b4","compiler_version":"v0.57.0","strict":true}
 
 name: "build-health-monitor"
 "on":
@@ -33,6 +33,8 @@ name: "build-health-monitor"
   workflow_dispatch:
   workflow_run:
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
+    branches:
+    - main
     types:
     - completed
     workflows:
@@ -245,6 +247,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

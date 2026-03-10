@@ -23,7 +23,7 @@
 #
 # Validates manifest.json integrity and version consistency against JojaAutoTasks.csproj on every relevant change.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"61ebaf2d0f7e886ef9c490969905e304aac21f8976e8f95504f68b944a3012d9","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"355089703e51a873b19da70cd34678fd90977f04e422cf70442a7c57d37cac3a","compiler_version":"v0.57.0","strict":true}
 
 name: "smapi-manifest-validator"
 "on":
@@ -261,6 +261,7 @@ jobs:
     permissions:
       checks: read
       contents: read
+      issues: read
       pull-requests: read
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}

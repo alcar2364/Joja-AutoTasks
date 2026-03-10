@@ -23,7 +23,7 @@
 #
 # Weekly analyzer for NuGet package usage, version currency, and dependency health.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"bd1c5baf03e4786d02e978ec2a0d493881f9f45b29e0deec816483957e1199cb","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"069cd82922d6ee03fbc1859f4f1bfdda9ad2e8ecbeccbe845efe12dccd873d54","compiler_version":"v0.57.0","strict":true}
 
 name: "dotnet-dependency-analyzer"
 "on":
@@ -231,6 +231,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

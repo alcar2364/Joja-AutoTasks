@@ -23,7 +23,7 @@
 #
 # Daily analyzer for unit test coverage gaps and test quality improvements.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"073ed1cebcc5e49d26036c66d68957c778ff4577957c326cbc0a319648e67358","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"2e16cda5d83c01e44287bf67e81cb56f8fde65e6061a0768e37d318e18c88404","compiler_version":"v0.57.0","strict":true}
 
 name: "unit-test-coverage-analyzer"
 "on":
@@ -231,6 +231,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

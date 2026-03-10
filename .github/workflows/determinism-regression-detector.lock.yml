@@ -23,7 +23,7 @@
 #
 # Scans C# source files for non-deterministic patterns that violate the JAT determinism contract.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"cb6128e9fff15e750e6958f7e9a5e1888bce1e142d4aa96e6b5199d1b4495ca6","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"f14244e77600a43112a581507e6aee0aab9f35041be12bf1b0475cdaeaf38f13","compiler_version":"v0.57.0","strict":true}
 
 name: "determinism-regression-detector"
 "on":
@@ -256,6 +256,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
       pull-requests: read
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}

@@ -23,7 +23,7 @@
 #
 # Weekly monitor for aging deferred work items in the JAT implementation plan deferments index.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"b87a337cdff47c92d2592f3f8420a7c023b80035744fe902c8db44de14fd32b8","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"1389beab6bf28c5601102b1ae2dccb9fac5a986df6ead347fea3c395b4c43049","compiler_version":"v0.57.0","strict":true}
 
 name: "deferments-monitor"
 "on":
@@ -231,6 +231,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

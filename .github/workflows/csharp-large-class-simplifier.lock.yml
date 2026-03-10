@@ -23,7 +23,7 @@
 #
 # Monitors C# class file sizes and proposes splitting oversized classes into focused domain modules.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"fb6c165b7d06da9e3187b5c9d4843b0d532e391d587479de555efb2c950cd8e6","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"dd8440058eaa18f509d20f190c19433f39dbfd23673b322de0a7d18b90f64ea4","compiler_version":"v0.57.0","strict":true}
 
 name: "csharp-large-class-simplifier"
 "on":
@@ -236,6 +236,7 @@ jobs:
     permissions:
       contents: read
       issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

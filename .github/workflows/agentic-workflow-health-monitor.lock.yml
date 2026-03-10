@@ -23,7 +23,7 @@
 #
 # Meta-workflow that monitors the health of all agentic workflows themselves.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"af7cde5380567364bd5311a339c42750d6a37f39c45e47e810f562fdf5c504f6","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"66b1236aadda1abd6fe782391147fa8824e0388b2e0ac4cfbdb78df473ee7375","compiler_version":"v0.57.0","strict":true}
 
 name: "agentic-workflow-health-monitor"
 "on":
@@ -33,6 +33,8 @@ name: "agentic-workflow-health-monitor"
   workflow_dispatch:
   workflow_run:
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
+    branches:
+    - main
     types:
     - completed
     workflows:
@@ -245,6 +247,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:

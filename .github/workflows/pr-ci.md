@@ -21,6 +21,7 @@ permissions:
   contents: read
   checks: read
   pull-requests: read
+  issues: read
 strict: true
 network:
   allowed: [defaults, github]

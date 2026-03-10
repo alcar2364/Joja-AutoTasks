@@ -23,7 +23,7 @@
 #
 # Daily analyzer for improving C# type safety: nullable reference types, untyped generics, and type consistency.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"e0c6c526e85a518c3773186bfd87f28102f983ca35868f711a099c4c316477f0","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"3561ab31396ce66782137083cae0f4fdadd1c45ffdda9782c66878c05c07d84d","compiler_version":"v0.57.0","strict":true}
 
 name: "csharp-type-safety-analyzer"
 "on":
@@ -235,6 +235,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
+      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:
