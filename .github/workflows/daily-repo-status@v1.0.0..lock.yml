@@ -23,13 +23,13 @@
 #
 # Provides a daily status report for the repo
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"e2fa647e378a46adc10388a8215120e20cfc6d7e78145ddce1af0dad6e09f499","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"a187bb00b8c108b271096635563e9d9b5d5c0a9825152325877c9829ee5dbf9c","compiler_version":"v0.57.0","strict":true}
 
 name: "daily-repo-status"
 "on":
   schedule:
-  - cron: "0 8 * * *"
-    # Friendly format: daily
+  - cron: "51 23 * * *"
+    # Friendly format: daily (scattered)
   workflow_dispatch:
   workflow_run:
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
@@ -1078,7 +1078,6 @@ jobs:
             await main();
 
   pre_activation:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-slim
     outputs:
       activated: ${{ steps.check_membership.outputs.is_team_member == 'true' }}

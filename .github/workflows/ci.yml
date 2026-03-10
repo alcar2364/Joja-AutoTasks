@@ -2,9 +2,17 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - "**.cs"
+      - "**.csproj"
+      - "**.sln"
+      - "manifest.json"
   pull_request:
-    branches: [ main ]
+    paths:
+      - "**.cs"
+      - "**.csproj"
+      - "**.sln"
+      - "manifest.json"
 
 permissions:
   contents: read

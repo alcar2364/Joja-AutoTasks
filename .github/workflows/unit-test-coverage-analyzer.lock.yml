@@ -23,7 +23,7 @@
 #
 # Daily analyzer for unit test coverage gaps and test quality improvements.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"7405cff560bb0181d8ab74605c006bd60450c251b8095f3de230440b3a5412b0","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"073ed1cebcc5e49d26036c66d68957c778ff4577957c326cbc0a319648e67358","compiler_version":"v0.57.0","strict":true}
 
 name: "unit-test-coverage-analyzer"
 "on":
@@ -230,10 +230,7 @@ jobs:
     needs: activation
     runs-on: ubuntu-latest
     permissions:
-      actions: read
       contents: read
-      issues: read
-      pull-requests: read
     concurrency:
       group: "gh-aw-copilot-${{ github.workflow }}"
     env:
@@ -629,7 +626,7 @@ jobs:
                 "container": "ghcr.io/github/github-mcp-server:v0.32.0",
                 "env": {
                   "GITHUB_LOCKDOWN_MODE": "$GITHUB_MCP_LOCKDOWN",
-                  "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_MCP_SERVER_TOKEN}",
+                  "GITHUB_PERSONAL_ACCESS_TOKEN": "\${GITHUB_MCP_SERVER_TOKEN}",
                   "GITHUB_READ_ONLY": "1",
                   "GITHUB_TOOLSETS": "context,repos,issues,pull_requests"
                 }
@@ -638,7 +635,7 @@ jobs:
                 "type": "http",
                 "url": "http://host.docker.internal:$GH_AW_SAFE_OUTPUTS_PORT",
                 "headers": {
-                  "Authorization": "${GH_AW_SAFE_OUTPUTS_API_KEY}"
+                  "Authorization": "\${GH_AW_SAFE_OUTPUTS_API_KEY}"
                 }
               }
             },
@@ -788,7 +785,7 @@ jobs:
         if: always()
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent-stdio.log
+          GH_AW_AGENT_OUTPUT: /tmp/gh-aw/sandbox/agent/logs/
         with:
           script: |
             const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
@@ -1027,6 +1024,7 @@ jobs:
           GH_AW_WORKFLOW_ID: "unit-test-coverage-analyzer"
           GH_AW_SECRET_VERIFICATION_RESULT: ${{ needs.activation.outputs.secret_verification_result }}
           GH_AW_CHECKOUT_PR_SUCCESS: ${{ needs.agent.outputs.checkout_pr_success }}
+          GH_AW_INFERENCE_ACCESS_ERROR: ${{ needs.agent.outputs.inference_access_error }}
           GH_AW_GROUP_REPORTS: "false"
           GH_AW_TIMEOUT_MINUTES: "20"
         with:
