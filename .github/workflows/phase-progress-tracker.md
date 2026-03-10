@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: write
+  issues: read
 strict: true
 network:
   allowed: [defaults, github]
