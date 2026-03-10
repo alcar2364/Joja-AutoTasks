@@ -106,7 +106,7 @@ All other deferments are within their expected window.
 ## Notes
 
 - Issue format keeps this advisory rather than blocking
-- If all deferments are clean (no aging or overdue items), skip the discussion post (silence is success)
+- If all deferments are clean (no aging or overdue items), skip the issue post (silence is success)
 - This workflow does NOT modify the deferments index or archive
 - The Deferments lifecycle is managed by the human maintainer during phase completion gates
 - Reference: `atomic-commit-execution-checklist-creation.instructions.md` for the full deferment workflow
