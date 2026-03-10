@@ -22,7 +22,7 @@ tools:
     toolsets: [default]
 safe-outputs:
   add-comment:
-    type: pr-review
+    pull-requests: true
 if: |
   github.event_name == 'pull_request' ||
   github.event_name == 'workflow_dispatch' ||
