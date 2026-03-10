@@ -27,9 +27,6 @@
 
 name: "phase-progress-tracker"
 "on":
-  push:
-    paths:
-    - .github/Project Tasks/Implementation Plan/*.md
   schedule:
   - cron: "11 2 * * *"
     # Friendly format: daily (scattered)

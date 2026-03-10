@@ -3,9 +3,6 @@ name: phase-progress-tracker
 description: "Tracks atomic commit checklist completion across all implementation phases and posts a progress dashboard."
 on:
   schedule: daily
-  push:
-    paths:
-      - ".github/Project Tasks/Implementation Plan/*.md"
   workflow_dispatch:
 permissions:
   contents: read
@@ -35,6 +32,17 @@ completion percentage per phase, the current active phase, and any stalled or bl
 - Checklist directory: `.github/Project Tasks/Implementation Plan/`
 - Checklist pattern: `Phase N - Atomic Commit Execution Checklist.md`
 - Checkbox syntax: `- [x]` (complete), `- [ ]` (incomplete)
+
+## Pre-Flight: Check for Recent Changes
+
+Before running the full analysis, check whether any checklist files have changed since the last
+workflow run:
+
+1. Use the GitHub commits API to list commits on the default branch that touch
+   `.github/Project Tasks/Implementation Plan/` in the last 24 hours.
+2. If **no commits** have modified those paths in the last 24 hours, call `noop` and stop. Do
+   not create or update any issue.
+3. If at least one commit has modified those paths, continue with the Analysis Process below.
 
 ## Analysis Process
 
