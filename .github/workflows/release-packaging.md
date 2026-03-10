@@ -36,7 +36,7 @@ Build a release zip artifact and create a GitHub Release whenever a version tag 
 ## Context
 
 - Repository: `${{ github.repository }}`
-- Tag: `${{ github.ref_name }}`
+- Tag: `${{ github.event.release.tag_name }}`
 - Manifest: `manifest.json`
 - Main project: `JojaAutoTasks.csproj`
 - Release build command: `dotnet build JojaAutoTasks.csproj -c Release -p:EnableModDeploy=false -p:EnableModZip=true`
