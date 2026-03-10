@@ -31,6 +31,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[ci] "
     labels: [agentic-workflow, ci-health, needs-review]

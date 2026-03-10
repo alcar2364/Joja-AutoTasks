@@ -18,6 +18,8 @@ tools:
     toolsets: [default]
   dotnet: {}
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[dependencies] "
     labels: [agentic-workflow, dependencies, needs-review]

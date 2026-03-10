@@ -23,6 +23,8 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[ecosystem] "
     labels: [agentic-workflow, agent-ecosystem, governance]
