@@ -27,9 +27,6 @@
 
 name: "agent-ecosystem-validator"
 "on":
-  push:
-    paths:
-    - .github/Project Tasks/Implementation Plan/*.md
   schedule:
   - cron: "2 6 * * *"
     # Friendly format: daily (scattered)

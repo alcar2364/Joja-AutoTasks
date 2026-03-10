@@ -3,9 +3,6 @@ name: phase-progress-tracker
 description: "Tracks atomic commit checklist completion across all implementation phases and posts a progress dashboard."
 on:
   schedule: daily
-  push:
-    paths:
-      - ".github/Project Tasks/Implementation Plan/*.md"
   workflow_dispatch:
 permissions:
   contents: read
