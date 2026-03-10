@@ -15,9 +15,9 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
-  create-discussion:
-    category: general
+  create-issue:
     title-prefix: "[quality] "
+    labels: [agentic-workflow, quality, needs-review]
 ---
 
 # Repository Quality Holistic Analyzer
@@ -50,11 +50,11 @@ Analyzes one focus area per day, cycling through:
    - What needs improvement
    - Concrete suggestions (don't implement)
 
-4. **Create discussion** with findings
+4. **Create issue** with findings
 
 ## Output
 
-- Post weekly discussion for each focus area (7 discussions/week)
+- Post weekly issue for each focus area (7 issues/week)
 - Title: `[quality] <FocusArea>: <Primary Finding>`
 - Include:
   - Summary of current state
@@ -64,8 +64,6 @@ Analyzes one focus area per day, cycling through:
 
 ## Notes
 
-- Do NOT create issues automatically
-- Findings posted as discussions for team conversation
-- Discuss-to-Plan-to-Issue pipeline can be triggered manually
+- Findings posted as issues for tracking and resolution
 - Focus on systemic quality, not individual bug fixes
-- Reference relevant architecture contracts in discussions
+- Reference relevant architecture contracts in findings

@@ -15,9 +15,9 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
-  create-discussion:
-    category: general
+  create-issue:
     title-prefix: "[deferments] "
+    labels: [agentic-workflow, deferments, needs-review]
 ---
 
 # Deferments Monitor — Aging Deferred Work Item Tracker
@@ -79,7 +79,7 @@ Read `Deferments Archive.md` to verify:
 
 ## Output
 
-Create a weekly discussion post titled `[deferments] Weekly Aging Report — <WEEK>`:
+Create a weekly issue titled `[deferments] Weekly Aging Report — <WEEK>`:
 
 ```markdown
 ## Deferments Weekly Aging Report
@@ -105,8 +105,8 @@ All other deferments are within their expected window.
 
 ## Notes
 
-- Discussion (not issue) format keeps this advisory rather than blocking
-- If all deferments are clean (no aging or overdue items), skip the discussion post (silence is success)
+- Issue format keeps this advisory rather than blocking
+- If all deferments are clean (no aging or overdue items), skip the issue post (silence is success)
 - This workflow does NOT modify the deferments index or archive
 - The Deferments lifecycle is managed by the human maintainer during phase completion gates
 - Reference: `atomic-commit-execution-checklist-creation.instructions.md` for the full deferment workflow

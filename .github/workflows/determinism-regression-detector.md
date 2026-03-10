@@ -19,11 +19,9 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
-  add-comment:
-    type: pr-review
-  create-discussion:
-    category: general
+  create-issue:
     title-prefix: "[determinism] "
+    labels: [agentic-workflow, determinism, needs-review]
 ---
 
 # Determinism Regression Detector — Non-Deterministic Pattern Scanner
@@ -119,7 +117,7 @@ Post a PR review comment listing all matches with:
 
 ### On Schedule
 
-Post a discussion if any patterns found in full scan:
+Post an issue if any patterns found in full scan:
 
 - Summary of patterns found per directory
 - Trend vs. previous week (new, unchanged, resolved)

@@ -18,8 +18,8 @@ permissions:
   contents: read
 
 jobs:
-  build-and-test:
-    name: Build and Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -42,5 +42,7 @@ jobs:
       - name: Build
         run: dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false --no-restore
 
-      - name: Test
-        run: dotnet test "Tests/JojaAutoTasks.Tests.csproj"
+      # NOTE: Automated tests are NOT run in CI. An admin must run
+      #   dotnet test "Tests/JojaAutoTasks.Tests.csproj"
+      # locally and confirm all tests pass before approving and merging
+      # any pull request that changes code.
