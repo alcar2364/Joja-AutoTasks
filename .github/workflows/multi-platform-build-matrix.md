@@ -18,6 +18,8 @@ tools:
     toolsets: [default]
   dotnet: {}
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[platform] "
     labels: [agentic-workflow, platform-compatibility, needs-review]

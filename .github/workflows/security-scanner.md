@@ -24,6 +24,8 @@ tools:
     toolsets: [default]
   dotnet: {}
 safe-outputs:
+  noop:
+    report-as-issue: false
   create-issue:
     title-prefix: "[security] "
     labels: [agentic-workflow, security, needs-review]
