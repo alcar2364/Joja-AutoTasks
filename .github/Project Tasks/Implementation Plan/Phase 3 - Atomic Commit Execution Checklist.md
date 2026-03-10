@@ -205,12 +205,12 @@ Step goal:
 
 ### 3E - Implement RemoveTaskCommandHandler ###
 
-    * [ ] Action: implement handler for RemoveTaskCommand.
-    * [ ] Scope: `StateStore/Handlers/RemoveTaskCommandHandler.cs`.
-    * [ ] Verify: handler removes TaskRecord from dictionary; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step3E): implement RemoveTaskCommandHandler`
-    * [ ] Must include: handler implementation only.
-    * [ ] Must exclude: expiration logic, day-boundary behavior.
+    * [x] Action: implement handler for RemoveTaskCommand.
+    * [x] Scope: `StateStore/Handlers/RemoveTaskCommandHandler.cs`.
+    * [x] Verify: handler removes TaskRecord from dictionary; handler is deterministic and side-effect free.
+    * [x] Suggested commit: `phase3(step3E): implement RemoveTaskCommandHandler`
+    * [x] Must include: handler implementation only.
+    * [x] Must exclude: expiration logic, day-boundary behavior.
 
 ### 3F - Implement PinTaskCommandHandler ###
 
