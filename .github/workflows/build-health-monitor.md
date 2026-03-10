@@ -5,7 +5,7 @@ on:
   schedule: daily
   workflow_dispatch:
   workflow_run:
-    workflows: ["build", "test"]
+    workflows: ["CI"]
     types: [completed]
 permissions:
   contents: read
