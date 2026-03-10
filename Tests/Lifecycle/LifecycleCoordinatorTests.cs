@@ -1,8 +1,6 @@
 using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
-using Moq;
-using StardewModdingAPI;
 using Xunit;
 
 namespace JojaAutoTasks.Tests.Lifecycle;
@@ -81,8 +79,7 @@ public class LifecycleCoordinatorTests
     // -- Private Helpers -- //
     private static LifecycleCoordinator CreateSut(IEventDispatcher eventDispatcher)
     {
-        Mock<IMonitor> monitor = new Mock<IMonitor>(MockBehavior.Loose);
-        ModLogger logger = new ModLogger(monitor.Object);
+        ModLogger logger = new(null);
         return new LifecycleCoordinator(logger, eventDispatcher);
     }
 

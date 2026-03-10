@@ -6,10 +6,10 @@ namespace JojaAutoTasks.Infrastructure.Logging;
 public class ModLogger
 {
     // -- Dependencies -- //
-    private readonly IMonitor _monitor;
+    private readonly IMonitor? _monitor;
 
     // -- Constructor -- //
-    public ModLogger(IMonitor monitor)
+    public ModLogger(IMonitor? monitor)
     {
         _monitor = monitor;
     }
@@ -68,7 +68,7 @@ public class ModLogger
     // -- Private Helpers -- //
     private void Log(LogLevel level, string eventName, string message, string? context)
     {
-        _monitor.Log(FormatMessage(eventName, message, context), level);
+        _monitor?.Log(FormatMessage(eventName, message, context), level);
     }
 
     private static string FormatMessage(string eventName, string message, string? context)

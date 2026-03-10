@@ -1,17 +1,15 @@
-using StardewModdingAPI;
-
 namespace JojaAutoTasks.Configuration;
 
 /// <summary>Loads mod configuration and normalizes schema version drift.</summary>
 internal sealed class ConfigLoader
 {
     // -- Dependencies -- //
-    private readonly IModHelper _helper;
+    private readonly IConfigReader _configReader;
 
     // -- Constructor -- //
-    internal ConfigLoader(IModHelper helper)
+    internal ConfigLoader(IConfigReader configReader)
     {
-        _helper = helper;
+        _configReader = configReader;
     }
 
     // -- Public API -- //
@@ -21,7 +19,7 @@ internal sealed class ConfigLoader
 
         try
         {
-            loadedConfig = _helper.ReadConfig<ModConfig>();
+            loadedConfig = _configReader.ReadConfig<ModConfig>();
         }
         catch
         {

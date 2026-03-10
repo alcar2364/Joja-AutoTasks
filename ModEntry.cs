@@ -57,7 +57,13 @@ internal sealed class ModEntry : Mod
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        if (!ShouldForwardUpdateTick(e.Ticks))
+        ForwardUpdateTickIfDue(e.Ticks);
+    }
+
+    // -- Private Helpers -- //
+    internal void ForwardUpdateTickIfDue(uint ticks)
+    {
+        if (!ShouldForwardUpdateTick(ticks))
         {
             return;
         }
@@ -65,7 +71,6 @@ internal sealed class ModEntry : Mod
         _runtime.LifecycleCoordinator.HandleUpdateTicked(_runtime.Config.EnableDebugMode);
     }
 
-    // -- Private Helpers -- //
     private bool ShouldForwardUpdateTick(uint currentTick)
     {
         if (currentTick >= _nextTickLogAt)

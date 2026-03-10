@@ -4,9 +4,6 @@ using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
 using JojaAutoTasks.Startup;
-using Moq;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
 
 namespace JojaAutoTasks.Tests.Hooks;
 
@@ -31,13 +28,12 @@ public class UpdateTickedGuardTests
     }
 
     [Fact]
-    public void OnUpdateTicked_DoesNotForwardWhileInsideThrottleWindow()
+    public void ForwardUpdateTickIfDue_DoesNotForwardWhileInsideThrottleWindow()
     {
         ModEntry sut = CreateEntryWithRuntime(out RecordingEventDispatcher dispatcher);
-        UpdateTickedEventArgs tickArgs = CreateUpdateTickedEventArgs();
 
-        InvokeOnUpdateTicked(sut, tickArgs);
-        InvokeOnUpdateTicked(sut, tickArgs);
+        sut.ForwardUpdateTickIfDue(0);
+        sut.ForwardUpdateTickIfDue(0);
 
         Assert.Equal(1, dispatcher.UpdateTickedDispatchCount);
         Assert.Single(dispatcher.Calls);
@@ -45,15 +41,14 @@ public class UpdateTickedGuardTests
     }
 
     [Fact]
-    public void OnUpdateTicked_GuardBlockPathDoesNotRequireRuntimeAccess()
+    public void ForwardUpdateTickIfDue_GuardBlockPathDoesNotRequireRuntimeAccess()
     {
         ModEntry sut = CreateEntryWithRuntime(out RecordingEventDispatcher dispatcher);
-        UpdateTickedEventArgs tickArgs = CreateUpdateTickedEventArgs();
 
-        InvokeOnUpdateTicked(sut, tickArgs);
+        sut.ForwardUpdateTickIfDue(0);
         SetRuntime(sut, null);
 
-        Exception? exception = Record.Exception(() => InvokeOnUpdateTicked(sut, tickArgs));
+        Exception? exception = Record.Exception(() => sut.ForwardUpdateTickIfDue(0));
 
         Assert.Null(exception);
         Assert.Equal(1, dispatcher.UpdateTickedDispatchCount);
@@ -62,8 +57,7 @@ public class UpdateTickedGuardTests
     // -- Private Helpers -- //
     private static ModEntry CreateEntryWithRuntime(out RecordingEventDispatcher dispatcher)
     {
-        Mock<IMonitor> monitor = new(MockBehavior.Loose);
-        ModLogger logger = new(monitor.Object);
+        ModLogger logger = new(null);
         ModConfig config = new() { EnableDebugMode = false };
         dispatcher = new RecordingEventDispatcher();
         LifecycleCoordinator coordinator = new(logger, dispatcher);
@@ -102,66 +96,6 @@ public class UpdateTickedGuardTests
 
         return (bool)(method.Invoke(entry, new object[] { tick })
             ?? throw new InvalidOperationException("ShouldForwardUpdateTick returned null."));
-    }
-
-    private static void InvokeOnUpdateTicked(ModEntry entry, UpdateTickedEventArgs tickArgs)
-    {
-        MethodInfo method = typeof(ModEntry).GetMethod("OnUpdateTicked", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("OnUpdateTicked method was not found.");
-
-        method.Invoke(entry, new object?[] { null, tickArgs });
-    }
-
-    private static UpdateTickedEventArgs CreateUpdateTickedEventArgs()
-    {
-        ConstructorInfo[] constructors = typeof(UpdateTickedEventArgs)
-            .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-        foreach (ConstructorInfo constructor in constructors)
-        {
-            ParameterInfo[] parameters = constructor.GetParameters();
-            object?[] baseline = parameters.Select(static parameter => CreateDefault(parameter.ParameterType)).ToArray();
-
-            if (TryConstructWithCandidate(constructor, baseline, out UpdateTickedEventArgs? args) && args is not null)
-            {
-                return args;
-            }
-        }
-
-        throw new InvalidOperationException("Unable to construct UpdateTickedEventArgs for test execution.");
-    }
-
-    private static bool TryConstructWithCandidate(
-        ConstructorInfo constructor,
-        object?[] candidate,
-        out UpdateTickedEventArgs? args)
-    {
-        try
-        {
-            args = (UpdateTickedEventArgs)constructor.Invoke(candidate);
-            return true;
-        }
-        catch (TargetInvocationException)
-        {
-            args = null;
-            return false;
-        }
-        catch (ArgumentException)
-        {
-            args = null;
-            return false;
-        }
-    }
-
-    private static object? CreateDefault(Type type)
-    {
-        Type normalizedType = Nullable.GetUnderlyingType(type) ?? type;
-        if (!normalizedType.IsValueType)
-        {
-            return null;
-        }
-
-        return Activator.CreateInstance(normalizedType);
     }
 
     private sealed class RecordingEventDispatcher : IEventDispatcher

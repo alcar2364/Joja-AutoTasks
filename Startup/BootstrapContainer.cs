@@ -15,7 +15,7 @@ internal static class BootstrapContainer
         ModLogger logger = new(monitor);
         logger.Info(LogEvents.StartupEntry, "Joja AutoLogger initialized.");
 
-        ModConfig config = new ConfigLoader(helper).Load();
+        ModConfig config = new ConfigLoader(new SmapiConfigReader(helper)).Load();
         EventDispatcher eventDispatcher = new();
         LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher);
 

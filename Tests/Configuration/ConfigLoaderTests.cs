@@ -1,6 +1,5 @@
 using JojaAutoTasks.Configuration;
 using Moq;
-using StardewModdingAPI;
 using Xunit;
 
 namespace JojaAutoTasks.Tests.Configuration;
@@ -13,8 +12,8 @@ public class ConfigLoaderTests
     public void Load_WhenReadConfigReturnsCurrentVersion_NormalizesAndPreservesFlags()
     {
         ModConfig input = CreateValidConfig();
-        Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = CreateReaderReturning(input);
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
@@ -23,7 +22,7 @@ public class ConfigLoaderTests
         Assert.Equal(ModConfig.CurrentConfigVersion, result.ConfigVersion);
         Assert.Equal(input.EnableMod, result.EnableMod);
         Assert.Equal(input.EnableDebugMode, result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     [Theory]
@@ -38,8 +37,8 @@ public class ConfigLoaderTests
             config.EnableDebugMode = true;
         });
 
-        Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = CreateReaderReturning(input);
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
@@ -48,7 +47,7 @@ public class ConfigLoaderTests
         Assert.Equal(ModConfig.CurrentConfigVersion, result.ConfigVersion);
         Assert.Equal(input.EnableMod, result.EnableMod);
         Assert.Equal(input.EnableDebugMode, result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     [Theory]
@@ -63,8 +62,8 @@ public class ConfigLoaderTests
             config.EnableDebugMode = true;
         });
 
-        Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = CreateReaderReturning(input);
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
@@ -73,15 +72,15 @@ public class ConfigLoaderTests
         Assert.Equal(ModConfig.CurrentConfigVersion, result.ConfigVersion);
         Assert.Equal(input.EnableMod, result.EnableMod);
         Assert.Equal(input.EnableDebugMode, result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     [Fact]
     public void Load_WhenReadConfigThrows_ReturnsDefaultConfig()
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
-        helper.Setup(x => x.ReadConfig<ModConfig>()).Throws(new InvalidOperationException("Invalid config payload."));
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = new Mock<IConfigReader>(MockBehavior.Strict);
+        reader.Setup(x => x.ReadConfig<ModConfig>()).Throws(new InvalidOperationException("Invalid config payload."));
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
@@ -89,15 +88,15 @@ public class ConfigLoaderTests
         Assert.Equal(ModConfig.CurrentConfigVersion, result.ConfigVersion);
         Assert.True(result.EnableMod);
         Assert.False(result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     [Fact]
     public void Load_WhenReadConfigReturnsNull_ReturnsDefaultConfig()
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
-        helper.Setup(x => x.ReadConfig<ModConfig>()).Returns((ModConfig)null!);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = new Mock<IConfigReader>(MockBehavior.Strict);
+        reader.Setup(x => x.ReadConfig<ModConfig>()).Returns((ModConfig)null!);
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
@@ -105,7 +104,7 @@ public class ConfigLoaderTests
         Assert.Equal(ModConfig.CurrentConfigVersion, result.ConfigVersion);
         Assert.True(result.EnableMod);
         Assert.False(result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     [Fact]
@@ -117,15 +116,15 @@ public class ConfigLoaderTests
             config.EnableDebugMode = true;
         });
 
-        Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        Mock<IConfigReader> reader = CreateReaderReturning(input);
+        ConfigLoader sut = new ConfigLoader(reader.Object);
 
         ModConfig result = sut.Load();
 
         Assert.NotSame(input, result);
         Assert.False(result.EnableMod);
         Assert.True(result.EnableDebugMode);
-        helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        reader.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
     }
 
     // -- Private Helpers -- //
@@ -142,10 +141,10 @@ public class ConfigLoaderTests
         return config;
     }
 
-    private static Mock<IModHelper> CreateHelperReturning(ModConfig config)
+    private static Mock<IConfigReader> CreateReaderReturning(ModConfig config)
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
-        helper.Setup(x => x.ReadConfig<ModConfig>()).Returns(config);
-        return helper;
+        Mock<IConfigReader> reader = new Mock<IConfigReader>(MockBehavior.Strict);
+        reader.Setup(x => x.ReadConfig<ModConfig>()).Returns(config);
+        return reader;
     }
 }

@@ -36,8 +36,8 @@ build failure or test regression.
 ## Context
 
 - Repository: `${{ github.repository }}`
-- PR branch: `${{ github.head_ref }}`
-- Base branch: `${{ github.base_ref }}`
+- Actor: `${{ github.actor }}`
+- Run ID: `${{ github.run_id }}`
 - Build command: `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
 - Test command: `dotnet test Tests/JojaAutoTasks.Tests.csproj --logger trx --results-directory ./TestResults`
 - Test baseline: 110 tests passing
@@ -67,8 +67,8 @@ build failure or test regression.
 ## Cache Strategy
 
 - Cache NuGet global packages directory (`~/.nuget/packages`)
-- Key: `nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}`
-- Restore key: `nuget-${{ runner.os }}-`
+- Key: `nuget-ubuntu-latest-<hash of *.csproj files>`
+- Restore key: `nuget-ubuntu-latest-`
 
 ## Notes
 
