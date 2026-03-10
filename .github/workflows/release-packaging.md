@@ -13,6 +13,8 @@ on:
         type: string
 permissions:
   contents: read
+  issues: read
+  pull-requests: read
 strict: true
 network:
   allowed: [defaults, github]

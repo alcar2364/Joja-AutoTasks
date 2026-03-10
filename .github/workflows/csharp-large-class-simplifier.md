@@ -7,6 +7,7 @@ on:
 permissions:
   issues: read
   contents: read
+  pull-requests: read
 strict: true
 network:
   allowed: [defaults, github]
