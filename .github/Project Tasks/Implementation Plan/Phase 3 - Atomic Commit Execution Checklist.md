@@ -223,16 +223,16 @@ Step goal:
 
 ### 3G - Implement UnpinTaskCommandHandler ###
 
-    * [ ] Action: implement handler for UnpinTaskCommand.
-    * [ ] Scope: `StateStore/Handlers/UnpinTaskCommandHandler.cs`.
-    * [ ] Verify: handler sets IsPinned flag to false; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step3G): implement UnpinTaskCommandHandler`
-    * [ ] Must include: handler implementation only.
-    * [ ] Must exclude: snapshot publishing, UI feedback.
+    * [x] Action: implement handler for UnpinTaskCommand.
+    * [x] Scope: `StateStore/Handlers/UnpinTaskCommandHandler.cs`.
+    * [x] Verify: handler sets IsPinned flag to false; handler is deterministic and side-effect free.
+    * [x] Suggested commit: `phase3(step3G): implement UnpinTaskCommandHandler`
+    * [x] Must include: handler implementation only.
+    * [x] Must exclude: snapshot publishing, UI feedback.
 
 ## Step 3 Completion ##
 
-    * [ ] All substeps in Step 3 complete (3A, 3B, 3C, 3D, 3E, 3F, 3G).
+    * [x] All substeps in Step 3 complete (3A, 3B, 3C, 3D, 3E, 3F, 3G).
 
 ## 4) Snapshot Model ##
 
