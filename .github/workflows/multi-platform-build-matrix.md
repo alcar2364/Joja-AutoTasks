@@ -2,13 +2,6 @@
 name: multi-platform-build-matrix
 description: "Weekly cross-platform build and test matrix across Windows, Linux, and macOS."
 on:
-  schedule: weekly
-  push:
-    branches: [main]
-    paths:
-      - "**/*.cs"
-      - "**/*.csproj"
-      - "**/*.sln"
   workflow_dispatch:
 permissions:
   contents: read
