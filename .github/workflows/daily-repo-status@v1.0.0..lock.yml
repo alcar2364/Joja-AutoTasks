@@ -27,15 +27,17 @@
 
 name: "daily-repo-status"
 "on":
+  schedule:
+  - cron: "0 8 * * *"
+    # Friendly format: daily
   workflow_dispatch:
   workflow_run:
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
-    branches:
-    - main
     types:
     - completed
     workflows:
-    - daily-repo-status
+    - build-health-monitor
+    - daily-docs-updater
 
 permissions: {}
 
@@ -49,8 +51,7 @@ jobs:
     needs: pre_activation
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
     if: >
-      ((needs.pre_activation.outputs.activated == 'true') && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure')) &&
-      ((github.event_name != 'workflow_run') || ((github.event.workflow_run.repository.id == github.repository_id) &&
+      (needs.pre_activation.outputs.activated == 'true') && ((github.event_name != 'workflow_run') || ((github.event.workflow_run.repository.id == github.repository_id) &&
       (!(github.event.workflow_run.repository.fork))))
     runs-on: ubuntu-slim
     permissions:
