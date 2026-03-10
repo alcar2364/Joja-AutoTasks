@@ -9,7 +9,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: read
 strict: true
 network:
   allowed: [defaults, github]
@@ -19,10 +18,9 @@ tools:
   github:
     toolsets: [default]
 safe-outputs:
-  create-issue:
+  create-discussion:
+    category: general
     title-prefix: "[progress] "
-    labels: [agentic-workflow, progress-tracking, planning]
-    close-older-issues: true
     max: 1
 ---
 
@@ -71,9 +69,11 @@ For each In Progress phase, identify Steps where:
 - No substep under that step has been completed in the last 7 days (based on commit history)
 - This indicates a potentially stalled step
 
-## Output: Progress Dashboard Issue
+## Output: Progress Dashboard Discussion
 
-Create or update a single issue titled `[progress] Implementation Phase Dashboard — <DATE>`:
+Create a discussion titled `[progress] Implementation Phase Dashboard — <DATE>` in the `general`
+category (configure this category as admin-only in repository discussion settings to restrict
+visibility to admins):
 
 ```markdown
 ## Implementation Phase Progress Dashboard
@@ -100,13 +100,14 @@ Create or update a single issue titled `[progress] Implementation Phase Dashboar
 
 ## Update Behavior
 
-- Closes the previous `[progress]` tracking issue and opens a fresh one each time
-- If all phases are 100% complete: post a celebratory close notice
+- Creates a new discussion each time; older `[progress]` discussions expire naturally
+- If all phases are 100% complete: post a celebratory notice
 - If no phases exist: skip (no output)
 
 ## Notes
 
 - This workflow is purely observational — it does NOT modify checklist files
-- The close-older-issues flag ensures only one tracking issue exists at any time
+- The discussion is created in the `general` category; restrict this category to admins in
+  repository discussion settings to achieve admin-only visibility
 - Commit-history analysis for stalled steps requires `contents: read` on git API
 - Phase ordering is determined by the numeric value in the phase filename, not alphabetical
