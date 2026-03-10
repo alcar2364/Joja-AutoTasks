@@ -11,24 +11,25 @@ Describe what changed and why.
 
 ## Testing ##
 
-		* [ ] I reviewed `Tests/README.md` and followed the test naming/coverage
-			conventions.
-		* [ ] I added or updated tests for the changed behavior.
-		* [ ] If production files changed, I ran
-			`dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
-			to validate project/test isolation.
-		* [ ] If `OnUpdateTicked` flow changed, I verified tests cover deterministic
-			tick throttling and the guard-block no-op path (no runtime access, no
-			second dispatch in-window).
-		* [ ] If lifecycle signal routing changed, I verified lifecycle tests cover
-			signal forwarding and signal-only `OnSaving` expectations.
-		* [ ] If dispatcher routing changed, I verified dispatcher tests still
-			assert determinism, statelessness, and no-op dispatch contracts.
-		* [ ] If `ModConfig.CurrentConfigVersion` or config migration logic changed,
-			I updated `ConfigLoaderMigrationSafetyTests` coverage.
-		* [ ] I ran `dotnet test "Tests\JojaAutoTasks.Tests.csproj"` locally.
-		* [ ] If I touched config normalization behavior, I ran
-			`dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~ConfigLoaderMigrationSafetyTests`.
+> **⚠️ Testing is manual and must be performed by an admin before merge.**
+> Automated tests are NOT run in CI. If this PR contains code changes, an admin must run the
+> test suite locally and confirm all tests pass before approving.
+
+If this PR contains code changes, an admin must verify the following before approving:
+
+	* [ ] Admin has run `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false` locally and the build succeeds.
+	* [ ] Admin has run `dotnet test "Tests/JojaAutoTasks.Tests.csproj"` locally and all tests pass.
+	* [ ] If `OnUpdateTicked` flow changed, admin verified tests cover deterministic
+		tick throttling and the guard-block no-op path (no runtime access, no
+		second dispatch in-window).
+	* [ ] If lifecycle signal routing changed, admin verified lifecycle tests cover
+		signal forwarding and signal-only `OnSaving` expectations.
+	* [ ] If dispatcher routing changed, admin verified dispatcher tests still
+		assert determinism, statelessness, and no-op dispatch contracts.
+	* [ ] If `ModConfig.CurrentConfigVersion` or config migration logic changed,
+		admin ran `dotnet test "Tests/JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~ConfigLoaderMigrationSafetyTests`.
+
+If this PR contains **only documentation changes**, testing is not required.
 
 ## Risks / Notes ##
 
