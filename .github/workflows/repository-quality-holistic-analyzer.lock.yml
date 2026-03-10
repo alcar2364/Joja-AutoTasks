@@ -23,7 +23,7 @@
 #
 # Daily holistic analysis of repository quality from multiple dimensions: architecture, patterns, conventions.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"521bff2022002bb44f084d23655e844083b814718ec2d120d9357048e73de4f1","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"50c635592c0da4219ad284412d980d7d46670ea99f02fd646f066aa82c072147","compiler_version":"v0.57.0","strict":true}
 
 name: "repository-quality-holistic-analyzer"
 "on":

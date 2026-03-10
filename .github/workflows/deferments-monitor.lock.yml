@@ -23,7 +23,7 @@
 #
 # Weekly monitor for aging deferred work items in the JAT implementation plan deferments index.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"357d07427a815ea4f55ea0cd7b876644db1932dd6c5925063e9a018ae8708e3a","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"b87a337cdff47c92d2592f3f8420a7c023b80035744fe902c8db44de14fd32b8","compiler_version":"v0.57.0","strict":true}
 
 name: "deferments-monitor"
 "on":

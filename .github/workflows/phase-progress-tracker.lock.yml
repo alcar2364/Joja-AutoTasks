@@ -21,17 +21,17 @@
 #
 # For more information: https://github.github.com/gh-aw/introduction/overview/
 #
-# Validates agent/instruction/skill ecosystem consistency: detects unmapped files and frontmatter issues.
+# Tracks atomic commit checklist completion across all implementation phases and posts a progress dashboard.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"f163257523199a8bea613946a902cb803f1a0279b0a10b5ce047cd8d0980d969","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"97fe2f67fec3bc903f1c9ac15ff970024ae245d50ddb7f974707a884cabe1ff3","compiler_version":"v0.57.0","strict":true}
 
-name: "agent-ecosystem-validator"
+name: "phase-progress-tracker"
 "on":
   push:
     paths:
     - .github/Project Tasks/Implementation Plan/*.md
   schedule:
-  - cron: "2 6 * * *"
+  - cron: "11 2 * * *"
     # Friendly format: daily (scattered)
   workflow_dispatch:
 
@@ -238,6 +238,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       GH_AW_ASSETS_ALLOWED_EXTS: ""
@@ -321,7 +322,7 @@ jobs:
           cat > /opt/gh-aw/safeoutputs/tools.json << 'GH_AW_SAFE_OUTPUTS_TOOLS_EOF'
           [
             {
-              "description": "Create a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[ecosystem] \". Labels [\"agentic-workflow\" \"agent-ecosystem\" \"governance\"] will be automatically added.",
+              "description": "Create a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[progress] \". Labels [\"agentic-workflow\" \"progress-tracking\" \"planning\"] will be automatically added.",
               "inputSchema": {
                 "additionalProperties": false,
                 "properties": {
@@ -870,8 +871,8 @@ jobs:
         if: always() && steps.detection_guard.outputs.run_detection == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          WORKFLOW_NAME: "agent-ecosystem-validator"
-          WORKFLOW_DESCRIPTION: "Validates agent/instruction/skill ecosystem consistency: detects unmapped files and frontmatter issues."
+          WORKFLOW_NAME: "phase-progress-tracker"
+          WORKFLOW_DESCRIPTION: "Tracks atomic commit checklist completion across all implementation phases and posts a progress dashboard."
           HAS_PATCH: ${{ steps.collect_output.outputs.has_patch }}
         with:
           script: |
@@ -1010,7 +1011,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
+          GH_AW_WORKFLOW_NAME: "phase-progress-tracker"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
@@ -1023,7 +1024,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
+          GH_AW_WORKFLOW_NAME: "phase-progress-tracker"
           GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
           GH_AW_WORKFLOW_ID: "phase-progress-tracker"
@@ -1044,7 +1045,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
-          GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
+          GH_AW_WORKFLOW_NAME: "phase-progress-tracker"
           GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
           GH_AW_NOOP_MESSAGE: ${{ steps.noop.outputs.noop_message }}
@@ -1091,8 +1092,8 @@ jobs:
     env:
       GH_AW_CALLER_WORKFLOW_ID: "${{ github.repository }}/phase-progress-tracker"
       GH_AW_ENGINE_ID: "copilot"
-      GH_AW_WORKFLOW_ID: "agent-ecosystem-validator"
-      GH_AW_WORKFLOW_NAME: "agent-ecosystem-validator"
+      GH_AW_WORKFLOW_ID: "phase-progress-tracker"
+      GH_AW_WORKFLOW_NAME: "phase-progress-tracker"
     outputs:
       code_push_failure_count: ${{ steps.process_safe_outputs.outputs.code_push_failure_count }}
       code_push_failure_errors: ${{ steps.process_safe_outputs.outputs.code_push_failure_errors }}
