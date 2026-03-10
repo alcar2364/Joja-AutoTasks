@@ -36,8 +36,7 @@ name: "build-health-monitor"
     types:
     - completed
     workflows:
-    - build
-    - test
+    - CI
 
 permissions: {}
 
