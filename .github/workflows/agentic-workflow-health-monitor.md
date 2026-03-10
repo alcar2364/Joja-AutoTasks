@@ -2,11 +2,7 @@
 name: agentic-workflow-health-monitor
 description: "Meta-workflow that monitors the health of all agentic workflows themselves."
 on:
-  schedule: daily
-  workflow_run:
-    workflows: ["*"]
-    types: [completed]
-    branches: [main]
+  schedule: weekly
 permissions:
   contents: read
   actions: read

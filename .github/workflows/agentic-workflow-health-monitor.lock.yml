@@ -28,17 +28,9 @@
 name: "agentic-workflow-health-monitor"
 "on":
   schedule:
-  - cron: "56 13 * * *"
-    # Friendly format: daily (scattered)
+  - cron: "56 13 * * 1"
+    # Friendly format: weekly (scattered)
   workflow_dispatch:
-  workflow_run:
-    # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
-    branches:
-    - main
-    types:
-    - completed
-    workflows:
-    - "*"
 
 permissions: {}
 
@@ -50,10 +42,7 @@ run-name: "agentic-workflow-health-monitor"
 jobs:
   activation:
     needs: pre_activation
-    # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
-    if: >
-      (needs.pre_activation.outputs.activated == 'true') && ((github.event_name != 'workflow_run') || ((github.event.workflow_run.repository.id == github.repository_id) &&
-      (!(github.event.workflow_run.repository.fork))))
+    if: needs.pre_activation.outputs.activated == 'true'
     runs-on: ubuntu-slim
     permissions:
       contents: read
