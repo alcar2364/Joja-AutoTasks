@@ -187,12 +187,12 @@ Step goal:
 
 ### 3C - Implement CompleteTaskCommandHandler ###
 
-    * [ ] Action: implement handler for CompleteTaskCommand.
-    * [ ] Scope: `StateStore/Handlers/CompleteTaskCommandHandler.cs`.
-    * [ ] Verify: handler sets TaskStatus to Completed and records completion day; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step3C): implement CompleteTaskCommandHandler`
-    * [ ] Must include: handler implementation only.
-    * [ ] Must exclude: snapshot publishing, persistence, UI feedback.
+    * [x] Action: implement handler for CompleteTaskCommand.
+    * [x] Scope: `StateStore/Handlers/CompleteTaskCommandHandler.cs`.
+    * [x] Verify: handler sets TaskStatus to Completed and records completion day; handler is deterministic and side-effect free.
+    * [x] Suggested commit: `phase3(step3C): implement CompleteTaskCommandHandler`
+    * [x] Must include: handler implementation only.
+    * [x] Must exclude: snapshot publishing, persistence, UI feedback.
 
 ### 3D - Implement UncompleteTaskCommandHandler ###
 
