@@ -54,8 +54,8 @@ External-agent integration with the custom `.github` workflow:
 		`.github/agents/Reviewer.agent.md`
 	- Troubleshooting/diagnosis:
 		`.github/agents/Troubleshooter.agent.md`
-	- Memory store operations:
-		`.github/agents/BrainAgent.agent.md`
+	- Repository memory operations:
+		Use the native Copilot memory tool and store durable repo facts under `/memories/repo/`.
 	- Non-agent docs and planning docs:
 		`.github/agents/WorkspaceAgent.agent.md`
 	- Agent ecosystem customization only:

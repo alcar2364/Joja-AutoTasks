@@ -28,14 +28,6 @@ handoffs:
           agent: Refactorer
           prompt: Implement the plan for large-scope refactoring work.
           send: true
-        - label: Brain memory retrieval handoff for planning context
-          agent: BrainAgent
-          prompt: Retrieve relevant memory records from `.github/memory/` to ground planning decisions.
-          send: true
-        - label: Brain memory storage handoff for finalized planning decisions
-          agent: BrainAgent
-          prompt: Store finalized planning decisions, scope boundaries, and notable rationale in `.github/memory/` with tags and index updates.
-          send: true
         - label: Reviewer handoff for pre-draft plan review
           agent: Reviewer
           prompt: Review the plan before WorkspaceAgent drafting when review-mode is pre or auto-high-risk.

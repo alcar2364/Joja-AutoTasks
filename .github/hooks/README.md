@@ -59,7 +59,7 @@ Runtime trigger:
 Domain:
 
     * post-edit validation and quality checks
-    * memory sync enforcement: block on session end when customization changes occur without `.github/memory/` updates
+    * repository-memory reminder: surface a session-end reminder when customization changes may warrant storing durable facts with the native Copilot memory tool
     * combines former intent from:
         - identifier-validation
         - persistence-safety-validator

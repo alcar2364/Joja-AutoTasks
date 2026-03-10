@@ -29,11 +29,8 @@ if [[ -n "$CODE_CHANGED" && -z "$DOC_CHANGED" ]]; then
 fi
 
 CUSTOMIZATION_CHANGED=$(echo "$CHANGED" | grep -E '^\.github/(agents|instructions|prompts|hooks|skills)/' || true)
-MEMORY_CHANGED=$(echo "$CHANGED" | grep -E '^\.github/memory/' || true)
-if [[ -n "$CUSTOMIZATION_CHANGED" && -z "$MEMORY_CHANGED" ]]; then
-  echo "[validation-postflight] ERROR: Customization changed without `.github/memory/` updates."
-  echo "[validation-postflight] Required: invoke BrainAgent to store episodic/knowledge memory and refresh `.github/memory/INDEX.md`."
-  FAIL=1
+if [[ -n "$CUSTOMIZATION_CHANGED" ]]; then
+  echo "[validation-postflight] Customization changed. If you learned a durable repository fact, store it with the native Copilot memory tool under /memories/repo/."
 fi
 
 if [[ "$FAIL" -eq 1 ]]; then

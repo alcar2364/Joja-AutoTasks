@@ -1,12 +1,12 @@
 ---
 name: Orchestrator
-description: "Use when: delegation-only orchestration across JAT subagents for research, planning, implementation, testing, review, troubleshooting, and memory operations."
+description: "Use when: delegation-only orchestration across JAT subagents for research, planning, implementation, testing, review, troubleshooting, and coordination."
 argument-hint:  Describe your goal + scope (feature/bug/refactor), target subsystem(s), and any
                 constraints (no behavior changes, file-scope only, etc.).
 target: vscode
 tools: [agent, read/readFile, todo]
 
-agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, BrainAgent, GodAgent, WorkspaceAgent]
+agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GodAgent, WorkspaceAgent]
 
 handoffs:
   - label: Research first
@@ -48,10 +48,6 @@ handoffs:
   - label: Troubleshoot environment or tooling
     agent: Troubleshooter
     prompt: Investigate build issues, runtime errors, tooling problems, environment setup, or debugging tasks. Provide root cause analysis and resolution steps.
-    send: true
-  - label: Manage memory operations
-    agent: BrainAgent
-    prompt: Initialize, store, retrieve, update, archive, rebuild, or delete memory records in `.github/memory/`. Keep category and master indexes consistent and return affected file references.
     send: true
   - label: Manage agent customization files
     agent: GodAgent
@@ -95,7 +91,7 @@ Every request must first be classified into one or more categories:
     - Unit testing (creation, expansion, and review)
     - Code review / architecture validation
     - Troubleshooting (build errors, runtime bugs, tooling issues)
-    - Memory storage, retrieval, and index maintenance
+    - Repository memory capture or lookup
 
 Routing rules:
 
@@ -110,7 +106,7 @@ Routing rules:
 | validation or code correctness check | Reviewer |
 | large-scale refactoring (rename, extract, move, pattern migration) | Refactorer |
 | build failures, runtime bugs, tooling issues | Troubleshooter |
-| memory storage, retrieval, or index maintenance in `.github/memory/` | BrainAgent |
+| durable repository fact capture or lookup | Use native Copilot memory tool directly |
 | agent customization files (.agent.md, .instructions.md, SKILL.md, hooks, agent debugging) | GodAgent |
 | design docs, implementation plans, task lists, user-facing documentation | WorkspaceAgent |
 
@@ -135,7 +131,7 @@ For every request, run this loop:
    - **Anti-pattern:** Delegating with vague instructions like "plan the updates" without including what the prior specialist found
    - Downstream specialists should NOT repeat searches or analysis already completed by upstream specialists
 5. Continue until definition of done is met.
-6. When durable decisions, lessons, or reusable context emerge, delegate BrainAgent to store memory records in `.github/memory/`.
+6. When durable decisions, lessons, or reusable context emerge, use the native Copilot memory tool to store repository-scoped facts under `/memories/repo/`.
 7. Ensure final verification is delegated when code, tests, or docs change.
 
 **Execution detail:** Never stop and ask the user to manually bridge file outputs between agents. Your job is to read retrievable file outputs and forward their contents to the next specialist in the chain. Do not trigger duplicate full-task re-runs solely because an external artifact is inaccessible.

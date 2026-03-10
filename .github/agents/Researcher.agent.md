@@ -6,7 +6,7 @@ description: "Use when: finding relevant files, patterns, and context before pla
 name: Researcher
 target: vscode
 tools: [vscode, read/problems, read/readFile, agent, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', todo]
-agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, BrainAgent, WorkspaceAgent, GodAgent]
+agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, WorkspaceAgent, GodAgent]
 handoffs:
         - label: Planner follow-up
           agent: Planner
@@ -35,14 +35,6 @@ handoffs:
         - label: Troubleshooting handoff
           agent: Troubleshooter
           prompt: Route when the request is a build, runtime, tooling, or environment issue.
-          send: true
-        - label: Brain memory retrieval handoff
-          agent: BrainAgent
-          prompt: Route when historical context is needed from `.github/memory/` before finalizing research findings.
-          send: true
-        - label: Brain memory storage handoff
-          agent: BrainAgent
-          prompt: Route when validated research findings should be stored as episodic or knowledge memory entries with tags and index updates.
           send: true
         - label: Workspace artifact handoff
           agent: WorkspaceAgent
