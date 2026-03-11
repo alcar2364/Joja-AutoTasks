@@ -1,4 +1,4 @@
-# Phase 3 - Atomic Commit Execution Checklist #
+# Phase 3 - Atomic Commit Execution Checklist
 
 Purpose: This checklist guides Phase 3 implementation of the State Store foundation with command/handler architecture and snapshot generation.
 
@@ -6,11 +6,12 @@ Purpose: This checklist guides Phase 3 implementation of the State Store foundat
 
 > **Policy Update (2026-03-09)**: Commit labels in this checklist were changed from "Commit message" to "Suggested commit" to clarify that commits are workflow reminders, not completion gate requirements.
 
-## Phase Overview ##
+## Phase Overview
 
 **Phase Goal**: Implement the State Store foundation with command/handler architecture, enabling deterministic state mutation and immutable snapshot generation for downstream consumers.
 
 **Architecture Components**:
+
 - `StateContainer`: canonical in-memory state holder with task dictionary and manual task counter
 - Command contracts: `IStateCommand` and concrete command types (`AddOrUpdateTaskCommand`, `CompleteTaskCommand`, `UncompleteTaskCommand`, `RemoveTaskCommand`, `PinTaskCommand`, `UnpinTaskCommand`)
 - Command handler layer: deterministic mutation logic and ownership boundaries
@@ -18,20 +19,23 @@ Purpose: This checklist guides Phase 3 implementation of the State Store foundat
 - Internal storage model: `TaskRecord` and field-ownership separation
 
 **Prerequisites**:
+
 - Phase 1: lifecycle/event/bootstrap foundation
 - Phase 2: deterministic identifiers (`TaskId`, `RuleId`, `SubjectId`, `DayKey`)
 
 **Architecture Relationships**:
+
 - Builds on deterministic IDs from Phase 2 for stable dictionary keys and ordering behavior
 - Provides authoritative runtime state and snapshot publication consumed by Phase 4 ViewModels
 - Establishes the canonical mutation boundary used by future generator/rule/persistence phases
 
 **Design Guide References**:
+
 - [Section 04 - Core Data Model](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2004%20-%20Core%20Data%20Model.md)
 - [Section 08 - State Store Command Model](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2008%20-%20State%20Store%20Command%20Model.md)
 - [Section 21 - Implementation Plan](../../Project%20Planning/Joja%20AutoTasks%20Design%20Guide/Section%2021%20-%20Implementation%20Plan.md)
 
-## Guardrails (Must Stay True) ##
+## Guardrails (Must Stay True)
 
     * [ ] Phase 3 only — No Phase 4 (ViewModels), Phase 5 (Generators/Engine), Phase 6 (Rules), Phase 7 (Persistence), or Phase 8 (UI) work.
     * [ ] All mutations via commands only — No direct state dictionary mutation outside command handlers.
@@ -51,13 +55,13 @@ Purpose: This checklist guides Phase 3 implementation of the State Store foundat
     * [ ] No dismissed task tracking — Deferred to V2.
     * [ ] Dictionary lookups only — No per-frame scans or heavy reconciliation in Phase 3.
 
-## 1) Command Model Infrastructure ##
+## 1) Command Model Infrastructure
 
 Step goal:
 
     * [x] Define command types representing all state mutation intents.
 
-### 1A - Add base command infrastructure ###
+### 1A - Add base command infrastructure
 
     * [x] Action: add `IStateCommand` interface or `StateCommandBase` abstract class defining command contract.
     * [x] Scope: `StateStore/Commands/IStateCommand.cs` or `StateStore/Commands/StateCommandBase.cs`.
@@ -66,7 +70,7 @@ Step goal:
     * [x] Must include: command contract definition only.
     * [x] Must exclude: concrete command implementations, handler logic.
 
-### 1B - Add AddOrUpdateTaskCommand ###
+### 1B - Add AddOrUpdateTaskCommand
 
     * [x] Action: add command representing task creation or engine/user update intent.
     * [x] Scope: `StateStore/Commands/AddOrUpdateTaskCommand.cs`.
@@ -75,7 +79,7 @@ Step goal:
     * [x] Must include: command type with required fields and constructor guards only.
     * [x] Must exclude: handler implementation, validation logic beyond constructor guards.
 
-### 1C - Add CompleteTaskCommand ###
+### 1C - Add CompleteTaskCommand
 
     * [x] Action: add command representing task completion intent.
     * [x] Scope: `StateStore/Commands/CompleteTaskCommand.cs`.
@@ -84,7 +88,7 @@ Step goal:
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
-### 1D - Add UncompleteTaskCommand ###
+### 1D - Add UncompleteTaskCommand
 
     * [x] Action: add command representing task un-completion intent.
     * [x] Scope: `StateStore/Commands/UncompleteTaskCommand.cs`.
@@ -93,7 +97,7 @@ Step goal:
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
-### 1E - Add RemoveTaskCommand ###
+### 1E - Add RemoveTaskCommand
 
     * [x] Action: add command representing task removal intent.
     * [x] Scope: `StateStore/Commands/RemoveTaskCommand.cs`.
@@ -102,7 +106,7 @@ Step goal:
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation, expiration logic.
 
-### 1F - Add PinTaskCommand ###
+### 1F - Add PinTaskCommand
 
     * [x] Action: add command representing user pin intent.
     * [x] Scope: `StateStore/Commands/PinTaskCommand.cs`.
@@ -111,7 +115,7 @@ Step goal:
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
-### 1G - Add UnpinTaskCommand ###
+### 1G - Add UnpinTaskCommand
 
     * [x] Action: add command representing user unpin intent.
     * [x] Scope: `StateStore/Commands/UnpinTaskCommand.cs`.
@@ -120,17 +124,17 @@ Step goal:
     * [x] Must include: command type only.
     * [x] Must exclude: handler implementation.
 
-## Step 1 Completion ##
+## Step 1 Completion
 
     * [x] All substeps in Step 1 complete (1A, 1B, 1C, 1D, 1E, 1F, 1G).
 
-## 2) State Container and Task Records ##
+## 2) State Container and Task Records
 
 Step goal:
 
     * [x] Create internal task storage structure distinct from domain model.
 
-### 2A - Add TaskRecord internal storage structure ###
+### 2A - Add TaskRecord internal storage structure
 
     * [x] Action: create internal `TaskRecord` structure distinct from `TaskObject` for state storage.
     * [x] Scope: `StateStore/Models/TaskRecord.cs`.
@@ -139,7 +143,7 @@ Step goal:
     * [x] Must include: internal record type only.
     * [x] Must exclude: conversion to/from TaskObject, handler logic.
 
-### 2B - Add field separation model ###
+### 2B - Add field separation model
 
     * [x] Action: define which fields are engine-controlled vs user-controlled in TaskRecord.
     * [x] Scope: `StateStore/Models/TaskRecord.cs` (comments/documentation) or separate `FieldOwnership.cs` helper.
@@ -148,7 +152,7 @@ Step goal:
     * [x] Must include: field ownership documentation or helper types only.
     * [x] Must exclude: handler implementation.
 
-### 2C - Add state dictionary container with version tracking ###
+### 2C - Add state dictionary container with version tracking
 
     * [x] Action: add internal `Dictionary<TaskId, TaskRecord>` and version counter for snapshot invalidation.
     * [x] Scope: `StateStore/StateContainer.cs` or embedded in `StateStore.cs`.
@@ -157,17 +161,17 @@ Step goal:
     * [x] Must include: dictionary, version counter, basic accessor patterns only.
     * [x] Must exclude: command processing logic, snapshot generation.
 
-## Step 2 Completion ##
+## Step 2 Completion
 
     * [x] All substeps in Step 2 complete (2A, 2B, 2C).
 
-## 3) Command Handler Implementation ##
+## 3) Command Handler Implementation
 
 Step goal:
 
     * [x] Implement deterministic state transformation logic for each command.
 
-### 3A - Add command handler infrastructure ###
+### 3A - Add command handler infrastructure
 
     * [x] Action: add `ICommandHandler<TCommand>` interface or `CommandHandlerBase<TCommand>` abstract class.
     * [x] Scope: `StateStore/Handlers/ICommandHandler.cs` or `StateStore/Handlers/CommandHandlerBase.cs`.
@@ -176,7 +180,7 @@ Step goal:
     * [x] Must include: handler contract definition only.
     * [x] Must exclude: concrete handler implementations.
 
-### 3B - Implement AddOrUpdateTaskCommandHandler with field separation ###
+### 3B - Implement AddOrUpdateTaskCommandHandler with field separation
 
     * [x] Action: implement handler for AddOrUpdateTaskCommand with engine/user field separation logic.
     * [x] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs`.
@@ -185,7 +189,7 @@ Step goal:
     * [x] Must include: complete handler implementation with field separation logic.
     * [x] Must exclude: snapshot publishing, persistence.
 
-### 3C - Implement CompleteTaskCommandHandler ###
+### 3C - Implement CompleteTaskCommandHandler
 
     * [x] Action: implement handler for CompleteTaskCommand.
     * [x] Scope: `StateStore/Handlers/CompleteTaskCommandHandler.cs`.
@@ -194,7 +198,7 @@ Step goal:
     * [x] Must include: handler implementation only.
     * [x] Must exclude: snapshot publishing, persistence, UI feedback.
 
-### 3D - Implement UncompleteTaskCommandHandler ###
+### 3D - Implement UncompleteTaskCommandHandler
 
     * [x] Action: implement handler for UncompleteTaskCommand.
     * [x] Scope: `StateStore/Handlers/UncompleteTaskCommandHandler.cs`.
@@ -203,7 +207,7 @@ Step goal:
     * [x] Must include: handler implementation only.
     * [x] Must exclude: snapshot publishing, UI feedback.
 
-### 3E - Implement RemoveTaskCommandHandler ###
+### 3E - Implement RemoveTaskCommandHandler
 
     * [x] Action: implement handler for RemoveTaskCommand.
     * [x] Scope: `StateStore/Handlers/RemoveTaskCommandHandler.cs`.
@@ -212,7 +216,7 @@ Step goal:
     * [x] Must include: handler implementation only.
     * [x] Must exclude: expiration logic, day-boundary behavior.
 
-### 3F - Implement PinTaskCommandHandler ###
+### 3F - Implement PinTaskCommandHandler
 
     * [x] Action: implement handler for PinTaskCommand.
     * [x] Scope: `StateStore/Handlers/PinTaskCommandHandler.cs`.
@@ -221,7 +225,7 @@ Step goal:
     * [x] Must include: handler implementation only.
     * [x] Must exclude: snapshot publishing, UI feedback.
 
-### 3G - Implement UnpinTaskCommandHandler ###
+### 3G - Implement UnpinTaskCommandHandler
 
     * [x] Action: implement handler for UnpinTaskCommand.
     * [x] Scope: `StateStore/Handlers/UnpinTaskCommandHandler.cs`.
@@ -230,17 +234,17 @@ Step goal:
     * [x] Must include: handler implementation only.
     * [x] Must exclude: snapshot publishing, UI feedback.
 
-## Step 3 Completion ##
+## Step 3 Completion
 
     * [x] All substeps in Step 3 complete (3A, 3B, 3C, 3D, 3E, 3F, 3G).
 
-## 4) Snapshot Model ##
+## 4) Snapshot Model
 
 Step goal:
 
     * [x] Create read-only projections for external consumption.
 
-### 4A - Add TaskView read-only projection ###
+### 4A - Add TaskView read-only projection
 
     * [x] Action: add `TaskView` read-only record/class mirroring TaskObject fields needed for UI.
     * [x] Scope: `StateStore/Models/TaskView.cs`.
@@ -249,7 +253,7 @@ Step goal:
     * [x] Must include: read-only view type only.
     * [x] Must exclude: snapshot container, generation logic.
 
-### 4B - Add TaskSnapshot immutable collection wrapper ###
+### 4B - Add TaskSnapshot immutable collection wrapper
 
     * [x] Action: add `TaskSnapshot` containing `IReadOnlyList<TaskView>` and version number.
     * [x] Scope: `StateStore/Models/TaskSnapshot.cs`.
@@ -258,7 +262,7 @@ Step goal:
     * [x] Must include: snapshot container type only.
     * [x] Must exclude: generation logic.
 
-### 4C - Add snapshot generation from state dictionary ###
+### 4C - Add snapshot generation from state dictionary
 
     * [x] Action: add method to project `Dictionary<TaskId, TaskRecord>` to `TaskSnapshot`.
     * [x] Scope: `StateStore/StateStore.cs` or separate `SnapshotProjector.cs`.
@@ -267,26 +271,27 @@ Step goal:
     * [x] Must include: projection logic with defensive copy only.
     * [x] Must exclude: event publishing, subscription handling.
 
-## Step 4 Completion ##
+## Step 4 Completion
 
     * [x] All substeps in Step 4 complete (4A, 4B, 4C).
 
-## 5) State Store Public API ##
+## 5) State Store Public API
 
 Step goal:
 
-    * [ ] Assemble the complete State Store with command dispatch and snapshot publishing.
+[x] Assemble the complete State Store with command dispatch and snapshot publishing.
 
-### 5A - Add StateStore class shell with constructor injection ###
+### 5A - Add StateStore class shell with constructor injection
 
-    * [ ] Action: add `StateStore` class with dependencies declared via constructor.
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive access level for internal members.
-    * [ ] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
-    * [ ] Must include: class shell, constructor, field declarations only.
-    * [ ] Must exclude: command processing pipeline, event wiring.
+[x] Action: add `StateStore` class with dependencies declared via constructor.
+[x] Scope: `StateStore/StateStore.cs`.
+[x] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive
+    access level for internal members.
+[x] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
+[x] Must include: class shell, constructor, field declarations only.
+[x] Must exclude: command processing pipeline, event wiring.
 
-### 5B - Wire command routing to handlers ###
+### 5B - Wire command routing to handlers
 
     * [ ] Action: add internal command dispatch logic routing commands to appropriate handlers.
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -295,7 +300,7 @@ Step goal:
     * [ ] Must include: command dispatch logic only.
     * [ ] Must exclude: snapshot publishing, external API methods.
 
-### 5C - Wire snapshot generation and SnapshotChanged event ###
+### 5C - Wire snapshot generation and SnapshotChanged event
 
     * [ ] Action: add `public event Action<TaskSnapshot>? SnapshotChanged;` and wire snapshot generation after state changes.
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -304,7 +309,7 @@ Step goal:
     * [ ] Must include: event declaration and invocation logic only.
     * [ ] Must exclude: subscription handling (Phase 4 responsibility).
 
-### 5D - Add public command dispatch methods ###
+### 5D - Add public command dispatch methods
 
     * [ ] Action: add public methods for dispatching commands (e.g., `Dispatch(IStateCommand command)` or individual methods per command type).
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -313,17 +318,17 @@ Step goal:
     * [ ] Must include: public dispatch methods only.
     * [ ] Must exclude: internal implementation changes.
 
-## Step 5 Completion ##
+## Step 5 Completion
 
     * [ ] All substeps in Step 5 complete (5A, 5B, 5C, 5D).
 
-## 6) Day Boundary Behavior ##
+## 6) Day Boundary Behavior
 
 Step goal:
 
     * [ ] Implement day-keyed task expiration logic.
 
-### 6A - Add expired task detection ###
+### 6A - Add expired task detection
 
     * [ ] Action: add logic to identify day-keyed tasks (TaskId contains day component) that are expired relative to current day.
     * [ ] Scope: `StateStore/DayBoundary/ExpirationDetector.cs` or embedded in `StateStore.cs`.
@@ -332,7 +337,7 @@ Step goal:
     * [ ] Must include: expiration detection logic only.
     * [ ] Must exclude: removal execution.
 
-### 6B - Add day-transition cleanup handler ###
+### 6B - Add day-transition cleanup handler
 
     * [ ] Action: add handler or method to remove expired tasks on day start.
     * [ ] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
@@ -341,7 +346,7 @@ Step goal:
     * [ ] Must include: cleanup handler only.
     * [ ] Must exclude: lifecycle wiring.
 
-### 6C - Wire day-transition trigger into State Store ###
+### 6C - Wire day-transition trigger into State Store
 
     * [ ] Action: add public method for day-start event (e.g., `OnDayStarted(DayKey newDay)`).
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -350,17 +355,17 @@ Step goal:
     * [ ] Must include: public day-transition method only.
     * [ ] Must exclude: lifecycle coordinator wiring (Step 8).
 
-## Step 6 Completion ##
+## Step 6 Completion
 
     * [ ] All substeps in Step 6 complete (6A, 6B, 6C).
 
-## 7) Manual Task ID Issuance ##
+## 7) Manual Task ID Issuance
 
 Step goal:
 
     * [ ] Implement manual task counter ownership (deferred from Phase 2).
 
-### 7A - Add internal manual task counter state ###
+### 7A - Add internal manual task counter state
 
     * [ ] Action: add private counter field for tracking next manual task ID.
     * [ ] Scope: `StateStore/StateStore.cs` or `StateStore/Models/ManualTaskCounter.cs`.
@@ -369,7 +374,7 @@ Step goal:
     * [ ] Must include: counter field only.
     * [ ] Must exclude: increment logic, persistence.
 
-### 7B - Add IssueNextManualTaskId method ###
+### 7B - Add IssueNextManualTaskId method
 
     * [ ] Action: add method to generate next manual TaskId using counter.
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -378,7 +383,7 @@ Step goal:
     * [ ] Must include: ID issuance method only.
     * [ ] Must exclude: counter persistence.
 
-### 7C - Wire manual ID issuance into AddOrUpdateTaskCommand flow ###
+### 7C - Wire manual ID issuance into AddOrUpdateTaskCommand flow
 
     * [ ] Action: add logic to call IssueNextManualTaskId when command creates manual task without pre-assigned ID.
     * [ ] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs` or `StateStore.cs`.
@@ -387,7 +392,7 @@ Step goal:
     * [ ] Must include: ID issuance integration only.
     * [ ] Must exclude: counter persistence.
 
-### 7D - Add counter increment logic with deterministic sequencing ###
+### 7D - Add counter increment logic with deterministic sequencing
 
     * [ ] Action: ensure counter increments deterministically (no race conditions, stable ordering).
     * [ ] Scope: `StateStore/StateStore.cs`.
@@ -396,17 +401,17 @@ Step goal:
     * [ ] Must include: increment logic only.
     * [ ] Must exclude: persistence (Phase 7).
 
-## Step 7 Completion ##
+## Step 7 Completion
 
     * [ ] All substeps in Step 7 complete (7A, 7B, 7C, 7D).
 
-## 8) Integration with Lifecycle ##
+## 8) Integration with Lifecycle
 
 Step goal:
 
     * [ ] Connect State Store to lifecycle coordinator.
 
-### 8A - Add State Store to bootstrap composition container ###
+### 8A - Add State Store to bootstrap composition container
 
     * [ ] Action: wire State Store into dependency injection container.
     * [ ] Scope: `Startup/BootstrapContainer.cs`.
@@ -415,7 +420,7 @@ Step goal:
     * [ ] Must include: DI registration only.
     * [ ] Must exclude: lifecycle wiring.
 
-### 8B - Wire State Store initialization into lifecycle coordinator ###
+### 8B - Wire State Store initialization into lifecycle coordinator
 
     * [ ] Action: add State Store initialization call in lifecycle coordinator's startup flow.
     * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
@@ -424,7 +429,7 @@ Step goal:
     * [ ] Must include: initialization hookup only.
     * [ ] Must exclude: teardown logic.
 
-### 8C - Wire State Store teardown on return-to-title ###
+### 8C - Wire State Store teardown on return-to-title
 
     * [ ] Action: add State Store cleanup/disposal call in lifecycle coordinator's teardown flow.
     * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
@@ -433,17 +438,17 @@ Step goal:
     * [ ] Must include: teardown/disposal hookup only.
     * [ ] Must exclude: persistence save logic (Phase 7).
 
-## Step 8 Completion ##
+## Step 8 Completion
 
     * [ ] All substeps in Step 8 complete (8A, 8B, 8C).
 
-## 9) Phase 3 Verification Tests ##
+## 9) Phase 3 Verification Tests
 
 Step goal:
 
     * [ ] Lock State Store invariants with comprehensive test coverage.
 
-### 9A - Add command validation tests ###
+### 9A - Add command validation tests
 
     * [ ] Action: add tests for command construction, required fields, and invariants.
     * [ ] Scope: `Tests/StateStore/Commands/CommandValidationTests.cs`.
@@ -452,7 +457,7 @@ Step goal:
     * [ ] Must include: command construction guard tests only.
     * [ ] Must exclude: handler tests.
 
-### 9B - Add command handler determinism tests ###
+### 9B - Add command handler determinism tests
 
     * [ ] Action: add tests verifying same command + same state = same result.
     * [ ] Scope: `Tests/StateStore/Handlers/CommandHandlerDeterminismTests.cs`.
@@ -461,7 +466,7 @@ Step goal:
     * [ ] Must include: determinism assertions only.
     * [ ] Must exclude: integration tests.
 
-### 9C - Add engine/user field separation tests ###
+### 9C - Add engine/user field separation tests
 
     * [ ] Action: add tests verifying engine updates preserve user pins and user updates preserve engine progress.
     * [ ] Scope: `Tests/StateStore/Handlers/FieldSeparationTests.cs`.
@@ -470,7 +475,7 @@ Step goal:
     * [ ] Must include: field separation assertions for AddOrUpdateTaskCommandHandler only.
     * [ ] Must exclude: snapshot tests.
 
-### 9D - Add snapshot immutability tests ###
+### 9D - Add snapshot immutability tests
 
     * [ ] Action: add tests verifying snapshots are defensive copies and mutations do not affect canonical state.
     * [ ] Scope: `Tests/StateStore/Models/SnapshotImmutabilityTests.cs`.
@@ -479,7 +484,7 @@ Step goal:
     * [ ] Must include: immutability assertions only.
     * [ ] Must exclude: publishing tests.
 
-### 9E - Add snapshot publishing tests ###
+### 9E - Add snapshot publishing tests
 
     * [ ] Action: add tests verifying SnapshotChanged event fires correctly after state changes.
     * [ ] Scope: `Tests/StateStore/SnapshotPublishingTests.cs`.
@@ -488,7 +493,7 @@ Step goal:
     * [ ] Must include: event subscription and assertion tests only.
     * [ ] Must exclude: UI subscription tests (Phase 4).
 
-### 9F - Add day boundary behavior tests ###
+### 9F - Add day boundary behavior tests
 
     * [ ] Action: add tests verifying expired daily tasks are removed on day transition.
     * [ ] Scope: `Tests/StateStore/DayBoundary/DayBoundaryTests.cs`.
@@ -497,7 +502,7 @@ Step goal:
     * [ ] Must include: expiration detection and removal tests only.
     * [ ] Must exclude: persistence tests.
 
-### 9G - Add manual ID counter tests ###
+### 9G - Add manual ID counter tests
 
     * [ ] Action: add tests verifying manual task IDs are unique, sequential, and deterministic.
     * [ ] Scope: `Tests/StateStore/ManualTaskCounterTests.cs`.
@@ -506,7 +511,7 @@ Step goal:
     * [ ] Must include: counter determinism and uniqueness tests only.
     * [ ] Must exclude: persistence tests (Phase 7).
 
-### 9H - Add State Store boundary tests ###
+### 9H - Add State Store boundary tests
 
     * [ ] Action: add tests verifying State Store enforces mutation-only-via-commands boundary.
     * [ ] Scope: `Tests/StateStore/StateStoreBoundaryTests.cs`.
@@ -515,7 +520,7 @@ Step goal:
     * [ ] Must include: boundary enforcement assertions only.
     * [ ] Must exclude: performance tests.
 
-### 9I - Add integration tests for lifecycle wiring ###
+### 9I - Add integration tests for lifecycle wiring
 
     * [ ] Action: add tests verifying State Store integrates correctly with lifecycle coordinator.
     * [ ] Scope: `Tests/Lifecycle/LifecycleCoordinatorIntegrationTests.cs`.
@@ -524,17 +529,17 @@ Step goal:
     * [ ] Must include: integration tests for init/teardown only.
     * [ ] Must exclude: full game simulation.
 
-## Step 9 Completion ##
+## Step 9 Completion
 
     * [ ] All substeps in Step 9 complete (9A, 9B, 9C, 9D, 9E, 9F, 9G, 9H, 9I).
 
-## 10) Phase 3 Completion Gate ##
+## 10) Phase 3 Completion Gate
 
 Step goal:
 
     * [ ] Verify implementation is complete, tests pass, and contracts are satisfied.
 
-### 10A - Run clean build and full test suite ###
+### 10A - Run clean build and full test suite
 
     * [ ] Action: execute clean build and run all Phase 3 tests.
     * [ ] Scope: no source changes expected.
@@ -543,7 +548,7 @@ Step goal:
     * [ ] Must include: build log or test output confirmation.
     * [ ] Must exclude: opportunistic code edits.
 
-### 10B - Audit guardrails and checklist completion ###
+### 10B - Audit guardrails and checklist completion
 
     * [ ] Action: review implementation against each guardrail from checklist start.
     * [ ] Scope: this checklist file.
@@ -552,7 +557,7 @@ Step goal:
     * [ ] Must include: guardrail review notes.
     * [ ] Must exclude: new implementation work.
 
-### 10C - Validate implementation scope ###
+### 10C - Validate implementation scope
 
     * [ ] Action: review implementation to ensure no unintended scope expansion beyond Phase 3 requirements.
     * [ ] Scope: all changed files and symbols from phase start.
@@ -561,7 +566,7 @@ Step goal:
     * [ ] Must include: scope validation notes.
     * [ ] Must exclude: rewriting code unrelated to phase requirements.
 
-### 10D - Reconcile deferments ###
+### 10D - Reconcile deferments
 
     * [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
     * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
@@ -570,66 +575,43 @@ Step goal:
     * [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
     * [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
 
-## Step 10 Completion ##
+## Step 10 Completion
 
     * [ ] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
 
+## Deferred Items
 
-## Deferred Items ##
-
-**Open Deferments**
-    - Maybe make TaskRecord a record class? needs more investigation on whether we want reference
-    semantics for TaskRecord in the state dictionary or if value semantics are sufficient. Record structs
-    are value types and would be copied on mutation, which could be less efficient for large records
-    but simpler to reason about immutability. Record classes are reference types and would allow in-place
-    updates but require careful handling to avoid unintended mutations. We should evaluate the typical size
-    of TaskRecord and mutation patterns to determine if the performance benefits of record class outweigh
-    the safety of record struct.
+**Open Deferments** - Maybe make TaskRecord a record class? needs more investigation on whether we want reference
+semantics for TaskRecord in the state dictionary or if value semantics are sufficient. Record structs
+are value types and would be copied on mutation, which could be less efficient for large records
+but simpler to reason about immutability. Record classes are reference types and would allow in-place
+updates but require careful handling to avoid unintended mutations. We should evaluate the typical size
+of TaskRecord and mutation patterns to determine if the performance benefits of record class outweigh
+the safety of record struct.
 
 **Deferred to Phase 4**
-    -Determine if two TaskObject Properties are ambiguous and should be refactored:
-        - TaskSourceType
-        - SourceIdentifier
-    -Both terms are used for different purposes but could be confusing. TaskSourceType indicates
-    what type of source produced this task (BuiltIn, TaskBuilder, or Manual), while SourceIdentifier
-    indicated "which specific source instance?" For example, a BuiltIn task might have
-    TaskSourceType=BuiltIn and SourceIdentifier=DailyLuckTask, while a TaskBuilder task might have
-    TaskSourceType=TaskBuilder and SourceIdentifier=QuestGiver_123. If we keep both, we should
-    ensure their purposes are clearly documented and consider renaming for clarity (e.g.,
-    TaskOriginType and TaskSourceId).
+-Determine if two TaskObject Properties are ambiguous and should be refactored: - TaskSourceType - SourceIdentifier
+-Both terms are used for different purposes but could be confusing. TaskSourceType indicates
+what type of source produced this task (BuiltIn, TaskBuilder, or Manual), while SourceIdentifier
+indicated "which specific source instance?" For example, a BuiltIn task might have
+TaskSourceType=BuiltIn and SourceIdentifier=DailyLuckTask, while a TaskBuilder task might have
+TaskSourceType=TaskBuilder and SourceIdentifier=QuestGiver_123. If we keep both, we should
+ensure their purposes are clearly documented and consider renaming for clarity (e.g.,
+TaskOriginType and TaskSourceId).
 
-**Deferred to Phase 4 (ViewModels):**
-    - Actual subscription to `SnapshotChanged` event
-    - INPC property updates from snapshots
-    - UI-local state (selection, filters, scroll)
+**Deferred to Phase 4 (ViewModels):** - Actual subscription to `SnapshotChanged` event - INPC property updates from snapshots - UI-local state (selection, filters, scroll)
 
-**Deferred to Phase 5+ (Generators/Engine):**
-    - Task generation logic producing commands
-    - Built-in task generators
-    - Deadline field population
-    - Task-type ordering/comparison
+**Deferred to Phase 5+ (Generators/Engine):** - Task generation logic producing commands - Built-in task generators - Deadline field population - Task-type ordering/comparison
 
-**Deferred to Phase 6 (Rule Engine):**
-    - Task Builder rule evaluation
-    - Rule-driven command generation
+**Deferred to Phase 6 (Rule Engine):** - Task Builder rule evaluation - Rule-driven command generation
 
-**Deferred to Phase 7 (Persistence):**
-    - Save/load of State Store state
-    - Manual task counter persistence across sessions
-    - Version migration logic
-    - Baseline value storage
+**Deferred to Phase 7 (Persistence):** - Save/load of State Store state - Manual task counter persistence across sessions - Version migration logic - Baseline value storage
 
-**Deferred to Phase 8+ (Menu/HUD):**
-    - UI interactions dispatching commands
-    - Visual feedback on state changes
+**Deferred to Phase 8+ (Menu/HUD):** - UI interactions dispatching commands - Visual feedback on state changes
 
-**Deferred to V2:**
-    - Batch command transactions
-    - Undo history
-    - Dismissed task tracking
-    - Multiplayer synchronization
+**Deferred to V2:** - Batch command transactions - Undo history - Dismissed task tracking - Multiplayer synchronization
 
-## Key Planning Decisions ##
+## Key Planning Decisions
 
 **TaskRecord vs TaskObject:** Created lightweight internal `TaskRecord` as State Store's storage
 structure, separate from `TaskObject` domain model. Keeps store implementation details isolated from
@@ -642,9 +624,4 @@ UI consumption. Prevents accidental mutation and enforces snapshot immutability 
 `AddOrUpdateTaskCommandHandler`). "Reducer" is banned by C# style contract; "CommandHandler" is
 clear, explicit, and action-oriented.
 
-**Namespace Structure:** Use `JojaAutoTasks.StateStore` as primary namespace with subfolders:
-    - `StateStore/Commands/` — all command types (6 command types + base infrastructure)
-    - `StateStore/Handlers/` — all command handlers
-    - `StateStore/Models/` — TaskRecord, TaskView, TaskSnapshot
-    - `StateStore/DayBoundary/` — expiration logic
-    - `StateStore/StateStore.cs` — main API class
+**Namespace Structure:** Use `JojaAutoTasks.StateStore` as primary namespace with subfolders: - `StateStore/Commands/` — all command types (6 command types + base infrastructure) - `StateStore/Handlers/` — all command handlers - `StateStore/Models/` — TaskRecord, TaskView, TaskSnapshot - `StateStore/DayBoundary/` — expiration logic - `StateStore/StateStore.cs` — main API class
