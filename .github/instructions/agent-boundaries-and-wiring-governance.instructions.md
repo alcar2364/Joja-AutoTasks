@@ -52,6 +52,8 @@ Every instruction file below is wired to at least one agent.
 | sml-style-contract.instructions.md | StarMLAgent | UIAgent, Reviewer |
 | starml-cheatsheet.instructions.md | StarMLAgent | UIAgent, Researcher |
 | ui-component-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| ui-hud-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| ui-interaction-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
 | unit-testing-contract.instructions.md | UnitTestAgent | Reviewer, Planner |
 | update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer, Troubleshooter |
 | visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
