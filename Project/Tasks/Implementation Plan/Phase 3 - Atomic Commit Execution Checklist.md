@@ -251,12 +251,12 @@ Step goal:
 
 ### 4B - Add TaskSnapshot immutable collection wrapper ###
 
-    * [ ] Action: add `TaskSnapshot` containing `IReadOnlyList<TaskView>` and version number.
-    * [ ] Scope: `StateStore/Models/TaskSnapshot.cs`.
-    * [ ] Verify: TaskSnapshot compiles with immutable collection; exposes no mutators.
-    * [ ] Suggested commit: `phase3(step4B): add TaskSnapshot immutable collection wrapper`
-    * [ ] Must include: snapshot container type only.
-    * [ ] Must exclude: generation logic.
+    * [x] Action: add `TaskSnapshot` containing `IReadOnlyList<TaskView>` and version number.
+    * [x] Scope: `StateStore/Models/TaskSnapshot.cs`.
+    * [x] Verify: TaskSnapshot compiles with immutable collection; exposes no mutators.
+    * [x] Suggested commit: `phase3(step4B): add TaskSnapshot immutable collection wrapper`
+    * [x] Must include: snapshot container type only.
+    * [x] Must exclude: generation logic.
 
 ### 4C - Add snapshot generation from state dictionary ###
 
