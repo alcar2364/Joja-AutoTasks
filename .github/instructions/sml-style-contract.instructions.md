@@ -1,6 +1,7 @@
 ﻿---
 name: SML-STYLE-CONTRACT
 description: "StarML/SML coding style and authoring rules for StardewUI markup in JAT. Use when: editing .sml files."
+applyTo: "**/*.sml"
 ---
 
 # SML-STYLE-CONTRACT.instructions.md #

@@ -78,6 +78,7 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | dotnet-upgrade | Refactorer | Troubleshooter |
 | ef-core | GameAgent | Refactorer |
 | git-commit | Orchestrator | WorkspaceAgent |
+| godagent-workflow-patterns-and-assets | GodAgent | Orchestrator |
 | jat-build-debug-and-deployment-workflow | Troubleshooter | GameAgent |
 | jat-command-reducer-snapshot-flow | GameAgent | Reviewer |
 | jat-dependency-injection-and-composition | GameAgent | Refactorer |
@@ -93,7 +94,11 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | jat-testing-patterns-and-fixtures | UnitTestAgent | Reviewer |
 | jat-ui-component-patterns | UIAgent | StarMLAgent |
 | jat-visual-design-language | UIAgent | StarMLAgent, WorkspaceAgent |
+| planner-checklist-and-output-format | Planner | Reviewer, Orchestrator |
 | refactor | Refactorer | Reviewer |
+| reviewer-checklist-and-output-format | Reviewer | Orchestrator |
+| starml-output-format | StarMLAgent | UIAgent |
+| troubleshooter-output-format | Troubleshooter | Orchestrator |
 | update-implementation-plan | Planner | WorkspaceAgent |
 | update-specification | Planner | WorkspaceAgent |
 

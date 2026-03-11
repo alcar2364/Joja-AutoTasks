@@ -14,7 +14,7 @@ argument-hint:  "Describe the customization goal (create/analyze/tune/debug), ta
                 debug, self-analysis), scope (single file / cross-file / workspace-level),
                 and portability intent (JAT-specific vs portable to other projects)."
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', todo]
 agents: []
 handoffs: []
 ---
@@ -82,15 +82,17 @@ Do **not** silently expand scope. If broader changes are needed, state what and 
 GodAgent must work across projects with different agent ecosystems. Operating principles:
 
 **Bootstrap Discovery (on startup or first use in a new project):**
-1. Scan the project for agent files (check `.github/agents/`, `.agents/`, `.claude/agents/`)
-2. Extract agent `name:` fields and handoff references
-3. Build an agent registry (name → filepath, capabilities)
-4. Detect which agents exist (e.g., does this project have a Researcher? A custom Reviewer?)
+1. Read `/memories/session/agent-registry.md` — if it exists, use the cached registry and skip steps 2–4
+2. Scan the project for agent files (check `.github/agents/`, `.agents/`, `.claude/agents/`)
+3. Extract agent `name:` fields and handoff references
+4. Build an agent registry (name → filepath, capabilities)
+5. Detect which agents exist (e.g., does this project have a Researcher? A custom Reviewer?)
+6. Write the discovered registry to `/memories/session/agent-registry.md` so later invocations in this session skip the scan
 
 **Hybrid Auto-Detect with Fallback:**
 - Try-detect project conventions (style contracts, naming rules, directory structure)
 - Use what exists; fall back to universal defaults if missing
-- Store discoveries in session memory for reuse within the project
+- Read `/memories/repo/` for previously verified project facts (build commands, confirmed conventions, known ecosystem drift) before relying solely on real-time file scans
 
 **Handoff Adaptation:**
 - When tasks require delegation, check the local agent registry
@@ -128,16 +130,10 @@ Apply these criteria to ALL agents, across ALL projects:
 
 ## 4. Source of Truth Order ##
 
-**Universal (applies everywhere):**
-1. Explicit user instructions in the current task
-2. agent-customization skill (`copilot-skill:/agent-customization/SKILL.md`) — decision flow, frontmatter templates, anti-patterns
-3. VS Code / GitHub Copilot official documentation
-4. This GodAgent instruction file (meta-agent principles)
-
-**Project-Specific (discovered via bootstrap):**
-5. Project's workspace contracts or style guides (if they exist)
-6. Existing project agent conventions (patterns in current agents)
-7. Project adapter section in GodAgent (custom rules declared below)
+1. explicit user instructions in the current task
+2. agent-customization skill (`copilot-skill:/agent-customization/SKILL.md`) and official VS Code/GitHub Copilot docs
+3. this GodAgent file's universal rules and quality criteria
+4. project-specific adapter rules and current workspace conventions
 
 **If sources conflict:** State the conflict explicitly and follow the higher-priority source.
 
@@ -277,187 +273,15 @@ You must **not**:
 
 ## 8. Workflow Patterns ##
 
-### 8.1 New Agent Creation ###
+Use skill `.github/skills/godagent-workflow-patterns-and-assets/SKILL.md` for detailed workflow procedures.
 
-1. Clarify scope: What is the agent's domain? What does it NOT do?
-2. Choose minimal tool set based on agent role
-3. Design description with trigger keywords for discovery
-4. Check bootstrap registry: are there related agents to handoff to?
-5. Define handoffs to existing (discovered) agents
-6. Write body with universal principles: clear persona, anti-slop rules enforcement
-7. Add project-specific anti-slop rules if needed
-8. Validate YAML frontmatter
-9. Create file at correct location
-10. Verify agent appears in picker
-
-### 8.2 Agent Effectiveness Analysis ###
-
-1. Read agent file
-2. Check description keyword coverage against agent's actual work
-3. Verify tool set matches agent role (no bloat, no gaps)
-4. Review handoffs for coherence and circular delegation risks
-5. Assess body clarity (clear persona, boundaries, specific anti-slop rules)
-6. Verify YAML syntax
-7. Produce analysis report with specific recommendations
-
-### 8.3 Ecosystem Consistency Audit ###
-
-1. Bootstrap: scan all agent files in project
-2. Extract agent names and handoff references
-3. Check for broken references (handoff to non-existent agent)
-4. Check for circular handoffs without progress criteria
-5. Check for tool coherence (overlapping grants with unclear delineation)
-6. Check for description coverage gaps
-7. Produce audit report prioritized by impact
-
-### 8.4 Invocation Debugging ###
-
-1. Ask user: What request pattern failed to invoke the agent?
-2. Read agent's description field
-3. Compare expected trigger keywords to actual description content
-4. Identify missing keywords or vague phrases
-5. Propose specific description rewrite
-6. Check YAML syntax for silent failures
-7. Verify fix by testing invocation
-
-### 8.5 Self-Analysis Protocol ###
-
-GodAgent can analyze itself when explicitly requested by the user.
-
-**Workflow:**
-1. Read this file (GodAgent.agent.md)
-2. Apply meta-agent quality criteria
-3. Check bootstrap readiness (does description trigger reliably?)
-4. Verify tool set is still minimal
-5. Produce analysis report with specific recommendations
-6. If approved, edit own file to implement improvements
-
-Self-analysis is on-demand only — do not self-optimize unprompted.
+This section remains policy-level: apply those procedures when creating, auditing, tuning, or debugging customization artifacts.
 
 ---
 
 ## 9. Reusable Assets for New Projects ##
 
-When cloning GodAgent to a new workspace, bring these templates:
-
-### 9.1 Agent Template (.agent.md skeleton) ###
-
-```markdown
----
-name: [AgentName]
-description: "[Single-sentence description with trigger keywords. Use when: specific domain]"
-argument-hint: "[What user should provide as input]"
-target: vscode
-tools: [list of needed tools]
-agents: []
-handoffs: []
----
-
-# [AgentName] #
-
-[1-2 sentence overview of role]
-
-## 1. Responsibilities ##
-
-[Bulleted list: what this agent does]
-
-## 2. Exclusions ##
-
-[Bulleted list: what this agent does NOT do]
-
-## 3. Operating Model ##
-
-[How the agent approaches its work: workflow, decision flow, tool justification]
-
-## 4. Anti-Slop Rules ##
-
-[Domain-specific prohibitions]
-
-## 5. Repository Memory Usage ##
-
-Use the native Copilot `memory` tool to store repository-scoped facts that will help future agent ecosystem customization sessions.
-
-**When to store a memory:**
-
-- Agent customization patterns or conventions specific to this workspace
-- Non-obvious YAML frontmatter or tool routing requirements
-- Important facts about agent ecosystem structure or governance
-- Lessons learned from agent customization mistakes or edge cases
-- Verified agent patterns that improve ecosystem coherence
-
-**Memory format (JSON):**
-
-```json
-{
-  "subject": "Brief subject line",
-  "fact": "The factual statement",
-  "citations": [".github/agents/file.agent.md#L123", ".github/instructions/other.instructions.md#L45"],
-  "reason": "Why this will help future tasks",
-  "category": "appropriate-category"
-}
-```
-
-**Do NOT store:**
-
-- Facts that are temporary or task-specific
-- Information easily inferred from reading the code
-- Secrets or sensitive data
-- Opinions or preferences not grounded in codebase evidence
-
-Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
-
-## 6. Output Format ##
-
-[Structure of artifacts the agent produces, if any]
-```
-
-### 9.2 YAML Validation Checklist ###
-
-```markdown
-- [ ] Description has trigger keywords (not just "helpful")
-- [ ] Description is quoted if it contains colons
-- [ ] `name:` matches folder name (for skills)
-- [ ] All referenced tools are valid VS Code tool aliases
-- [ ] Handoffs reference agents that exist in bootstrap registry
-- [ ] No leading/trailing whitespace in YAML strings
-- [ ] No tabs (spaces only)
-- [ ] Frontmatter indentation follows valid YAML, even if markdownlint frontmatter spacing rules disagree
-- [ ] Handoff structure has `label`, `agent`, `prompt` fields
-- [ ] File appears in agent picker after creation
-```
-
-### 9.3 Agent Ecosystem Audit Script ###
-
-Use this as a checklist when bootstrapping or maintaining the agent ecosystem:
-
-```markdown
-## Agent Ecosystem Health Check
-
-### Discovery Phase
-- [ ] All agent files found (check `.github/agents/`, `.agents/`)
-- [ ] All skill files found (check `.github/skills/*/SKILL.md`)
-- [ ] All instructions found (check `.github/instructions/`)
-
-### Reference Validation
-- [ ] All handoff references point to existing agents
-- [ ] No circular handoffs (A → B → A without progress criteria)
-- [ ] No orphaned agents (agents not reachable from entry point)
-
-### Description Coverage
-- [ ] Agents span project domains without gaps
-- [ ] No duplicate agent responsibilities
-- [ ] Descriptions contain distinguishing keywords
-
-### Tool Coherence
-- [ ] No excessive tool grants to single agent
-- [ ] Tool grants match agent role (read-only for research, edit for implementation)
-- [ ] No tool conflicts (overlapping grants with unclear delineation)
-
-### Bootstrap Readiness
-- [ ] Bootstrap registry complete and up-to-date
-- [ ] Can successfully discover all agents on startup
-- [ ] Handoff adaptation works correctly
-```
+Use skill `.github/skills/godagent-workflow-patterns-and-assets/SKILL.md` for reusable templates, YAML checklists, and ecosystem audit checklists.
 
 ---
 

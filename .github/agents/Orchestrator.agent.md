@@ -4,7 +4,7 @@ description: "Use when: delegation-only orchestration across JAT subagents for r
 argument-hint:  Describe your goal + scope (feature/bug/refactor), target subsystem(s), and any
                 constraints (no behavior changes, file-scope only, etc.).
 target: vscode
-tools: [agent, read/readFile, todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/readFile, agent, todo]
 
 agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GodAgent, WorkspaceAgent]
 

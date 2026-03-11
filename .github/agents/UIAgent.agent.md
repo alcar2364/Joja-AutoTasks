@@ -5,7 +5,7 @@ argument-hint: Describe the UI feature, fix, or refactor; include the approved p
 description: "Use when: implementing frontend C# HUD/menu/view-model interaction logic (excluding .sml authoring)."
 name: UIAgent
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, web, 'microsoftdocs/mcp/*', browser, todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', todo]
 agents: [Reviewer, GameAgent, StarMLAgent, Planner, Researcher]
 handoffs:
 -   label: UI patch verification handoff

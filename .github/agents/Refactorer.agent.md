@@ -5,7 +5,7 @@ argument-hint:  Describe the refactor; include the approved plan if available, t
                 files/subsystems, scope limits (no behavior change, touched-region only, etc.), and whether this is
                 a structural refactor, rename, extraction, or consolidation.
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
 agents: [Reviewer, Planner, Researcher, StarMLAgent, GameAgent, UIAgent]
 handoffs:
 -   label: Refactor validation handoff

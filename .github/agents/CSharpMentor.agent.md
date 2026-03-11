@@ -3,7 +3,7 @@ name: CSharpMentor
 description: "Use when: C# mentoring, C# pair programming, game-dev architecture coaching, implementation-plan walkthroughs, readability and safety refactoring guidance, null-safety/debugging help, and fast C# Q&A while coding."
 argument-hint: "Describe what you are building or debugging, your current implementation-plan step, your question, your experience level, and whether you want explanation-only or direct code edits."
 target: vscode
-tools: [vscode, read/problems, read/readFile, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoft-learn/*', 'playwright/*', 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoft-learn/*', 'playwright/*', 'microsoftdocs/mcp/*', todo]
 agents: []
 handoffs: []
 ---
