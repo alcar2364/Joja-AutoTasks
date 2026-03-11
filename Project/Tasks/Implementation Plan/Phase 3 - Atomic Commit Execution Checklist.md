@@ -260,16 +260,16 @@ Step goal:
 
 ### 4C - Add snapshot generation from state dictionary ###
 
-    * [ ] Action: add method to project `Dictionary<TaskId, TaskRecord>` to `TaskSnapshot`.
-    * [ ] Scope: `StateStore/StateStore.cs` or separate `SnapshotProjector.cs`.
-    * [ ] Verify: method produces defensive copy with stable ordering (by TaskId or creation day); no shared references with canonical state.
-    * [ ] Suggested commit: `phase3(step4C): add snapshot generation from state dictionary`
-    * [ ] Must include: projection logic with defensive copy only.
-    * [ ] Must exclude: event publishing, subscription handling.
+    * [x] Action: add method to project `Dictionary<TaskId, TaskRecord>` to `TaskSnapshot`.
+    * [x] Scope: `StateStore/StateStore.cs` or separate `SnapshotProjector.cs`.
+    * [x] Verify: method produces defensive copy with stable ordering (by TaskId or creation day); no shared references with canonical state.
+    * [x] Suggested commit: `phase3(step4C): add snapshot generation from state dictionary`
+    * [x] Must include: projection logic with defensive copy only.
+    * [x] Must exclude: event publishing, subscription handling.
 
 ## Step 4 Completion ##
 
-    * [ ] All substeps in Step 4 complete (4A, 4B, 4C).
+    * [x] All substeps in Step 4 complete (4A, 4B, 4C).
 
 ## 5) State Store Public API ##
 
