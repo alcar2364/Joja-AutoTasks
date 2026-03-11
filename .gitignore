@@ -65,10 +65,10 @@ nunit-*.xml
 .markdownlint*
 .tmp*
 .dotnet/
+Project/.prettierrc
 
 # Agent ecosystem archives
 .github/archive/
 
 # Native Copilot memory (user/session/repo)
 /memories/
-Project/.prettierrc
