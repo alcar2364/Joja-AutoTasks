@@ -23,7 +23,7 @@
 #
 # Daily documentation synchronization: detects code changes and identifies design doc updates needed.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"c1c16655e4980fc008a04d2a9bc1ab4db21b0886a61c7f6fe97c258275304b29","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"348390d021077d8069980c26322ccf13a09598a1aa4dda6729b4d03bd4ff7f93","compiler_version":"v0.57.0","strict":true}
 
 name: "daily-docs-updater"
 "on":

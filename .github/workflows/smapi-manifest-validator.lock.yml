@@ -23,7 +23,7 @@
 #
 # Validates manifest.json integrity and version consistency against JojaAutoTasks.csproj on every relevant change.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"355089703e51a873b19da70cd34678fd90977f04e422cf70442a7c57d37cac3a","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"8abf948bc47368e2da9db80d8f3f44ee31c72fb01c6287a065485c0a3c3c497c","compiler_version":"v0.57.0","strict":true}
 
 name: "smapi-manifest-validator"
 "on":
@@ -37,7 +37,7 @@ name: "smapi-manifest-validator"
     - reopened
   push:
     branches:
-    - main
+    - development
     paths:
     - manifest.json
     - JojaAutoTasks.csproj

@@ -23,7 +23,7 @@
 #
 # Weekly cross-platform build and test matrix across Windows, Linux, and macOS.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"af18aa39b20cfffc5ef09d444894f40dd38f7553705e0f1ea96281bda50e85f4","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"a85e34dcf5388d319e4a52b0baa27a610c8b5f0d33ea452dcfaa063402944794","compiler_version":"v0.57.0","strict":true}
 
 name: "multi-platform-build-matrix"
 "on":

@@ -23,16 +23,16 @@
 #
 # CodeQL static analysis and NuGet vulnerability scanning for security enforcement.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"250c04d1cdb0e57ce324a6f673481e3e28306639abf795724fbd0b197d9f60b4","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"ad32322d2b53095509f982aca73fd38252d70802d0718a2443a345df86c7b85c","compiler_version":"v0.57.0","strict":true}
 
 name: "security-scanner"
 "on":
   pull_request:
     branches:
-    - main
+    - development
   push:
     branches:
-    - main
+    - development
   schedule:
   - cron: "52 8 * * 2"
     # Friendly format: weekly (scattered)

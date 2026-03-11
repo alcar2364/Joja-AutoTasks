@@ -23,7 +23,7 @@
 #
 # Monitors build and test pipeline health, identifying failures and regressions.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"c9f6b42ec297ec410553a04714145f9c87e7421748f113f76d917d6f34e9f3b4","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"a1a7133667b6c5952f4b8e81c28a152a33bbf92c6ebdd56ad5f1b2eb491b644d","compiler_version":"v0.57.0","strict":true}
 
 name: "build-health-monitor"
 "on":
@@ -34,7 +34,7 @@ name: "build-health-monitor"
   workflow_run:
     # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
     branches:
-    - main
+    - development
     types:
     - completed
     workflows:

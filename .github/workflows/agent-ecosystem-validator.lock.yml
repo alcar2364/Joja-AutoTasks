@@ -23,7 +23,7 @@
 #
 # Validates agent/instruction/skill ecosystem consistency: detects unmapped files and frontmatter issues.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"2064ac7b5b15a66ddd9804e1cfd3194fdd31c8886b54fc7293ed64482d12fd3b","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"5355ca71090c861f6c00ccd2d57b3b7176bfd5a647be0be5f970c7642410940f","compiler_version":"v0.57.0","strict":true}
 
 name: "agent-ecosystem-validator"
 "on":

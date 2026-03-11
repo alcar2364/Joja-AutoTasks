@@ -26,7 +26,7 @@
 # engaging GitHub issues with productivity insights, community highlights,
 # and project recommendations.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"1af34a4455451bdea63b64b89f85230c9259a6d255ee6a5c80052d083e19fca7","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"022bcca3ca47c94e325b8e96829ddeb855056630dc108653278c5c6bf7e20f2a","compiler_version":"v0.57.0","strict":true}
 
 name: "Daily Repo Status"
 "on":
@@ -232,8 +232,8 @@ jobs:
     needs: activation
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       actions: read
+      contents: read
       issues: read
       pull-requests: read
     concurrency:

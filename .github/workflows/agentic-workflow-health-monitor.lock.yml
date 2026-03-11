@@ -23,7 +23,7 @@
 #
 # Meta-workflow that monitors the health of all agentic workflows themselves.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"e81a520cd3ef9a7c12247fa47a752168f04e32dc0a9ff16d5357f017989f61a1","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"92dda01ac004a89bd5aed8cceb01ae261e3a29de8b3aa27b5faffde2442a641d","compiler_version":"v0.57.0","strict":true}
 
 name: "agentic-workflow-health-monitor"
 "on":

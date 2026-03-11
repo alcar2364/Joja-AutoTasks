@@ -23,7 +23,7 @@
 #
 # Automated mod release packaging: builds release zip and creates GitHub Release on version tag.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"e7e735dcbd9698bc3fc771308458a59422b46909ffb780a0883543d6fd78c280","compiler_version":"v0.57.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"abc40622fbc99986a463241bcf378058d2701fc5e6c47472dc5acaf241dfd378","compiler_version":"v0.57.0","strict":true}
 
 name: "release-packaging"
 "on":
