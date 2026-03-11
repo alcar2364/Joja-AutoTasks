@@ -1,5 +1,6 @@
 using JojaAutoTasks.StateStore.Handlers;
 using JojaAutoTasks.StateStore.Commands;
+using JojaAutoTasks.StateStore.Models;
 
 namespace JojaAutoTasks.StateStore;
 
@@ -12,6 +13,7 @@ internal sealed class StateStore
     private readonly RemoveTaskCommandHandler _removeTaskHandler;
     private readonly PinTaskCommandHandler _pinTaskHandler;
     private readonly UnpinTaskCommandHandler _unpinTaskHandler;
+    public event Action<TaskSnapshot>? SnapshotChanged;
 
 
     internal StateStore(AddOrUpdateTaskCommandHandler addOrUpdateTaskHandler,
@@ -56,5 +58,12 @@ internal sealed class StateStore
             default:
                 throw new InvalidOperationException($"No handler found for command type {command.GetType().Name}");
         }
+
+        SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
+    }
+
+    public void Dispatch(IStateCommand command)
+    {
+        Handle(command);
     }
 }

@@ -279,48 +279,48 @@ Step goal:
 
 Step goal:
 
-[x] Assemble the complete State Store with command dispatch and snapshot publishing.
+- [x] Assemble the complete State Store with command dispatch and snapshot publishing.
 
 ### 5A - Add StateStore class shell with constructor injection
 
-[x] Action: add `StateStore` class with dependencies declared via constructor.
-[x] Scope: `StateStore/StateStore.cs`.
-[x] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive
+- [x] Action: add `StateStore` class with dependencies declared via constructor.
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive
     access level for internal members.
-[x] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
-[x] Must include: class shell, constructor, field declarations only.
-[x] Must exclude: command processing pipeline, event wiring.
+- [x] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
+- [x] Must include: class shell, constructor, field declarations only.
+- [x] Must exclude: command processing pipeline, event wiring.
 
 ### 5B - Wire command routing to handlers
 
-[x] Action: add internal command dispatch logic routing commands to appropriate handlers.
-[x] Scope: `StateStore/StateStore.cs`.
-[x] Verify: commands route correctly to handlers, state updates applied; routing is deterministic.
-[x] Suggested commit: `phase3(step5B): wire command routing to handlers`
-[x] Must include: command dispatch logic only.
-[x] Must exclude: snapshot publishing, external API methods.
+- [x] Action: add internal command dispatch logic routing commands to appropriate handlers.
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: commands route correctly to handlers, state updates applied; routing is deterministic.
+- [x] Suggested commit: `phase3(step5B): wire command routing to handlers`
+- [x] Must include: command dispatch logic only.
+- [x] Must exclude: snapshot publishing, external API methods.
 
 ### 5C - Wire snapshot generation and SnapshotChanged event
 
-    * [ ] Action: add `public event Action<TaskSnapshot>? SnapshotChanged;` and wire snapshot generation after state changes.
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: event fires after successful command processing with current snapshot; event declaration is public.
-    * [ ] Suggested commit: `phase3(step5C): wire snapshot generation and SnapshotChanged event`
-    * [ ] Must include: event declaration and invocation logic only.
-    * [ ] Must exclude: subscription handling (Phase 4 responsibility).
+- [x] Action: add `public event Action<TaskSnapshot>? SnapshotChanged;` and wire snapshot generation after state changes.
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: event fires after successful command processing with current snapshot; event declaration is public.
+- [x] Suggested commit: `phase3(step5C): wire snapshot generation and SnapshotChanged event`
+- [x] Must include: event declaration and invocation logic only.
+- [x] Must exclude: subscription handling (Phase 4 responsibility).
 
 ### 5D - Add public command dispatch methods
 
-    * [ ] Action: add public methods for dispatching commands (e.g., `Dispatch(IStateCommand command)` or individual methods per command type).
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: public API surface is minimal and explicit; methods are public, implementation details are private/internal.
-    * [ ] Suggested commit: `phase3(step5D): add public command dispatch methods`
-    * [ ] Must include: public dispatch methods only.
-    * [ ] Must exclude: internal implementation changes.
+- [x] Action: add public methods for dispatching commands (e.g., `Dispatch(IStateCommand command)` or individual methods per command type).
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: public API surface is minimal and explicit; methods are public, implementation details are private/internal.
+- [x] Suggested commit: `phase3(step5D): add public command dispatch methods`
+- [x] Must include: public dispatch methods only.
+- [x] Must exclude: internal implementation changes.
 
 ## Step 5 Completion
 
-    * [ ] All substeps in Step 5 complete (5A, 5B, 5C, 5D).
+- [x] All substeps in Step 5 complete (5A, 5B, 5C, 5D).
 
 ## 6) Day Boundary Behavior
 
