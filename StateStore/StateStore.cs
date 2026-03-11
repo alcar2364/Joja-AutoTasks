@@ -1,3 +1,5 @@
+using JojaAutoTasks.Domain.Identifiers;
+using JojaAutoTasks.StateStore.DayBoundary;
 using JojaAutoTasks.StateStore.Handlers;
 using JojaAutoTasks.StateStore.Commands;
 using JojaAutoTasks.StateStore.Models;
@@ -13,6 +15,7 @@ internal sealed class StateStore
     private readonly RemoveTaskCommandHandler _removeTaskHandler;
     private readonly PinTaskCommandHandler _pinTaskHandler;
     private readonly UnpinTaskCommandHandler _unpinTaskHandler;
+
     public event Action<TaskSnapshot>? SnapshotChanged;
 
 
@@ -56,13 +59,25 @@ internal sealed class StateStore
                 _unpinTaskHandler.Handle(unpinTaskCommand, _stateContainer);
                 break;
             default:
-                throw new InvalidOperationException($"No handler found for command type {command.GetType().Name}");
+                throw new InvalidOperationException(
+                    $"No handler found for command type {command.GetType().Name}");
         }
 
         SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
     }
 
-    public void Dispatch(IStateCommand command)
+    internal void OnDayStarted(DayKey newDay)
+    {
+        var expiredIds = ExpirationDetector.DetectExpiredIds(_stateContainer, newDay);
+
+        if (expiredIds.Count > 0)
+        {
+            DayTransitionHandler.RemoveExpiredTasks(expiredIds, _stateContainer);
+            SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
+        }
+    }
+
+    internal void Dispatch(IStateCommand command)
     {
         Handle(command);
     }

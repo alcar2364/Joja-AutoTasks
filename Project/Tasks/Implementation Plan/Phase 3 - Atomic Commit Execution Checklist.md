@@ -348,16 +348,16 @@ Step goal:
 
 ### 6C - Wire day-transition trigger into State Store
 
-    * [ ] Action: add public method for day-start event (e.g., `OnDayStarted(DayKey newDay)`).
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: method triggers expiration cleanup and snapshot rebuild; method is public.
-    * [ ] Suggested commit: `phase3(step6C): wire day-transition trigger into State Store`
-    * [ ] Must include: public day-transition method only.
-    * [ ] Must exclude: lifecycle coordinator wiring (Step 8).
+- [x] Action: add public method for day-start event (e.g., `OnDayStarted(DayKey newDay)`).
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: method triggers expiration cleanup and snapshot rebuild; method is public.
+- [x] Suggested commit: `phase3(step6C): wire day-transition trigger into State Store`
+- [x] Must include: public day-transition method only.
+- [x] Must exclude: lifecycle coordinator wiring (Step 8).
 
 ## Step 6 Completion
 
-    * [ ] All substeps in Step 6 complete (6A, 6B, 6C).
+- [x] All substeps in Step 6 complete (6A, 6B, 6C).
 
 ## 7) Manual Task ID Issuance
 
