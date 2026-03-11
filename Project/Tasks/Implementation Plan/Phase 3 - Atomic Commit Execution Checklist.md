@@ -590,6 +590,15 @@ logic.
 
 ### Reviewer Action Required
 
+### Reviewer Action Required
+
+**Verify sourceIdentifier value (Step 7C):** `DispatchCreateManualTaskCommand`
+hardcodes `sourceIdentifier: "Player"`. This was chosen to describe the WHO
+(the player) rather than the WHAT (`TaskSourceType.Manual` already covers
+that). However, `SourceIdentifier` semantics are unresolved (DEF-007, deferred
+to Phase 4). Reviewer should confirm whether `"Player"` is the correct value
+or whether it should be changed when DEF-007 is resolved.
+
 **Out-of-scope addition (Step 6A):** Added a method to `DayKey` to get the day
 from the key. This was out of scope of the checklist, but made implementation
 easier when constructing `ExpirationDetector`. Therefore, added method to
