@@ -339,12 +339,12 @@ Step goal:
 
 ### 6B - Add day-transition cleanup handler
 
-- [ ] Action: add handler or method to remove expired tasks on day start.
-- [ ] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
-- [ ] Verify: expired tasks removed from state, snapshot regenerated; handler is deterministic and side-effect free.
-- [ ] Suggested commit: `phase3(step6B): add day-transition cleanup handler`
-- [ ] Must include: cleanup handler only.
-- [ ] Must exclude: lifecycle wiring.
+- [x] Action: add handler or method to remove expired tasks on day start.
+- [x] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
+- [x] Verify: expired tasks removed from state, snapshot regenerated; handler is deterministic and side-effect free.
+- [x] Suggested commit: `phase3(step6B): add day-transition cleanup handler`
+- [x] Must include: cleanup handler only.
+- [x] Must exclude: lifecycle wiring.
 
 ### 6C - Wire day-transition trigger into State Store
 
