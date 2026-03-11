@@ -8,7 +8,7 @@ on:
       - "JojaAutoTasks.csproj"
     types: [opened, synchronize, reopened]
   push:
-    branches: [main]
+    branches: [development]
     paths:
       - "manifest.json"
       - "JojaAutoTasks.csproj"
