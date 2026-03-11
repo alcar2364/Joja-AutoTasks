@@ -1,5 +1,5 @@
 ﻿---
-name: SML-STYLE-CONTRACT
+name: sml-style-contract
 description: "StarML/SML coding style and authoring rules for StardewUI markup in JAT. Use when: editing .sml files."
 applyTo: "**/*.sml"
 ---
@@ -25,7 +25,6 @@ where each element corresponds to a StardewUI **view**. Attributes map to view p
 except for structural attributes, and child elements map to child views. Tags are **not arbitrary**;
 except for `<include>`, the tag determines the view type, which determines valid attributes and
 child limits. StardewUI also uses **kebab-case** for StarML attribute and event names.
-îˆ€citeîˆ‚turn0view0îˆ‚turn2view3îˆ‚turn1view1îˆ
 
 This contract does **not** define:
 

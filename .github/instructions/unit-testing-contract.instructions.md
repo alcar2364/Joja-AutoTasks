@@ -1,5 +1,5 @@
 ---
-name: UNIT-TESTING-CONTRACT
+name: unit-testing-contract
 description: "Unit testing rules: determinism, architecture boundaries, identifier/ordering verification, persistence safety, review output. Use when: creating or editing unit tests."
 applyTo: "Tests/**/*.cs"
 ---

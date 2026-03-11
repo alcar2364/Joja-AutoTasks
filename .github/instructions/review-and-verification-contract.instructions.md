@@ -1,5 +1,5 @@
 ﻿---
-name: REVIEW-AND-VERIFICATION-CONTRACT
+name: review-and-verification-contract
 description: "Review, verification, and acceptance rules: contract-based review, risk assessment, verification paths, pre-merge checklists. Use when: reviewing code or implementations."
 ---
 

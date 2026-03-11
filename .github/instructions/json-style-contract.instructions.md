@@ -1,5 +1,5 @@
 ﻿---
-name: JSON-STYLE-CONTRACT
+name: json-style-contract
 description: "JSON formatting, key naming, and versioning conventions for JAT. Use when: editing .json files."
 applyTo: "**/*.json"
 ---
