@@ -71,3 +71,4 @@ nunit-*.xml
 
 # Native Copilot memory (user/session/repo)
 /memories/
+Project/.prettierrc
