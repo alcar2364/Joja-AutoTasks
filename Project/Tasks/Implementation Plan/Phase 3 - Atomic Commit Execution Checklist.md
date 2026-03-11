@@ -563,7 +563,7 @@ Step goal:
 
 ### 10D - Reconcile deferments ###
 
-    * [ ] Action: review checklist for newly identified deferments and reconcile with `.github/Project Tasks/Implementation Plan/Deferments Index.md`.
+    * [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
     * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
     * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
     * [ ] Suggested commit: `phase3(step10D): reconcile deferments after Phase 3 completion`

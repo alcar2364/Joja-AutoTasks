@@ -15,7 +15,7 @@ Use this map to:
 
 This is a **developer reference document** focused on implementation details. For conceptual
 architecture and design rationale, see the primary design guide sections in
-`.github/Project Planning/Joja AutoTasks Design Guide/`.
+`Project/Planning/Joja AutoTasks Design Guide/`.
 
 ## Document Conventions
 

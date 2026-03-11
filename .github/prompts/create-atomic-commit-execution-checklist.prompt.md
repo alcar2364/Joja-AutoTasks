@@ -29,6 +29,6 @@ Checklist Requirements
 - Final review must be executable by human or Reviewer agent.
 
 Required Output
-1. Checklist file written to `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`
+1. Checklist file written to `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`
 2. Substeps with completion checkboxes and suggested commit messages
 3. Final review and verification steps

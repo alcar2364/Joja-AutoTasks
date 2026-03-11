@@ -250,7 +250,7 @@ non-bootable mod. An automated validator catches these errors before they reach 
 
 **What it does:**
 - Reads all `Phase N - Atomic Commit Execution Checklist.md` files from
-  `.github/Project Tasks/Implementation Plan/`
+  `Project/Tasks/Implementation Plan/`
 - Counts checked (`[x]`) vs. unchecked (`[ ]`) items per phase
 - Calculates and reports completion percentage per phase
 - Identifies the current active phase (most recently started, not yet complete)
@@ -280,7 +280,7 @@ of the implementation.
 **Trigger:** Weekly schedule, `workflow_dispatch`
 
 **What it does:**
-- Reads `.github/Project Tasks/Implementation Plan/Deferments Index.md`
+- Reads `Project/Tasks/Implementation Plan/Deferments Index.md`
 - Identifies items that have been deferred for more than a configurable threshold (default: 4 weeks)
 - Flags deferments whose scheduled phase is the current active phase but are not yet resolved
 - Creates a discussion post summarizing the aging deferments report

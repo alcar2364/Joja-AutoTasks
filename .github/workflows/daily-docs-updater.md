@@ -75,8 +75,8 @@ Analyze code changes and identify design documentation that needs synchronizatio
 ## Documentation Areas to Monitor
 
 ### Architecture & Design Docs
-- `.github/Project Planning/Architecture Map.md` — Must stay current with Domain, Lifecycle, and StateStore changes
-- `.github/Project Planning/Joja AutoTasks Design Guide/` — Update when core domain concepts, identifiers, or command patterns change
+- `Project/Planning/Architecture Map.md` — Must stay current with Domain, Lifecycle, and StateStore changes
+- `Project/Planning/Joja AutoTasks Design Guide/` — Update when core domain concepts, identifiers, or command patterns change
 - Phase checklists and atomic commit execution plans — Track implementation progress
 
 ### Code-Adjacent Docs

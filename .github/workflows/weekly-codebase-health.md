@@ -89,7 +89,7 @@ Create at most 1 issue per run (targeting the largest class). Close existing `[c
 Protect JAT's first-class determinism requirement by scanning all production source files for
 forbidden patterns.
 
-**Reference:** `.github/Project Planning/Joja AutoTasks Design Guide/Section 03 - Deterministic Identifier Model.md`
+**Reference:** `Project/Planning/Joja AutoTasks Design Guide/Section 03 - Deterministic Identifier Model.md`
 
 ### Forbidden Patterns (Production Code Only)
 

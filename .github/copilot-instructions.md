@@ -218,8 +218,8 @@ The CI workflow (`.github/workflows/ci.yml`) mirrors these local steps. Run them
 
 ### Documentation and contracts location
 
-* Primary technical docs: `.github/Project Planning/Joja AutoTasks Design Guide/`
-* Architecture reference map: `.github/Project Planning/Architecture Map.md`
+* Primary technical docs: `Project/Planning/Joja AutoTasks Design Guide/`
+* Architecture reference map: `Project/Planning/Architecture Map.md`
 * Core contracts/instructions: `.github/instructions/*.instructions.md`
 * PR validation checklist: `.github/pull_request_template.md`
 * Test conventions and focused command list: `Tests/README.md`
@@ -227,7 +227,7 @@ The CI workflow (`.github/workflows/ci.yml`) mirrors these local steps. Run them
 ### README status
 
 `README.md` is currently minimal (`Project repository initialized.`).
-Use the design guide and architecture map in `.github/Project Planning/` as the operational source
+Use the design guide and architecture map in `Project/Planning/` as the operational source
 of truth for implementation context.
 
 ## Non-Obvious Dependencies and Behaviors
