@@ -242,12 +242,12 @@ Step goal:
 
 ### 4A - Add TaskView read-only projection ###
 
-    * [ ] Action: add `TaskView` read-only record/class mirroring TaskObject fields needed for UI.
-    * [ ] Scope: `StateStore/Models/TaskView.cs`.
-    * [ ] Verify: TaskView compiles with immutable fields, exposes no mutators; uses most restrictive access level (prefer internal or public readonly).
-    * [ ] Suggested commit: `phase3(step4A): add TaskView read-only projection`
-    * [ ] Must include: read-only view type only.
-    * [ ] Must exclude: snapshot container, generation logic.
+    * [x] Action: add `TaskView` read-only record/class mirroring TaskObject fields needed for UI.
+    * [x] Scope: `StateStore/Models/TaskView.cs`.
+    * [x] Verify: TaskView compiles with immutable fields, exposes no mutators; uses most restrictive access level (prefer internal or public readonly).
+    * [x] Suggested commit: `phase3(step4A): add TaskView read-only projection`
+    * [x] Must include: read-only view type only.
+    * [x] Must exclude: snapshot container, generation logic.
 
 ### 4B - Add TaskSnapshot immutable collection wrapper ###
 
