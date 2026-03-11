@@ -1,5 +1,5 @@
 ﻿---
-name: FRONTEND-ARCHITECTURE-CONTRACT
+name: frontend-architecture-contract
 description: "Frontend architecture rules for JAT: HUD vs menu, snapshot-driven UI, command dispatch, performance guardrails. Use when: editing UI code or .sml files."
 applyTo: "{UI/**/*.cs,**/*.sml}"
 ---
