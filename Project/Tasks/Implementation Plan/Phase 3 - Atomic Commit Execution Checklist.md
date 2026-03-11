@@ -398,16 +398,20 @@ This implementation was modified. Please see [Notes] at end of checklist.
 
 ### 7D - Add counter increment logic with deterministic sequencing
 
-    * [ ] Action: ensure counter increments deterministically (no race conditions, stable ordering).
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: sequential calls produce sequential IDs; no threading issues introduced
-    * [ ] Suggested commit: `phase3(step7D): add deterministic counter increment logic`
-    * [ ] Must include: increment logic only.
-    * [ ] Must exclude: persistence (Phase 7).
+<<<<<<< HEAD
+
+=======
+- [x] Action: ensure counter increments deterministically (no race conditions, stable ordering).
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: sequential calls produce sequential IDs; no threading issues introduced
+- [x] Suggested commit: `phase3(step7D): add deterministic counter increment logic`
+- [x] Must include: increment logic only.
+- [x] Must exclude: persistence (Phase 7).
+>>>>>>> 86e0029 (feat(StateStore): wire manual ID issuance into AddOrUpdateTaskCommand flow)
 
 ## Step 7 Completion
 
-    * [ ] All substeps in Step 7 complete (7A, 7B, 7C, 7D).
+    * [x] All substeps in Step 7 complete (7A, 7B, 7C, 7D).
 
 ## 8) Integration with Lifecycle
 
@@ -584,6 +588,9 @@ Step goal:
     * [ ] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
 
 ## Notes
+
+For 7D, SMAPI is single-threaded, so no risk of race conditions in counter increment
+logic. 
 
 ### Reviewer Action Required
 
