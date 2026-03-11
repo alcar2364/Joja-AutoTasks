@@ -326,25 +326,25 @@ Step goal:
 
 Step goal:
 
-    * [ ] Implement day-keyed task expiration logic.
+- [x] Implement day-keyed task expiration logic.
 
 ### 6A - Add expired task detection
 
-    * [ ] Action: add logic to identify day-keyed tasks (TaskId contains day component) that are expired relative to current day.
-    * [ ] Scope: `StateStore/DayBoundary/ExpirationDetector.cs` or embedded in `StateStore.cs`.
-    * [ ] Verify: logic correctly identifies daily tasks past their expiration day; detection is deterministic.
-    * [ ] Suggested commit: `phase3(step6A): add expired task detection logic`
-    * [ ] Must include: expiration detection logic only.
-    * [ ] Must exclude: removal execution.
+- [x] Action: add logic to identify day-keyed tasks (TaskId contains day component) that are expired relative to current day.
+- [x] Scope: `StateStore/DayBoundary/ExpirationDetector.cs` or embedded in `StateStore.cs`.
+- [x] Verify: logic correctly identifies daily tasks past their expiration day; detection is deterministic.
+- [x] Suggested commit: `phase3(step6A): add expired task detection logic`
+- [x] Must include: expiration detection logic only.
+- [x] Must exclude: removal execution.
 
 ### 6B - Add day-transition cleanup handler
 
-    * [ ] Action: add handler or method to remove expired tasks on day start.
-    * [ ] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
-    * [ ] Verify: expired tasks removed from state, snapshot regenerated; handler is deterministic and side-effect free.
-    * [ ] Suggested commit: `phase3(step6B): add day-transition cleanup handler`
-    * [ ] Must include: cleanup handler only.
-    * [ ] Must exclude: lifecycle wiring.
+- [ ] Action: add handler or method to remove expired tasks on day start.
+- [ ] Scope: `StateStore/DayBoundary/DayTransitionHandler.cs` or `StateStore.cs`.
+- [ ] Verify: expired tasks removed from state, snapshot regenerated; handler is deterministic and side-effect free.
+- [ ] Suggested commit: `phase3(step6B): add day-transition cleanup handler`
+- [ ] Must include: cleanup handler only.
+- [ ] Must exclude: lifecycle wiring.
 
 ### 6C - Wire day-transition trigger into State Store
 
