@@ -2,12 +2,14 @@ name: CI
 
 on:
   push:
+    branches: [development]
     paths:
       - "**.cs"
       - "**.csproj"
       - "**.sln"
       - "manifest.json"
   pull_request:
+    branches: [development]
     paths:
       - "**.cs"
       - "**.csproj"
