@@ -238,7 +238,7 @@ Step goal:
 
 Step goal:
 
-    * [ ] Create read-only projections for external consumption.
+    * [x] Create read-only projections for external consumption.
 
 ### 4A - Add TaskView read-only projection ###
 
@@ -577,7 +577,16 @@ Step goal:
 
 ## Deferred Items ##
 
-** Deferred to Phase 4 **
+**Open Deferments**
+    - Maybe make TaskRecord a record class? needs more investigation on whether we want reference
+    semantics for TaskRecord in the state dictionary or if value semantics are sufficient. Record structs
+    are value types and would be copied on mutation, which could be less efficient for large records
+    but simpler to reason about immutability. Record classes are reference types and would allow in-place
+    updates but require careful handling to avoid unintended mutations. We should evaluate the typical size
+    of TaskRecord and mutation patterns to determine if the performance benefits of record class outweigh
+    the safety of record struct.
+
+**Deferred to Phase 4**
     -Determine if two TaskObject Properties are ambiguous and should be refactored:
         - TaskSourceType
         - SourceIdentifier
