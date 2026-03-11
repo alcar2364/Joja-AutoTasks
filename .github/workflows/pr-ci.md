@@ -10,7 +10,7 @@ on:
       - "manifest.json"
     types: [opened, synchronize, reopened]
   push:
-    branches: [main]
+    branches: [development]
     paths:
       - "**.cs"
       - "**.csproj"
@@ -81,7 +81,7 @@ merge on build failure.
 
 ## Notes
 
-- This workflow is a required status check; configure as branch protection rule for `main`
+- This workflow is a required status check; configure as branch protection rule for `development`
 - `EnableModDeploy=false` ensures no game installation is required in CI
 - `EnableModZip=false` speeds up build (packaging not needed for validation)
 - **Testing is manual**: Admin must run the full test suite locally before approving any code PR

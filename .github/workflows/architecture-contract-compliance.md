@@ -3,7 +3,7 @@ name: architecture-contract-compliance
 description: "Validates architectural boundary contracts and determinism safety on PRs; detects command/state/UI boundary violations and non-deterministic patterns."
 on:
   pull_request:
-    branches: [main]
+    branches: [development]
     types: [opened, synchronize, reopened]
   issue_comment:
     types: [created]

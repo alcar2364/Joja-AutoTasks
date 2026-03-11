@@ -4,9 +4,9 @@ description: "CodeQL static analysis and NuGet vulnerability scanning for securi
 on:
   schedule: weekly
   push:
-    branches: [main]
+    branches: [development]
   pull_request:
-    branches: [main]
+    branches: [development]
   workflow_dispatch:
 permissions:
   contents: read
