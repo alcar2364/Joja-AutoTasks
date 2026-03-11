@@ -17,6 +17,7 @@ internal sealed class StateStore
     private readonly PinTaskCommandHandler _pinTaskHandler;
     private readonly UnpinTaskCommandHandler _unpinTaskHandler;
     private readonly ManualTaskCounter _manualTaskCounter;
+
     public event Action<TaskSnapshot>? SnapshotChanged;
 
 
