@@ -7,7 +7,7 @@ namespace JojaAutoTasks.StateStore;
 internal sealed class SnapshotProjector
 {
 
-    internal TaskSnapshot Project(StateContainer stateContainer)
+    internal static TaskSnapshot Project(StateContainer stateContainer)
     {
         long version = stateContainer.Version;
 
