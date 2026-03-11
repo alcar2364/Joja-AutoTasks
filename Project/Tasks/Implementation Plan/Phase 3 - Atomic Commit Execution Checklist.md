@@ -398,16 +398,12 @@ This implementation was modified. Please see [Notes] at end of checklist.
 
 ### 7D - Add counter increment logic with deterministic sequencing
 
-<<<<<<< HEAD
-
-=======
 - [x] Action: ensure counter increments deterministically (no race conditions, stable ordering).
 - [x] Scope: `StateStore/StateStore.cs`.
 - [x] Verify: sequential calls produce sequential IDs; no threading issues introduced
 - [x] Suggested commit: `phase3(step7D): add deterministic counter increment logic`
 - [x] Must include: increment logic only.
 - [x] Must exclude: persistence (Phase 7).
->>>>>>> 86e0029 (feat(StateStore): wire manual ID issuance into AddOrUpdateTaskCommand flow)
 
 ## Step 7 Completion
 
