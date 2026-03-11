@@ -2,6 +2,7 @@ using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
+using JojaAutoTasks.State;
 
 namespace JojaAutoTasks.Startup;
 
@@ -17,16 +18,20 @@ internal sealed class ModRuntime
 
     internal LifecycleCoordinator LifecycleCoordinator { get; }
 
+    internal StateStore StateStore { get; }
+
     // -- Constructor -- //
     internal ModRuntime(
         ModLogger logger,
         ModConfig config,
         IEventDispatcher eventDispatcher,
-        LifecycleCoordinator lifecycleCoordinator)
+        LifecycleCoordinator lifecycleCoordinator,
+        StateStore stateStore)
     {
         Logger = logger;
         Config = config;
         EventDispatcher = eventDispatcher;
         LifecycleCoordinator = lifecycleCoordinator;
+        StateStore = stateStore;
     }
 }

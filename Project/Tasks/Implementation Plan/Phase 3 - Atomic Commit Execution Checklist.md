@@ -407,7 +407,7 @@ This implementation was modified. Please see [Notes] at end of checklist.
 
 ## Step 7 Completion
 
-    * [x] All substeps in Step 7 complete (7A, 7B, 7C, 7D).
+- [x] All substeps in Step 7 complete (7A, 7B, 7C, 7D).
 
 ## 8) Integration with Lifecycle
 
@@ -600,7 +600,7 @@ to Phase 4). Reviewer should confirm whether `"Player"` is the correct value
 or whether it should be changed when DEF-007 is resolved.
 
 **Namespace and folder rename (Step 8A):** The `StateStore/` folder and
-namespace were renamed to `State/` (`JojaAutoTasks.State`) to resolve DEF-030.
+namespace were renamed to `State/` (`JojaAutoTasks.State`).
 Reviewer should verify that the architecture map and design guide are updated
 to reflect the new namespace. Any documentation referring to
 `JojaAutoTasks.StateStore` should be updated.
