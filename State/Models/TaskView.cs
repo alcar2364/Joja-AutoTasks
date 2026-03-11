@@ -2,9 +2,9 @@ using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Domain.Tasks;
 using TaskStatus = JojaAutoTasks.Domain.Tasks.TaskStatus;
 
-namespace JojaAutoTasks.StateStore.Models;
+namespace JojaAutoTasks.State.Models;
 
-internal sealed class TaskRecord
+internal sealed record TaskView
 {
     // -- Identity (immutable) -- //
     internal TaskId Id { get; }
@@ -12,22 +12,22 @@ internal sealed class TaskRecord
     // -- Engine-Owned Fields -- //
     internal TaskCategory Category { get; }
     internal TaskSourceType SourceType { get; }
-    internal string Title { get; set; }
-    internal string? Description { get; set; }
+    internal string Title { get; }
+    internal string? Description { get; }
     internal string SourceIdentifier { get; }
-    internal int ProgressCurrent { get; set; }
+    internal int ProgressCurrent { get; }
     internal int ProgressMax { get; }
     internal DayKey CreationDay { get; }
 
     // -- User-Owned Fields -- //
-    internal bool IsPinned { get; set; }
+    internal bool IsPinned { get; }
 
     // -- Command-Specific Fields -- //
-    internal TaskStatus Status { get; set; }
-    internal DayKey? CompletionDay { get; set; }
+    internal TaskStatus Status { get; }
+    internal DayKey? CompletionDay { get; }
 
 
-    internal TaskRecord(
+    internal TaskView(
         TaskId id,
         TaskCategory category,
         TaskSourceType sourceType,

@@ -1,9 +1,9 @@
 using System.Linq;
 using JojaAutoTasks.Domain.Identifiers;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Models;
 
 
-namespace JojaAutoTasks.StateStore.DayBoundary;
+namespace JojaAutoTasks.State.DayBoundary;
 
 
 internal sealed class ExpirationDetector
@@ -13,11 +13,11 @@ internal sealed class ExpirationDetector
         DayKey currentDay)
     {
         int currentSequence = currentDay.ToSequenceNumber();
-        var expiredIds =  stateContainer.GetAll()
+        var expiredIds = stateContainer.GetAll()
             .Where(record => record.CreationDay.ToSequenceNumber() < currentSequence)
             .Select(record => record.Id)
             .ToList();
-        
+
         return expiredIds;
     }
 }

@@ -1,4 +1,4 @@
-namespace JojaAutoTasks.StateStore.Models;
+namespace JojaAutoTasks.State.Models;
 
 internal sealed class TaskSnapshot
 {

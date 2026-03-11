@@ -1,7 +1,7 @@
 using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Domain.Tasks;
 
-namespace JojaAutoTasks.StateStore.Commands;
+namespace JojaAutoTasks.State.Commands;
 
 /// <summary>
 /// Represents a command to add a new task or update an existing task in the state store. 
@@ -63,7 +63,7 @@ internal sealed class AddOrUpdateTaskCommand : IStateCommand
         {
             throw new ArgumentException("Description cannot be whitespace.", nameof(description));
         }
-        
+
         if (progressCurrent < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(progressCurrent), "Progress current cannot be negative.");

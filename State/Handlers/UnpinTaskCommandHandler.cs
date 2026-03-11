@@ -1,7 +1,7 @@
 
-using JojaAutoTasks.StateStore.Commands;
+using JojaAutoTasks.State.Commands;
 
-namespace JojaAutoTasks.StateStore.Handlers;
+namespace JojaAutoTasks.State.Handlers;
 
 internal sealed class UnpinTaskCommandHandler : ICommandHandler<UnpinTaskCommand>
 {

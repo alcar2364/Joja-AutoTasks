@@ -1,7 +1,7 @@
 using System.Linq;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore;
+namespace JojaAutoTasks.State;
 
 
 internal sealed class SnapshotProjector

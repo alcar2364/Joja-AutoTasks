@@ -1,9 +1,9 @@
-using JojaAutoTasks.StateStore.Commands;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Commands;
+using JojaAutoTasks.State.Models;
 using JojaAutoTasks.Domain.Tasks;
 using TaskStatus = JojaAutoTasks.Domain.Tasks.TaskStatus;
 
-namespace JojaAutoTasks.StateStore.Handlers;
+namespace JojaAutoTasks.State.Handlers;
 
 internal sealed class AddOrUpdateTaskCommandHandler : ICommandHandler<AddOrUpdateTaskCommand>
 {

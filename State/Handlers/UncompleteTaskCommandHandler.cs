@@ -1,8 +1,8 @@
 using TaskStatus = JojaAutoTasks.Domain.Tasks.TaskStatus;
-using JojaAutoTasks.StateStore.Commands;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Commands;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore.Handlers;
+namespace JojaAutoTasks.State.Handlers;
 
 internal sealed class UncompleteTaskCommandHandler : ICommandHandler<UncompleteTaskCommand>
 {

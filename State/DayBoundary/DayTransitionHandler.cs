@@ -1,6 +1,6 @@
 using JojaAutoTasks.Domain.Identifiers;
 
-namespace JojaAutoTasks.StateStore.DayBoundary;
+namespace JojaAutoTasks.State.DayBoundary;
 
 internal sealed class DayTransitionHandler
 {

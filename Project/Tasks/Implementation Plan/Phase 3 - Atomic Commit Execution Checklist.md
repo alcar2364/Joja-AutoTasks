@@ -599,6 +599,12 @@ that). However, `SourceIdentifier` semantics are unresolved (DEF-007, deferred
 to Phase 4). Reviewer should confirm whether `"Player"` is the correct value
 or whether it should be changed when DEF-007 is resolved.
 
+**Namespace and folder rename (Step 8A):** The `StateStore/` folder and
+namespace were renamed to `State/` (`JojaAutoTasks.State`) to resolve DEF-030.
+Reviewer should verify that the architecture map and design guide are updated
+to reflect the new namespace. Any documentation referring to
+`JojaAutoTasks.StateStore` should be updated.
+
 **Out-of-scope addition (Step 6A):** Added a method to `DayKey` to get the day
 from the key. This was out of scope of the checklist, but made implementation
 easier when constructing `ExpirationDetector`. Therefore, added method to
@@ -657,6 +663,15 @@ the counter is stateful mod-owned state, not a value type. Candidate locations:
 Resolve when Phase 5 (generators) establishes the generator service pattern,
 or when Phase 8 (UI) creates the first concrete consumer.
 
+**Resolved in Phase 3:** `DEF-030` — The `StateStore` folder and namespace
+were renamed to `State` (`JojaAutoTasks.StateStore` → `JojaAutoTasks.State`)
+during Step 8A. The class/namespace collision (`JojaAutoTasks.StateStore`
+namespace vs `JojaAutoTasks.StateStore.StateStore` class) caused C# name
+lookup to resolve `StateStore` as the namespace rather than the type, even
+with an explicit `using` alias — because namespace members in parent namespaces
+take precedence over `using` aliases in the C# lookup chain. The rename was
+the only clean fix.
+
 Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
 
 - **Deferred to Phase 4**
@@ -695,6 +710,9 @@ Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
   - `DEF-026`: Multiplayer synchronization.
   - `DEF-027`: TaskRecord value-vs-reference semantics decision.
   - `DEF-028`: DayKey internal representation decision.
+  - `DEF-029`: ManualTaskCounter permanent home decision.
+  - `DEF-030`: ~~Resolved in Phase 3~~ — namespace renamed to
+    `JojaAutoTasks.State`.
 
 ## Key Planning Decisions
 

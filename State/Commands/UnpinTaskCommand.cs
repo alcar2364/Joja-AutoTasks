@@ -1,12 +1,12 @@
 using JojaAutoTasks.Domain.Identifiers;
 
-namespace JojaAutoTasks.StateStore.Commands;
+namespace JojaAutoTasks.State.Commands;
 
-internal sealed class PinTaskCommand : IStateCommand
+internal sealed class UnpinTaskCommand : IStateCommand
 {
     public TaskId TaskId { get; }
 
-    internal PinTaskCommand(TaskId taskId)
+    internal UnpinTaskCommand(TaskId taskId)
     {
         // -- Guards -- //
         if (taskId == default)

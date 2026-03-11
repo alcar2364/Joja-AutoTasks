@@ -1,44 +1,24 @@
 using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Domain.Tasks;
-using JojaAutoTasks.StateStore.DayBoundary;
-using JojaAutoTasks.StateStore.Handlers;
-using JojaAutoTasks.StateStore.Commands;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.DayBoundary;
+using JojaAutoTasks.State.Handlers;
+using JojaAutoTasks.State.Commands;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore;
+namespace JojaAutoTasks.State;
 
 internal sealed class StateStore
 {
-    private readonly StateContainer _stateContainer;
-    private readonly AddOrUpdateTaskCommandHandler _addOrUpdateTaskHandler;
-    private readonly CompleteTaskCommandHandler _completeTaskHandler;
-    private readonly UncompleteTaskCommandHandler _uncompleteTaskHandler;
-    private readonly RemoveTaskCommandHandler _removeTaskHandler;
-    private readonly PinTaskCommandHandler _pinTaskHandler;
-    private readonly UnpinTaskCommandHandler _unpinTaskHandler;
-    private readonly ManualTaskCounter _manualTaskCounter;
+    private readonly StateContainer _stateContainer = new();
+    private readonly AddOrUpdateTaskCommandHandler _addOrUpdateTaskHandler = new();
+    private readonly CompleteTaskCommandHandler _completeTaskHandler = new();
+    private readonly UncompleteTaskCommandHandler _uncompleteTaskHandler = new();
+    private readonly RemoveTaskCommandHandler _removeTaskHandler = new();
+    private readonly PinTaskCommandHandler _pinTaskHandler = new();
+    private readonly UnpinTaskCommandHandler _unpinTaskHandler = new();
+    private readonly ManualTaskCounter _manualTaskCounter = new();
 
     public event Action<TaskSnapshot>? SnapshotChanged;
-
-
-    internal StateStore(AddOrUpdateTaskCommandHandler addOrUpdateTaskHandler,
-        CompleteTaskCommandHandler completeTaskHandler,
-        UncompleteTaskCommandHandler uncompleteTaskHandler,
-        RemoveTaskCommandHandler removeTaskHandler,
-        PinTaskCommandHandler pinTaskHandler,
-        UnpinTaskCommandHandler unpinTaskHandler,
-        ManualTaskCounter manualTaskCounter,
-        StateContainer stateContainer)
-    {
-        _addOrUpdateTaskHandler = addOrUpdateTaskHandler;
-        _completeTaskHandler = completeTaskHandler;
-        _uncompleteTaskHandler = uncompleteTaskHandler;
-        _removeTaskHandler = removeTaskHandler;
-        _pinTaskHandler = pinTaskHandler;
-        _unpinTaskHandler = unpinTaskHandler;
-        _manualTaskCounter = manualTaskCounter;
-        _stateContainer = stateContainer;
-    }
 
     private void Handle(IStateCommand command)
     {

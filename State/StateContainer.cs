@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using JojaAutoTasks.Domain.Identifiers;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore;
+namespace JojaAutoTasks.State;
 
 internal sealed class StateContainer
 {
