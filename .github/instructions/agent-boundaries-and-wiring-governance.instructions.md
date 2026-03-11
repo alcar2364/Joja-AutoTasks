@@ -48,6 +48,7 @@ Every instruction file below is wired to at least one agent.
 | review-and-verification-contract.instructions.md | Reviewer | Orchestrator, UnitTestAgent |
 | security-and-owasp.instructions.md | Reviewer | Troubleshooter, GameAgent, UIAgent |
 | self-explanatory-code-commenting.instructions.md | Refactorer | GameAgent, UIAgent, UnitTestAgent |
+| self-splitting-parallel-execution.instructions.md | Orchestrator | GameAgent, UIAgent, StarMLAgent, UnitTestAgent, Refactorer, Researcher, Planner, Reviewer, WorkspaceAgent, Troubleshooter, GodAgent |
 | sml-style-contract.instructions.md | StarMLAgent | UIAgent, Reviewer |
 | starml-cheatsheet.instructions.md | StarMLAgent | UIAgent, Researcher |
 | ui-component-patterns.instructions.md | UIAgent | StarMLAgent, Planner |

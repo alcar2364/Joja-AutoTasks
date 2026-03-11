@@ -1,3 +1,9 @@
+---
+name: self-splitting-parallel-execution
+description: "Universal protocol for self-splitting parallel execution across JAT subagents. Use when: implementing self-splitting in any subagent, delegating with CanSelfSplit, or auditing parallelization protocol compliance."
+applyTo: ".github/agents/*.agent.md"
+---
+
 # Self-Splitting Parallel Execution Protocol
 
 ## Scope
