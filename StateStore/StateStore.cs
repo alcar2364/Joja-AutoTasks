@@ -15,7 +15,7 @@ internal sealed class StateStore
     private readonly RemoveTaskCommandHandler _removeTaskHandler;
     private readonly PinTaskCommandHandler _pinTaskHandler;
     private readonly UnpinTaskCommandHandler _unpinTaskHandler;
-
+    private readonly ManualTaskCounter _manualTaskCounter;
     public event Action<TaskSnapshot>? SnapshotChanged;
 
 
@@ -25,6 +25,7 @@ internal sealed class StateStore
         RemoveTaskCommandHandler removeTaskHandler,
         PinTaskCommandHandler pinTaskHandler,
         UnpinTaskCommandHandler unpinTaskHandler,
+        ManualTaskCounter manualTaskCounter,
         StateContainer stateContainer)
     {
         _addOrUpdateTaskHandler = addOrUpdateTaskHandler;
@@ -33,6 +34,7 @@ internal sealed class StateStore
         _removeTaskHandler = removeTaskHandler;
         _pinTaskHandler = pinTaskHandler;
         _unpinTaskHandler = unpinTaskHandler;
+        _manualTaskCounter = manualTaskCounter;
         _stateContainer = stateContainer;
     }
 
@@ -80,5 +82,11 @@ internal sealed class StateStore
     internal void Dispatch(IStateCommand command)
     {
         Handle(command);
+    }
+
+    private TaskId IssueNextManualTaskId()
+    {
+        int nextId = _manualTaskCounter.IssueNextId();
+        return TaskIdFactory.CreateManual(nextId);
     }
 }

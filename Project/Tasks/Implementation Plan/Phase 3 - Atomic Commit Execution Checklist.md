@@ -330,6 +330,8 @@ Step goal:
 
 ### 6A - Add expired task detection
 
+This implementation was modified. Please see [Notes] at end of checklist.
+
 - [x] Action: add logic to identify day-keyed tasks (TaskId contains day component) that are expired relative to current day.
 - [x] Scope: `StateStore/DayBoundary/ExpirationDetector.cs` or embedded in `StateStore.cs`.
 - [x] Verify: logic correctly identifies daily tasks past their expiration day; detection is deterministic.
@@ -363,25 +365,27 @@ Step goal:
 
 Step goal:
 
-    * [ ] Implement manual task counter ownership (deferred from Phase 2).
+    * [x] Implement manual task counter ownership (deferred from Phase 2).
 
 ### 7A - Add internal manual task counter state
 
-    * [ ] Action: add private counter field for tracking next manual task ID.
-    * [ ] Scope: `StateStore/StateStore.cs` or `StateStore/Models/ManualTaskCounter.cs`.
-    * [ ] Verify: counter field compiles and initializes to deterministic start value (e.g., 1); uses most restrictive access level (private).
-    * [ ] Suggested commit: `phase3(step7A): add internal manual task counter state`
-    * [ ] Must include: counter field only.
-    * [ ] Must exclude: increment logic, persistence.
+- [x] Action: add private counter field for tracking next manual task ID.
+- [x] Scope: `StateStore/StateStore.cs` or `StateStore/Models/ManualTaskCounter.cs`.
+- [x] Verify: counter field compiles and initializes to deterministic start value (e.g., 1); uses most restrictive access level (private).
+- [x] Suggested commit: `phase3(step7A): add internal manual task counter state`
+- [x] Must include: counter field only.
+- [x] Must exclude: increment logic, persistence.
 
 ### 7B - Add IssueNextManualTaskId method
 
-    * [ ] Action: add method to generate next manual TaskId using counter.
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: method produces TaskId in canonical `ManualTask_{N}` format; method is deterministic.
-    * [ ] Suggested commit: `phase3(step7B): add IssueNextManualTaskId method`
-    * [ ] Must include: ID issuance method only.
-    * [ ] Must exclude: counter persistence.
+This implementation was modified. Please see [Notes] at end of checklist.
+
+- [x] Action: add method to generate next manual TaskId using counter.
+- [x] Scope: `StateStore/StateStore.cs`.
+- [x] Verify: method produces TaskId in canonical `ManualTask_{N}` format; method is deterministic.
+- [x] Suggested commit: `phase3(step7B): add IssueNextManualTaskId method`
+- [x] Must include: ID issuance method only.
+- [x] Must exclude: counter persistence.
 
 ### 7C - Wire manual ID issuance into AddOrUpdateTaskCommand flow
 
@@ -581,9 +585,23 @@ Step goal:
 
 ## Notes
 
-Added a method to DayKey to get the day from the key. This was out of scope of the
-checklist, but made implementation easier when constructing ExpirationDetector.
-Therefore, added method to DayKey
+### Reviewer Action Required
+
+**Out-of-scope addition (Step 6A):** Added a method to `DayKey` to get the day
+from the key. This was out of scope of the checklist, but made implementation
+easier when constructing `ExpirationDetector`. Therefore, added method to
+`DayKey`.
+
+**Out-of-scope addition (Step 7B):** Step 7B required extending
+`TaskIdFactory` with a `CreateManualTask(int n)` method to keep
+`ManualTask_{N}` format logic centralized alongside `CreateBuiltIn` and
+`CreateTaskBuilder`. This was a gap between Phase 2's factory design and
+Phase 3's deferred manual ID issuance — the two concerns were never reconciled
+in planning. Please verify if this gap exists in the design guide and architecture
+map, and check if this modification follows project contracts. If it does, the design
+guide and architecture map should be updated to reflect that `TaskIdFactory` owns
+all `TaskId` format logic, including manual tasks. If it does not, we need to
+have a discussion.
 
 ## Deferred Items
 
@@ -610,6 +628,23 @@ private readonly int _day;
 private readonly string _dayKey; // derived, for display/persistence
 ```
 
+**Open deferment not in index:** `DEF-029` evaluates the permanent home for
+`ManualTaskCounter`. Currently placed in `StateStore/Models/` as a Phase 3
+working location. For full symmetry with engine task ID generation, the counter
+must be accessible outside `StateStore` when Phase 8 UI triggers manual task
+creation. The counter feeds `TaskIdFactory.CreateManual(n)` the same way SMAPI
+game state feeds `TaskIdFactory.CreateBuiltIn(...)` — but unlike those inputs,
+the counter is stateful mod-owned state, not a value type. Candidate locations:
+
+- `Domain/Identifiers/` — consistent with other identifier infrastructure, but
+  currently only holds immutable value types and a static factory; adding a
+  stateful singleton would be a new pattern for that folder.
+- A future `Services/` folder — cleaner separation for stateful services, but
+  no such folder exists yet and introducing it for one class is premature.
+
+Resolve when Phase 5 (generators) establishes the generator service pattern,
+or when Phase 8 (UI) creates the first concrete consumer.
+
 Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
 
 - **Deferred to Phase 4**
@@ -623,6 +658,9 @@ Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
   - `DEF-012`: Implement built-in task generators.
   - `DEF-013`: Implement deadline field population.
   - `DEF-014`: Implement task-type ordering/comparison in runtime path.
+  - `DEF-029`: Resolve permanent home for `ManualTaskCounter` (currently
+    `StateStore/Models/`). Evaluate `Domain/Identifiers/` vs a future
+    `Services/` folder once generator service pattern is established.
 
 - **Deferred to Phase 6 (Rule Engine)**
   - `DEF-015`: Implement Task Builder rule evaluation.
