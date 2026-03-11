@@ -1,4 +1,5 @@
 using JojaAutoTasks.StateStore.Handlers;
+using JojaAutoTasks.StateStore.Commands;
 
 namespace JojaAutoTasks.StateStore;
 
@@ -21,6 +22,39 @@ internal sealed class StateStore
         UnpinTaskCommandHandler unpinTaskHandler,
         StateContainer stateContainer)
     {
-        
+        _addOrUpdateTaskHandler = addOrUpdateTaskHandler;
+        _completeTaskHandler = completeTaskHandler;
+        _uncompleteTaskHandler = uncompleteTaskHandler;
+        _removeTaskHandler = removeTaskHandler;
+        _pinTaskHandler = pinTaskHandler;
+        _unpinTaskHandler = unpinTaskHandler;
+        _stateContainer = stateContainer;
+    }
+
+    private void Handle(IStateCommand command)
+    {
+        switch (command)
+        {
+            case AddOrUpdateTaskCommand addOrUpdateTaskCommand:
+                _addOrUpdateTaskHandler.Handle(addOrUpdateTaskCommand, _stateContainer);
+                break;
+            case CompleteTaskCommand completeTaskCommand:
+                _completeTaskHandler.Handle(completeTaskCommand, _stateContainer);
+                break;
+            case UncompleteTaskCommand uncompleteTaskCommand:
+                _uncompleteTaskHandler.Handle(uncompleteTaskCommand, _stateContainer);
+                break;
+            case RemoveTaskCommand removeTaskCommand:
+                _removeTaskHandler.Handle(removeTaskCommand, _stateContainer);
+                break;
+            case PinTaskCommand pinTaskCommand:
+                _pinTaskHandler.Handle(pinTaskCommand, _stateContainer);
+                break;
+            case UnpinTaskCommand unpinTaskCommand:
+                _unpinTaskHandler.Handle(unpinTaskCommand, _stateContainer);
+                break;
+            default:
+                throw new InvalidOperationException($"No handler found for command type {command.GetType().Name}");
+        }
     }
 }

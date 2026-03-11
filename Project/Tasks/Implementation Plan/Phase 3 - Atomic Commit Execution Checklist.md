@@ -293,12 +293,12 @@ Step goal:
 
 ### 5B - Wire command routing to handlers
 
-    * [ ] Action: add internal command dispatch logic routing commands to appropriate handlers.
-    * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: commands route correctly to handlers, state updates applied; routing is deterministic.
-    * [ ] Suggested commit: `phase3(step5B): wire command routing to handlers`
-    * [ ] Must include: command dispatch logic only.
-    * [ ] Must exclude: snapshot publishing, external API methods.
+[x] Action: add internal command dispatch logic routing commands to appropriate handlers.
+[x] Scope: `StateStore/StateStore.cs`.
+[x] Verify: commands route correctly to handlers, state updates applied; routing is deterministic.
+[x] Suggested commit: `phase3(step5B): wire command routing to handlers`
+[x] Must include: command dispatch logic only.
+[x] Must exclude: snapshot publishing, external API methods.
 
 ### 5C - Wire snapshot generation and SnapshotChanged event
 
