@@ -286,7 +286,7 @@ Step goal:
 - [x] Action: add `StateStore` class with dependencies declared via constructor.
 - [x] Scope: `StateStore/StateStore.cs`.
 - [x] Verify: class compiles with constructor accepting ICommandHandler dependencies and private state container field; uses most restrictive
-    access level for internal members.
+      access level for internal members.
 - [x] Suggested commit: `phase3(step5A): add StateStore class shell with constructor injection`
 - [x] Must include: class shell, constructor, field declarations only.
 - [x] Must exclude: command processing pipeline, event wiring.
@@ -579,37 +579,72 @@ Step goal:
 
     * [ ] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
 
+## Notes
+
+Added a method to DayKey to get the day from the key. This was out of scope of the
+checklist, but made implementation easier when constructing ExpirationDetector.
+Therefore, added method to DayKey
+
 ## Deferred Items
 
-**Open Deferments** - Maybe make TaskRecord a record class? needs more investigation on whether we want reference
-semantics for TaskRecord in the state dictionary or if value semantics are sufficient. Record structs
-are value types and would be copied on mutation, which could be less efficient for large records
-but simpler to reason about immutability. Record classes are reference types and would allow in-place
-updates but require careful handling to avoid unintended mutations. We should evaluate the typical size
-of TaskRecord and mutation patterns to determine if the performance benefits of record class outweigh
-the safety of record struct.
+**Open Issue not yet added to index**
 
-**Deferred to Phase 4**
--Determine if two TaskObject Properties are ambiguous and should be refactored: - TaskSourceType - SourceIdentifier
--Both terms are used for different purposes but could be confusing. TaskSourceType indicates
-what type of source produced this task (BuiltIn, TaskBuilder, or Manual), while SourceIdentifier
-indicated "which specific source instance?" For example, a BuiltIn task might have
-TaskSourceType=BuiltIn and SourceIdentifier=DailyLuckTask, while a TaskBuilder task might have
-TaskSourceType=TaskBuilder and SourceIdentifier=QuestGiver_123. If we keep both, we should
-ensure their purposes are clearly documented and consider renaming for clarity (e.g.,
-TaskOriginType and TaskSourceId).
+Change "DayKey" to "DateKey" to reflect that it represents a specific date rather than just a day number. This is more intuitive and aligns with common terminology for date representations. The key format can remain the same (e.g., `Year1-Summer15`), but the name change clarifies its purpose as a date identifier.
 
-**Deferred to Phase 4 (ViewModels):** - Actual subscription to `SnapshotChanged` event - INPC property updates from snapshots - UI-local state (selection, filters, scroll)
+**Open deferment in index:** `DEF-027` evaluates whether `TaskRecord` should be a
+record class or remain value-semantics focused.
+Needs investigation on reference semantics in state dictionary versus value semantics.
+Record structs copy on mutation (safer, potentially more copying). Record classes allow
+in-place updates (potentially fewer copies, more mutation risk). Evaluate typical
+`TaskRecord` size and mutation patterns before deciding.
 
-**Deferred to Phase 5+ (Generators/Engine):** - Task generation logic producing commands - Built-in task generators - Deadline field population - Task-type ordering/comparison
+**Open deferment in index:** `DEF-028` evaluates refactoring `DayKey` to store
+year/season/day components in addition to canonical string for easier
+comparisons/calculations.
+Potential shape:
 
-**Deferred to Phase 6 (Rule Engine):** - Task Builder rule evaluation - Rule-driven command generation
+```csharp
+private readonly int _year;
+private readonly Season _season; // an enum
+private readonly int _day;
+private readonly string _dayKey; // derived, for display/persistence
+```
 
-**Deferred to Phase 7 (Persistence):** - Save/load of State Store state - Manual task counter persistence across sessions - Version migration logic - Baseline value storage
+Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
 
-**Deferred to Phase 8+ (Menu/HUD):** - UI interactions dispatching commands - Visual feedback on state changes
+- **Deferred to Phase 4**
+  - `DEF-007`: Resolve `TaskSourceType` versus `SourceIdentifier` ambiguity and clarify or rename if needed.
+  - `DEF-008`: Add actual subscription to `SnapshotChanged` event.
+  - `DEF-009`: Add INPC property updates from snapshots.
+  - `DEF-010`: Add UI-local state ownership (selection, filters, scroll).
 
-**Deferred to V2:** - Batch command transactions - Undo history - Dismissed task tracking - Multiplayer synchronization
+- **Deferred to Phase 5+ (Generators/Engine)**
+  - `DEF-011`: Implement task generation logic producing commands.
+  - `DEF-012`: Implement built-in task generators.
+  - `DEF-013`: Implement deadline field population.
+  - `DEF-014`: Implement task-type ordering/comparison in runtime path.
+
+- **Deferred to Phase 6 (Rule Engine)**
+  - `DEF-015`: Implement Task Builder rule evaluation.
+  - `DEF-016`: Implement rule-driven command generation.
+
+- **Deferred to Phase 7 (Persistence)**
+  - `DEF-017`: Implement save/load of State Store state.
+  - `DEF-018`: Persist manual task counter across sessions.
+  - `DEF-019`: Implement version migration logic.
+  - `DEF-020`: Implement baseline value storage.
+
+- **Deferred to Phase 8+ (Menu/HUD)**
+  - `DEF-021`: Add UI interactions dispatching commands.
+  - `DEF-022`: Add visual feedback on state changes.
+
+- **Deferred to V2 / Open scheduling**
+  - `DEF-023`: Batch command transactions.
+  - `DEF-024`: Undo history.
+  - `DEF-025`: Dismissed task tracking.
+  - `DEF-026`: Multiplayer synchronization.
+  - `DEF-027`: TaskRecord value-vs-reference semantics decision.
+  - `DEF-028`: DayKey internal representation decision.
 
 ## Key Planning Decisions
 
