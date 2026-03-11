@@ -413,16 +413,16 @@ This implementation was modified. Please see [Notes] at end of checklist.
 
 Step goal:
 
-    * [ ] Connect State Store to lifecycle coordinator.
+    * [x] Connect State Store to lifecycle coordinator.
 
 ### 8A - Add State Store to bootstrap composition container
 
-    * [ ] Action: wire State Store into dependency injection container.
-    * [ ] Scope: `Startup/BootstrapContainer.cs`.
-    * [ ] Verify: State Store registered as singleton and resolved correctly; registration compiles.
-    * [ ] Suggested commit: `phase3(step8A): wire State Store into bootstrap composition`
-    * [ ] Must include: DI registration only.
-    * [ ] Must exclude: lifecycle wiring.
+- [x] Action: wire State Store into dependency injection container.
+- [x] Scope: `Startup/BootstrapContainer.cs`.
+- [x] Verify: State Store registered as singleton and resolved correctly; registration compiles.
+- [x] Suggested commit: `phase3(step8A): wire State Store into bootstrap composition`
+- [x] Must include: DI registration only.
+- [x] Must exclude: lifecycle wiring.
 
 ### 8B - Wire State Store initialization into lifecycle coordinator
 
