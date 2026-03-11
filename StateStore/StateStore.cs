@@ -1,4 +1,5 @@
 using JojaAutoTasks.Domain.Identifiers;
+using JojaAutoTasks.Domain.Tasks;
 using JojaAutoTasks.StateStore.DayBoundary;
 using JojaAutoTasks.StateStore.Handlers;
 using JojaAutoTasks.StateStore.Commands;
@@ -82,6 +83,28 @@ internal sealed class StateStore
     internal void Dispatch(IStateCommand command)
     {
         Handle(command);
+    }
+
+    internal void DispatchCreateManualTaskCommand(
+        TaskCategory category,
+        string title,
+        string? description,
+        DayKey creationDay
+        )
+    {
+        TaskId taskId = IssueNextManualTaskId();
+        var command = new AddOrUpdateTaskCommand(
+            taskId: taskId,
+            category: category,
+            sourceType: TaskSourceType.Manual,
+            title: title,
+            description: description,
+            progressCurrent: 0,
+            progressMax: 1,
+            creationDay: creationDay,
+            sourceIdentifier: "Player"
+        );
+        Dispatch(command);
     }
 
     private TaskId IssueNextManualTaskId()

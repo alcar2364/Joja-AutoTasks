@@ -389,18 +389,18 @@ This implementation was modified. Please see [Notes] at end of checklist.
 
 ### 7C - Wire manual ID issuance into AddOrUpdateTaskCommand flow
 
-    * [ ] Action: add logic to call IssueNextManualTaskId when command creates manual task without pre-assigned ID.
-    * [ ] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs` or `StateStore.cs`.
-    * [ ] Verify: manual tasks receive unique sequential IDs; integration is deterministic.
-    * [ ] Suggested commit: `phase3(step7C): wire manual ID issuance into AddOrUpdateTaskCommand`
-    * [ ] Must include: ID issuance integration only.
-    * [ ] Must exclude: counter persistence.
+- [x] Action: add logic to call IssueNextManualTaskId when command creates manual task without pre-assigned ID.
+- [x] Scope: `StateStore/Handlers/AddOrUpdateTaskCommandHandler.cs` or `StateStore.cs`.
+- [x] Verify: manual tasks receive unique sequential IDs; integration is deterministic.
+- [x] Suggested commit: `phase3(step7C): wire manual ID issuance into AddOrUpdateTaskCommand`
+- [x] Must include: ID issuance integration only.
+- [x] Must exclude: counter persistence.
 
 ### 7D - Add counter increment logic with deterministic sequencing
 
     * [ ] Action: ensure counter increments deterministically (no race conditions, stable ordering).
     * [ ] Scope: `StateStore/StateStore.cs`.
-    * [ ] Verify: sequential calls produce sequential IDs; no threading issues introduced.
+    * [ ] Verify: sequential calls produce sequential IDs; no threading issues introduced
     * [ ] Suggested commit: `phase3(step7D): add deterministic counter increment logic`
     * [ ] Must include: increment logic only.
     * [ ] Must exclude: persistence (Phase 7).
