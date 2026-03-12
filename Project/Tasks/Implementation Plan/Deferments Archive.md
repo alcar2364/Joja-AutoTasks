@@ -1,7 +1,7 @@
 # Deferments Archive #
 
 **Status**: Historical record of resolved deferments  
-**Last Updated**: 2026-03-09
+**Last Updated**: 2026-03-11
 
 ## Operational Guidelines ##
 
@@ -34,8 +34,10 @@ This file contains all deferments that have been resolved and closed.
 
 | Deferment ID | Deferment | Deferred From | Resolved In Phase | Archived Date | Resolution Notes |
 |--------------|-----------|---------------|-------------------|---------------|------------------|
-| *(no archived deferments yet)* | | | | | |
+| DEF-030 | Resolve StateStore namespace/type collision by renaming namespace root and folder structure. | Phase 3 | Phase 3 | 2026-03-11 | Renamed namespace/folder usage to `JojaAutoTasks.State` and `State/`, removing `StateStore` class/namespace ambiguity. |
+| DEF-003 | Implement completion-marking runtime behavior once command/state transition path is in place. | Phase 2 | Phase 3 | 2026-03-11 | Completion/uncompletion command flow and deterministic handler behavior were implemented and verified in Phase 3. |
+| DEF-002 | Implement manual task ID issuance and counter ownership in State Store command flow. | Phase 2 | Phase 3 | 2026-03-11 | Manual task counter ownership and deterministic `ManualTask_{N}` issuance were implemented in the State Store flow. |
 
 ---
 
-**Total Archived Deferments**: 0
+**Total Archived Deferments**: 3

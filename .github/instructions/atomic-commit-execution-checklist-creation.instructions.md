@@ -299,6 +299,9 @@ Step goal:
 - State what artifact to produce or update (checklist, audit notes)
 - Specify acceptance criteria (all tests pass, no scope drift)
 - Allow flexibility in how the check is performed (automated vs. manual audit)
+- If scope/architecture issues are found during completion review, require a
+   post-phase implementation review report and a user-owned post-phase
+   implementation atomic execution checklist instead of inline implementation fixes
 
 **Example:**
 ```
@@ -391,6 +394,10 @@ Deferments are tracked centrally to ensure work items deferred during one phase 
   - Resolved In Phase: the phase number/name where deferment was completed
   - Archived Date: completion date (YYYY-MM-DD format)
   - Resolution Notes: brief summary of how/why deferment was resolved
+- For scope/architecture findings discovered in completion review:
+   - document findings and remediation guidance in a post-phase implementation review report
+   - create/queue a user-owned post-phase implementation atomic execution checklist
+   - do not implement those fixes inside the completion gate checklist step
 
 ### Example Deferment Reconciliation Substep ###
 
@@ -517,7 +524,7 @@ The Reviewer should verify:
 
 The WorkspaceAgent should:
 
-- [ ] **CREATE THE FILE DIRECTLY** using create_file tool (do NOT hand content back to Orchestrator)
+- [ ] **CREATE THE FILE DIRECTLY** using createFile tool (do NOT hand content back to Orchestrator)
 - [ ] Use correct file path (e.g., `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`)
 - [ ] Produce complete Markdown file with all sections
 - [ ] Use correct naming (`Phase N - Atomic Commit Execution Checklist.md`)

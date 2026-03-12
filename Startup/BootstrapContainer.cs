@@ -3,6 +3,7 @@ using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Lifecycle;
 using JojaAutoTasks.Events;
+using JojaAutoTasks.State;
 
 namespace JojaAutoTasks.Startup;
 
@@ -16,9 +17,10 @@ internal static class BootstrapContainer
         logger.Info(LogEvents.StartupEntry, "Joja AutoLogger initialized.");
 
         ModConfig config = new ConfigLoader(helper).Load();
+        StateStore stateStore = new();
         EventDispatcher eventDispatcher = new();
-        LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher);
-
+        LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher, stateStore);
+        
         logger.Info(
             LogEvents.StartupInitialized,
             "Joja AutoTasks initialized. Your productivity is our priority!");
@@ -27,7 +29,8 @@ internal static class BootstrapContainer
             logger,
             config,
             eventDispatcher,
-            lifecycleCoordinator);
+            lifecycleCoordinator,
+            stateStore);
 
         return runtime;
     }

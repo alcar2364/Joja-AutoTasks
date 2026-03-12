@@ -1,6 +1,6 @@
 using JojaAutoTasks.Domain.Identifiers;
 
-namespace JojaAutoTasks.StateStore.Commands;
+namespace JojaAutoTasks.State.Commands;
 
 /// <summary>
 /// Represents a command to mark a task as completed in the state store.

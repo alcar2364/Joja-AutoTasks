@@ -7,6 +7,7 @@ using JojaAutoTasks.Startup;
 using Moq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using Store = JojaAutoTasks.State.StateStore;
 
 namespace JojaAutoTasks.Tests.Hooks;
 
@@ -66,8 +67,9 @@ public class UpdateTickedGuardTests
         ModLogger logger = new(monitor.Object);
         ModConfig config = new() { EnableDebugMode = false };
         dispatcher = new RecordingEventDispatcher();
-        LifecycleCoordinator coordinator = new(logger, dispatcher);
-        ModRuntime runtime = new(logger, config, dispatcher, coordinator);
+        Store stateStore = new();
+        LifecycleCoordinator coordinator = new(logger, dispatcher, stateStore);
+        ModRuntime runtime = new(logger, config, dispatcher, coordinator, stateStore);
 
         ModEntry entry = new();
         SetRuntime(entry, runtime);

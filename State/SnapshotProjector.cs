@@ -1,13 +1,13 @@
 using System.Linq;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore;
+namespace JojaAutoTasks.State;
 
 
 internal sealed class SnapshotProjector
 {
 
-    internal TaskSnapshot Project(StateContainer stateContainer)
+    internal static TaskSnapshot Project(StateContainer stateContainer)
     {
         long version = stateContainer.Version;
 
@@ -28,7 +28,8 @@ internal sealed class SnapshotProjector
                 completionDay: record.CompletionDay,
                 sourceIdentifier: record.SourceIdentifier,
                 isPinned: record.IsPinned))
-            .ToList();
+            .ToList()
+            .AsReadOnly();
 
         return new TaskSnapshot(taskViews, version);
     }

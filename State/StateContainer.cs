@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using JojaAutoTasks.Domain.Identifiers;
-using JojaAutoTasks.StateStore.Models;
+using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.StateStore;
+namespace JojaAutoTasks.State;
 
 internal sealed class StateContainer
 {
@@ -25,11 +25,19 @@ internal sealed class StateContainer
 
     internal void Remove(TaskId id)
     {
-        _tasksMap.Remove(id);
-        IncrementVersion();
+        if (_tasksMap.Remove(id))
+        {
+            IncrementVersion();
+        }
     }
 
     internal IReadOnlyCollection<TaskRecord> GetAll() => _tasksMap.Values;
+
+    internal void Clear()
+    {
+        _tasksMap.Clear();
+        _version = default;
+    }
 
     // -- Private Helpers -- //
     private void IncrementVersion() => _version++;

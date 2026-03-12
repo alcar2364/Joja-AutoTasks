@@ -6,7 +6,7 @@ argument-hint:  Describe your goal + scope (feature/bug/refactor), target subsys
 target: vscode
 tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/readFile, agent, todo]
 
-agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GodAgent, WorkspaceAgent]
+agents: [Researcher, Planner, UIAgent, GameAgent, StarMLAgent, UnitTestAgent, Refactorer, Reviewer, Troubleshooter, GitAgent, GodAgent, WorkspaceAgent]
 
 handoffs:
   - label: Research first
@@ -48,6 +48,10 @@ handoffs:
   - label: Troubleshoot environment or tooling
     agent: Troubleshooter
     prompt: Investigate build issues, runtime errors, tooling problems, environment setup, or debugging tasks. Provide root cause analysis and resolution steps.
+    send: true
+  - label: Git repository operations and commit composition
+    agent: GitAgent
+    prompt: Handle git repository maintenance, commit composition, commit-message drafting, branch/history workflows, and git Q&A with safety-first command sequencing.
     send: true
   - label: Manage agent customization files
     agent: GodAgent
@@ -106,6 +110,7 @@ Routing rules:
 | validation or code correctness check | Reviewer |
 | large-scale refactoring (rename, extract, move, pattern migration) | Refactorer |
 | build failures, runtime bugs, tooling issues | Troubleshooter |
+| git operations, commit composition, branch/history workflows, git questions | GitAgent |
 | durable repository fact capture or lookup | Use native Copilot memory tool directly |
 | agent customization files (.agent.md, .instructions.md, SKILL.md, hooks, agent debugging) | GodAgent |
 | design docs, implementation plans, task lists, user-facing documentation | WorkspaceAgent |

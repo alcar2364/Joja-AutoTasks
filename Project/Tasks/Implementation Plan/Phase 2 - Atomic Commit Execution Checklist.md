@@ -1,11 +1,11 @@
-﻿# Phase 2 - Atomic Commit Execution Checklist #
+﻿# Phase 2 - Atomic Commit Execution Checklist
 
 Purpose: execute Phase 2 (Core Domain Model) in strict, linear, atomic commits with explicit
 file/symbol scope.
 
 Note: If a sub-step expands beyond the stated file scope, stop and open a follow-up commit.
 
-## Guardrails (Must Stay True) ##
+## Guardrails (Must Stay True)
 
     * [x] Phase 2 only.
     * [x] Preserve all Phase 1 invariants (`OnSaving` signal-only, throttled `OnUpdateTicked`, bounded logging).
@@ -27,13 +27,13 @@ Note: If a sub-step expands beyond the stated file scope, stop and open a follow
     * [x] UpdateTicked guard seam fix remains test-only and passing.
     * [x] All new C# files/types satisfy `CSHARP-STYLE-CONTRACT.instructions.md`.
 
-## 1) Establish Core Identifier Value Types ##
+## 1) Establish Core Identifier Value Types
 
 Step goal:
 
     * [x] Add strongly-typed deterministic identity primitives for domain modeling.
 
-### 1A - Add `TaskId` value type ###
+### 1A - Add `TaskId` value type
 
     * [x] Action: add immutable `TaskId` value type with explicit canonical string normalization/validation entry points.
     * [x] Scope: `Domain/Identifiers/TaskId.cs` (`TaskId`).
@@ -42,7 +42,7 @@ Step goal:
     * [x] Must include: `TaskId` only.
     * [x] Must exclude: factories/parsers/day-key logic.
 
-### 1B - Add `DayKey` value type ###
+### 1B - Add `DayKey` value type
 
     * [x] Action: add immutable `DayKey` value type for canonical day identity.
     * [x] Scope: `Domain/Identifiers/DayKey.cs` (`DayKey`).
@@ -51,7 +51,7 @@ Step goal:
     * [x] Must include: `DayKey` type only.
     * [x] Must exclude: factory helpers and task sorting logic.
 
-### 1C - Add `RuleId` and `SubjectId` value types ###
+### 1C - Add `RuleId` and `SubjectId` value types
 
     * [x] Action: add immutable `RuleId` and `SubjectId` wrappers for stable identity composition.
     * [x] Scope: `Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs` (`RuleId`, `SubjectId`).
@@ -60,13 +60,13 @@ Step goal:
     * [x] Must include: value wrappers only.
     * [x] Must exclude: task object/enums/factory behavior.
 
-## 2) Add Core Task Vocabulary Enums ##
+## 2) Add Core Task Vocabulary Enums
 
 Step goal:
 
     * [x] Define V1 domain vocabulary as explicit enums with bounded scope.
 
-### 2A - Add `TaskStatus` ###
+### 2A - Add `TaskStatus`
 
     * [x] Action: add V1-minimal status enum with `Incomplete` and `Completed` only.
     * [x] Scope: `Domain/Tasks/TaskStatus.cs` (`TaskStatus`).
@@ -75,7 +75,7 @@ Step goal:
     * [x] Must include: status enum only.
     * [x] Must exclude: status transition logic.
 
-### 2B - Add `TaskCategory` ###
+### 2B - Add `TaskCategory`
 
     * [x] Action: add fixed V1 categories as internal enum.
     * [x] Scope: `Domain/Tasks/TaskCategory.cs` (`TaskCategory`).
@@ -84,7 +84,7 @@ Step goal:
     * [x] Must include: category enum only.
     * [x] Must exclude: UI grouping/render logic.
 
-### 2C - Add `TaskSourceType` ###
+### 2C - Add `TaskSourceType`
 
     * [x] Action: add source enum used by core task identity and source partitioning.
     * [x] Scope: `Domain/Tasks/TaskSourceType.cs` (`TaskSourceType`).
@@ -93,13 +93,13 @@ Step goal:
     * [x] Must include: enum definition only.
     * [x] Must exclude: task-type ordering map/comparer implementations.
 
-## 3) Implement Immutable `TaskObject` Domain Model ##
+## 3) Implement Immutable `TaskObject` Domain Model
 
 Step goal:
 
     * [x] Introduce the canonical task data container from Section 4 without engine/store logic.
 
-### 3A - Add `TaskObject` shell with conceptual fields ###
+### 3A - Add `TaskObject` shell with conceptual fields
 
     * [x] Action: create immutable `TaskObject` type with explicit fields for `TaskId`, `TaskCategory`, `TaskSourceType`, title/description, `TaskStatus`, progress/target, creation day, completion day, and source identifier.
     * [x] Scope: `Domain/Tasks/TaskObject.cs` (`TaskObject`).
@@ -108,7 +108,7 @@ Step goal:
     * [x] Must include: domain fields and constructor signature only.
     * [x] Must exclude: evaluator/store/persistence wiring.
 
-### 3B - Add constructor invariants and domain guards ###
+### 3B - Add constructor invariants and domain guards
 
     * [x] Action: enforce invariants for null/empty strings, negative progress, target/progress consistency, and completion-state compatibility.
     * [x] Scope: `Domain/Tasks/TaskObject.cs` (`TaskObject`).
@@ -117,13 +117,13 @@ Step goal:
     * [x] Must include: guard clauses only.
     * [x] Must exclude: status transition workflow logic.
 
-## 4) Add Deterministic TaskId Construction and Format Utilities ##
+## 4) Add Deterministic TaskId Construction and Format Utilities
 
 Step goal:
 
     * [x] Centralize deterministic TaskId composition for built-in/task-builder forms and canonical parsing.
 
-### 4A - Add `TaskIdFactory` for built-in and task-builder IDs ###
+### 4A - Add `TaskIdFactory` for built-in and task-builder IDs
 
     * [x] Action: add explicit deterministic constructors for built-in and task-builder task ID composition.
     * [x] Scope: `Domain/Identifiers/TaskIdFactory.cs` (`TaskIdFactory`).
@@ -132,7 +132,7 @@ Step goal:
     * [x] Must include: construction API for built-in/task-builder only.
     * [x] Must exclude: manual counter issuance/storage behavior (Phase 3).
 
-### 4B - Add canonical `TaskId` parser/formatter ###
+### 4B - Add canonical `TaskId` parser/formatter
 
     * [x] Action: add centralized formatting and `TryParse` helper for canonical TaskId token handling, including manual ID shape validation without issuing manual IDs.
     * [x] Scope: `Domain/Identifiers/TaskIdFormat.cs` (`TaskIdFormat`).
@@ -141,7 +141,7 @@ Step goal:
     * [x] Must include: parser/formatter only.
     * [x] Must exclude: engine reconciliation or migration handling.
 
-### 4C - Document Phase 3 defer for manual ID issuance ###
+### 4C - Document Phase 3 defer for manual ID issuance
 
     * [x] Action: add a clear defer note in checklist/audit notes that manual task ID issuance is owned by Phase 3 State Store command flow.
     * [x] Scope: this checklist file and optional existing defer-note file.
@@ -150,7 +150,7 @@ Step goal:
     * [x] Must include: defer-note updates only.
     * [x] Must exclude: production code changes.
 
-### 4D - Document Phase 3 defer for translation-impacting implementation ###
+### 4D - Document Phase 3 defer for translation-impacting implementation
 
     * [x] Action: add an explicit defer note that translation handling changes impacting runtime
     behavior are owned by Phase 3+.
@@ -160,13 +160,13 @@ Step goal:
     * [x] Must include: defer-note updates only.
     * [x] Must exclude: production code changes.
 
-## 5) Add DayKey Construction Utilities ##
+## 5) Add DayKey Construction Utilities
 
 Step goal:
 
     * [x] Provide canonical day-key builder utilities reused by later phases.
 
-### 5A - Add `DayKeyFactory` ###
+### 5A - Add `DayKeyFactory`
 
     * [x] Action: add deterministic day-key constructor for canonical `Year{N}-{Season}{D}` format using fixed non-localized season tokens and invariant casing.
     * [x] Scope: `Domain/Identifiers/DayKeyFactory.cs` (`DayKeyFactory`).
@@ -175,13 +175,13 @@ Step goal:
     * [x] Must include: construction/validation logic only.
     * [x] Must exclude: history ledger capture logic.
 
-## 6) Defer Deterministic Task-Type Sorting/Comparison Helper ##
+## 6) Defer Deterministic Task-Type Sorting/Comparison Helper
 
 Step goal:
 
     * [x] Document explicit defer of task-type sorting/comparer implementation to later phase.
 
-### 6A - Document defer for deterministic task-type sorting comparer ###
+### 6A - Document defer for deterministic task-type sorting comparer
 
     * [x] Action: document that deterministic task-type ordering (derived map + fallback chain: `TaskCreationDay`, then canonical `TaskId`) is deferred to Phase 5+ when generator/task-type coverage is stable.
     * [x] Scope: this checklist file and optional defer-note artifact.
@@ -190,13 +190,13 @@ Step goal:
     * [x] Must include: defer-note updates only.
     * [x] Must exclude: comparer implementation, ordering map code, or snapshot ordering logic.
 
-## 7) Add Phase 2 Verification Tests ##
+## 7) Add Phase 2 Verification Tests
 
 Step goal:
 
     * [x] Lock deterministic identity and domain-model invariants before Phase 3.
 
-### 7A - Add identifier value-type tests ###
+### 7A - Add identifier value-type tests
 
     * [x] Action: add tests for equality, normalization, and invalid input handling in `TaskId`, `DayKey`, `RuleId`, `SubjectId`.
     * [x] Scope: `Tests/Domain/Identifiers/TaskIdTests.cs`, `Tests/Domain/Identifiers/DayKeyTests.cs`, `Tests/Domain/Identifiers/RuleIdTests.cs`, `Tests/Domain/Identifiers/SubjectIdTests.cs`.
@@ -205,7 +205,7 @@ Step goal:
     * [x] Must include: tests and minimal fixtures.
     * [x] Must exclude: production behavior refactors outside identifiers.
 
-### 7B - Add TaskObject invariant tests ###
+### 7B - Add TaskObject invariant tests
 
     * [x] Action: add tests for constructor guards and legal state combinations.
     * [x] Scope: `Tests/Domain/Tasks/TaskObjectTests.cs`.
@@ -214,7 +214,7 @@ Step goal:
     * [x] Must include: domain tests only.
     * [x] Must exclude: store/evaluator logic tests.
 
-### 7C - Add deterministic TaskId factory/parser tests ###
+### 7C - Add deterministic TaskId factory/parser tests
 
     * [x] Action: add repeatability/collision and round-trip tests for canonical built-in/task-builder/manual ID string forms.
     * [x] Scope: `Tests/Domain/Identifiers/TaskIdFactoryTests.cs`, `Tests/Domain/Identifiers/TaskIdFormatTests.cs`.
@@ -223,7 +223,7 @@ Step goal:
     * [x] Must include: deterministic ID tests only.
     * [x] Must exclude: persistence counter storage tests.
 
-### 7D - Add reconstruction-stability seam tests ###
+### 7D - Add reconstruction-stability seam tests
 
     * [x] Action: add tests that reconstruct IDs/day-keys from canonical serialized forms and assert stable equality/order semantics across reconstruction paths.
     * [x] Scope: `Tests/Domain/Identifiers/IdentifierReconstructionStabilityTests.cs`.
@@ -232,7 +232,7 @@ Step goal:
     * [x] Must include: seam stability tests only.
     * [x] Must exclude: full save/load integration tests (Phase 7).
 
-### 7E - Add DayKey factory tests ###
+### 7E - Add DayKey factory tests
 
     * [x] Action: add tests for canonical format, token casing, and invalid date-part handling.
     * [x] Scope: `Tests/Domain/Identifiers/DayKeyFactoryTests.cs`.
@@ -241,7 +241,7 @@ Step goal:
     * [x] Must include: day-key tests only.
     * [x] Must exclude: history ledger integration.
 
-### 7F - Document deferred task-type ordering comparer tests ###
+### 7F - Document deferred task-type ordering comparer tests
 
     * [x] Action: document that deterministic task-type ordering comparer tests are deferred with the comparer implementation to Phase 5+; Step 7F remains docs-only in this phase.
     * [x] Scope: this checklist file and optional test planning note.
@@ -250,7 +250,7 @@ Step goal:
     * [x] Must include: defer-note updates only.
     * [x] Must exclude: comparer test implementation.
 
-### 7G - Add phase-boundary tests/audit checks ###
+### 7G - Add phase-boundary tests/audit checks
 
     * [x] Action: add lightweight boundary assertions that domain layer stays independent of UI/store/persistence concerns.
     * [x] Scope: `Tests/Domain/Phase2BoundaryTests.cs`.
@@ -259,13 +259,13 @@ Step goal:
     * [x] Must include: boundary tests only.
     * [x] Must exclude: broad architecture rewrites.
 
-## 8) Phase 2 Completion Gate ##
+## 8) Phase 2 Completion Gate
 
 Step goal:
 
     * [x] Confirm Phase 2 is complete, atomic, deterministic, and contract-aligned.
 
-### 8A - Run clean build and full tests ###
+### 8A - Run clean build and full tests
 
     * [x] Action: run clean build and full test suite, including existing Phase 1 regressions.
     * [x] Scope: no source edits expected.
@@ -282,7 +282,7 @@ Step goal:
         * [x] `dotnet test "Tests\\JojaAutoTasks.Tests.csproj" -c Debug --filter "FullyQualifiedName~UpdateTickedGuardTests"` succeeded (3 passed,
         0 failed, 0 skipped).
 
-### 8B - Complete checklist and contract audit ###
+### 8B - Complete checklist and contract audit
 
     * [x] Action: audit against this checklist and confirm Section 3/4/21 + workspace/backend/testing/style contract compliance.
     * [x] Scope: this checklist file and optional audit notes.
@@ -314,7 +314,7 @@ Step goal:
     * [x] Must include: checklist/audit updates only.
     * [x] Must exclude: Phase 3 feature work.
 
-### 8C - Validate atomic boundaries and create Phase 3 defer list ###
+### 8C - Validate atomic boundaries and create Phase 3 defer list
 
     * [x] Action: verify each completed sub-step maps to one atomic commit and list explicitly
     deferred Phase 3 work (commit-boundary verification treated as completed/waived per explicit
@@ -327,7 +327,19 @@ Step goal:
     * [x] Must include: final checklist status and defer notes.
     * [x] Must exclude: state-store implementation.
 
-## Final Completion Gate Checklist ##
+## Deferments Registered In Index
+
+This checklist created or reinforced the following deferments in
+`Project/Tasks/Implementation Plan/Deferments Index.md`:
+
+    * [x] `DEF-001` Translation-impacting localization/runtime behavior deferred to Phase 3+ (Step `4D`).
+    * [x] `DEF-002` Manual task ID issuance/counter ownership deferred to Phase 3 State Store path (Step `4C`).
+    * [x] `DEF-003` Completion-marking runtime behavior deferred until command flow exists (guardrails/final gate).
+    * [x] `DEF-004` RuleId sequential-generation enforcement deferred until RuleId generation exists (guardrails/final gate).
+    * [x] `DEF-005` Deterministic task-type ordering/comparer implementation deferred to Phase 5+ (Step `6A`).
+    * [x] `DEF-006` Deterministic task-type ordering/comparer tests deferred to Phase 5+ (Step `7F`).
+
+## Final Completion Gate Checklist
 
 Closure note: Guardrails above are continuous constraints audited throughout Phase 2 and
 re-checked in Step `8B`; completion is determined by Step `8A-8C` evidence plus this final gate,

@@ -43,6 +43,10 @@ Rule evaluation is handled exclusively by the **Evaluation Engine**.
 
 The State Store follows a **Command → Reducer → State** architecture.
 
+Implementation note: in code, reducer responsibilities are realized through
+typed command handlers (`ICommandHandler<TCommand>` and concrete
+`*CommandHandler` classes).
+
 Conceptual flow:
 
 Command  
@@ -195,6 +199,9 @@ Commands must contain all information required for the reducer to apply
 the change.
 
 ## 8.7 Reducer Behavior ##
+
+Implementation note: this section uses the term "Reducer" conceptually; Phase 3
+implements these transformations via deterministic command handlers.
 
 Reducers apply commands to the current state.
 

@@ -46,6 +46,7 @@ You are responsible for:
 5. **Maintaining agent ecosystem consistency** (cross-file references, handoff validation, tool coherence, coverage gaps)
 6. **Self-analysis capability** (reading own file, applying meta-agent quality criteria, proposing improvements)
 7. **Educating users on customization primitives** (when to use agent vs skill vs instruction vs hook)
+8. **Adjacent-artifact audit on agent changes** (for every new or updated agent, evaluate whether a skill, prompt, and hook are required; implement when needed and explicitly document when not needed)
 
 ---
 
@@ -101,6 +102,17 @@ GodAgent must work across projects with different agent ecosystems. Operating pr
 
 Example flow:
 ```
+
+### 2.4 Mandatory Adjacent-Artifact Audit ###
+
+For every agent create/update task, GodAgent MUST run this checklist before completion:
+
+1. **Skill audit**: determine whether an existing skill already covers the new agent's core workflow. If not, create a focused skill.
+2. **Prompt audit**: determine whether a reusable user-entry prompt is needed for common invocations of the agent. If yes, create/update `.github/prompts/*.prompt.md`.
+3. **Hook audit**: determine whether deterministic enforcement is needed (safety, policy, wiring validation). If yes, add/update a hook bundle under `.github/hooks/`.
+4. **Decision capture**: explicitly state one of the following in the task outcome: `created`, `updated`, or `not needed` for each of skill/prompt/hook with a brief reason.
+
+This audit is required even when the user did not explicitly ask for skills/prompts/hooks.
 User: "Create a new agent for testing"
 → Bootstrap: Scan for existing agents
 → Found: Reviewer exists in .github/agents/Reviewer.agent.md

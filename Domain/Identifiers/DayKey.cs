@@ -33,6 +33,29 @@ public readonly struct DayKey : IEquatable<DayKey>
 
     public override string ToString() => _dayKey ?? string.Empty;
 
+    public int ToSequenceNumber()
+    {
+        string[] parts = _dayKey.Split('-') ?? Array.Empty<string>();
+        int year = int.Parse(parts[0]["Year".Length..]);
+
+        string seasonDayPart = parts[1];
+        string[] seasons = { "Spring", "Summer", "Fall", "Winter" };
+        int seasonIndex = -1;
+        string dayStr = string.Empty;
+
+        for (int i = 0; i < seasons.Length; i++)
+        {
+            if (seasonDayPart.StartsWith(seasons[i], StringComparison.Ordinal))
+            {
+                seasonIndex = i;
+                dayStr = seasonDayPart[seasons[i].Length..];
+                break;
+            }
+        }
+
+        int day = int.Parse(dayStr);
+        return (year - 1) * 112 + seasonIndex * 28 + day;
+    }
     private static void ValidateDayKey(string? dayKey)
     {
         // -- Guards -- //

@@ -1,5 +1,5 @@
-using JojaAutoTasks.StateStore.Commands;
-namespace JojaAutoTasks.StateStore.Handlers;
+using JojaAutoTasks.State.Commands;
+namespace JojaAutoTasks.State.Handlers;
 
 internal interface ICommandHandler<TCommand> where TCommand : IStateCommand
 {

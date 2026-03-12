@@ -67,7 +67,7 @@ Joja AutoTasks follows a **layered architecture** with clear separation of conce
                        ↓
 ┌─────────────────────────────────────────────────────────┐
 │                   State Store (Command Model)           │
-│        Commands → Reducers → State → Snapshots          │
+│    Commands → Command Handlers → State → Snapshots      │
 └──────────────────────┬──────────────────────────────────┘
                        │ publishes snapshots
                        ↓
@@ -100,7 +100,7 @@ Domain objects (TaskObject, identifiers) are immutable value types or records.
 State mutations occur only through State Store commands.
 
 **Command Pattern**  
-State changes flow through commands processed by reducers, never direct mutation.
+State changes flow through commands processed by command handlers, never direct mutation.
 See **[Section 8]** for State Store command model.
 
 **Snapshot Isolation**  
@@ -784,18 +784,18 @@ complex multi-step goals.
 
 **Related Design Guide:** **[Section 8]** — State Store Command Model
 
-**Status:** Planned for Phase 2+
+**Status:** Implemented in Phase 3 foundation
 
 ---
 
-### 5.1 Conceptual Architecture
+### 5.1 Architecture (Implemented)
 
-The State Store follows a **Command → Reducer → State** model:
+The State Store follows a **Command → Command Handler → State** model:
 
 ```text
 Command (intent)
     ↓
-Reducer (transformation function)
+Command handler (deterministic transformation)
     ↓
 State Mutation
     ↓
@@ -807,152 +807,167 @@ Snapshot Published (read-only view)
     - **Single Source of Truth:** Canonical task state lives here
     - **Controlled Mutation:** Only commands can modify state
     - **Snapshot Isolation:** External systems receive immutable snapshots
-    - **Deterministic Reducers:** Pure functions ensure predictable state transitions
+    - **Deterministic Handlers:** Same input + same state yields same output
 
 ---
 
-### 5.2 Planned Components
+### 5.2 Implemented Components
 
-**Note:** These components are **not yet implemented**. This section describes the planned
-architecture from **[Section 8]**.
+#### StateStore
 
-#### TaskStore (planned)
+**Purpose:** Public mutation boundary and snapshot publication surface.
 
-**Purpose:** Internal mutable dictionary of task state.
+**Location:** `State/StateStore.cs`
 
-**Conceptual Structure:**
+**Implemented responsibilities:**
+
+    - Routes `IStateCommand` instances to concrete handlers
+    - Publishes `SnapshotChanged` when state version changes
+    - Runs day-boundary expiration cleanup on `OnDayStarted(DayKey)`
+    - Issues deterministic manual IDs via `TaskIdFactory.CreateManual(int)`
+
+**Key methods:**
 
 ```csharp
-internal sealed class TaskStore
+internal void Dispatch(IStateCommand command)
+internal void OnDayStarted(DayKey newDay)
+internal void DispatchCreateManualTaskCommand(...)
+```
+
+---
+
+#### StateContainer
+
+**Purpose:** Internal canonical storage with deterministic version tracking.
+
+**Location:** `State/StateContainer.cs`
+
+**Structure:**
+
+```csharp
+private readonly Dictionary<TaskId, TaskRecord> _tasksMap;
+private long _version;
+```
+
+**Key behavior:**
+
+    - `Set` / `Remove` increment version
+    - `Clear` resets state and version
+    - External consumers do not receive mutable dictionary access
+
+---
+
+#### Commands and Handlers
+
+**Purpose:** Represent mutation intent and apply deterministic state transitions.
+
+**Locations:**
+
+    - `State/Commands/`
+    - `State/Handlers/`
+
+**Implemented command contract:**
+
+```csharp
+internal interface IStateCommand
 {
-    private Dictionary<TaskId, TaskRecord> _tasks;
-
-    // Command processing
-    public void ProcessCommand(ITaskCommand command);
-
-    // Snapshot publishing
-    public TaskSnapshot GetSnapshot();
+    TaskId TaskId { get; }
 }
 ```
 
-**Key Methods (planned):**
+**Implemented handler contract:**
 
 ```csharp
-public void ProcessCommand(ITaskCommand command)
+internal interface ICommandHandler<TCommand> where TCommand : IStateCommand
+{
+    void Handle(TCommand command, StateContainer state);
+}
 ```
 
-Applies command via reducer, mutates state, publishes snapshot.
+**Implemented command set:**
 
-```csharp
-public TaskSnapshot GetSnapshot()
-```
-
-Returns read-only snapshot of current task state.
+    - `AddOrUpdateTaskCommand`
+    - `CompleteTaskCommand`
+    - `UncompleteTaskCommand`
+    - `RemoveTaskCommand`
+    - `PinTaskCommand`
+    - `UnpinTaskCommand`
 
 ---
 
-#### TaskRecord (planned)
+#### TaskRecord
 
 **Purpose:** Mutable internal task state structure.
 
-**Conceptual Fields:**
+**Location:** `State/Models/TaskRecord.cs`
+
+**Implemented field groups:**
 
 ```csharp
 internal sealed class TaskRecord
 {
-    public TaskId TaskID { get; set; }
-    public TaskSourceType SourceType { get; set; }
-    public TaskStatus Status { get; set; }
-    public int ProgressCurrent { get; set; }
-    public int ProgressTarget { get; set; }
-    public TaskMetadata Metadata { get; set; }
-    public DeadlineFields DeadlineFields { get; set; }
-    public UserFlags UserFlags { get; set; }
+    // Identity
+    internal TaskId Id { get; }
+
+    // Engine-owned
+    internal TaskCategory Category { get; }
+    internal TaskSourceType SourceType { get; }
+    internal string Title { get; set; }
+    internal string? Description { get; set; }
+    internal string SourceIdentifier { get; }
+    internal int ProgressCurrent { get; set; }
+    internal int ProgressMax { get; }
+    internal DayKey CreationDay { get; }
+
+    // User-owned
+    internal bool IsPinned { get; set; }
+
+    // Completion state
+    internal TaskStatus Status { get; set; }
+    internal DayKey? CompletionDay { get; set; }
 }
 ```
 
-**Note:** Progress fields are tracking metrics; completion is determined by conditions
-(**[Section 4.4.1]**).
+Field ownership is enforced in handlers so engine updates preserve user state and user updates preserve engine state where applicable.
 
 ---
 
-#### TaskSnapshot (planned)
+#### TaskSnapshot
 
 **Purpose:** Read-only projection of task state for UI consumption.
 
-**Conceptual Structure:**
+**Location:** `State/Models/TaskSnapshot.cs`
+
+**Implemented shape:**
 
 ```csharp
-public sealed class TaskSnapshot
+internal sealed class TaskSnapshot
 {
-    public IReadOnlyList<TaskView> Tasks { get; }
+    internal IReadOnlyList<TaskView> TaskViews { get; }
+    internal long Version { get; }
 }
 ```
 
-**Usage:**
-
-Published to UI systems after every state mutation.
+Snapshots are projected via `SnapshotProjector` and published after version-changing mutations.
 
 **Related Design Guide:** **[Section 8.5]** — Immutable Snapshot Model
 
 ---
 
-#### ITaskCommand (planned)
+#### Day-Boundary Cleanup
 
-**Purpose:** Contract for commands that modify task state.
+**Purpose:** Deterministic expiration detection and removal of expired day-scoped tasks.
 
-**Conceptual Interface:**
+**Locations:**
 
-```csharp
-public interface ITaskCommand
-{
-    TaskId TargetTaskId { get; }
-}
-```
+    - `State/DayBoundary/ExpirationDetector.cs`
+    - `State/DayBoundary/DayTransitionHandler.cs`
 
-**Example Commands (planned):**
+**Behavior:**
 
-```csharp
-public sealed class CompleteTaskCommand : ITaskCommand
-public sealed class UpdateProgressCommand : ITaskCommand
-public sealed class PinTaskCommand : ITaskCommand
-public sealed class AddTaskCommand : ITaskCommand
-```
-
----
-
-#### Reducers (planned)
-
-**Purpose:** Pure functions that apply commands to state.
-
-**Conceptual Pattern:**
-
-```csharp
-internal static class TaskReducers
-{
-    public static TaskRecord ApplyComplete(TaskRecord record, CompleteTaskCommand cmd)
-    {
-        // Validate state transition
-        // Create new record with updated Status and CompletionDay
-        // Return new record
-    }
-
-    public static TaskRecord ApplyProgress(TaskRecord record, UpdateProgressCommand cmd)
-    {
-        // Validate progress bounds
-        // Update ProgressCurrent
-        // Return new record
-    }
-}
-```
-
-**Reducer Characteristics:**
-
-    - **Pure functions:** no side effects
-    - **Validate inputs:** throw on invalid state transitions
-    - **Return new state:** immutable record pattern
-
-**Related Design Guide:** **[Section 8.7]** — Mutation Boundaries and Reducers
+    - `ExpirationDetector` selects expired task IDs from canonical state
+    - `DayTransitionHandler` removes them via `RemoveTaskCommandHandler`
+    - `StateStore.OnDayStarted(DayKey)` publishes a fresh snapshot if state changed
 
 ---
 
@@ -964,8 +979,8 @@ internal static class TaskReducers
 
 1. UI emits `CompleteTaskCommand` with target `TaskId`
 2. State Store receives command
-3. Reducer validates state transition (task must be Incomplete)
-4. Reducer creates new `TaskRecord` with `Status = Completed`, `CompletionDay = today`
+3. `CompleteTaskCommandHandler` validates task existence
+4. Handler updates `TaskRecord` with `Status = Completed` and `CompletionDay = today`
 5. State Store updates internal dictionary
 6. State Store publishes new `TaskSnapshot`
 7. UI receives snapshot update and re-renders
@@ -973,8 +988,8 @@ internal static class TaskReducers
 **Invariants:**
 
     - Command processing is **synchronous**
-    - Reducers are **deterministic** (same input → same output)
-    - No external state access within reducers
+    - Command handlers are **deterministic** (same input + same state → same output)
+    - No external state access within handlers
 
 ---
 
@@ -1642,7 +1657,7 @@ public sealed class EventDispatcher : IEventDispatcher
 
     public void DispatchDayStarted()
     {
-        _stateStore.OnDayStarted();
+        _stateStore.OnDayStarted(currentDay);
         _persistence.OnDayStarted();
         _ui.OnDayStarted();
     }
