@@ -28,7 +28,8 @@ internal sealed class SnapshotProjector
                 completionDay: record.CompletionDay,
                 sourceIdentifier: record.SourceIdentifier,
                 isPinned: record.IsPinned))
-            .ToList();
+            .ToList()
+            .AsReadOnly();
 
         return new TaskSnapshot(taskViews, version);
     }
