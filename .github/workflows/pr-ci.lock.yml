@@ -23,7 +23,7 @@
 #
 # PR-gated build pipeline: blocks merge on build failure. Testing must be performed manually by an admin before merge.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"9354cdea4e5f488a4bc2c4d095d1abb2418499038a6199f0908252f10c1786c6","compiler_version":"v0.57.2","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"167d6b1db8057aa811323d9ac8b59c7c8adf9e155d59563977344ab1d81608c5","compiler_version":"v0.57.2","strict":true}
 
 name: "pr-ci"
 "on":
@@ -37,14 +37,6 @@ name: "pr-ci"
     - opened
     - synchronize
     - reopened
-  push:
-    branches:
-    - development
-    paths:
-    - "**.cs"
-    - "**.csproj"
-    - "**.sln"
-    - manifest.json
   workflow_dispatch:
 
 permissions: {}
