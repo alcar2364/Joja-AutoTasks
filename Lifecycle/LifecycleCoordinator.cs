@@ -44,6 +44,7 @@ internal sealed class LifecycleCoordinator
     {
         _logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
         _eventDispatcher.DispatchReturnedToTitle();
+        _stateStore.OnReturnToTitle();
     }
 
     internal void HandleSavingInProgress()
