@@ -450,92 +450,92 @@ Step goal:
 
 Step goal:
 
-    * [ ] Lock State Store invariants with comprehensive test coverage.
+    * [x] Lock State Store invariants with comprehensive test coverage.
 
 ### 9A - Add command validation tests
 
-    * [ ] Action: add tests for command construction, required fields, and invariants.
-    * [ ] Scope: `Tests/StateStore/Commands/CommandValidationTests.cs`.
-    * [ ] Verify: tests fail if commands allow invalid construction (null TaskId, negative progress, etc.); all command types covered.
-    * [ ] Suggested commit: `phase3(step9A): add command validation tests`
-    * [ ] Must include: command construction guard tests only.
-    * [ ] Must exclude: handler tests.
+    * [x] Action: add tests for command construction, required fields, and invariants.
+    * [x] Scope: `Tests/StateStore/Commands/CommandValidationTests.cs`.
+    * [x] Verify: tests fail if commands allow invalid construction (null TaskId, negative progress, etc.); all command types covered.
+    * [x] Suggested commit: `phase3(step9A): add command validation tests`
+    * [x] Must include: command construction guard tests only.
+    * [x] Must exclude: handler tests.
 
 ### 9B - Add command handler determinism tests
 
-    * [ ] Action: add tests verifying same command + same state = same result.
-    * [ ] Scope: `Tests/StateStore/Handlers/CommandHandlerDeterminismTests.cs`.
-    * [ ] Verify: repeated handler invocations produce identical state; all handlers covered.
-    * [ ] Suggested commit: `phase3(step9B): add command handler determinism tests`
-    * [ ] Must include: determinism assertions only.
-    * [ ] Must exclude: integration tests.
+    * [x] Action: add tests verifying same command + same state = same result.
+    * [x] Scope: `Tests/StateStore/Handlers/CommandHandlerDeterminismTests.cs`.
+    * [x] Verify: repeated handler invocations produce identical state; all handlers covered.
+    * [x] Suggested commit: `phase3(step9B): add command handler determinism tests`
+    * [x] Must include: determinism assertions only.
+    * [x] Must exclude: integration tests.
 
 ### 9C - Add engine/user field separation tests
 
-    * [ ] Action: add tests verifying engine updates preserve user pins and user updates preserve engine progress.
-    * [ ] Scope: `Tests/StateStore/Handlers/FieldSeparationTests.cs`.
-    * [ ] Verify: tests fail if field separation is violated; AddOrUpdateTaskCommandHandler covered comprehensively.
-    * [ ] Suggested commit: `phase3(step9C): add engine/user field separation tests`
-    * [ ] Must include: field separation assertions for AddOrUpdateTaskCommandHandler only.
-    * [ ] Must exclude: snapshot tests.
+    * [x] Action: add tests verifying engine updates preserve user pins and user updates preserve engine progress.
+    * [x] Scope: `Tests/StateStore/Handlers/FieldSeparationTests.cs`.
+    * [x] Verify: tests fail if field separation is violated; AddOrUpdateTaskCommandHandler covered comprehensively.
+    * [x] Suggested commit: `phase3(step9C): add engine/user field separation tests`
+    * [x] Must include: field separation assertions for AddOrUpdateTaskCommandHandler only.
+    * [x] Must exclude: snapshot tests.
 
 ### 9D - Add snapshot immutability tests
 
-    * [ ] Action: add tests verifying snapshots are defensive copies and mutations do not affect canonical state.
-    * [ ] Scope: `Tests/StateStore/Models/SnapshotImmutabilityTests.cs`.
-    * [ ] Verify: tests fail if snapshot allows mutation of canonical state; defensive copy verified.
-    * [ ] Suggested commit: `phase3(step9D): add snapshot immutability tests`
-    * [ ] Must include: immutability assertions only.
-    * [ ] Must exclude: publishing tests.
+    * [x] Action: add tests verifying snapshots are defensive copies and mutations do not affect canonical state.
+    * [x] Scope: `Tests/StateStore/Models/SnapshotImmutabilityTests.cs`.
+    * [x] Verify: tests fail if snapshot allows mutation of canonical state; defensive copy verified.
+    * [x] Suggested commit: `phase3(step9D): add snapshot immutability tests`
+    * [x] Must include: immutability assertions only.
+    * [x] Must exclude: publishing tests.
 
 ### 9E - Add snapshot publishing tests
 
-    * [ ] Action: add tests verifying SnapshotChanged event fires correctly after state changes.
-    * [ ] Scope: `Tests/StateStore/SnapshotPublishingTests.cs`.
-    * [ ] Verify: event fires with correct snapshot after command processing; event subscription and invocation verified.
-    * [ ] Suggested commit: `phase3(step9E): add snapshot publishing tests`
-    * [ ] Must include: event subscription and assertion tests only.
-    * [ ] Must exclude: UI subscription tests (Phase 4).
+    * [x] Action: add tests verifying SnapshotChanged event fires correctly after state changes.
+    * [x] Scope: `Tests/StateStore/SnapshotPublishingTests.cs`.
+    * [x] Verify: event fires with correct snapshot after command processing; event subscription and invocation verified.
+    * [x] Suggested commit: `phase3(step9E): add snapshot publishing tests`
+    * [x] Must include: event subscription and assertion tests only.
+    * [x] Must exclude: UI subscription tests (Phase 4).
 
 ### 9F - Add day boundary behavior tests
 
-    * [ ] Action: add tests verifying expired daily tasks are removed on day transition.
-    * [ ] Scope: `Tests/StateStore/DayBoundary/DayBoundaryTests.cs`.
-    * [ ] Verify: tests confirm day-keyed tasks expire correctly; expiration detection and removal verified.
-    * [ ] Suggested commit: `phase3(step9F): add day boundary behavior tests`
-    * [ ] Must include: expiration detection and removal tests only.
-    * [ ] Must exclude: persistence tests.
+    * [x] Action: add tests verifying expired daily tasks are removed on day transition.
+    * [x] Scope: `Tests/StateStore/DayBoundary/DayBoundaryTests.cs`.
+    * [x] Verify: tests confirm day-keyed tasks expire correctly; expiration detection and removal verified.
+    * [x] Suggested commit: `phase3(step9F): add day boundary behavior tests`
+    * [x] Must include: expiration detection and removal tests only.
+    * [x] Must exclude: persistence tests.
 
 ### 9G - Add manual ID counter tests
 
-    * [ ] Action: add tests verifying manual task IDs are unique, sequential, and deterministic.
-    * [ ] Scope: `Tests/StateStore/ManualTaskCounterTests.cs`.
-    * [ ] Verify: counter produces non-colliding IDs in correct format; sequential calls produce sequential IDs.
-    * [ ] Suggested commit: `phase3(step9G): add manual ID counter tests`
-    * [ ] Must include: counter determinism and uniqueness tests only.
-    * [ ] Must exclude: persistence tests (Phase 7).
+    * [x] Action: add tests verifying manual task IDs are unique, sequential, and deterministic.
+    * [x] Scope: `Tests/StateStore/ManualTaskCounterTests.cs`.
+    * [x] Verify: counter produces non-colliding IDs in correct format; sequential calls produce sequential IDs.
+    * [x] Suggested commit: `phase3(step9G): add manual ID counter tests`
+    * [x] Must include: counter determinism and uniqueness tests only.
+    * [x] Must exclude: persistence tests (Phase 7).
 
 ### 9H - Add State Store boundary tests
 
-    * [ ] Action: add tests verifying State Store enforces mutation-only-via-commands boundary.
-    * [ ] Scope: `Tests/StateStore/StateStoreBoundaryTests.cs`.
-    * [ ] Verify: tests confirm no direct state mutation paths exist; boundary enforcement verified.
-    * [ ] Suggested commit: `phase3(step9H): add State Store boundary tests`
-    * [ ] Must include: boundary enforcement assertions only.
-    * [ ] Must exclude: performance tests.
+    * [x] Action: add tests verifying State Store enforces mutation-only-via-commands boundary.
+    * [x] Scope: `Tests/StateStore/StateStoreBoundaryTests.cs`.
+    * [x] Verify: tests confirm no direct state mutation paths exist; boundary enforcement verified.
+    * [x] Suggested commit: `phase3(step9H): add State Store boundary tests`
+    * [x] Must include: boundary enforcement assertions only.
+    * [x] Must exclude: performance tests.
 
 ### 9I - Add integration tests for lifecycle wiring
 
-    * [ ] Action: add tests verifying State Store integrates correctly with lifecycle coordinator.
-    * [ ] Scope: `Tests/Lifecycle/LifecycleCoordinatorIntegrationTests.cs`.
-    * [ ] Verify: initialization and teardown execute correctly; lifecycle flow verified.
-    * [ ] Suggested commit: `phase3(step9I): add lifecycle integration tests`
-    * [ ] Must include: integration tests for init/teardown only.
-    * [ ] Must exclude: full game simulation.
+    * [x] Action: add tests verifying State Store integrates correctly with lifecycle coordinator.
+    * [x] Scope: `Tests/Lifecycle/LifecycleCoordinatorIntegrationTests.cs`.
+    * [x] Verify: initialization and teardown execute correctly; lifecycle flow verified.
+    * [x] Suggested commit: `phase3(step9I): add lifecycle integration tests`
+    * [x] Must include: integration tests for init/teardown only.
+    * [x] Must exclude: full game simulation.
 
 ## Step 9 Completion
 
-    * [ ] All substeps in Step 9 complete (9A, 9B, 9C, 9D, 9E, 9F, 9G, 9H, 9I).
+    * [x] All substeps in Step 9 complete (9A, 9B, 9C, 9D, 9E, 9F, 9G, 9H, 9I).
 
 ## 10) Phase 3 Completion Gate
 
@@ -586,7 +586,7 @@ Step goal:
 ## Notes
 
 For 7D, SMAPI is single-threaded, so no risk of race conditions in counter increment
-logic. 
+logic.
 
 ### Reviewer Action Required
 
