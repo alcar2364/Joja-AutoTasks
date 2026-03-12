@@ -1,8 +1,7 @@
 ---
 name: jat-command-reducer-snapshot-flow
-description: Command object patterns, reducer pure functions, snapshot creation/publishing, command dispatch, multi-slice reducers, and mutation boundary auditing. Use when: implementing state mutations, designing command flows, testing reducer chains, or ensuring State Store immutability contracts.
+description: "Command object patterns, reducer pure functions, snapshot creation/publishing, command dispatch, multi-slice reducers, and mutation boundary auditing. Use when: implementing state mutations, designing command flows, testing reducer chains, or ensuring State Store immutability contracts."
 argument-hint: "Describe the state change: what command are you implementing, which state slices does it affect, and how should the UI be notified?"
-target: vscode
 ---
 
 # Command-Reducer-Snapshot Flow Skill

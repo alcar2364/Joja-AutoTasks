@@ -1,8 +1,7 @@
 ---
 name: jat-smapi-debugging-and-diagnostics
-description: SMAPI logging, ModLogger usage, debug output interpretation, common SMAPI failures, game state inspection, MonitorProxy diagnostics, performance profiling, bug reproduction. Use when: debugging mod issues, interpreting SMAPI logs, capturing game state, or diagnosing performance problems.
+description: "SMAPI logging, ModLogger usage, debug output interpretation, common SMAPI failures, game state inspection, MonitorProxy diagnostics, performance profiling, bug reproduction. Use when: debugging mod issues, interpreting SMAPI logs, capturing game state, or diagnosing performance problems."
 argument-hint: "Describe the issue: what error is occurring, when does it happen, and what diagnostic information would help identify the root cause?"
-target: vscode
 ---
 
 # SMAPI Debugging and Diagnostics Skill
