@@ -5,7 +5,7 @@ argument-hint:  Describe the backend feature, fix, or refactor; include the appr
                 available, target subsystem(s), relevant files/symbols, and any scope limits such as no behavior
                 change, single-file, or touched-region only.
 target: vscode
-tools: [vscode, execute, read, agent, edit, search, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read, agent, edit, search, 'microsoftdocs/mcp/*', todo]
 agents: [Reviewer, Planner, Researcher, UIAgent, StarMLAgent]
 handoffs:
   - label: Review backend patch

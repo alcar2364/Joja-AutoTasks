@@ -1,6 +1,7 @@
 ﻿---
-name: CSHARP-STYLE-CONTRACT
+name: csharp-style-contract
 description: "C# coding style, naming, formatting, and file structure rules for JAT. Use when: editing .cs files."
+applyTo: "**/*.cs"
 ---
 
 # CSHARP-STYLE-CONTRACT.instructions.md #

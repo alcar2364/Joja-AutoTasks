@@ -6,6 +6,7 @@ internal static class TaskIdFactory
     // -- Constants -- //
     private const string BuiltInPrefix = "BuiltIn";
     private const string TaskBuilderPrefix = "TaskBuilder";
+    private const string ManualTaskPrefix = "ManualTask";
 
     // -- Public API -- //
     public static TaskId CreateBuiltIn(
@@ -42,6 +43,18 @@ internal static class TaskIdFactory
             ruleId,
             subjectIdentifier,
             dayKey?.ToString());
+    }
+
+    public static TaskId CreateManual(int manualId)
+    {
+        if (manualId < 0)
+        {
+            throw new ArgumentException("Manual ID must be zero or a positive integer.", nameof(manualId));
+        }
+
+        return TaskIdFromParts(
+            ManualTaskPrefix,
+            manualId.ToString());
     }
 
     // -- Private Helpers -- //

@@ -1,6 +1,7 @@
 ﻿---
 name: visual-design-language
 description: "JAT visual design language, color palette, spacing, typography, and UX foundation. Use when: implementing UI visuals, choosing colors/spacing values, or designing new UI components."
+applyTo: "{UI/**/*.cs,**/*.sml}"
 ---
 
 # Visual Design Language — JAT #

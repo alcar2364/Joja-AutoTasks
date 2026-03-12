@@ -1,5 +1,5 @@
 ---
-name: WORKSPACE-CONTRACTS
+name: workspace-contracts
 description: "Operational contract for AI agents in JAT workspace: scope interpretation, planning, delegation, permissions, file creation. Use when: working in JAT workspace."
 ---
 

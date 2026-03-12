@@ -31,7 +31,7 @@ External-agent source-of-truth order:
 2. This file (`AGENTS.md`)
 3. `.github/copilot-instructions.md`
 4. Relevant files in `.github/instructions/`
-5. Design and planning docs under `.github/Project Planning/`
+5. Design and planning docs under `Project/Planning/`
 
 External-agent integration with the custom `.github` workflow:
 
@@ -120,8 +120,8 @@ Planning, architecture, and policy docs:
 - Primary onboarding and validated commands:
 	`.github/copilot-instructions.md`
 - Architecture/design docs:
-	`.github/Project Planning/Joja AutoTasks Design Guide/`
-	`.github/Project Planning/Architecture Map.md`
+	`Project/Planning/Joja AutoTasks Design Guide/`
+	`Project/Planning/Architecture Map.md`
 - PR checklist:
 	`.github/pull_request_template.md`
 

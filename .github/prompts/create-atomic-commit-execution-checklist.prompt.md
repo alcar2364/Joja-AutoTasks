@@ -17,7 +17,7 @@ Delegation Chain
 1. Researcher: gather design guide context and existing implementation patterns
 2. Planner: structure the checklist and define substeps with atomic commit boundaries
 3. Reviewer: validate compliance with design guide and contract requirements
-4. WorkspaceAgent: create the final checklist file directly (use create_file tool)
+4. WorkspaceAgent: create the final checklist file directly (use #createFile tool)
 
 Checklist Requirements
 - Each substep must have a completion checkbox.
@@ -29,6 +29,6 @@ Checklist Requirements
 - Final review must be executable by human or Reviewer agent.
 
 Required Output
-1. Checklist file written to `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`
+1. Checklist file written to `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`
 2. Substeps with completion checkboxes and suggested commit messages
 3. Final review and verification steps

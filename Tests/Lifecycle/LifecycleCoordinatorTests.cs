@@ -4,6 +4,7 @@ using JojaAutoTasks.Lifecycle;
 using Moq;
 using StardewModdingAPI;
 using Xunit;
+using Store = JojaAutoTasks.State.StateStore;
 
 namespace JojaAutoTasks.Tests.Lifecycle;
 
@@ -35,6 +36,32 @@ public class LifecycleCoordinatorTests
 
         Assert.Single(dispatcher.Calls);
         Assert.Equal(nameof(IEventDispatcher.DispatchSaveLoaded), dispatcher.Calls[0]);
+    }
+
+    [Fact]
+    public void HandleDayStarted_ForwardsSignalToDispatcher()
+    {
+        RecordingEventDispatcher dispatcher = new RecordingEventDispatcher();
+
+        LifecycleCoordinator sut = CreateSut(dispatcher);
+
+        sut.HandleDayStarted();
+
+        Assert.Single(dispatcher.Calls);
+        Assert.Equal(nameof(IEventDispatcher.DispatchDayStarted), dispatcher.Calls[0]);
+    }
+
+    [Fact]
+    public void HandleReturnedToTitle_ForwardsSignalToDispatcher()
+    {
+        RecordingEventDispatcher dispatcher = new RecordingEventDispatcher();
+
+        LifecycleCoordinator sut = CreateSut(dispatcher);
+
+        sut.HandleReturnedToTitle();
+
+        Assert.Single(dispatcher.Calls);
+        Assert.Equal(nameof(IEventDispatcher.DispatchReturnedToTitle), dispatcher.Calls[0]);
     }
 
     [Fact]
@@ -83,7 +110,8 @@ public class LifecycleCoordinatorTests
     {
         Mock<IMonitor> monitor = new Mock<IMonitor>(MockBehavior.Loose);
         ModLogger logger = new ModLogger(monitor.Object);
-        return new LifecycleCoordinator(logger, eventDispatcher);
+        Store stateStore = new Store();
+        return new LifecycleCoordinator(logger, eventDispatcher, stateStore);
     }
 
     private sealed class RecordingEventDispatcher : IEventDispatcher

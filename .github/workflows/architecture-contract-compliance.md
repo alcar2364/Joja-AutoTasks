@@ -46,7 +46,7 @@ by the separate `determinism-regression-detector` workflow (now consolidated her
 - Architecture contracts:
   - `.github/instructions/backend-architecture-contract.instructions.md`
   - `.github/instructions/frontend-architecture-contract.instructions.md`
-- Determinism reference: `.github/Project Planning/Joja AutoTasks Design Guide/Section 03 - Deterministic Identifier Model.md`
+- Determinism reference: `Project/Planning/Joja AutoTasks Design Guide/Section 03 - Deterministic Identifier Model.md`
 - Key boundaries:
   - State Store is the sole owner of canonical task state
   - All mutations go through command/reducer path only

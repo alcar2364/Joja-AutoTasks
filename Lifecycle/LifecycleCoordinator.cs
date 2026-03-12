@@ -1,5 +1,6 @@
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Events;
+using JojaAutoTasks.State;
 
 namespace JojaAutoTasks.Lifecycle;
 
@@ -9,12 +10,14 @@ internal sealed class LifecycleCoordinator
     // -- Dependencies -- //
     private readonly ModLogger _logger;
     private readonly IEventDispatcher _eventDispatcher;
+    private readonly StateStore _stateStore;
 
     // -- Constructor -- //
-    internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher)
+    internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher, StateStore stateStore)
     {
         _logger = logger;
         _eventDispatcher = eventDispatcher;
+        _stateStore = stateStore;
     }
 
     // -- Public API -- //
@@ -28,6 +31,7 @@ internal sealed class LifecycleCoordinator
     {
         _logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
         _eventDispatcher.DispatchSaveLoaded();
+        _stateStore.OnSaveLoaded();
     }
 
     internal void HandleDayStarted()
@@ -40,6 +44,7 @@ internal sealed class LifecycleCoordinator
     {
         _logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
         _eventDispatcher.DispatchReturnedToTitle();
+        _stateStore.OnReturnToTitle();
     }
 
     internal void HandleSavingInProgress()

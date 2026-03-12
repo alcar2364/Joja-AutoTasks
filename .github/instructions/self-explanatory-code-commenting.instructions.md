@@ -1,6 +1,7 @@
 ﻿---
 name: self-explanatory-code-commenting
 description: "Guidelines for writing self-explanatory comments in JAT, with C#-first examples and language-specific carveouts for .sml and .json files."
+applyTo: "**/*.cs"
 ---
 
 # Self-explanatory Code Commenting Instructions

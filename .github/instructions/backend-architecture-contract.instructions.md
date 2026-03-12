@@ -1,5 +1,5 @@
 ﻿---
-name: BACKEND-ARCHITECTURE-CONTRACT
+name: backend-architecture-contract
 description: "Backend architecture rules for JAT: subsystem boundaries, State Store ownership, determinism, event-driven evaluation, persistence. Use when: editing backend/core code."
 applyTo: "{Domain,Events,Infrastructure,Integrations,Lifecycle,Startup,Configuration}/**/*.cs"
 ---

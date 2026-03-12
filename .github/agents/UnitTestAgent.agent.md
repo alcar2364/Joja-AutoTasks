@@ -4,7 +4,7 @@ description: "Use when: designing, implementing, or reviewing C# unit tests for 
 argument-hint:  Describe the target code under test, requested test scope (new tests, review,
                 or both), framework constraints, and whether edits are allowed.
 target: vscode
-tools: [vscode, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
 agents: [WorkspaceAgent, Reviewer]
 
 handoffs:

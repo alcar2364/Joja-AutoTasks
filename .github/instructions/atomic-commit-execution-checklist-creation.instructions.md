@@ -55,7 +55,7 @@ The Researcher gathers:
 - Design contracts and constraints relevant to the phase
 - Any existing code/structure that impacts scope
 - External references (e.g., SMAPI API docs, third-party libraries)
-- **Active deferments from `.github/Project Tasks/Implementation Plan/Deferments Index.md`** that are scheduled for or relevant to the target phase
+- **Active deferments from `Project/Tasks/Implementation Plan/Deferments Index.md`** that are scheduled for or relevant to the target phase
 
 **Output:** Research summary with citations, identifying:
 - Key subsystems and their responsibilities
@@ -120,7 +120,7 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
 
 **Critical:** WorkspaceAgent must **use the createFile tool** to write the checklist immediately. Do NOT draft content and hand back to Orchestrator. WorkspaceAgent's default mode is direct editing for documentation artifacts.
 
-**Output:** A complete checklist file written to the target location (e.g., `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`).
+**Output:** A complete checklist file written to the target location (e.g., `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`).
 
 ## Checklist Structure Requirements ##
 
@@ -299,6 +299,9 @@ Step goal:
 - State what artifact to produce or update (checklist, audit notes)
 - Specify acceptance criteria (all tests pass, no scope drift)
 - Allow flexibility in how the check is performed (automated vs. manual audit)
+- If scope/architecture issues are found during completion review, require a
+   post-phase implementation review report and a user-owned post-phase
+   implementation atomic execution checklist instead of inline implementation fixes
 
 **Example:**
 ```
@@ -337,7 +340,7 @@ Step goal:
 
 ### 8D - Reconcile deferments ###
 
-* [ ] Action: review checklist for newly identified deferments and reconcile with `.github/Project Tasks/Implementation Plan/Deferments Index.md`.
+* [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
 * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
 * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
 * [ ] Suggested commit: `phase1(step8D): reconcile deferments after Phase 1 completion`
@@ -369,14 +372,14 @@ Deferments are tracked centrally to ensure work items deferred during one phase 
 
 ### Source of Truth ###
 
-- **`.github/Project Tasks/Implementation Plan/Deferments Index.md`** is the canonical active list of all unresolved deferments across all phases.
-- **`.github/Project Tasks/Implementation Plan/Deferments Archive.md`** is the permanent historical record of resolved deferments.
+- **`Project/Tasks/Implementation Plan/Deferments Index.md`** is the canonical active list of all unresolved deferments across all phases.
+- **`Project/Tasks/Implementation Plan/Deferments Archive.md`** is the permanent historical record of resolved deferments.
 - **Checklist inline deferment notes** are phase-local work items until reconciled at phase completion.
 
 ### Workflow Integration ###
 
 **During Checklist Creation (Researcher):**
-- Read active deferments from Deferments Index.md
+  - Read active deferments from `Project/Tasks/Implementation Plan/Deferments Index.md`
 - Report deferments scheduled for the target phase or marked "Open" with applicable scope
 - Include DEF-NNN IDs in research findings
 
@@ -391,13 +394,17 @@ Deferments are tracked centrally to ensure work items deferred during one phase 
   - Resolved In Phase: the phase number/name where deferment was completed
   - Archived Date: completion date (YYYY-MM-DD format)
   - Resolution Notes: brief summary of how/why deferment was resolved
+- For scope/architecture findings discovered in completion review:
+   - document findings and remediation guidance in a post-phase implementation review report
+   - create/queue a user-owned post-phase implementation atomic execution checklist
+   - do not implement those fixes inside the completion gate checklist step
 
 ### Example Deferment Reconciliation Substep ###
 
 ```
 ### 8D - Reconcile deferments ###
 
-* [ ] Action: review checklist for newly identified deferments and reconcile with `.github/Project Tasks/Implementation Plan/Deferments Index.md`.
+* [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
 * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
 * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
 * [ ] Suggested commit: `phase2(step8D): reconcile deferments after Phase 2 completion`
@@ -472,7 +479,7 @@ When the Researcher gathers context, they should answer:
 - [ ] What implementation scope boundaries make sense (one file? one responsibility boundary)?
 - [ ] Are there listed guardrails/constraints in the design guide to preserve?
 - [ ] What test coverage is recommended or implied?
-- [ ] **What active deferments (from `.github/Project Tasks/Implementation Plan/Deferments Index.md`) are scheduled for this phase or marked "Open" with applicable scope?**
+- [ ] **What active deferments (from `Project/Tasks/Implementation Plan/Deferments Index.md`) are scheduled for this phase or marked "Open" with applicable scope?**
 
 ## Planner Output Checklist ##
 
@@ -517,8 +524,8 @@ The Reviewer should verify:
 
 The WorkspaceAgent should:
 
-- [ ] **CREATE THE FILE DIRECTLY** using create_file tool (do NOT hand content back to Orchestrator)
-- [ ] Use correct file path (e.g., `.github/Project Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`)
+- [ ] **CREATE THE FILE DIRECTLY** using createFile tool (do NOT hand content back to Orchestrator)
+- [ ] Use correct file path (e.g., `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`)
 - [ ] Produce complete Markdown file with all sections
 - [ ] Use correct naming (`Phase N - Atomic Commit Execution Checklist.md`)
 - [ ] Use proper checkbox formatting (unchecked `[ ]` for checkboxes)

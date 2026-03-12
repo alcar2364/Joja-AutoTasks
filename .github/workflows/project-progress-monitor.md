@@ -37,10 +37,10 @@ merges the responsibilities of the former `phase-progress-tracker` (daily) and
 ## Context
 
 - Repository: `${{ github.repository }}`
-- Checklist directory: `.github/Project Tasks/Implementation Plan/`
+- Checklist directory: `Project/Tasks/Implementation Plan/`
 - Checklist pattern: `Phase N - Atomic Commit Execution Checklist.md`
-- Deferments index: `.github/Project Tasks/Implementation Plan/Deferments Index.md`
-- Deferments archive: `.github/Project Tasks/Implementation Plan/Deferments Archive.md`
+- Deferments index: `Project/Tasks/Implementation Plan/Deferments Index.md`
+- Deferments archive: `Project/Tasks/Implementation Plan/Deferments Archive.md`
 - Checkbox syntax: `- [x]` (complete), `- [ ]` (incomplete)
 - Deferment ID format: `DEF-NNN`
 - Deferment aging threshold: 28 days (4 weeks) from creation date
