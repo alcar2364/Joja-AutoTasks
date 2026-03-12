@@ -541,90 +541,68 @@ Step goal:
 
 Step goal:
 
-    * [ ] Verify implementation is complete, tests pass, and contracts are satisfied.
+    * [x] Verify implementation is complete, tests pass, and contracts are satisfied.
 
 ### 10A - Run clean build and full test suite
 
-    * [ ] Action: execute clean build and run all Phase 3 tests.
-    * [ ] Scope: no source changes expected.
-    * [ ] Verify: build succeeds without warnings, all Phase 3 tests pass.
-    * [ ] Suggested commit: `phase3(step10A): record successful build and test completion`
-    * [ ] Must include: build log or test output confirmation.
-    * [ ] Must exclude: opportunistic code edits.
+    * [x] Action: execute clean build and run all Phase 3 tests.
+    * [x] Scope: no source changes expected.
+    * [x] Verify: build succeeds without warnings, all Phase 3 tests pass.
+    * [x] Suggested commit: `phase3(step10A): record successful build and test completion`
+    * [x] Must include: build log or test output confirmation.
+    * [x] Must exclude: opportunistic code edits.
+    * [x] Evidence: `dotnet build` succeeded with 0 warnings and 0 errors; `dotnet test Tests/JojaAutoTasks.Tests.csproj` passed with 164 passed, 0 failed.
 
 ### 10B - Audit guardrails and checklist completion
 
-    * [ ] Action: review implementation against each guardrail from checklist start.
-    * [ ] Scope: this checklist file.
-    * [ ] Verify: all guardrails preserved, no scope drift.
-    * [ ] Suggested commit: `phase3(step10B): audit guardrails and mark checklist complete`
-    * [ ] Must include: guardrail review notes.
-    * [ ] Must exclude: new implementation work.
+    * [x] Action: review implementation against each guardrail from checklist start.
+    * [x] Scope: this checklist file.
+    * [x] Verify: all guardrails preserved, no scope drift.
+    * [x] Suggested commit: `phase3(step10B): audit guardrails and mark checklist complete`
+    * [x] Must include: guardrail review notes.
+    * [x] Must exclude: new implementation work.
+    * [x] Guardrail review notes: day-boundary cleanup mutation boundary was corrected to the command-handler path; field-separation behavior is now explicit for engine-sourced updates versus user-sourced updates.
 
 ### 10C - Validate implementation scope
 
-    * [ ] Action: review implementation to ensure no unintended scope expansion beyond Phase 3 requirements.
-    * [ ] Scope: all changed files and symbols from phase start.
-    * [ ] Verify: no changes outside State Store domain; no premature ViewModel or UI wiring; architecture boundaries preserved.
-    * [ ] Suggested commit: `phase3(step10C): confirm scope boundaries and architecture contract compliance`
-    * [ ] Must include: scope validation notes.
-    * [ ] Must exclude: rewriting code unrelated to phase requirements.
+    * [x] Action: review implementation to ensure no unintended scope expansion beyond Phase 3 requirements.
+    * [x] Scope: all changed files and symbols from phase start.
+    * [x] Verify: no changes outside State Store domain; no premature ViewModel or UI wiring; architecture boundaries preserved.
+    * [x] Suggested commit: `phase3(step10C): confirm scope boundaries and architecture contract compliance`
+    * [x] Must include: scope validation notes.
+    * [x] Must exclude: rewriting code unrelated to phase requirements.
+    * [x] Scope validation notes: no UI/ViewModel/persistence additions were introduced; work remained within `State/`, `Domain/`, `Tests/`, `Startup/`, and `Lifecycle/` Phase 3 boundaries.
 
 ### 10D - Reconcile deferments
 
-    * [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
-    * [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
-    * [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
-    * [ ] Suggested commit: `phase3(step10D): reconcile deferments after Phase 3 completion`
-    * [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
-    * [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
+    * [x] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
+    * [x] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
+    * [x] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
+    * [x] Suggested commit: `phase3(step10D): reconcile deferments after Phase 3 completion`
+    * [x] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
+    * [x] Must exclude: retroactive edits to previous phase deferments without explicit justification.
 
 ## Step 10 Completion
 
-    * [ ] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
+    * [x] All substeps in Step 10 complete (10A, 10B, 10C, 10D).
 
 ## Notes
 
 For 7D, SMAPI is single-threaded, so no risk of race conditions in counter increment
 logic.
 
-## Reviewer Action Required
+## Resolved Status Summary
 
-
-**Verify sourceIdentifier value (Step 7C):** `DispatchCreateManualTaskCommand`
-hardcodes `sourceIdentifier: "Player"`. This was chosen to describe the WHO
-(the player) rather than the WHAT (`TaskSourceType.Manual` already covers
-that). However, `SourceIdentifier` semantics are unresolved (DEF-007, deferred
-to Phase 4). Reviewer should confirm whether `"Player"` is the correct value
-or whether it should be changed when DEF-007 is resolved.
-
-**Namespace and folder rename (Step 8A):** The `StateStore/` folder and
-namespace were renamed to `State/` (`JojaAutoTasks.State`).
-Reviewer should verify that the architecture map and design guide are updated
-to reflect the new namespace. Any documentation referring to
-`JojaAutoTasks.StateStore` should be updated.
-
-**Out-of-scope addition (Step 6A):** Added a method to `DayKey` to get the day
-from the key. This was out of scope of the checklist, but made implementation
-easier when constructing `ExpirationDetector`. Therefore, added method to
-`DayKey`.
-
-**Out-of-scope addition (Step 7B):** Step 7B required extending
-`TaskIdFactory` with a `CreateManualTask(int n)` method to keep
-`ManualTask_{N}` format logic centralized alongside `CreateBuiltIn` and
-`CreateTaskBuilder`. This was a gap between Phase 2's factory design and
-Phase 3's deferred manual ID issuance — the two concerns were never reconciled
-in planning. Please verify if this gap exists in the design guide and architecture
-map, and check if this modification follows project contracts. If it does, the design
-guide and architecture map should be updated to reflect that `TaskIdFactory` owns
-all `TaskId` format logic, including manual tasks. If it does not, we need to
-have a discussion.
+- SourceIdentifier semantics remain intentionally deferred under DEF-007 for Phase 4 domain clarification.
+- Namespace/folder migration is complete: `StateStore/` references were normalized to `State/` with `JojaAutoTasks.State` as the canonical namespace.
+- Day-boundary cleanup mutation path now follows the command-handler boundary; no direct mutation bypass remains.
+- `TaskIdFactory.CreateManual(int n)` is retained as the canonical location for `ManualTask_{N}` format ownership.
 
 ### Deferred Items
 
-**Open Issue not yet added to index**
-
-Change "DayKey" to "DateKey" to reflect that it represents a specific date rather than just a day number. This is more intuitive and aligns with common terminology for date representations. The key format can remain the same (e.g., `Year1-Summer15`), but the name change clarifies its purpose as a date identifier.
+**Open deferment in index:** `DEF-031` evaluates renaming `DayKey` to `DateKey`
+to better express that the value represents a specific canonical date key
+(`Year{N}-{Season}{D}`), not only an ordinal day value.
 
 **Open deferment in index:** `DEF-027` evaluates whether `TaskRecord` should be a
 record class or remain value-semantics focused.
@@ -645,10 +623,10 @@ private readonly int _day;
 private readonly string _dayKey; // derived, for display/persistence
 ```
 
-**Open deferment not in index:** `DEF-029` evaluates the permanent home for
-`ManualTaskCounter`. Currently placed in `StateStore/Models/` as a Phase 3
+**Open deferment in index:** `DEF-029` evaluates the permanent home for
+`ManualTaskCounter`. Currently placed in `State/Models/` as a Phase 3
 working location. For full symmetry with engine task ID generation, the counter
-must be accessible outside `StateStore` when Phase 8 UI triggers manual task
+must be accessible outside `State` when Phase 8 UI triggers manual task
 creation. The counter feeds `TaskIdFactory.CreateManual(n)` the same way SMAPI
 game state feeds `TaskIdFactory.CreateBuiltIn(...)` — but unlike those inputs,
 the counter is stateful mod-owned state, not a value type. Candidate locations:
@@ -661,15 +639,6 @@ the counter is stateful mod-owned state, not a value type. Candidate locations:
 
 Resolve when Phase 5 (generators) establishes the generator service pattern,
 or when Phase 8 (UI) creates the first concrete consumer.
-
-**Resolved in Phase 3:** `DEF-030` — The `StateStore` folder and namespace
-were renamed to `State` (`JojaAutoTasks.StateStore` → `JojaAutoTasks.State`)
-during Step 8A. The class/namespace collision (`JojaAutoTasks.StateStore`
-namespace vs `JojaAutoTasks.StateStore.StateStore` class) caused C# name
-lookup to resolve `StateStore` as the namespace rather than the type, even
-with an explicit `using` alias — because namespace members in parent namespaces
-take precedence over `using` aliases in the C# lookup chain. The rename was
-the only clean fix.
 
 Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
 
@@ -685,7 +654,7 @@ Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
   - `DEF-013`: Implement deadline field population.
   - `DEF-014`: Implement task-type ordering/comparison in runtime path.
   - `DEF-029`: Resolve permanent home for `ManualTaskCounter` (currently
-    `StateStore/Models/`). Evaluate `Domain/Identifiers/` vs a future
+    `State/Models/`). Evaluate `Domain/Identifiers/` vs a future
     `Services/` folder once generator service pattern is established.
 
 - **Deferred to Phase 6 (Rule Engine)**
@@ -709,9 +678,7 @@ Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
   - `DEF-026`: Multiplayer synchronization.
   - `DEF-027`: TaskRecord value-vs-reference semantics decision.
   - `DEF-028`: DayKey internal representation decision.
-  - `DEF-029`: ManualTaskCounter permanent home decision.
-  - `DEF-030`: ~~Resolved in Phase 3~~ — namespace renamed to
-    `JojaAutoTasks.State`.
+    - `DEF-031`: Evaluate `DayKey` to `DateKey` rename while preserving canonical key format.
 
 ## Key Planning Decisions
 
@@ -726,4 +693,10 @@ UI consumption. Prevents accidental mutation and enforces snapshot immutability 
 `AddOrUpdateTaskCommandHandler`). "Reducer" is banned by C# style contract; "CommandHandler" is
 clear, explicit, and action-oriented.
 
-**Namespace Structure:** Use `JojaAutoTasks.StateStore` as primary namespace with subfolders: - `StateStore/Commands/` — all command types (6 command types + base infrastructure) - `StateStore/Handlers/` — all command handlers - `StateStore/Models/` — TaskRecord, TaskView, TaskSnapshot - `StateStore/DayBoundary/` — expiration logic - `StateStore/StateStore.cs` — main API class
+**Namespace Structure:** Use `JojaAutoTasks.State` as primary namespace with subfolders:
+
+- `State/Commands/` — all command types (6 command types plus base infrastructure).
+- `State/Handlers/` — all command handlers.
+- `State/Models/` — `TaskRecord`, `TaskView`, `TaskSnapshot`.
+- `State/DayBoundary/` — expiration logic.
+- `State/StateStore.cs` — main API class.
