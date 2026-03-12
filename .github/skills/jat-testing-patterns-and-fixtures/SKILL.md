@@ -2,7 +2,6 @@
 name: jat-testing-patterns-and-fixtures
 description: "Unit test boundaries, fixture patterns, deterministic test requirements, identifier stability testing, task generation testing, State Store testing, persistence testing, edge case discovery. Use when: writing or debugging JAT unit tests, setting up test fixtures, or validating test determinism."
 argument-hint: "Describe what you need to test: a specific component (Domain, Events, Infrastructure), test boundaries, or test fixture needs?"
-target: vscode
 ---
 
 # Testing Patterns and Fixtures Skill

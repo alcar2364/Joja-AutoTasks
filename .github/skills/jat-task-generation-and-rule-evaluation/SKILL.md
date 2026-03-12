@@ -2,7 +2,6 @@
 name: jat-task-generation-and-rule-evaluation
 description: "Task generation approaches (generator functions vs Task Builder rules), rule model evaluation, candidate task creation, and determinism guardrails. Use when: implementing task generators, defining rule-based task evaluation, or ensuring deterministic task creation workflows."
 argument-hint: "Describe the task generation requirement: are you implementing a new generator, defining evaluation rules, or troubleshooting non-deterministic task behavior?"
-target: vscode
 ---
 
 # Task Generation and Rule Evaluation Skill
