@@ -1,6 +1,6 @@
 ---
 name: jat-error-handling-and-validation-patterns
-Description: Validation philosophy, null safety, exception types, error messages, safe defaults, identifier validation, collection bounds, error testing, recovery strategies. Use when: implementing input validation, handling errors gracefully, or designing error recovery.
+description: Validation philosophy, null safety, exception types, error messages, safe defaults, identifier validation, collection bounds, error testing, recovery strategies. Use when: implementing input validation, handling errors gracefully, or designing error recovery.
 argument-hint: "Describe the validation requirement: what data needs to be validated, what are the error boundaries, and how should failures be communicated?"
 target: vscode
 ---

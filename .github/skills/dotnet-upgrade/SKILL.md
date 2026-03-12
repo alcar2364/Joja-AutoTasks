@@ -1,6 +1,6 @@
 ﻿---
 name: dotnet-upgrade
-Description: Ready-to-use prompts for comprehensive .NET framework upgrade analysis and execution
+description: Ready-to-use prompts for comprehensive .NET framework upgrade analysis and execution
 ---
 
 # Project Discovery & Assessment

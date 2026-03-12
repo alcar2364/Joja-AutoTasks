@@ -1,6 +1,6 @@
 ---
 name: reviewer-checklist-and-output-format
-Description: Reviewer checklist plus response template for contract, architecture, and risk verification. Use when: reviewing plans, diffs, or full implementations.
+description: Reviewer checklist plus response template for contract, architecture, and risk verification. Use when: reviewing plans, diffs, or full implementations.
 argument-hint: "Review scope, changed files, and findings"
 ---
 

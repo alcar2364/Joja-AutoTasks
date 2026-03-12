@@ -1,6 +1,6 @@
 ---
 name: jat-dependency-injection-and-composition
-Description: Constructor injection, dependency graphs, BootstrapContainer pattern, adding dependencies, testing dependency graphs, circular dependencies, optional dependencies. Use when: designing component dependencies, wiring the composition root, adding new services, or debugging injection issues.
+description: Constructor injection, dependency graphs, BootstrapContainer pattern, adding dependencies, testing dependency graphs, circular dependencies, optional dependencies. Use when: designing component dependencies, wiring the composition root, adding new services, or debugging injection issues.
 argument-hint: "Describe the dependency structure: what components need what dependencies, and where should the composition root wire them?"
 target: vscode
 ---

@@ -1,6 +1,6 @@
 ---
 name: jat-event-lifecycle-and-game-coupling
-Description: SMAPI event lifecycle, JAT lifecycle phases, event dispatch translation, task evaluation triggers, reconciliation after reload, update tick frequency, new feature integration patterns. Use when: hooking into game events, implementing lifecycle phases, debugging lifecycle coordination, or understanding game-JAT coupling points.
+description: SMAPI event lifecycle, JAT lifecycle phases, event dispatch translation, task evaluation triggers, reconciliation after reload, update tick frequency, new feature integration patterns. Use when: hooking into game events, implementing lifecycle phases, debugging lifecycle coordination, or understanding game-JAT coupling points.
 argument-hint: "Describe the game event requirement: which SMAPI event should trigger what JAT behavior, and how should it integrate with the existing lifecycle?"
 target: vscode
 ---

@@ -1,6 +1,6 @@
 ---
 name: godagent-workflow-patterns-and-assets
-Description: GodAgent workflow procedures and reusable templates for agent customization tasks. Use when: creating, analyzing, auditing, or debugging agent ecosystem files.
+description: GodAgent workflow procedures and reusable templates for agent customization tasks. Use when: creating, analyzing, auditing, or debugging agent ecosystem files.
 argument-hint: "Customization task type and scope"
 ---
 

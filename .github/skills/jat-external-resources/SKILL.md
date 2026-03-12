@@ -1,6 +1,6 @@
 ---
 name: jat-external-resources
-Description: Official source map for JAT modding APIs and integration libraries. Use when: implementing SMAPI APIs, StardewUI behavior, GMCM integration, or translation/I18n flows.
+description: Official source map for JAT modding APIs and integration libraries. Use when: implementing SMAPI APIs, StardewUI behavior, GMCM integration, or translation/I18n flows.
 argument-hint: "Subsystem + question + target API or doc"
 ---
 
