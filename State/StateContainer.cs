@@ -25,8 +25,10 @@ internal sealed class StateContainer
 
     internal void Remove(TaskId id)
     {
-        _tasksMap.Remove(id);
-        IncrementVersion();
+        if (_tasksMap.Remove(id))
+        {
+            IncrementVersion();
+        }
     }
 
     internal IReadOnlyCollection<TaskRecord> GetAll() => _tasksMap.Values;

@@ -22,6 +22,8 @@ internal sealed class StateStore
 
     private void Handle(IStateCommand command)
     {
+        long priorVersion = _stateContainer.Version;
+
         switch (command)
         {
             case AddOrUpdateTaskCommand addOrUpdateTaskCommand:
@@ -47,7 +49,10 @@ internal sealed class StateStore
                     $"No handler found for command type {command.GetType().Name}");
         }
 
-        SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
+        if (_stateContainer.Version != priorVersion)
+        {
+            SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
+        }
     }
 
     internal void OnDayStarted(DayKey newDay)
