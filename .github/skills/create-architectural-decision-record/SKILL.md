@@ -1,6 +1,6 @@
 ﻿---
 name: create-architectural-decision-record
-Description: Create an Architectural Decision Record (ADR) document for AI-optimized decision documentation.
+description: Create an Architectural Decision Record (ADR) document for AI-optimized decision documentation.
 ---
 
 # Create Architectural Decision Record

@@ -1,6 +1,6 @@
 ---
 name: starml-output-format
-Description: StarMLAgent response template for .sml implementation summaries and verification notes. Use when: reporting completed StarML or StardewUI markup changes.
+description: "StarMLAgent response template for .sml implementation summaries and verification notes. Use when: reporting completed StarML or StardewUI markup changes."
 argument-hint: "Summary of .sml edits and verification results"
 ---
 

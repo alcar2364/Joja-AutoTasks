@@ -1,6 +1,6 @@
 ﻿---
 name: create-specification
-Description: Create a new specification file for the solution, optimized for Generative AI consumption.
+description: Create a new specification file for the solution, optimized for Generative AI consumption.
 ---
 
 # Create Specification

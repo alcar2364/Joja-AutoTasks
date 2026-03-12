@@ -1,6 +1,6 @@
 ---
 name: jat-starml-cheatsheet
-Description: Quick StarML syntax and contract checklist for JAT. Use when: editing .sml tags, bindings, structural attributes, events, or template/include/outlet patterns.
+description: "Quick StarML syntax and contract checklist for JAT. Use when: editing .sml tags, bindings, structural attributes, events, or template/include/outlet patterns."
 argument-hint: "Target .sml file + intended layout or binding change"
 ---
 

@@ -1,6 +1,6 @@
 ﻿---
 name: ef-core
-Description: Get best practices for Entity Framework Core
+description: Get best practices for Entity Framework Core
 ---
 
 # Entity Framework Core Best Practices

@@ -1,6 +1,6 @@
 ﻿---
 name: breakdown-feature-implementation
-Description: Prompt for creating detailed feature implementation plans, following Epoch monorepo structure.
+description: Prompt for creating detailed feature implementation plans, following Epoch monorepo structure.
 ---
 
 # Feature Implementation Plan Prompt

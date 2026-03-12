@@ -1,6 +1,6 @@
 ---
 name: jat-ui-component-patterns
-Description: Reusable HUD/menu composition patterns for JAT. Use when: selecting layout shells, implementing list-details flows, organizing task rows, or preventing one-off UI structure drift.
+description: "Reusable HUD/menu composition patterns for JAT. Use when: selecting layout shells, implementing list-details flows, organizing task rows, or preventing one-off UI structure drift."
 argument-hint: "UI surface + user flow + layout constraints"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: troubleshooter-output-format
-Description: Troubleshooter diagnostic response template for root-cause analysis reports. Use when: reporting troubleshooting findings for build/runtime/UI/state/persistence/performance issues.
+description: "Troubleshooter diagnostic response template for root-cause analysis reports. Use when: reporting troubleshooting findings for build/runtime/UI/state/persistence/performance issues."
 argument-hint: "Problem symptoms and diagnostic findings"
 ---
 

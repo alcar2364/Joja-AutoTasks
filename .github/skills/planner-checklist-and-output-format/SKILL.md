@@ -1,6 +1,6 @@
 ---
 name: planner-checklist-and-output-format
-Description: Planner checklist plus response template for scoped implementation planning. Use when: converting research and constraints into executable plans.
+description: "Planner checklist plus response template for scoped implementation planning. Use when: converting research and constraints into executable plans."
 argument-hint: "Planning scope, constraints, and target subsystem"
 ---
 
