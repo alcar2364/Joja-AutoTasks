@@ -27,7 +27,8 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 | Refactorer     | Structural refactor execution                                                             | No behavior-changing feature work unless explicitly authorized                                      |
 | UnitTestAgent  | Unit-test creation and test review                                                        | No non-test feature implementation ownership                                                        |
 | Troubleshooter | Diagnosis, root-cause analysis, and documentation-follow-up routing after confirmed cause | No speculative large rewrites by default and no direct ownership of non-agent documentation editing |
-| WorkspaceAgent | Non-agent documentation artifacts                                                         | No agent customization files (.agent.md/.instructions.md/.prompt.md/SKILL.md/hooks.json)            |
+| WorkspaceAgent      | Non-agent documentation artifacts                                                         | No agent customization files (.agent.md/.instructions.md/.prompt.md/SKILL.md/hooks.json)            |
+| agentic-workflows   | **Platform-managed agent (gh-aw framework).** Dispatcher to gh-aw specialized prompts; uses `disable-model-invocation: true` and does not participate in JAT agent delegation or governance | Not a JAT custom agent; no JAT instruction wiring and no JAT skill assignments                      |
 
 ## Instruction-to-Agent Wiring
 
