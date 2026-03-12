@@ -17,9 +17,10 @@ internal static class BootstrapContainer
         logger.Info(LogEvents.StartupEntry, "Joja AutoLogger initialized.");
 
         ModConfig config = new ConfigLoader(helper).Load();
-        EventDispatcher eventDispatcher = new();
-        LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher);
         StateStore stateStore = new();
+        EventDispatcher eventDispatcher = new();
+        LifecycleCoordinator lifecycleCoordinator = new(logger, eventDispatcher, stateStore);
+        
         logger.Info(
             LogEvents.StartupInitialized,
             "Joja AutoTasks initialized. Your productivity is our priority!");

@@ -47,9 +47,9 @@ internal static class TaskIdFactory
 
     public static TaskId CreateManual(int manualId)
     {
-        if (manualId <= 0)
+        if (manualId < 0)
         {
-            throw new ArgumentException("Manual ID must be a positive integer.", nameof(manualId));
+            throw new ArgumentException("Manual ID must be zero or a positive integer.", nameof(manualId));
         }
 
         return TaskIdFromParts(

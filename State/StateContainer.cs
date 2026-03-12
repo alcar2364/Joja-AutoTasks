@@ -31,6 +31,12 @@ internal sealed class StateContainer
 
     internal IReadOnlyCollection<TaskRecord> GetAll() => _tasksMap.Values;
 
+    internal void Clear()
+    {
+        _tasksMap.Clear();
+        _version = default;
+    }
+
     // -- Private Helpers -- //
     private void IncrementVersion() => _version++;
 }

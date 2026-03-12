@@ -426,25 +426,25 @@ Step goal:
 
 ### 8B - Wire State Store initialization into lifecycle coordinator
 
-    * [ ] Action: add State Store initialization call in lifecycle coordinator's startup flow.
-    * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
-    * [ ] Verify: State Store initialized on game launch or save load; initialization is deterministic.
-    * [ ] Suggested commit: `phase3(step8B): wire State Store initialization into lifecycle`
-    * [ ] Must include: initialization hookup only.
-    * [ ] Must exclude: teardown logic.
+- [x] Action: add State Store initialization call in lifecycle coordinator's startup flow.
+- [x] Scope: `Lifecycle/LifecycleCoordinator.cs`.
+- [x] Verify: State Store initialized on game launch or save load; initialization is deterministic.
+- [x] Suggested commit: `phase3(step8B): wire State Store initialization into lifecycle`
+- [x] Must include: initialization hookup only.
+- [x] Must exclude: teardown logic.
 
 ### 8C - Wire State Store teardown on return-to-title
 
-    * [ ] Action: add State Store cleanup/disposal call in lifecycle coordinator's teardown flow.
-    * [ ] Scope: `Lifecycle/LifecycleCoordinator.cs`.
-    * [ ] Verify: State Store cleared when returning to title screen; teardown is safe and deterministic.
-    * [ ] Suggested commit: `phase3(step8C): wire State Store teardown on return-to-title`
-    * [ ] Must include: teardown/disposal hookup only.
-    * [ ] Must exclude: persistence save logic (Phase 7).
+- [x] Action: add State Store cleanup/disposal call in lifecycle coordinator's teardown flow.
+- [x] Scope: `Lifecycle/LifecycleCoordinator.cs`.
+- [x] Verify: State Store cleared when returning to title screen; teardown is safe and deterministic.
+- [x] Suggested commit: `phase3(step8C): wire State Store teardown on return-to-title`
+- [x] Must include: teardown/disposal hookup only.
+- [x] Must exclude: persistence save logic (Phase 7).
 
 ## Step 8 Completion
 
-    * [ ] All substeps in Step 8 complete (8A, 8B, 8C).
+- [x] All substeps in Step 8 complete (8A, 8B, 8C).
 
 ## 9) Phase 3 Verification Tests
 

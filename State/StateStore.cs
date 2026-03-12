@@ -88,6 +88,16 @@ internal sealed class StateStore
         Dispatch(command);
     }
 
+    // TODO: Phase 7 will implement loading
+    internal void OnSaveLoaded()
+    { }
+
+    internal void OnReturnToTitle()
+    {
+        _stateContainer.Clear();
+        _manualTaskCounter.Reset();
+    }
+
     private TaskId IssueNextManualTaskId()
     {
         int nextId = _manualTaskCounter.IssueNextId();
