@@ -1,10 +1,36 @@
 using JojaAutoTasks.State;
 using JojaAutoTasks.State.Models;
 
-namespace JojaAutoTasks.UI;
+namespace JojaAutoTasks.Ui;
 
-internal static class UISnapshotSubscriptionManager
+internal static class UiSnapshotSubscriptionManager
 {
+    private sealed class SnapshotSubscription : IDisposable
+    {
+        private readonly StateStore _stateStore;
+        private readonly Action<TaskSnapshot> _callback;
+
+        internal SnapshotSubscription(StateStore stateStore, Action<TaskSnapshot> callback)
+        {
+            _stateStore = stateStore;
+            _callback = callback;
+        }
+
+        public void Dispose()
+        {
+            _stateStore.SnapshotChanged -= _callback;
+        }
+
+    }
+
+    private sealed class NoOpSubscription : IDisposable
+    {
+        public void Dispose()
+        {
+            // No-op
+        }
+    }
+
     private static StateStore? _stateStore;
 
     internal static void Initialize(StateStore stateStore)
@@ -12,6 +38,7 @@ internal static class UISnapshotSubscriptionManager
         _stateStore = stateStore;
     }
 
+    // No lock required, SMAPI mods are single-threaded
     public static IDisposable Subscribe(Action<TaskSnapshot> callback)
     {
         if (callback == null)
@@ -26,32 +53,5 @@ internal static class UISnapshotSubscriptionManager
 
         _stateStore.SnapshotChanged += callback;
         return new SnapshotSubscription(_stateStore, callback);
-    }
-
-    private class SnapshotSubscription : IDisposable
-    {
-        private readonly StateStore _stateStore;
-        private readonly Action<TaskSnapshot> _callback;
-
-        internal SnapshotSubscription(StateStore stateStore, Action<TaskSnapshot> callback)
-        {
-            _stateStore = stateStore;
-            _callback = callback;
-        }
-
-        public void Dispose()
-        {
-            // Unsubscribe logic goes here
-            throw new NotImplementedException("Unsubscription logic is not yet implemented.");
-        }
-
-    }
-
-    private class NoOpSubscription : IDisposable
-    {
-        public void Dispose()
-        {
-            // No-op
-        }
     }
 }

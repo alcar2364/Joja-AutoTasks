@@ -79,16 +79,16 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### Step Goal
 
-- [ ] Add UI hook entry points in ModEntry; wire SnapshotChanged subscription at game startup; establish lifecycle teardown.
+- [x] Add UI hook entry points in ModEntry; wire SnapshotChanged subscription at game startup; establish lifecycle teardown.
 
 ### 1A - Add UISnapshotSubscriptionManager with per-subscriber handle semantics
 
-- [ ] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static Subscribe method that returns an IDisposable token and Unsubscribe method. Subscribe method accepts a snapshot action callback, registers it with StateStore.SnapshotChanged, and returns a handle (IDisposable) that unsubscribes **only that specific callback** when Dispose is called. Unsubscribe(IDisposable handle) is alternative explicit form (deprecated in favor of handle.Dispose()). Implement per-subscriber unsubscribe guarantee: calling Dispose on returned token removes only that subscription, not all subscriptions. Add thread-safety (lock) if shared state required; otherwise, document that calls must occur on main thread.
-- [ ] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable` and optional `Unsubscribe(IDisposable handle)` methods).
-- [ ] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose on token removes only that subscription; repeated Subscribe/Dispose cycles work correctly; no global unsubscribe-all behavior; no runtime errors when Subscribe is called before StateStore initialization (must handle null StateStore gracefully with early return or optional check).
-- [ ] **Suggested commit:** `phase4(step1A): add UISnapshotSubscriptionManager with per-subscriber handle semantics`
-- [ ] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes only that callback; per-subscriber safety guarantee; hook into StateStore.SnapshotChanged event; lifecycle documentation.
-- [ ] **Must exclude:** View model implementations, property binding, UI rendering.
+- [x] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static Subscribe method that returns an IDisposable token and Unsubscribe method. Subscribe method accepts a snapshot action callback, registers it with StateStore.SnapshotChanged, and returns a handle (IDisposable) that unsubscribes **only that specific callback** when Dispose is called. Unsubscribe(IDisposable handle) is alternative explicit form (deprecated in favor of handle.Dispose()). Implement per-subscriber unsubscribe guarantee: calling Dispose on returned token removes only that subscription, not all subscriptions. Add thread-safety (lock) if shared state required; otherwise, document that calls must occur on main thread.
+- [x] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable` and optional `Unsubscribe(IDisposable handle)` methods).
+- [x] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose on token removes only that subscription; repeated Subscribe/Dispose cycles work correctly; no global unsubscribe-all behavior; no runtime errors when Subscribe is called before StateStore initialization (must handle null StateStore gracefully with early return or optional check).
+- [x] **Suggested commit:** `phase4(step1A): add UISnapshotSubscriptionManager with per-subscriber handle semantics`
+- [x] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes only that callback; per-subscriber safety guarantee; hook into StateStore.SnapshotChanged event; lifecycle documentation.
+- [x] **Must exclude:** View model implementations, property binding, UI rendering.
 
 ### 1B - Wire UISnapshotSubscriptionManager into ModEntry lifecycle with ordering guard
 
@@ -536,4 +536,17 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ---
 
+## Implementation Notes -- Reviewer Action Required
+
+**Open questions for Reviewer:**
+
+1. Step 1A says to name the new subscription manager `UISnapshotSubscriptionManager`,  
+   however, [C# Contract](/.github/instructions/csharp-style-contract.instructions.md)  
+   says `Manager` name is to be avoided without justification. Is `UiSnapshotSubscriptionManager`  
+   acceptable given the UI-specific nature, or should we consider an alternative name
+   like `UiSnapshotSubscriptionCoordinator` given it is brokering subscriptions?
+   Let's discuss this post-review.
+
 **End of Phase 4 - Atomic Commit Execution Checklist**
+
+
