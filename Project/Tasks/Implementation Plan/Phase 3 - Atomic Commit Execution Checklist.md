@@ -588,9 +588,8 @@ Step goal:
 For 7D, SMAPI is single-threaded, so no risk of race conditions in counter increment
 logic.
 
-### Reviewer Action Required
+## Reviewer Action Required
 
-### Reviewer Action Required
 
 **Verify sourceIdentifier value (Step 7C):** `DispatchCreateManualTaskCommand`
 hardcodes `sourceIdentifier: "Player"`. This was chosen to describe the WHO
@@ -621,7 +620,7 @@ guide and architecture map should be updated to reflect that `TaskIdFactory` own
 all `TaskId` format logic, including manual tasks. If it does not, we need to
 have a discussion.
 
-## Deferred Items
+### Deferred Items
 
 **Open Issue not yet added to index**
 
