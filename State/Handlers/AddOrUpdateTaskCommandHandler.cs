@@ -33,7 +33,6 @@ internal sealed class AddOrUpdateTaskCommandHandler : ICommandHandler<AddOrUpdat
         {
             existingRecord.Title = command.Title;
             existingRecord.Description = command.Description;
-            existingRecord.ProgressCurrent = command.ProgressCurrent;
 
             state.Set(command.TaskId, existingRecord);
         }
