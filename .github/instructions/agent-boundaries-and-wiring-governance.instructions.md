@@ -19,6 +19,7 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 | Researcher | Context discovery and evidence gathering only | No implementation and no final review verdicts |
 | Planner | Step-by-step implementation planning only | No direct code edits and no markdown drafting |
 | Reviewer | Contract/risk review only | No direct implementation or markdown drafting |
+| GitAgent | Git repository maintenance, commit composition, and git workflow guidance | No non-git feature implementation ownership |
 | CSharpMentor | C# mentorship and guidance-only coaching with optional explicit user-requested edits | No autonomous large-scope implementation ownership and no bypass of architecture/style contracts |
 | GameAgent | Backend/engine/state/persistence C# implementation | No StarML authoring and no documentation ownership |
 | UIAgent | Frontend C# view-model/UI interaction implementation | No .sml authoring and no backend canonical-state ownership |
@@ -45,7 +46,7 @@ Every instruction file below is wired to at least one agent.
 | github-actions-ci-cd-best-practices.instructions.md | Troubleshooter | WorkspaceAgent, GodAgent |
 | json-style-contract.instructions.md | GameAgent | Refactorer, Reviewer |
 | performance-optimization.instructions.md | Troubleshooter | GameAgent, UIAgent, Reviewer |
-| powershell-terminal-best-practices.instructions.md | Troubleshooter | All agents using run_in_terminal |
+| powershell-terminal-best-practices.instructions.md | Troubleshooter | All agents using run_in_terminal, including GitAgent |
 | review-and-verification-contract.instructions.md | Reviewer | Orchestrator, UnitTestAgent, UnitTestCliAgent |
 | security-and-owasp.instructions.md | Reviewer | Troubleshooter, GameAgent, UIAgent |
 | self-explanatory-code-commenting.instructions.md | Refactorer | GameAgent, UIAgent, UnitTestAgent, UnitTestCliAgent |
@@ -81,7 +82,7 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | dotnet-best-practices | GameAgent | Refactorer, Reviewer |
 | dotnet-upgrade | Refactorer | Troubleshooter |
 | ef-core | GameAgent | Refactorer |
-| git-commit | Orchestrator | WorkspaceAgent |
+| git-commit | GitAgent | Orchestrator, WorkspaceAgent |
 | godagent-workflow-patterns-and-assets | GodAgent | Orchestrator |
 | jat-build-debug-and-deployment-workflow | Troubleshooter | GameAgent |
 | jat-command-reducer-snapshot-flow | GameAgent | Reviewer |
@@ -113,6 +114,7 @@ Agents MUST update this instruction file in the same change set when any of the 
 1. A new instruction file is added under `.github/instructions/`.
 2. A new skill is added under `.github/skills/*/SKILL.md`.
 3. Agent scope changes in any `.github/agents/*.agent.md` file.
+4. Any agent is created or updated: run an adjacent-artifact audit for **skill**, **prompt**, and **hook** coverage; create/update artifacts when needed or explicitly record `not needed` with rationale.
 
 ## Scope-change rule ##
 
