@@ -1,8 +1,7 @@
 ---
 name: jat-persistence-migration-and-reconstruction
-description: Minimal persistence principles, versioning requirements, migration patterns, data reconstruction, safe failure modes, round-trip testing, and necessity checklist. Use when: designing what to persist, migrating data formats, saving/loading state, or recovering from corruption.
+description: "Minimal persistence principles, versioning requirements, migration patterns, data reconstruction, safe failure modes, round-trip testing, and necessity checklist. Use when: designing what to persist, migrating data formats, saving/loading state, or recovering from corruption."
 argument-hint: "Describe what data you need to persist: what state is derived vs. essential, and how does the save format evolve?"
-target: vscode
 ---
 
 # Persistence, Migration, and Reconstruction Skill
