@@ -1,5 +1,9 @@
 # Deferments Index
 
+> Deprecated compatibility view. The canonical active tracking system is now `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`.
+
+> Legacy deferments are migrated into the new system as `type: Deferment` records.
+
 **Status**: Active source-of-truth for unresolved deferments  
 **Last Updated**: 2026-03-11
 

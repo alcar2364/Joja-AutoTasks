@@ -9,13 +9,6 @@ on:
       - "**.sln"
       - "manifest.json"
     types: [opened, synchronize, reopened]
-  push:
-    branches: [development]
-    paths:
-      - "**.cs"
-      - "**.csproj"
-      - "**.sln"
-      - "manifest.json"
   workflow_dispatch:
 permissions:
   contents: read
@@ -55,7 +48,7 @@ merge on build failure.
 - PR base commit: `${{ github.event.pull_request.base.sha }}`
 - Build command: `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
 - Target frameworks: mod net6.0, tests net8.0
-- Trigger: code changes only (`.cs`, `.csproj`, `.sln`, `manifest.json`)
+- Trigger: pull requests with code changes only (`.cs`, `.csproj`, `.sln`, `manifest.json`)
 
 ## Pipeline Steps
 

@@ -1,0 +1,65 @@
+name: Review follow-up
+description: Track work deferred from PR review, code review, or automated review findings.
+title: "Review follow-up: "
+labels:
+  - implementation-issue
+  - "issue-type: review-follow-up"
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+  - type: input
+    id: created_phase
+    attributes:
+      label: Created phase
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Review source such as PR number or workflow name.
+    validations:
+      required: true
+  - type: input
+    id: scheduled_target
+    attributes:
+      label: Scheduled target
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale and context
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+  - type: textarea
+    id: implementation_notes
+    attributes:
+      label: Implementation notes
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance / closing criteria
+    validations:
+      required: true

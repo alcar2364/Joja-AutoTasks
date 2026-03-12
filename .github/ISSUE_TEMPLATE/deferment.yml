@@ -1,0 +1,79 @@
+name: Deferment
+description: Track work that is intentionally deferred to a later phase or later implementation window.
+title: "Deferment: "
+labels:
+  - implementation-issue
+  - "issue-type: deferment"
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Brief implementation-purpose statement of the deferred work.
+      placeholder: Implement persistence save/load for full State Store state across sessions
+    validations:
+      required: true
+  - type: input
+    id: created_phase
+    attributes:
+      label: Created phase
+      description: Phase where this deferment was identified.
+      placeholder: Phase 3
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Checklist step, review, workflow, or developer source.
+      placeholder: Phase 3 checklist, Deferred Items
+    validations:
+      required: true
+  - type: input
+    id: scheduled_target
+    attributes:
+      label: Scheduled target
+      description: Target phase or implementation window.
+      placeholder: Phase 5
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Extra context that should stay visible in the index.
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale and context
+      description: Explain why this work is being deferred now.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Impact on timeline, implementation order, or users.
+  - type: textarea
+    id: implementation_notes
+    attributes:
+      label: Implementation notes
+      description: Technical constraints, design notes, or related follow-up information.
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance / closing criteria
+      description: What must happen before this can be closed.
+    validations:
+      required: true
