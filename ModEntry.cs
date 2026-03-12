@@ -1,6 +1,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using JojaAutoTasks.Startup;
+using JojaAutoTasks.Ui;
 
 namespace JojaAutoTasks;
 
@@ -12,6 +13,7 @@ internal sealed class ModEntry : Mod
 
     // -- State -- //
     private uint _nextTickLogAt;
+    private IDisposable? _snapshotSubscriptionToken;
 
     // -- Public API -- //
     /// <summary>Initializes the mod entry point.</summary>
@@ -19,6 +21,11 @@ internal sealed class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         _runtime = BootstrapContainer.Build(helper, Monitor);
+
+        // Initialize UI snapshot subscription manager. Cannot be null after this point
+        // because StateStore initialization is guaranteed to have completed.
+        UiSnapshotSubscriptionManager.Initialize(_runtime.StateStore);
+        _snapshotSubscriptionToken = UiSnapshotSubscriptionManager.Subscribe(_snapshot => { });
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -52,7 +59,15 @@ internal sealed class ModEntry : Mod
     // Saving remains signal-only so persistence work never runs inside SMAPI's saving hook.
     private void OnSaving(object? sender, SavingEventArgs e)
     {
+        // Dispose of the snapshot after saving to prevent memory leaks
+        // Guarded so that if saving occurs before subscription is established, 
+        // it won't throw null-reference
         _runtime.LifecycleCoordinator.HandleSavingInProgress();
+        if (_snapshotSubscriptionToken is not null)
+        {
+            _snapshotSubscriptionToken.Dispose();
+            _snapshotSubscriptionToken = null;
+        }
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)

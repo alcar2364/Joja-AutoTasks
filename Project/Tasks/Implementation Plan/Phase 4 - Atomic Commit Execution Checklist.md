@@ -1,71 +1,112 @@
 # Phase 4 - Atomic Commit Execution Checklist
 
-**Phase:** Phase 4 (View Model Infrastructure)  
-**Scope:** INPC-based view model foundation, snapshot subscription lifecycle, UI command dispatch, command/snapshot boundary integrity  
-**Target Deferments:** DEF-007, DEF-008, DEF-009, DEF-010, DEF-032  
-**Status:** Draft-Ready for Execution
-
----
+| **Detail**             | **Description**                                                                                                                   |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Phase:**             | Phase 4 (View Model Infrastructure)                                                                                               |
+| **Scope:**             | INPC-based view model foundation, snapshot subscription<br>lifecycle, UI command dispatch, command/snapshot<br>boundary integrity |
+| **Target Deferments:** | DEF-007, DEF-008, DEF-009, DEF-010, DEF-032                                                                                       |
+| **Status:**            | Draft-Ready for Execution                                                                                                         |
 
 ## Guardrails (Must Stay True)
 
-- [ ] **Command/Snapshot Boundary Integrity**: UIViewModel receives snapshots from state subscription; never mutates canonical state directly. All state writes route through commands.
-- [ ] **Deterministic Reconciliation by Stable Key**: Collection/item reconciliation uses stable identifiers (TaskId, RuleId, etc.) with sorted iteration; no reliance on list order or mutation sequence.
-- [ ] **Subscription Lifecycle Ownership**: ViewModels subscribe to SnapshotChanged on initialization; unsubscribe on disposal. No dangling subscriptions.
-- [ ] **No Optimistic Canonical Mutation**: UI never writes to StateStore, StateContainer, or StateHandle directly. Only read canonical state through snapshots.
-- [ ] **ManualTask\_{N} Terminology Baseline**: All new property names, comments, and UI text use `ManualTask_{N}` wording consistently (not "Manual Rule" or "Custom Task").
-- [ ] **DEF-032 Exception-Only Boundary**: ConfigLoader catch-path hardening limited to exception handling, fallback logic, and structured logging. No config schema expansion, version migration logic, or feature-level decision-making in catch paths.
-
----
+- [ ] **Command/Snapshot Boundary Integrity**: UIViewModel receives snapshots from
+      state subscription; never mutates canonical state directly. All state writes
+      route through commands.
+- [ ] **Deterministic Reconciliation by Stable Key**: Collection/item reconciliation
+      uses stable identifiers (TaskId, RuleId, etc.) with sorted iteration; no reliance
+      on list order or mutation sequence.
+- [ ] **Subscription Lifecycle Ownership**: ViewModels subscribe to SnapshotChanged
+      on initialization; unsubscribe on disposal. No dangling subscriptions.
+- [ ] **No Optimistic Canonical Mutation**: UI never writes to StateStore, StateContainer,
+      or StateHandle directly. Only read canonical state through snapshots.
+- [ ] **ManualTask\_{N} Terminology Baseline**: All new property names, comments,
+      and UI text use `ManualTask_{N}` wording consistently (not "Manual Rule" or
+      "Custom Task").
+- [ ] **DEF-032 Exception-Only Boundary**: ConfigLoader catch-path hardening limited
+      to exception handling, fallback logic, and structured logging. No config schema
+      expansion, version migration logic, or feature-level decision-making in catch paths.
 
 ## Phase Overview
 
 ### Phase Goal
 
-Implement deterministic, testable UI infrastructure founded on INPC-based view models that subscribe to snapshot changes and project state into bindable properties. Establish the command/snapshot boundary integrity pattern and resolve terminology ambiguity (DEF-007), snapshot subscription lifecycle (DEF-008), INPC/collection reconciliation mechanics (DEF-009), UI-local state ownership patterns (DEF-010), and ConfigLoader exception hardening (DEF-032). Phase 4 outputs are testable without running Stardew Valley. **Phase scope includes initial consumer view models (HudViewModel, TaskListViewModel) and additional catalog surface view models (HudTaskRowViewModel, TaskDetailViewModel, HistoryViewModel, ManualTaskEditorViewModel, ConfigViewModel) with complete coverage of subscription initialization, snapshot projection, and command dispatch patterns across all included surfaces.**
+Implement deterministic, testable UI infrastructure founded on INPC-based view models
+that subscribe to snapshot changes and project state into bindable properties. Establish
+the command/snapshot boundary integrity pattern and resolve terminology ambiguity
+(DEF-007),snapshot subscription lifecycle (DEF-008), INPC/collection reconciliation
+mechanics (DEF-009), UI-local state ownership patterns (DEF-010), and ConfigLoader
+exception hardening (DEF-032). Phase 4 outputs are testable without running Stardew
+Valley.
+
+**Phase scope includes initial consumer view models (HudViewModel, TaskListViewModel)
+and additional catalog surface view models (HudTaskRowViewModel, TaskDetailViewModel,
+HistoryViewModel, ManualTaskEditorViewModel, ConfigViewModel) with complete coverage
+of subscription initialization, snapshot projection, and command dispatch patterns
+across all included surfaces.**
 
 ### Architecture Components
 
-- **UIViewModelBase** — Base class implementing INotifyPropertyChanged via PropertyChanged.SourceGenerator; defines property change notification pattern
-- **HudViewModel** — HUD surface view model; subscribes to SnapshotChanged and projects task summary/status data into bindable properties
-- **TaskListViewModel** — Task list/history surface view model; manages TaskSnapshot collection with deterministic reconciliation
-- **HudTaskRowViewModel** — HUD row item view model; projects individual task properties with binding support
-- **TaskDetailViewModel** — Detail surface view model; provides comprehensive task information and edit capability binding
-- **HistoryViewModel** — History/past tasks surface view model; maintains sorted, reconciled task history collection
-- **ManualTaskEditorViewModel** — Editor surface view model for manual task creation/editing; manages form state and validation binding
-- **ConfigViewModel** — Configuration surface view model; projects config state and dispatches config changes (if Phase 4 scope includes config UI)
-- **UISnapshotSubscriptionManager** — Lifecycle coordinator for view model subscription/unsubscription; handles per-viewmodel dispose safety with token-based unsubscribe semantics
-- **ConfigLoader Exception Hardening** — Deterministic fallback logic and structured logging in config read/normalize catch paths
-- **UI Command Dispatch** — Pattern for marshaling user commands (add task, complete, pin, etc.) from UI into StateStore command system
+- **`UIViewModelBase`** — Base class implementing `INotifyPropertyChanged` via `PropertyChanged.SourceGenerator`;
+   defines property change notification pattern
+- **`HudViewModel`** — HUD surface view model; subscribes to `SnapshotChanged` and
+   projects task summary/status data into bindable properties
+- **`TaskListViewModel`** — Task list/history surface view model; manages `TaskSnapshot`
+   collection with deterministic reconciliation
+- **`HudTaskRowViewModel`** — HUD row item view model; projects individual task
+   properties with binding support
+- **`TaskDetailViewModel`** — Detail surface view model; provides comprehensive
+   task information and edit capability binding
+- **`HistoryViewModel`** — History/past tasks surface view model; maintains sorted,
+   reconciled task history collection
+- **`ManualTaskEditorViewModel`** — Editor surface view model for manual task creation/editing;
+   manages form state and validation binding
+- **`ConfigViewModel`** — Configuration surface view model; projects config state
+   and dispatches config changes (if Phase 4 scope includes config UI)
+- **`UISnapshotSubscriptionManager`** — Lifecycle coordinator for view model subscription/unsubscription;
+   handles per-viewmodel dispose safety with token-based unsubscribe semantics
+- **`ConfigLoader Exception Hardening`** — Deterministic fallback logic and structured
+   logging in config read/normalize catch paths
+- **`UI Command Dispatch`** — Pattern for marshaling user commands (add task, complete,
+   pin, etc.) from UI into StateStore command system
 
 ### Prerequisites
 
-- **Phase 1** (Lifecycle/Config): ModEntry, lifecycle hooks (OnSaving, UpdateTicked), ConfigLoader, logging
-- **Phase 2** (State Foundation): StateStore, StateContainer, SnapshotProjector, TaskSnapshot and related domain models
-- **Phase 3** (Commands/Handlers): Command contracts, command handlers, deterministic state mutation pattern
+- **Phase 1** (Lifecycle/Config): ModEntry, lifecycle hooks (OnSaving, UpdateTicked),
+   ConfigLoader, logging
+- **Phase 2** (State Foundation): StateStore, StateContainer, SnapshotProjector,
+   TaskSnapshot and related domain models
+- **Phase 3** (Commands/Handlers): Command contracts, command handlers, deterministic
+   state mutation pattern
 
-Phase 4 builds on these by wiring UI surface observation into snapshot subscription and command dispatch.
+Phase 4 builds on these by wiring UI surface observation into snapshot subscription
+and command dispatch.
 
 ### Architecture Relationships
 
 **Prior Phases:**
 
-- Phase 1 provides config-ready ModEntry and lifecycle signals
-- Phase 2 provides StateStore with SnapshotChanged event and TaskSnapshot projections
+- Phase 1 provides config-ready `ModEntry` and `Lifecycle` signals
 - Phase 3 provides command contracts and deterministic handlers
+- Phase 3 provides `StateStore` with `SnapshotChanged` event and `TaskSnapshot`
+   projections
 
 **This Phase:**
 
 - Implements UI foundation (view models, property binding, subscription lifecycle)
-- Establishes snapshot-to-UI projection pattern (read-only snapshots → bindable properties)
-- Establishes UI-to-command pattern (user action → command → snapshot update → UI refresh)
-- Resolves in-phase deferments: DEF-007 (terminology), DEF-008 (subscription lifecycle), DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception hardening)
+- Establishes snapshot-to-UI projection pattern (read-only snapshots → bindable
+   properties)
+- Establishes UI-to-command pattern (user action → command → snapshot update → UI
+   refresh)
+- Resolves in-phase deferments: DEF-007 (terminology), DEF-008 (subscription lifecycle),
+   DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception
+   hardening)
 
 **Future Phases:**
 
 - Phase 5 (HUD/Menu UI): Render HudViewModel and TaskListViewModel into game surfaces
 - Phase 6 (User Interactions): Wire click/input handlers into command dispatch
-- Phase 7+ (Polish/Persistence): Performance optimization, save/load integration, extended features
+- Phase 7+ (Polish/Persistence): Performance optimization, save/load integration,
+   extended features
 
 ### Design Guide References
 
@@ -83,21 +124,57 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 1A - Add UISnapshotSubscriptionManager with per-subscriber handle semantics
 
-- [x] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static Subscribe method that returns an IDisposable token and Unsubscribe method. Subscribe method accepts a snapshot action callback, registers it with StateStore.SnapshotChanged, and returns a handle (IDisposable) that unsubscribes **only that specific callback** when Dispose is called. Unsubscribe(IDisposable handle) is alternative explicit form (deprecated in favor of handle.Dispose()). Implement per-subscriber unsubscribe guarantee: calling Dispose on returned token removes only that subscription, not all subscriptions. Add thread-safety (lock) if shared state required; otherwise, document that calls must occur on main thread.
-- [x] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable` and optional `Unsubscribe(IDisposable handle)` methods).
-- [x] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose on token removes only that subscription; repeated Subscribe/Dispose cycles work correctly; no global unsubscribe-all behavior; no runtime errors when Subscribe is called before StateStore initialization (must handle null StateStore gracefully with early return or optional check).
-- [x] **Suggested commit:** `phase4(step1A): add UISnapshotSubscriptionManager with per-subscriber handle semantics`
-- [x] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes only that callback; per-subscriber safety guarantee; hook into StateStore.SnapshotChanged event; lifecycle documentation.
+- [x] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static
+      Subscribe method that returns an IDisposable token and Unsubscribe method.
+      Subscribe method accepts a snapshot action callback, registers it with `StateStore.SnapshotChanged`,
+      and returns a handle (`IDisposable`) that unsubscribes **only that specific
+      callback** when Dispose is called. `Unsubscribe(IDisposable handle)` is
+      alternative explicit form (deprecated in favor of handle.Dispose()).
+      Implement per-subscriber unsubscribe guarantee: calling Dispose on returned
+      token removes only that subscription, not all subscriptions. Add thread-safety
+      (lock) if shared state required; otherwise, document that calls must occur
+      on main thread.
+- [x] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class
+      `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable`
+      and optional `Unsubscribe(IDisposable handle)` methods).
+- [x] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose
+      on token removes only that subscription; repeated Subscribe/Dispose cycles
+      work correctly; no global unsubscribe-all behavior; no runtime errors when
+      Subscribe is called before StateStore initialization (must handle null StateStore
+      gracefully with early return or optional check).
+- [x] **Suggested commit:** "phase4(step1A): add `UISnapshotSubscriptionManager`
+      with per-subscriber handle semantics"
+- [x] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes
+      only that callback; per-subscriber safety guarantee; hook into `StateStore.SnapshotChanged`
+      event; lifecycle documentation.
 - [x] **Must exclude:** View model implementations, property binding, UI rendering.
 
 ### 1B - Wire UISnapshotSubscriptionManager into ModEntry lifecycle with ordering guard
 
-- [ ] **Action:** In ModEntry.Entry, **after StateStore and StateContainer are fully initialized** (verify initialization order: StateStore, SnapshotProjector, StateContainer must all be available before Subscribe is called), call UISnapshotSubscriptionManager.Subscribe with a lambda or delegate that receives TaskSnapshot updates. Store returned IDisposable token. **Add explicit guard assertion**: StateStore.Instance must not be null; if null, skip subscription with logged warning and return gracefully (do not throw). In ModEntry.OnSaving, call Dispose on the stored token to tear down subscription before game save (disposing token unsubscribes only that specific callback).
-- [ ] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization ordering guard).
-- [ ] **Verify:** Build succeeds; ModEntry loads without throwing; StateStore initialization order guard prevents null-reference during subscription; subscription is established during Entry and can be verified through log tracing (add minimal log statement when subscription established); token disposal properly unsubscribes.
-- [ ] **Suggested commit:** `phase4(step1B): wire UISnapshotSubscriptionManager into ModEntry lifecycle with initialization order guard`
-- [ ] **Must include:** Call to Subscribe in Entry after StateStore fully initialized; explicit null-check guard on StateStore.Instance; token disposal in OnSaving; minimal logging to confirm subscription lifecycle; documented initialization order constraint.
-- [ ] **Must exclude:** View model implementation, UI rendering, command dispatch setup (defer to later steps).
+- [ ] **Action:** In `ModEntry.Entry`, **after `StateStore` and `StateContainer`
+      are fully initialized** (verify initialization order: `StateStore`, `SnapshotProjector`,
+      `StateContainer` must all be available before Subscribe is called), call `UISnapshotSubscriptionManager.Subscribe`
+      with a lambda or delegate that receives `TaskSnapshot` updates. Store returned
+      `IDisposable` token. **Add explicit guard assertion**: `StateStore.Instance`
+      must not be `null`; if `null`, skip subscription with logged warning and return
+      gracefully (do not throw). In `ModEntry.OnSaving`, call `Dispose` on the stored
+      token to tear down subscription before game save (disposing token unsubscribes
+      only that specific callback).
+- [ ] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization
+      ordering guard).
+- [ ] **Verify:** Build succeeds; `ModEntry` loads without throwing; `StateStore`
+      initialization order guard prevents null-reference during subscription;
+      tracing subscription is established during `Entry` and can be verified through  
+      log (add minimal log statement when subscription established); token disposal
+      properly unsubscribes.
+- [ ] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager`
+      into `ModEntry` lifecycle with initialization order guard"
+- [ ] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully
+      initialized; explicit null-check guard on `StateStore.Instance`; token disposal
+      in `OnSaving`; minimal logging to confirm subscription lifecycle; documented
+      initialization order constraint.
+- [ ] **Must exclude:** View model implementation, UI rendering, command dispatch
+      setup (defer to later steps).
 
 ### 1C - Create UIViewModelBase with INotifyPropertyChanged
 
@@ -548,5 +625,3 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
    Let's discuss this post-review.
 
 **End of Phase 4 - Atomic Commit Execution Checklist**
-
-
