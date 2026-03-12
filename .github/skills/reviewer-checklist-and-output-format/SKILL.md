@@ -97,3 +97,24 @@ Choose one:
 ## Optional Fix List ##
 
 - Short ordered fix list limited to real findings.
+
+## Phase Completion Addendum ##
+
+When the review target is a phase completion gate/checklist, create two separate artifacts:
+
+1. A standalone post-phase implementation review report.
+2. A separate post-phase implementation atomic execution checklist.
+
+Do not combine both artifacts into one section or one file.
+
+## Post-Phase Review Report ##
+
+- Scope/architecture issues and ambiguity discovered during completion review.
+- Evidence for each finding (files/symbols/contracts).
+- Why each issue is deferred from in-phase implementation.
+
+## Post-Phase Atomic Execution Checklist ##
+
+- Ordered remediation items the user should execute in a post-phase implementation atomic execution checklist.
+- Acceptance criteria per item.
+- Explicit note that reviewer did not implement scope/architecture fixes during the review pass.

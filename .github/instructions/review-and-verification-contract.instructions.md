@@ -365,6 +365,17 @@ Reviewers MUST clearly separate:
 If the user explicitly chose a tradeoff, reviewers may note the tradeoff but should not pretend it
 is an accidental mistake.
 
+### 12.5 Phase completion learning workflow ###
+
+When reviewing a phase completion gate/checklist, reviewers MUST:
+
+    - finalize the checklist review artifacts (build/test evidence, guardrail audit, scope audit, deferment reconciliation)
+    - document scope/architecture issues, ambiguity, and remediation in a **post-phase implementation review report**
+    - avoid implementing those scope/architecture fixes during the review pass
+    - route fixes into a **post-phase implementation atomic execution checklist** owned by the user
+
+For phase completion reviews, the reviewer role is verification and teaching, not direct implementation.
+
 ## 13. Acceptance rules ##
 
 A change SHOULD be considered **Blocked by contract violation** if it:
