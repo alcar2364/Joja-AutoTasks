@@ -38,7 +38,7 @@ public class FieldSeparationTests
         AddOrUpdateTaskCommand command = new(
             taskId: taskId,
             category: TaskCategory.Farming,
-            sourceType: TaskSourceType.Manual,
+            sourceType: TaskSourceType.BuiltIn,
             title: "Updated title",
             description: "Updated description",
             progressCurrent: 4,
@@ -53,7 +53,7 @@ public class FieldSeparationTests
         Assert.True(exists);
         Assert.NotNull(updatedRecord);
         Assert.True(updatedRecord.IsPinned);
-        Assert.Equal(3, updatedRecord.ProgressCurrent);
+        Assert.Equal(4, updatedRecord.ProgressCurrent);
         Assert.Equal(TaskStatus.Completed, updatedRecord.Status);
     }
 
@@ -103,7 +103,7 @@ public class FieldSeparationTests
     }
 
     [Fact]
-    public void Handle_WhenExistingRecordIsNonManual_DoesNotMutateRecord()
+    public void Handle_WhenEngineUpdateTargetsExistingNonManualRecord_UpdatesEngineFieldsAndPreservesUserFields()
     {
         StateContainer state = new();
         AddOrUpdateTaskCommandHandler sut = new();
@@ -130,13 +130,13 @@ public class FieldSeparationTests
         AddOrUpdateTaskCommand command = new(
             taskId: taskId,
             category: TaskCategory.Farming,
-            sourceType: TaskSourceType.Manual,
-            title: "Updated title that should be ignored",
-            description: "Updated description that should be ignored",
+            sourceType: TaskSourceType.BuiltIn,
+            title: "Updated built-in title",
+            description: "Updated built-in description",
             progressCurrent: 99,
             progressMax: 99,
             creationDay: creationDay,
-            sourceIdentifier: "Manual.TryUpdate");
+            sourceIdentifier: "BuiltIn.Forager.Updated");
 
         sut.Handle(command, state);
 
@@ -144,11 +144,12 @@ public class FieldSeparationTests
 
         Assert.True(exists);
         Assert.NotNull(updatedRecord);
-        Assert.Equal("Original built-in title", updatedRecord.Title);
-        Assert.Equal("Original built-in description", updatedRecord.Description);
-        Assert.Equal(2, updatedRecord.ProgressCurrent);
-        Assert.Equal(5, updatedRecord.ProgressMax);
+        Assert.Equal("Updated built-in title", updatedRecord.Title);
+        Assert.Equal("Updated built-in description", updatedRecord.Description);
+        Assert.Equal(99, updatedRecord.ProgressCurrent);
+        Assert.Equal(99, updatedRecord.ProgressMax);
         Assert.True(updatedRecord.IsPinned);
-        Assert.Equal(versionBeforeUpdateAttempt, state.Version);
+        Assert.True(state.Version > versionBeforeUpdateAttempt);
     }
 }
+

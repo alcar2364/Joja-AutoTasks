@@ -29,12 +29,31 @@ internal sealed class AddOrUpdateTaskCommandHandler : ICommandHandler<AddOrUpdat
             return;
         }
 
-        if (existingRecord.SourceType == TaskSourceType.Manual)
+        if (command.SourceType == TaskSourceType.Manual)
         {
+            // User-authored edits preserve engine-owned progress/status fields.
             existingRecord.Title = command.Title;
             existingRecord.Description = command.Description;
 
             state.Set(command.TaskId, existingRecord);
+            return;
         }
+
+        // Engine-authored updates preserve user-owned fields such as pin and completion state.
+        TaskRecord updatedRecord = new(
+            id: existingRecord.Id,
+            category: command.Category,
+            sourceType: command.SourceType,
+            title: command.Title,
+            description: command.Description,
+            status: existingRecord.Status,
+            progressCurrent: command.ProgressCurrent,
+            progressMax: command.ProgressMax,
+            creationDay: command.CreationDay,
+            completionDay: existingRecord.CompletionDay,
+            sourceIdentifier: command.SourceIdentifier,
+            isPinned: existingRecord.IsPinned);
+
+        state.Set(command.TaskId, updatedRecord);
     }
 }

@@ -3,6 +3,7 @@ using JojaAutoTasks.Domain.Tasks;
 using JojaAutoTasks.State;
 using JojaAutoTasks.State.Commands;
 using JojaAutoTasks.State.DayBoundary;
+using JojaAutoTasks.State.Handlers;
 using JojaAutoTasks.State.Models;
 using StateStoreType = JojaAutoTasks.State.StateStore;
 using TaskStatus = JojaAutoTasks.Domain.Tasks.TaskStatus;
@@ -37,13 +38,14 @@ public sealed class DayBoundaryTests
     public void RemoveExpiredTasks_WhenGivenExpiredIds_RemovesOnlySuppliedIds()
     {
         StateContainer stateContainer = new();
+        RemoveTaskCommandHandler removeTaskHandler = new();
         TaskId expiredId = new("manual_expired_remove");
         TaskId activeId = new("manual_active_keep");
 
         stateContainer.Set(expiredId, CreateTaskRecord(expiredId, DayKeyFactory.Create(1, "Spring", 1)));
         stateContainer.Set(activeId, CreateTaskRecord(activeId, DayKeyFactory.Create(1, "Spring", 2)));
 
-        DayTransitionHandler.RemoveExpiredTasks(new[] { expiredId }, stateContainer);
+        DayTransitionHandler.RemoveExpiredTasks(new[] { expiredId }, stateContainer, removeTaskHandler);
 
         Assert.False(stateContainer.TryGet(expiredId, out _));
         Assert.True(stateContainer.TryGet(activeId, out _));

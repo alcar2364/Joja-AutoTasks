@@ -61,7 +61,7 @@ internal sealed class StateStore
 
         if (expiredIds.Count > 0)
         {
-            DayTransitionHandler.RemoveExpiredTasks(expiredIds, _stateContainer);
+            DayTransitionHandler.RemoveExpiredTasks(expiredIds, _stateContainer, _removeTaskHandler);
             SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer));
         }
     }
