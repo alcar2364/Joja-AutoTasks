@@ -1,6 +1,6 @@
 ---
 name: jat-snapshot-binding-and-ui-data-flow
-description: Snapshot role in UI binding, immutability contracts, StardewUI binding patterns, change notification, anti-patterns, and performance guardrails. Use when: connecting State Store snapshots to UI, implementing UI data binding, or debugging UI synchronization issues.
+description: "Snapshot role in UI binding, immutability contracts, StardewUI binding patterns, change notification, anti-patterns, and performance guardrails. Use when: connecting State Store snapshots to UI, implementing UI data binding, or debugging UI synchronization issues."
 argument-hint: "Describe the UI requirement: what snapshot data needs to display, how should user actions update state, and what triggers UI refresh?"
 target: vscode
 ---

@@ -1,6 +1,6 @@
 ---
 name: jat-identifier-determinism-patterns
-description: Determinism fundamentals, TaskID formula, RuleID stability, SubjectID mapping, DayKey consistency, identifier stability testing, anti-patterns. Use when: designing identifiers for tasks/rules/subjects, ensuring stable IDs across reloads, or testing determinism.
+description: "Determinism fundamentals, TaskID formula, RuleID stability, SubjectID mapping, DayKey consistency, identifier stability testing, anti-patterns. Use when: designing identifiers for tasks/rules/subjects, ensuring stable IDs across reloads, or testing determinism."
 argument-hint: "Describe the identifier requirement: what needs to be uniquely and stably identified, and across what scenarios (reload, multi-pass generation)?"
 target: vscode
 ---

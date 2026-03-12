@@ -1,6 +1,6 @@
 ---
 name: jat-visual-design-language
-description: JAT visual language tokens and UX guardrails. Use when: choosing color accents, spacing scale, typography emphasis, animation style, or accessibility constraints for HUD/menu UI.
+description: "JAT visual language tokens and UX guardrails. Use when: choosing color accents, spacing scale, typography emphasis, animation style, or accessibility constraints for HUD/menu UI."
 argument-hint: "Surface + visual objective + constraints"
 ---
 
