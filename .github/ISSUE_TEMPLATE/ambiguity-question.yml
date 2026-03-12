@@ -1,0 +1,65 @@
+name: Ambiguity / question
+description: Track an unresolved design, behavior, or terminology question discovered during implementation.
+title: "Ambiguity: "
+labels:
+  - implementation-issue
+  - "issue-type: ambiguity-question"
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+  - type: input
+    id: created_phase
+    attributes:
+      label: Created phase
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+    validations:
+      required: true
+  - type: input
+    id: scheduled_target
+    attributes:
+      label: Scheduled target
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale and context
+      description: Explain the ambiguity, question, or competing interpretations.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+  - type: textarea
+    id: implementation_notes
+    attributes:
+      label: Implementation notes
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance / closing criteria
+    validations:
+      required: true

@@ -1,0 +1,44 @@
+name: Implementation Issues Resolution Sync
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: implementation-issues-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Link merged PR to implementation issue records
+        run: python scripts/implementation_issues.py sync-pr-resolution --event-path "$GITHUB_EVENT_PATH"
+
+      - name: Commit resolution linkage
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Project/Tasks/ImplementationPlan/ImplementationIssues
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: sync implementation issue resolution links from PR #${{ github.event.pull_request.number }}"
+          git push

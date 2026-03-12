@@ -1,5 +1,7 @@
 # Deferments Archive #
 
+> Deprecated compatibility view. Historical deferment tracking is being folded into `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`.
+
 **Status**: Historical record of resolved deferments  
 **Last Updated**: 2026-03-11
 
