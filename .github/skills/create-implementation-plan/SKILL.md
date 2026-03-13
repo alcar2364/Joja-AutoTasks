@@ -1,157 +1,86 @@
 ﻿---
 name: create-implementation-plan
-description: Create a new implementation plan file for new features, refactoring existing code or upgrading packages, design, architecture or infrastructure.
+description: Decompose a JAT feature or refactor into subsystem-scoped implementation phases stored as atomic commit execution checklists. Use when: creating step-by-step checklists to guide implementation with design-guide compliance and minimal atomic commits.
+argument-hint: Describe the feature, fix, or refactor to plan; include target subsystem(s), relevant design-guide sections, any constraints (no behavior change, single-subsystem, etc.), and whether documentation updates are needed pre or post implementation.
 ---
 
 # Create Implementation Plan
 
-## Primary Directive
+## Purpose
 
-Your goal is to create a new implementation plan file for `${input:PlanPurpose}`. Your output must be machine-readable, deterministic, and structured for autonomous execution by other AI systems or humans.
+This skill defines how to decompose a JAT feature into subsystem-scoped implementation phases stored as atomic commit execution checklists under `Project/Tasks/ImplementationPlan/`. Each phase produces a single checklist file that a GameAgent, UIAgent, or other implementer can execute commit-by-commit without re-deriving scope or ordering. The detailed planning procedure and output template live in `planner-checklist-and-output-format`.
 
-## Execution Context
-
-This prompt is designed for AI-to-AI communication and automated processing. All instructions must be interpreted literally and executed systematically without human interpretation or clarification.
-
-## Core Requirements
-
-- Generate implementation plans that are fully executable by AI agents or humans
-- Use deterministic language with zero ambiguity
-- Structure all content for automated parsing and execution
-- Ensure complete self-containment with no external dependencies for understanding
-
-## Plan Structure Requirements
-
-Plans must consist of discrete, atomic phases containing executable tasks. Each phase must be independently processable by AI agents or humans without cross-phase dependencies unless explicitly declared.
-
-## Phase Architecture
-
-- Each phase must have measurable completion criteria
-- Tasks within phases must be executable in parallel unless dependencies are specified
-- All task descriptions must include specific file paths, function names, and exact implementation details
-- No task should require human interpretation or decision-making
-
-## AI-Optimized Implementation Standards
-
-- Use explicit, unambiguous language with zero interpretation required
-- Structure all content as machine-parseable formats (tables, lists, structured data)
-- Include specific file paths, line numbers, and exact code references where applicable
-- Define all variables, constants, and configuration values explicitly
-- Provide complete context within each task description
-- Use standardized prefixes for all identifiers (REQ-, TASK-, etc.)
-- Include validation criteria that can be automatically verified
-
-## Output File Specifications
-
-- Save implementation plan files in `/plan/` directory
-- Use naming convention: `[purpose]-[component]-[version].md`
-- Purpose prefixes: `upgrade|refactor|feature|data|infrastructure|process|architecture|design`
-- Example: `upgrade-system-command-4.md`, `feature-auth-module-1.md`
-- File must be valid Markdown with proper front matter structure
-
-## Mandatory Template Structure
-
-All implementation plans must strictly adhere to the following template. Each section is required and must be populated with specific, actionable content. AI agents must validate template compliance before execution.
-
-## Template Validation Rules
-
-- All front matter fields must be present and properly formatted
-- All section headers must match exactly (case-sensitive)
-- All identifier prefixes must follow the specified format
-- Tables must include all required columns
-- No placeholder text may remain in the final output
-
-## Status
-
-The status of the implementation plan must be clearly defined in the front matter and must reflect the current state of the plan. The status can be one of the following (status_color in brackets): `Completed` (bright green badge), `In progress` (yellow badge), `Planned` (blue badge), `Deprecated` (red badge), or `On Hold` (orange badge). It should also be displayed as a badge in the introduction section.
-
-```md
----
-goal: [Concise Title Describing the Package Implementation Plan's Goal]
-version: [Optional: e.g., 1.0, Date]
-date_created: [YYYY-MM-DD]
-last_updated: [Optional: YYYY-MM-DD]
-owner: [Optional: Team/Individual responsible for this spec]
-status: 'Completed'|'In progress'|'Planned'|'Deprecated'|'On Hold'
-tags: [Optional: List of relevant tags or categories, e.g., `feature`, `upgrade`, `chore`, `architecture`, `migration`, `bug` etc]
 ---
 
-# Introduction
+## JAT Subsystem Layers
 
-![Status: <status>](https://img.shields.io/badge/status-<status>-<status_color>)
+JAT has four canonical layers. Plans must respect their sequencing dependency order:
 
-[A short concise introduction to the plan and the goal it is intended to achieve.]
+| Layer | Scope | Must Precede |
+|---|---|---|
+| Backend / State / Engine | `Domain/`, `State/`, `Events/`, `Lifecycle/` | All other layers |
+| UI / View-Model | `UI/`, view-model C# | Requires backend state to exist |
+| Persistence / Migration | `Configuration/`, save-data schema | Can run parallel to UI after backend |
+| Tests | `Tests/` subsystem folders | Follows the layer it covers |
 
-## 1. Requirements & Constraints
+A phase that spans multiple layers must explicitly declare layer order within the phase. Do not introduce cross-layer steps that jump ahead of the dependency chain.
 
-[Explicitly list all requirements & constraints that affect the plan and constrain how it is implemented. Use bullet points or tables for clarity.]
+---
 
-- **REQ-001**: Requirement 1
-- **SEC-001**: Security Requirement 1
-- **[3 LETTERS]-001**: Other Requirement 1
-- **CON-001**: Constraint 1
-- **GUD-001**: Guideline 1
-- **PAT-001**: Pattern to follow 1
+## Phase Structure Conventions
 
-## 2. Implementation Steps
+Every phase checklist must match the format used by the existing Phase 1–4 checklists in `Project/Tasks/ImplementationPlan/`. The canonical structure is:
 
-### Implementation Phase 1
+### Phase Header
+Phase number, name, and a one-line purpose statement.
 
-- GOAL-001: [Describe the goal of this phase, e.g., "Implement feature X", "Refactor module Y", etc.]
+### Guardrails Block
+Explicit constraints that must remain true for the entire phase. Examples:
+- "No task/store mutation logic in this phase"
+- "OnSaving is signal-only — no read/write to save data"
+- "All new types are internal until the integration substep"
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-001 | Description of task 1 | ✅ | 2025-04-25 |
-| TASK-002 | Description of task 2 | |  |
-| TASK-003 | Description of task 3 | |  |
+### Steps
+Numbered major milestones (e.g., `## 1) Bootstrap SMAPI Skeleton ##`):
 
-### Implementation Phase 2
+- **Step goal:** One-line bullet stating what the step achieves
+- **Substeps (A/B/C):** Each substep represents one atomic commit and contains:
+  - `Action:` — what changes
+  - `Scope:` — exact file(s) and symbol(s) touched
+  - `Verify:` — observable confirmation criterion (build passes, test passes, log output, etc.)
+  - `Commit message:` — using JAT `phase(step):` convention
+  - `Must include:` / `Must exclude:` — explicit boundary guards that define the commit's edges
 
-- GOAL-002: [Describe the goal of this phase, e.g., "Implement feature X", "Refactor module Y", etc.]
+### Final Completion Gate Checklist
+A checkbox list confirming all substeps are complete, no scope drift occurred, and all relevant contracts are satisfied (build green, tests pass, no orphaned symbols, docs updated if required).
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-004 | Description of task 4 | |  |
-| TASK-005 | Description of task 5 | |  |
-| TASK-006 | Description of task 6 | |  |
+---
 
-## 3. Alternatives
+## Cross-Subsystem Dependency Sequencing
 
-[A bullet point list of any alternative approaches that were considered and why they were not chosen. This helps to provide context and rationale for the chosen approach.]
+A subsystem layer may not begin until the interfaces and types it depends on exist in the layer below it:
 
-- **ALT-001**: Alternative approach 1
-- **ALT-002**: Alternative approach 2
+- UI binding cannot begin until the snapshot and view-model types are defined in the backend layer.
+- Persistence migration cannot begin until the domain model it migrates is stable.
+- Tests for a layer are written after that layer's substeps are complete, not speculatively before.
 
-## 4. Dependencies
+When a plan spans multiple phases, each phase must confirm its dependency preconditions in its guardrails block.
 
-[List any dependencies that need to be addressed, such as libraries, frameworks, or other components that the plan relies on.]
+---
 
-- **DEP-001**: Dependency 1
-- **DEP-002**: Dependency 2
+## Atomic Commit Granularity
 
-## 5. Files
+One substep = one logical change. Correct granularity examples:
 
-[List the files that will be affected by the feature or refactoring task.]
+- Add one new file (e.g., `IEventDispatcher.cs`)
+- Wire one integration point (e.g., connect coordinator to dispatcher in `BootstrapContainer`)
+- Add one configuration field and its accessor
+- Add one test file covering a specific class or behavior
 
-- **FILE-001**: Description of file 1
-- **FILE-002**: Description of file 2
+A substep that expands beyond its declared file scope during implementation must stop, produce the in-scope commit, and open a follow-up substep or issue for the expanded work.
 
-## 6. Testing
+---
 
-[List the tests that need to be implemented to verify the feature or refactoring task.]
+## Canonical Examples
 
-- **TEST-001**: Description of test 1
-- **TEST-002**: Description of test 2
-
-## 7. Risks & Assumptions
-
-[List any risks or assumptions related to the implementation of the plan.]
-
-- **RISK-001**: Risk 1
-- **ASSUMPTION-001**: Assumption 1
-
-## 8. Related Specifications / Further Reading
-
-[Link to related spec 1]
-[Link to relevant external documentation]
-```
+`Project/Tasks/ImplementationPlan/` holds the live canonical reference for this format. The Phase 1–4 checklists there are the reference implementation. New plans must match their structure — section names, substep format, guardrails block, and completion gate — exactly.

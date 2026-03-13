@@ -69,7 +69,6 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 
 | Skill                                                 | Primary Agent  | Also Used By                    |
 | ----------------------------------------------------- | -------------- | ------------------------------- |
-| breakdown-feature-implementation                      | Orchestrator   | Planner                         |
 | create-architectural-decision-record                  | Planner        | WorkspaceAgent                  |
 | create-github-issue-feature-from-specification        | WorkspaceAgent | Planner                         |
 | create-github-issues-feature-from-implementation-plan | WorkspaceAgent | Planner                         |
