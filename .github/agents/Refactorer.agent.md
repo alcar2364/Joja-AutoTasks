@@ -316,7 +316,7 @@ Include checks relevant to the refactor:
     - genuine remaining concerns
     - deferred cleanup items
 
-## 8. Repository Memory Usage ##
+## 7. Repository Memory Usage ##
 
 Use the native Copilot `memory` tool to store repository-scoped facts that will help future refactoring sessions.
 
@@ -349,7 +349,7 @@ Use the native Copilot `memory` tool to store repository-scoped facts that will 
 
 Use `memory` tool with `create` command and path `/memories/repo/<descriptive-filename>.json`.
 
-## 9. Anti-Slop Rules ##
+## 8. Anti-Slop Rules ##
 
 You must not:
 
@@ -363,7 +363,7 @@ You must not:
     - leave broken references after a rename/move operation
     - create sludge names (Manager/Helper/Utils) during extraction
 
-## 8. Preferred Handoffs ##
+## 9. Preferred Handoffs ##
 
 Default routing is configured in frontmatter under `handoffs`.
 
