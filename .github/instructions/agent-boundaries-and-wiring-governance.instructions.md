@@ -78,6 +78,7 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | create-readme                                         | WorkspaceAgent | GodAgent                        |
 | create-specification                                  | Planner        | WorkspaceAgent                  |
 | csharp-docs                                           | WorkspaceAgent | Reviewer                        |
+| atomic-commit-execution-checklist-creation           | Planner        | WorkspaceAgent                  |
 | csharp-mstest                                         | UnitTestAgent  | Reviewer                        |
 | csharp-xunit                                          | UnitTestAgent  | Reviewer                        |
 | dotnet-best-practices                                 | GameAgent      | Refactorer, Reviewer            |

@@ -19,6 +19,7 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | create-github-pull-request-from-specification         | [create-github-pull-request-from-specification/SKILL.md](create-github-pull-request-from-specification/SKILL.md)                 |
 | create-implementation-plan                            | [create-implementation-plan/SKILL.md](create-implementation-plan/SKILL.md)                                                       |
 | create-readme                                         | [create-readme/SKILL.md](create-readme/SKILL.md)                                                                                 |
+| atomic-commit-execution-checklist-creation | [atomic-commit-execution-checklist-creation/SKILL.md](atomic-commit-execution-checklist-creation/SKILL.md) |
 | create-specification                                  | [create-specification/SKILL.md](create-specification/SKILL.md)                                                                   |
 | csharp-docs                                           | [csharp-docs/SKILL.md](csharp-docs/SKILL.md)                                                                                     |
 | csharp-mstest                                         | [csharp-mstest/SKILL.md](csharp-mstest/SKILL.md)                                                                                 |
