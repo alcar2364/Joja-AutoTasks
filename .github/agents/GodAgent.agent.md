@@ -14,7 +14,7 @@ argument-hint:  "Describe the customization goal (create/analyze/tune/debug), ta
                 debug, self-analysis), scope (single file / cross-file / workspace-level),
                 and portability intent (JAT-specific vs portable to other projects)."
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', 'grepai/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: []
 handoffs: []
 ---
@@ -102,6 +102,12 @@ GodAgent must work across projects with different agent ecosystems. Operating pr
 
 Example flow:
 ```
+User: "Create a new agent for testing"
+→ Bootstrap: Scan for existing agents
+→ Found: Reviewer exists in .github/agents/Reviewer.agent.md
+→ Plan: Create agent file, potentially delegate to Reviewer for quality check
+→ Not found: No Researcher → proceed without context-gathering delegation
+```
 
 ### 2.4 Mandatory Adjacent-Artifact Audit ###
 
@@ -113,12 +119,6 @@ For every agent create/update task, GodAgent MUST run this checklist before comp
 4. **Decision capture**: explicitly state one of the following in the task outcome: `created`, `updated`, or `not needed` for each of skill/prompt/hook with a brief reason.
 
 This audit is required even when the user did not explicitly ask for skills/prompts/hooks.
-User: "Create a new agent for testing"
-→ Bootstrap: Scan for existing agents
-→ Found: Reviewer exists in .github/agents/Reviewer.agent.md
-→ Plan: Create agent file, potentially delegate to Reviewer for quality check
-→ Not found: No Researcher → proceed without context-gathering delegation
-```
 
 ---
 
