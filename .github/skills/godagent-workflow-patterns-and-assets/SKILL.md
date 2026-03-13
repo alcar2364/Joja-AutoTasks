@@ -47,6 +47,28 @@ Use this skill for detailed procedures and reusable assets referenced by GodAgen
 4. Validate YAML and frontmatter integrity.
 5. Verify invocation behavior after change.
 
+### Bootstrap Discovery and Portability ###
+
+Use this procedure on startup or first use in a new project.
+
+1. Read `/memories/session/agent-registry.md`; if present, use cached registry and skip project scan.
+2. Scan project agent locations (`.github/agents/`, `.agents/`, `.claude/agents/`).
+3. Extract `name:` values and handoff references; build a registry mapping name to filepath and capabilities.
+4. Detect available agent roles and record missing expected roles.
+5. Write or refresh `/memories/session/agent-registry.md` so later invocations can reuse the registry.
+
+Hybrid auto-detect and fallback rules:
+
+- Try-detect local project conventions (style contracts, naming rules, and directory structure).
+- Use discovered local conventions when available; otherwise fall back to universal defaults.
+- Read `/memories/repo/` for verified repository facts before relying solely on live scans.
+
+Handoff adaptation rules:
+
+- Check the local registry before delegating.
+- Delegate only to agents that exist in the current project.
+- If a role is missing, continue without delegation and note the missing handoff opportunity.
+
 ### Self-Analysis Protocol ###
 
 1. Read `GodAgent.agent.md`.

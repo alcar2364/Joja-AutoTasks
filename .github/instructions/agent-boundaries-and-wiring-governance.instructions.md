@@ -39,7 +39,7 @@ Every instruction file below is wired to at least one agent.
 | agent-boundaries-and-wiring-governance.instructions.md     | GodAgent       | Orchestrator, Reviewer                                                                                                              |
 | atomic-commit-execution-checklist-creation.instructions.md | Planner        | Researcher, Reviewer, WorkspaceAgent, Orchestrator                                                                                  |
 | backend-architecture-contract.instructions.md              | GameAgent      | Planner, Reviewer, Refactorer                                                                                                       |
-| context-engineering.instructions.md                        | Researcher     | Planner, Orchestrator                                                                                                               |
+ 
 | csharp-style-contract.instructions.md                      | GameAgent      | UIAgent, Refactorer, UnitTestAgent, Reviewer, CSharpMentor                                                                          |
 | external-resources.instructions.md                         | Researcher     | GameAgent, UIAgent, StarMLAgent, Troubleshooter                                                                                     |
 | frontend-architecture-contract.instructions.md             | UIAgent        | StarMLAgent, Reviewer, Planner                                                                                                      |
@@ -75,7 +75,8 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | create-github-pull-request-from-specification         | WorkspaceAgent | Reviewer                        |
 | create-implementation-plan                            | Planner        | Orchestrator                    |
 | create-readme                                         | WorkspaceAgent | GodAgent                        |
-| create-specification                                  | Planner        | WorkspaceAgent                  |
+| csharp-mentor-response-templates                      | CSharpMentor   | Reviewer                        |
+ 
 | csharp-docs                                           | WorkspaceAgent | Reviewer                        |
 | atomic-commit-execution-checklist-creation           | Planner        | WorkspaceAgent                  |
 | csharp-mstest                                         | UnitTestAgent  | Reviewer                        |
@@ -101,12 +102,12 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | jat-ui-component-patterns                             | UIAgent        | StarMLAgent                     |
 | jat-visual-design-language                            | UIAgent        | StarMLAgent, WorkspaceAgent     |
 | planner-checklist-and-output-format                   | Planner        | Reviewer, Orchestrator          |
-| refactor                                              | Refactorer     | Reviewer                        |
+ 
 | reviewer-checklist-and-output-format                  | Reviewer       | Orchestrator                    |
 | self-splitting-parallel-execution                     | GameAgent      | UIAgent, UnitTestAgent, Refactorer, Researcher, WorkspaceAgent |
 | starml-output-format                                  | StarMLAgent    | UIAgent                         |
 | troubleshooter-output-format                          | Troubleshooter | Orchestrator                    |
-| update-implementation-plan                            | Planner        | WorkspaceAgent                  |
+ 
 | update-specification                                  | Planner        | WorkspaceAgent                  |
 
 ## Required updates

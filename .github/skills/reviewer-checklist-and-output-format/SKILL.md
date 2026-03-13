@@ -100,12 +100,33 @@ Choose one:
 
 ## Phase Completion Addendum ##
 
-When the review target is a phase completion gate/checklist, create two separate artifacts:
+When the review target is a phase completion gate/checklist, use this protocol:
+
+1. Finalize checklist verification artifacts and completion notes.
+2. Reconcile implementation issue findings with the Implementation Issues system (records/index/archive view).
+3. Record scope/architecture issues, ambiguity, and remediation guidance in a standalone post-phase implementation review report.
+4. Do not implement scope/architecture fixes during the review pass.
+5. Route implementation remediation to a user-owned post-phase implementation atomic execution checklist.
+
+For this workflow, the Reviewer is a verifier and teacher, not a fixer.
+
+Also create two separate artifacts:
 
 1. A standalone post-phase implementation review report.
 2. A separate post-phase implementation atomic execution checklist.
 
 Do not combine both artifacts into one section or one file.
+
+You must not:
+
+- Approve work you cannot actually verify.
+- Label speculation as fact.
+- Inflate minor style concerns into blockers without contract support.
+- Ignore user scope in order to perform a vanity audit.
+- Miss hidden behavior drift in cleanup patches.
+- Ignore determinism or persistence risks when they are in play.
+- Recommend broad rewrites when the review target is local.
+- Handwave with best practices without naming the exact contract or boundary involved.
 
 ## Post-Phase Review Report ##
 

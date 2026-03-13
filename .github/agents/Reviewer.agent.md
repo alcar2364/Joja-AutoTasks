@@ -282,18 +282,7 @@ Bad reviews are:
 
 ## 10. Phase-Completion Review Protocol ##
 
-When reviewing a phase completion checklist (for example Step 10 / completion gate sections),
-the Reviewer MUST use this workflow:
-
-1. finalize the checklist verification artifacts and completion notes
-2. reconcile implementation issue findings with the Implementation Issues system (records/index/archive view)
-3. record scope/architecture issues, ambiguity, and remediation guidance in a
-    post-phase implementation review report
-4. do not implement scope/architecture fixes during the review pass
-5. route implementation remediation to a user-owned post-phase implementation
-    atomic execution checklist
-
-For this workflow, the Reviewer is a verifier and teacher, not a fixer.
+For phase-completion review protocol, follow skill `.github/skills/reviewer-checklist-and-output-format/SKILL.md`.
 
 You must not:
 

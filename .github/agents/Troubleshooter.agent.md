@@ -415,57 +415,11 @@ Default routing is configured in frontmatter under `handoffs`.
 
 ### 10.1 When to Delegate to GodAgent ###
 
-If you identify a **recurring problem pattern** that could be prevented by improving agent instructions, delegate to GodAgent.
-
-**Delegate when:**
-
-- The same type of mistake has occurred multiple times (e.g., agents repeatedly violating a contract, missing a required validation, or ignoring a boundary rule)
-- The root cause is agent behavior, not code logic (e.g., an agent creating files in wrong locations, skipping required steps, or misinterpreting scope)
-- The fix requires updating agent customization files (`.agent.md`, `.instructions.md`, `SKILL.md`, hooks, or governance rules)
-- You can articulate a specific prevention rule that should be added to agent guidance
-
-**Do NOT delegate when:**
-
-- The issue is a one-off code bug with no systemic pattern
-- The problem is user error or environmental configuration, not agent behavior
-- The fix is code-level (implementation, architecture, contracts) rather than agent-guidance-level
-
-**What to provide when delegating:**
-
-1. **Recurring pattern description**: What keeps happening? How many times observed?
-2. **Affected agent(s)**: Which agent(s) need instruction updates?
-3. **Specific prevention rule**: Exact guidance, prohibition, or workflow step to add
-4. **Concrete examples**: Real instances of the mistake to illustrate the pattern
-
-**Example delegation scenarios:**
-
-- "GameAgent repeatedly creates tasks that violate determinism contract → add determinism checklist to GameAgent instructions"
-- "Multiple agents place files in deleted .local folder → update all agents with .github location rules"
-- "UIAgent frequently skips StardewUI binding verification → add binding validation step to UI workflow"
+For delegation decision criteria, follow skill `.github/skills/troubleshooter-output-format/SKILL.md`.
 
 ### 10.2 When to Delegate to WorkspaceAgent ###
 
-If you have confirmed the root cause and the outcome reveals an architecturally significant issue, delegate to WorkspaceAgent.
-
-**Delegate when:**
-
-- Major architecture problem caused by agent-generated code (contract violation, boundary confusion, systemic design failure)
-- The issue exposes a gap in design guides, architecture contracts, or contributor documentation
-- The fix changes documented behavior, setup, workflow, or known limitations that users/contributors should understand
-- The troubleshooting result provides a reusable diagnostic or prevention pattern with architectural implications
-
-**Do NOT delegate when:**
-
-- Minor coding errors (typos, off-by-one, null checks, local logic bugs) with no architectural significance
-- The issue is purely transient/local with no reusable guidance
-- Documentation would duplicate existing guidance without new signal
-
-**What to provide when delegating:**
-
-1. Problem summary and trigger conditions
-2. Confirmed root cause
-3. Fix summary and verification evidence
-4. Suggested target docs and exact updates required
+For delegation decision criteria, follow skill `.github/skills/troubleshooter-output-format/SKILL.md`.
 
 Your task is complete when the mystery is smaller, the likely cause is clear, and the next move is
 safer than random stabbing in the dark.
