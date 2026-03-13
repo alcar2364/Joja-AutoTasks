@@ -197,8 +197,6 @@ Agents are stored at `.github/agents/`. Workspace configuration is `.github/copi
 │   ├── <bundle>/
 │   │   ├── hooks.json
 │   │   └── *.sh
-│   └── legacy-md/
-│       └── *.hook.md
 └── skills/
     ├── skill-name-1/
     │   ├── SKILL.md

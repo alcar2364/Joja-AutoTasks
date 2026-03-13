@@ -5,7 +5,7 @@ argument-hint:  Describe the StarML/StardewUI task; include the approved plan if
                 surface(s), relevant .sml files/templates/includes, and any constraints such as no behavior change,
                 single-file, or touched-region only.
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [UIAgent, GameAgent, Planner, Researcher, Reviewer]
 handoffs:
 -   label: UI logic follow-up handoff

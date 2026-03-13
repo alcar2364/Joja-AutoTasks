@@ -5,7 +5,7 @@ argument-hint:  Describe the feature, bug, refactor, or task; include the Resear
                                 available, target subsystem(s), relevant files/symbols, and any scope limits such as analysis-only,
                                 no behavior change, or single-file; include documentation review preference when relevant (`pre`, `post`, `none`, `auto`).
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read, agent, search, browser, microsoftdocs/mcp/microsoft_code_sample_search, microsoftdocs/mcp/microsoft_docs_search, todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read, agent, search, browser, microsoftdocs/mcp/microsoft_code_sample_search, microsoftdocs/mcp/microsoft_docs_search, 'grepai/*', todo]
 agents: [Researcher, UnitTestAgent, Reviewer, UIAgent, StarMLAgent, GameAgent, Refactorer, WorkspaceAgent]
 handoffs:
         - label: Researcher follow-up
@@ -65,7 +65,7 @@ You are responsible for:
 5. producing an ordered implementation plan
 6. calling out invariants, risks, and review points
 7. defining what "done" means for the requested scope
-8. **when creating atomic commit execution checklists: incorporating active deferments (from Researcher findings) into checklist steps/substeps if resolving them in-scope, or explicitly re-deferring with rationale**
+8. **when creating atomic commit execution checklists: incorporating active implementation issues (from Researcher findings) into checklist steps/substeps if resolving them in-scope, or explicitly re-deferring/keeping them open with rationale**
 
 You must prefer **contract-compliant minimal plans** over broad redesigns.
 
