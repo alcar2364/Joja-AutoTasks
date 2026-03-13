@@ -19,7 +19,7 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | create-github-pull-request-from-specification         | [create-github-pull-request-from-specification/SKILL.md](create-github-pull-request-from-specification/SKILL.md)                 |
 | create-implementation-plan                            | [create-implementation-plan/SKILL.md](create-implementation-plan/SKILL.md)                                                       |
 | create-readme                                         | [create-readme/SKILL.md](create-readme/SKILL.md)                                                                                 |
-| atomic-commit-execution-checklist-creation | [atomic-commit-execution-checklist-creation/SKILL.md](atomic-commit-execution-checklist-creation/SKILL.md) |
+| atomic-commit-execution-checklist-creation            | [atomic-commit-execution-checklist-creation/SKILL.md](atomic-commit-execution-checklist-creation/SKILL.md)                       |
 | csharp-docs                                           | [csharp-docs/SKILL.md](csharp-docs/SKILL.md)                                                                                     |
 | csharp-mstest                                         | [csharp-mstest/SKILL.md](csharp-mstest/SKILL.md)                                                                                 |
 | csharp-xunit                                          | [csharp-xunit/SKILL.md](csharp-xunit/SKILL.md)                                                                                   |
@@ -43,8 +43,8 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | jat-ui-component-patterns                             | [jat-ui-component-patterns/SKILL.md](jat-ui-component-patterns/SKILL.md)                                                         |
 | jat-visual-design-language                            | [jat-visual-design-language/SKILL.md](jat-visual-design-language/SKILL.md)                                                       |
 | self-splitting-parallel-execution                     | [self-splitting-parallel-execution/SKILL.md](self-splitting-parallel-execution/SKILL.md)                                         |
- 
-| update-specification                                  | [update-specification/SKILL.md](update-specification/SKILL.md)                                                                   |
+
+| update-specification | [update-specification/SKILL.md](update-specification/SKILL.md) |
 
 ## Wiring Requirement
 

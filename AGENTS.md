@@ -13,17 +13,17 @@ Scope and ownership:
 - External agents should read and follow this file before making changes.
 - External agents may read `.github` customization files to understand workflow rules.
 - This file should only be created, modified, or expanded by
-	`.github/agents/GodAgent.agent.md`.
+  `.github/agents/GodAgent.agent.md`.
 
 Project summary:
 
 - Joja AutoTasks is a Stardew Valley SMAPI mod focused on deterministic in-game task tracking.
 - Architecture is command/snapshot oriented with strict boundaries between lifecycle signal
-	forwarding, canonical state ownership, persistence, and UI consumption.
+  forwarding, canonical state ownership, persistence, and UI consumption.
 - Primary implementation language is C#.
 - Target frameworks:
-	- Mod: `net6.0`
-	- Tests: `net8.0`
+  - Mod: `net6.0`
+  - Tests: `net8.0`
 
 External-agent source-of-truth order:
 
@@ -36,30 +36,30 @@ External-agent source-of-truth order:
 External-agent integration with the custom `.github` workflow:
 
 - If your host supports custom agent delegation, use `.github/agents/Orchestrator.agent.md`
-	as the default routing entrypoint for multi-step tasks.
+  as the default routing entrypoint for multi-step tasks.
 - Route by task type:
-	- Research/context discovery:
-		`.github/agents/Researcher.agent.md`
-	- Plan creation:
-		`.github/agents/Planner.agent.md`
-	- Backend/game logic:
-		`.github/agents/GameAgent.agent.md`
-	- Frontend C# UI logic:
-		`.github/agents/UIAgent.agent.md`
-	- StarML (`.sml`) authoring:
-		`.github/agents/StarMLAgent.agent.md`
-	- Unit tests:
-		`.github/agents/UnitTestAgent.agent.md`
-	- Review/verification:
-		`.github/agents/Reviewer.agent.md`
-	- Troubleshooting/diagnosis:
-		`.github/agents/Troubleshooter.agent.md`
-	- Repository memory operations:
-		Use the native Copilot memory tool and store durable repo facts under `/memories/repo/`.
-	- Non-agent docs and planning docs:
-		`.github/agents/WorkspaceAgent.agent.md`
-	- Agent ecosystem customization only:
-		`.github/agents/GodAgent.agent.md`
+  - Research/context discovery:
+    `.github/agents/Researcher.agent.md`
+  - Plan creation:
+    `.github/agents/Planner.agent.md`
+  - Backend/game logic:
+    `.github/agents/GameAgent.agent.md`
+  - Frontend C# UI logic:
+    `.github/agents/UIAgent.agent.md`
+  - StarML (`.sml`) authoring:
+    `.github/agents/StarMLAgent.agent.md`
+  - Unit tests:
+    `.github/agents/UnitTestAgent.agent.md`
+  - Review/verification:
+    `.github/agents/Reviewer.agent.md`
+  - Troubleshooting/diagnosis:
+    `.github/agents/Troubleshooter.agent.md`
+  - Repository memory operations:
+    Use the native Copilot memory tool and store durable repo facts under `/memories/repo/`.
+  - Non-agent docs and planning docs:
+    `.github/agents/WorkspaceAgent.agent.md`
+  - Agent ecosystem customization only:
+    `.github/agents/GodAgent.agent.md`
 - If your host does not support delegation, follow the same boundaries and sequence manually.
 
 ## Host-Specific Integration (Codex CLI and Claude Code)
@@ -90,6 +90,7 @@ Claude Code commonly relies on `CLAUDE.md`. Keep a lightweight bridge file to av
 
 ```markdown
 # CLAUDE.md
+
 Follow AGENTS.md in this repository as the primary external-agent project guide.
 If any conflict appears, resolve by precedence: explicit user prompt > AGENTS.md > CLAUDE.md.
 ```
@@ -118,39 +119,39 @@ Top-level implementation areas:
 Planning, architecture, and policy docs:
 
 - Primary onboarding and validated commands:
-	`.github/copilot-instructions.md`
+  `.github/copilot-instructions.md`
 - Architecture/design docs:
-	`Project/Planning/Joja AutoTasks Design Guide/`
-	`Project/Planning/Architecture Map.md`
+  `Project/Planning/Joja AutoTasks Design Guide/`
+  `Project/Planning/Architecture Map.md`
 - PR checklist:
-	`.github/pull_request_template.md`
+  `.github/pull_request_template.md`
 
 Instruction index for external agents (`.github/instructions/`):
 
 - Workflow and scope controls:
-	- `workspace-contracts.instructions.md`
-	- `agent-boundaries-and-wiring-governance.instructions.md`
+  - `workspace-contracts.instructions.md`
+  - `agent-boundaries-and-wiring-governance.instructions.md`
 - Architecture contracts:
-	- `backend-architecture-contract.instructions.md`
-	- `frontend-architecture-contract.instructions.md`
+  - `backend-architecture-contract.instructions.md`
+  - `frontend-architecture-contract.instructions.md`
 - Style and format contracts:
-	- `csharp-style-contract.instructions.md`
-	- `json-style-contract.instructions.md`
-	- `sml-style-contract.instructions.md`
-	- `starml-cheatsheet.instructions.md`
+  - `csharp-style-contract.instructions.md`
+  - `json-style-contract.instructions.md`
+  - `sml-style-contract.instructions.md`
+  - `starml-cheatsheet.instructions.md`
 - Quality and verification:
-	- `unit-testing-contract.instructions.md`
-	- `review-and-verification-contract.instructions.md`
-	- `security-and-owasp.instructions.md`
-	- `performance-optimization.instructions.md`
-	- `self-explanatory-code-commenting.instructions.md`
+  - `unit-testing-contract.instructions.md`
+  - `review-and-verification-contract.instructions.md`
+  - `security-and-owasp.instructions.md`
+  - `performance-optimization.instructions.md`
+  - `self-explanatory-code-commenting.instructions.md`
 - Process and documentation:
-	- `update-docs-on-code-change.instructions.md`
-	- `atomic-commit-execution-checklist-creation.instructions.md`
-	- `github-actions-ci-cd-best-practices.instructions.md`
-	- `external-resources.instructions.md`
-	- `ui-component-patterns.instructions.md`
-	- `visual-design-language.instructions.md`
+  - `update-docs-on-code-change.instructions.md`
+  - `atomic-commit-execution-checklist-creation.instructions.md`
+  - `github-actions-ci-cd-best-practices.instructions.md`
+  - `external-resources.instructions.md`
+  - `ui-component-patterns.instructions.md`
+  - `visual-design-language.instructions.md`
 
 Repository-specific structural rule:
 
@@ -162,24 +163,24 @@ Repository-specific structural rule:
 Follow this default sequence unless the user explicitly requests a different flow.
 
 1. Intake and scope
-	 - Restate the requested outcome and constraints.
-	 - Respect explicit user boundaries (single-file, analysis-only, no behavior change, etc.).
-	 - Ask clarifying questions when requirements are ambiguous.
+   - Restate the requested outcome and constraints.
+   - Respect explicit user boundaries (single-file, analysis-only, no behavior change, etc.).
+   - Ask clarifying questions when requirements are ambiguous.
 
 2. Context collection
-	 - Start with `.github/copilot-instructions.md`.
-	 - Read only the instruction files relevant to the current task scope.
-	 - Use targeted repository search; avoid broad scans when authoritative docs already define behavior.
+   - Start with `.github/copilot-instructions.md`.
+   - Read only the instruction files relevant to the current task scope.
+   - Use targeted repository search; avoid broad scans when authoritative docs already define behavior.
 
 3. Plan before substantial edits
-	 - For multi-step or risky changes, outline a concise plan before editing.
-	 - Keep edits minimal, deterministic, and scoped to the request.
+   - For multi-step or risky changes, outline a concise plan before editing.
+   - Keep edits minimal, deterministic, and scoped to the request.
 
 4. Implement within architecture boundaries
-	 - Keep canonical state and mutation boundaries intact.
-	 - Do not introduce direct state mutation paths that bypass command/state-store contracts.
-	 - Keep backend logic, UI C# interaction logic, and StarML markup responsibilities separate.
-	 - Preserve deterministic identifier behavior and ordering guarantees.
+   - Keep canonical state and mutation boundaries intact.
+   - Do not introduce direct state mutation paths that bypass command/state-store contracts.
+   - Keep backend logic, UI C# interaction logic, and StarML markup responsibilities separate.
+   - Preserve deterministic identifier behavior and ordering guarantees.
 
 5. Validate with project commands
 
@@ -198,9 +199,9 @@ dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~Confi
 ```
 
 6. Documentation and completion hygiene
-	 - If behavior, architecture contracts, or workflows changed, update related docs in the same change.
-	 - Summarize what changed, why, and how it was validated.
-	 - Explicitly state any commands not run and why.
+   - If behavior, architecture contracts, or workflows changed, update related docs in the same change.
+   - Summarize what changed, why, and how it was validated.
+   - Explicitly state any commands not run and why.
 
 External-agent best practices for this repository:
 
@@ -221,17 +222,17 @@ External-agent best practices for this repository:
 Quick apply matrix:
 
 - If task is about gameplay/backend C# behavior: follow
-	`backend-architecture-contract.instructions.md` + `csharp-style-contract.instructions.md`.
+  `backend-architecture-contract.instructions.md` + `csharp-style-contract.instructions.md`.
 - If task is about UI/view-model C# behavior: follow
-	`frontend-architecture-contract.instructions.md` + `csharp-style-contract.instructions.md`.
+  `frontend-architecture-contract.instructions.md` + `csharp-style-contract.instructions.md`.
 - If task is about `.sml`: follow
-	`sml-style-contract.instructions.md` + `starml-cheatsheet.instructions.md`.
+  `sml-style-contract.instructions.md` + `starml-cheatsheet.instructions.md`.
 - If task is about tests: follow
-	`unit-testing-contract.instructions.md` + `review-and-verification-contract.instructions.md`.
+  `unit-testing-contract.instructions.md` + `review-and-verification-contract.instructions.md`.
 - If task is about docs or planning docs: follow
-	`update-docs-on-code-change.instructions.md`.
+  `update-docs-on-code-change.instructions.md`.
 - If task is about agent ecosystem files (`.agent.md`, `.instructions.md`, `.prompt.md`,
-	`SKILL.md`, hooks): route to `.github/agents/GodAgent.agent.md`.
+  `SKILL.md`, hooks): route to `.github/agents/GodAgent.agent.md`.
 
 ## Operational Guardrails
 
@@ -249,25 +250,25 @@ External agents working in this repository should follow these default guardrail
 External agents must pause and get explicit user confirmation before continuing when a task requires any of the following:
 
 1. Multi-file or multi-domain edits
-	- Changes spanning multiple architecture boundaries (for example `Domain/` + `Lifecycle/` + `StateStore/`).
+   - Changes spanning multiple architecture boundaries (for example `Domain/` + `Lifecycle/` + `StateStore/`).
 
 2. Public API or contract changes
-	- Renaming public types/methods, changing signatures, or altering cross-module contracts.
+   - Renaming public types/methods, changing signatures, or altering cross-module contracts.
 
 3. Persistence or identifier format changes
-	- Modifying config schema/version behavior, serialized state format, canonical identifier formats, or migration behavior.
+   - Modifying config schema/version behavior, serialized state format, canonical identifier formats, or migration behavior.
 
 4. Build/deploy/environment behavior changes
-	- Edits to `.csproj`, packaging/deploy flags, runtime startup behavior, or tooling prerequisites.
+   - Edits to `.csproj`, packaging/deploy flags, runtime startup behavior, or tooling prerequisites.
 
 5. Dependency and package graph changes
-	- Adding, removing, or upgrading NuGet dependencies.
+   - Adding, removing, or upgrading NuGet dependencies.
 
 6. Destructive repository operations
-	- File/folder deletion, broad file moves/renames, history rewrites, or irreversible scripts.
+   - File/folder deletion, broad file moves/renames, history rewrites, or irreversible scripts.
 
 7. Agent ecosystem file changes
-	- Any edit under `.github/agents/`, `.github/instructions/`, `.github/prompts/`, `.github/hooks/`, `.github/skills/`, or this root `AGENTS.md` outside explicitly requested customization scope.
+   - Any edit under `.github/agents/`, `.github/instructions/`, `.github/prompts/`, `.github/hooks/`, `.github/skills/`, or this root `AGENTS.md` outside explicitly requested customization scope.
 
 ## Command Reference
 
@@ -317,22 +318,22 @@ Use these conventions for external-agent generated changes unless the user provi
 - Prefer atomic commits: one logical change per commit.
 - Keep commit scope explicit with `<area>: <imperative summary>`.
 - Good examples:
-	- `docs(agents): add strict approval gates for external agents`
-	- `tests(identifiers): add deterministic RuleId parsing coverage`
-	- `lifecycle: tighten UpdateTicked dispatch guard behavior`
+  - `docs(agents): add strict approval gates for external agents`
+  - `tests(identifiers): add deterministic RuleId parsing coverage`
+  - `lifecycle: tighten UpdateTicked dispatch guard behavior`
 - Include validation evidence in commit message body when relevant:
-	- `Validation: dotnet build ... ; dotnet test ...`
-	- If docs-only: `Validation: not run (docs-only change)`
+  - `Validation: dotnet build ... ; dotnet test ...`
+  - If docs-only: `Validation: not run (docs-only change)`
 
 ### Pull request conventions
 
 - Keep PRs narrowly scoped and architecture-consistent.
 - PR description should include:
-	1. Summary of change
-	2. Why the change is needed
-	3. Validation commands run (or why skipped)
-	4. Risks/behavioral impacts
-	5. Follow-up work (if any)
+  1.  Summary of change
+  2.  Why the change is needed
+  3.  Validation commands run (or why skipped)
+  4.  Risks/behavioral impacts
+  5.  Follow-up work (if any)
 - Align testing/reporting with `.github/pull_request_template.md`.
 - If code and docs diverge, state the mismatch explicitly and record which direction was chosen (code -> docs, docs -> code, or both) based on user instruction.
 
@@ -340,38 +341,38 @@ Use these conventions for external-agent generated changes unless the user provi
 
 When external agents need deeper contract guidance, use this mapping:
 
-| Task Type | Primary Contract Files |
-| --- | --- |
-| Scope, permissions, delegation | `.github/instructions/workspace-contracts.instructions.md` |
-| Agent-domain boundaries and no-overlap governance | `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md` |
-| Backend/gameplay C# architecture | `.github/instructions/backend-architecture-contract.instructions.md` |
-| Frontend C# UI architecture | `.github/instructions/frontend-architecture-contract.instructions.md` |
-| C# style and naming | `.github/instructions/csharp-style-contract.instructions.md` |
-| JSON formatting and schema style | `.github/instructions/json-style-contract.instructions.md` |
-| StarML (`.sml`) style and references | `.github/instructions/sml-style-contract.instructions.md`, `.github/instructions/starml-cheatsheet.instructions.md` |
-| Unit tests and determinism verification | `.github/instructions/unit-testing-contract.instructions.md` |
-| Review/risk verification | `.github/instructions/review-and-verification-contract.instructions.md` |
-| Security considerations | `.github/instructions/security-and-owasp.instructions.md` |
-| Performance-sensitive changes | `.github/instructions/performance-optimization.instructions.md` |
-| Documentation updates after code change | `.github/instructions/update-docs-on-code-change.instructions.md` |
+| Task Type                                         | Primary Contract Files                                                                                              |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Scope, permissions, delegation                    | `.github/instructions/workspace-contracts.instructions.md`                                                          |
+| Agent-domain boundaries and no-overlap governance | `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`                                       |
+| Backend/gameplay C# architecture                  | `.github/instructions/backend-architecture-contract.instructions.md`                                                |
+| Frontend C# UI architecture                       | `.github/instructions/frontend-architecture-contract.instructions.md`                                               |
+| C# style and naming                               | `.github/instructions/csharp-style-contract.instructions.md`                                                        |
+| JSON formatting and schema style                  | `.github/instructions/json-style-contract.instructions.md`                                                          |
+| StarML (`.sml`) style and references              | `.github/instructions/sml-style-contract.instructions.md`, `.github/instructions/starml-cheatsheet.instructions.md` |
+| Unit tests and determinism verification           | `.github/instructions/unit-testing-contract.instructions.md`                                                        |
+| Review/risk verification                          | `.github/instructions/review-and-verification-contract.instructions.md`                                             |
+| Security considerations                           | `.github/instructions/security-and-owasp.instructions.md`                                                           |
+| Performance-sensitive changes                     | `.github/instructions/performance-optimization.instructions.md`                                                     |
+| Documentation updates after code change           | `.github/instructions/update-docs-on-code-change.instructions.md`                                                   |
 
 ## Completion Criteria
 
 Before declaring task completion, external agents should ensure:
 
 1. Scope compliance
-	- Only requested files/domains were modified.
-	- Any required out-of-scope work was raised for approval first.
+   - Only requested files/domains were modified.
+   - Any required out-of-scope work was raised for approval first.
 
 2. Validation coverage
-	- Relevant build/tests were run when code changed.
-	- If validation was skipped, the response explicitly states what was not run and why.
+   - Relevant build/tests were run when code changed.
+   - If validation was skipped, the response explicitly states what was not run and why.
 
 3. Documentation alignment
-	- Related docs were updated when behavior/contracts/workflows changed.
+   - Related docs were updated when behavior/contracts/workflows changed.
 
 4. Handoff clarity
-	- Final summary includes what changed, why it changed, and how it was verified.
+   - Final summary includes what changed, why it changed, and how it was verified.
 
 ## External Agent Prompting Tips
 
@@ -393,7 +394,6 @@ Validation: run focused identifier-related tests.
 Output: patch + short risk summary.
 ```
 
-
 ## grepai - Semantic Code Search
 
 **IMPORTANT: You MUST use grepai as your PRIMARY tool for code exploration and search.**
@@ -401,6 +401,7 @@ Output: patch + short risk summary.
 ### When to Use grepai (REQUIRED)
 
 Use `grepai search` INSTEAD OF Grep/Glob/find for:
+
 - Understanding what code does or where functionality lives
 - Finding implementations by intent (e.g., "authentication logic", "error handling")
 - Exploring unfamiliar parts of the codebase
@@ -409,6 +410,7 @@ Use `grepai search` INSTEAD OF Grep/Glob/find for:
 ### When to Use Standard Tools
 
 Only use Grep/Glob when you need:
+
 - Exact text matching (variable names, imports, specific strings)
 - File path patterns (e.g., `**/*.go`)
 
@@ -436,6 +438,7 @@ grepai search "API request validation" --json --compact
 ### Call Graph Tracing
 
 Use `grepai trace` to understand function relationships:
+
 - Finding all callers of a function before modifying it
 - Understanding what functions are called by a given function
 - Visualizing the complete call graph around a symbol

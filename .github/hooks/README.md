@@ -1,4 +1,4 @@
-# JAT Agent Hooks System #
+# JAT Agent Hooks System
 
 Hooks are now implemented as executable bundles under `.github/hooks/*/`.
 Each bundle contains:
@@ -8,9 +8,9 @@ Each bundle contains:
 
 This matches the runnable hook format and keeps hooks local to the JAT workspace.
 
-## Active Runtime Hook Bundles ##
+## Active Runtime Hook Bundles
 
-### 1) context-preflight ###
+### 1) context-preflight
 
 Path: `.github/hooks/context-preflight/`
 
@@ -28,7 +28,7 @@ Domain:
         - ci-cd-workflow-loader
         - handoff-optimizer
 
-### 2) safety-guardrails ###
+### 2) safety-guardrails
 
 Path: `.github/hooks/safety-guardrails/`
 
@@ -47,7 +47,7 @@ Domain:
         - state-mutation-guard
         - ui-boundary-enforcer
 
-### 3) validation-postflight ###
+### 3) validation-postflight
 
 Path: `.github/hooks/validation-postflight/`
 
@@ -65,7 +65,7 @@ Domain:
         - unit-test-coverage-enforcer
         - doc-sync-reminder
 
-### 4) ecosystem-maintenance ###
+### 4) ecosystem-maintenance
 
 Path: `.github/hooks/ecosystem-maintenance/`
 
@@ -84,7 +84,7 @@ Domain:
         - prompt-index-auto-sync
         - skills-index-auto-sync
 
-### 5) legacy-coverage-audit ###
+### 5) legacy-coverage-audit
 
 Path: `.github/hooks/legacy-coverage-audit/`
 
@@ -96,18 +96,18 @@ Domain:
 
     * validates runtime hook bundle integrity and cross-file consistency
 
-## Runtime Hook Bundles ##
+## Runtime Hook Bundles
 
 Hooks execute from bundle folders containing `hooks.json` plus executable `*.sh` scripts.
 
-## Trigger Model ##
+## Trigger Model
 
 Active runtime events used:
 
     * `userPromptSubmitted` (preflight checks)
     * `sessionEnd` (postflight validation and sync)
 
-## Maintenance ##
+## Maintenance
 
 When adding or modifying hooks:
 
