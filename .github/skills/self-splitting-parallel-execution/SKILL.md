@@ -1,14 +1,13 @@
 ---
 name: self-splitting-parallel-execution
 description: "Universal protocol for self-splitting parallel execution across JAT subagents. Use when: implementing self-splitting in any subagent, delegating with CanSelfSplit, or auditing parallelization protocol compliance."
-applyTo: ".github/agents/*.agent.md"
 ---
 
 # Self-Splitting Parallel Execution Protocol
 
 ## Scope
 
-This instruction applies to all JAT subagents when delegated tasks from the Orchestrator.
+This skill applies to all JAT subagents when delegated tasks from the Orchestrator.
 
 ## Purpose
 
@@ -95,7 +94,7 @@ Each parallel instance must receive carefully managed context to work independen
 
 ### Boundary Context (lightweight)
 
-For files at the edge of a partition — files that have some dependency on files in another partition but were grouped on this side of the boundary:
+For files at the edge of a partition - files that have some dependency on files in another partition but were grouped on this side of the boundary:
 
 - Include interface-level summaries of adjacent files (function signatures, exported types, API contracts)
 - Do NOT include full file contents for anything outside the partition
@@ -157,7 +156,7 @@ When a subagent decides to self-split:
 Each subagent must define in its own agent file:
 
 1. **Domain-specific assessment criteria** (when to self-split for this agent's work domain)
-2. **Domain-specific partitioning rules** (what constitutes a partition in this domain — subsystem clusters for GameAgent, UI surface clusters for UIAgent, test file clusters for UnitTestAgent, etc.)
+2. **Domain-specific partitioning rules** (what constitutes a partition in this domain - subsystem clusters for GameAgent, UI surface clusters for UIAgent, test file clusters for UnitTestAgent, etc.)
 3. **Domain-specific boundary context rules** (what interface-level information crosses partition boundaries in this domain)
 4. **Domain-specific aggregation rules** (how to merge findings specific to this agent's output format)
 
@@ -177,6 +176,6 @@ Do NOT:
 ## Enforcement
 
 This protocol is enforced via:
-- Agent descriptions reference this instruction file
+- Agent descriptions reference this skill
 - Orchestrator includes `CanSelfSplit: true|false` flag in delegation
 - Runtime hooks verify self-splitting assessment and execution (see `.github/hooks/self-splitting-enforcement/`)

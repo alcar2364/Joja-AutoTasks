@@ -127,7 +127,7 @@ coverage and expectations.
 
 ## 3.6 Self-Splitting Parallel Execution ##
 
-Follow the universal protocol defined in `self-splitting-parallel-execution.instructions.md`.
+Follow the universal protocol defined in `skills/self-splitting-parallel-execution/SKILL.md`.
 
 **Domain-specific assessment criteria for UnitTestAgent:**
 

@@ -44,6 +44,7 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | jat-ui-component-patterns                             | [jat-ui-component-patterns/SKILL.md](jat-ui-component-patterns/SKILL.md)                                                         |
 | jat-visual-design-language                            | [jat-visual-design-language/SKILL.md](jat-visual-design-language/SKILL.md)                                                       |
 | refactor                                              | [refactor/SKILL.md](refactor/SKILL.md)                                                                                           |
+| self-splitting-parallel-execution                     | [self-splitting-parallel-execution/SKILL.md](self-splitting-parallel-execution/SKILL.md)                                         |
 | update-implementation-plan                            | [update-implementation-plan/SKILL.md](update-implementation-plan/SKILL.md)                                                       |
 | update-specification                                  | [update-specification/SKILL.md](update-specification/SKILL.md)                                                                   |
 

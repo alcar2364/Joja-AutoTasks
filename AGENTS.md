@@ -150,7 +150,6 @@ Instruction index for external agents (`.github/instructions/`):
 	- `github-actions-ci-cd-best-practices.instructions.md`
 	- `context-engineering.instructions.md`
 	- `external-resources.instructions.md`
-	- `self-splitting-parallel-execution.instructions.md`
 	- `ui-component-patterns.instructions.md`
 	- `visual-design-language.instructions.md`
 
@@ -463,4 +462,3 @@ grepai trace graph "ValidateToken" --depth 3 --json
 2. Use `grepai trace` to understand function relationships
 3. Use `Read` tool to examine files from results
 4. Only use Grep for exact string searches if needed
-

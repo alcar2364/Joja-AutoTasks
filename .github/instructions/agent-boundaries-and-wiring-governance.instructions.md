@@ -51,7 +51,6 @@ Every instruction file below is wired to at least one agent.
 | review-and-verification-contract.instructions.md           | Reviewer       | Orchestrator, UnitTestAgent                                                                                                         |
 | security-and-owasp.instructions.md                         | Reviewer       | Troubleshooter, GameAgent, UIAgent                                                                                                  |
 | self-explanatory-code-commenting.instructions.md           | Refactorer     | GameAgent, UIAgent, UnitTestAgent                                                                                                   |
-| self-splitting-parallel-execution.instructions.md          | Orchestrator   | GameAgent, UIAgent, StarMLAgent, UnitTestAgent, Refactorer, Researcher, Planner, Reviewer, WorkspaceAgent, Troubleshooter, GodAgent |
 | sml-style-contract.instructions.md                         | StarMLAgent    | UIAgent, Reviewer                                                                                                                   |
 | starml-cheatsheet.instructions.md                          | StarMLAgent    | UIAgent, Researcher                                                                                                                 |
 | ui-component-patterns.instructions.md                      | UIAgent        | StarMLAgent, Planner                                                                                                                |
@@ -104,6 +103,7 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 | planner-checklist-and-output-format                   | Planner        | Reviewer, Orchestrator          |
 | refactor                                              | Refactorer     | Reviewer                        |
 | reviewer-checklist-and-output-format                  | Reviewer       | Orchestrator                    |
+| self-splitting-parallel-execution                     | GameAgent      | UIAgent, UnitTestAgent, Refactorer, Researcher, WorkspaceAgent |
 | starml-output-format                                  | StarMLAgent    | UIAgent                         |
 | troubleshooter-output-format                          | Troubleshooter | Orchestrator                    |
 | update-implementation-plan                            | Planner        | WorkspaceAgent                  |
