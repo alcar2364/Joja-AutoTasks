@@ -244,20 +244,15 @@ Agents SHOULD:
 
 ## 8.1 Naming conventions ##
 
-Contract files must follow:
-
-ALL CAPS + CONTRACT
+Instruction files should use lowercase kebab-case filenames.
 
 Examples:
 
-WORKSPACE-CONTRACTS.instructions.md  
-ARCHITECTURE-CONTRACT.instructions.md  
-STYLE-CONTRACT.instructions.md
+csharp-style-contract.instructions.md  
+workspace-contracts.instructions.md  
+review-and-verification-contract.instructions.md
 
-Instructional guides should use lowercase:
-
-design-doc-editing-guidelines.instructions.md  
-task-generator-rules.instructions.md
+Note: VS Code displays instruction titles using the YAML frontmatter `name:` field. Filename casing is a style convention, not a runtime requirement.
 
 ## 8.2 Agent customization frontmatter formatting ##
 
@@ -270,56 +265,7 @@ For agent customization Markdown files (`.agent.md`, `.instructions.md`, `.promp
 
 ## 9. Skill Files (SKILL.md) Convention ##
 
-JAT uses on-demand skills for specialized workflows, stored as skill folders under `.github/skills/`.
-
-### 9.1 File structure ###
-
-The JAT skill ecosystem uses the awesome-copilot folder convention:
-
-    .github/skills/
-    ├── skill-name-1/
-    │   ├── SKILL.md
-    │   └── references/
-    ├── skill-name-2/
-    │   ├── SKILL.md
-    │   └── references/
-    └── ... (more skills)
-
-### 9.2 Naming and discovery ###
-
-Skill folders must follow these rules:
-
-    * Folder name: lowercase-with-hyphens (e.g., `jat-command-reducer-snapshot-flow`)
-    * Main file name: exactly `SKILL.md`
-    * YAML `name:` field in `SKILL.md` MUST exactly match the folder name
-    * `description:` field MUST include trigger keywords (e.g., "Use when: command, reducer, snapshot")
-
-### 9.3 When to create skills ##
-
-Create a new skill when:
-
-    * A workflow is specialized and should load only for specific tasks (not always-on)
-    * Implementation patterns are complex or repetitive and benefit from bundled references
-    * Domain knowledge is missing from existing contracts or instructions
-    * Maintenance or debugging guidance would reduce context overhead for agents
-
-Do NOT create a skill for guidance that should always apply to a subsystem; use instructions instead.
-
-### 9.4 Skill catalog maintenance ###
-
-The `README.md` in `.github/skills/` maintains the catalog.
-
-Agents SHOULD keep this catalog aligned whenever skills are added, renamed, or removed.
-
-### 9.5 Linking to contracts and instructions ###
-
-Each skill should link back to related contracts or instructions when relevant.
-
-### 9.6 Skill-to-agent wiring requirement ###
-
-Every skill in `.github/skills/` MUST be mapped to at least one agent in `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md`.
-
-No orphan skills are allowed.
+For skill file naming and discovery conventions, see `agent-boundaries-and-wiring-governance.instructions.md`.
 
 ## 10. Maintainer Authority ##
 

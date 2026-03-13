@@ -167,9 +167,12 @@ Agents are stored at `.github/agents/`. Workspace configuration is `.github/copi
 ├── prompts/
 │   └── *.prompt.md
 ├── hooks/
-│   ├── <bundle>/
-│   │   ├── hooks.json
-│   │   └── *.sh
+│   ├── context-preflight/
+│   ├── ecosystem-maintenance/
+│   ├── safety-guardrails/
+│   ├── self-splitting-enforcement/
+│   ├── terminal-command-validation/
+│   └── validation-postflight/
 └── skills/
     ├── skill-name-1/
     │   ├── SKILL.md

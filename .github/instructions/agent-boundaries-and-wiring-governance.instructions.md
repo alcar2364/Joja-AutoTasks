@@ -111,6 +111,59 @@ Every skill folder in `.github/skills` is mapped to at least one agent.
 
 | update-specification | Planner | WorkspaceAgent |
 
+## Skill File Conventions
+
+JAT uses on-demand skills for specialized workflows, stored as skill folders under `.github/skills/`.
+
+### File structure
+
+The JAT skill ecosystem follows the folder convention below:
+
+    .github/skills/
+    ├── skill-name-1/
+    │   ├── SKILL.md
+    │   └── references/
+    ├── skill-name-2/
+    │   ├── SKILL.md
+    │   └── references/
+    └── ... (more skills)
+
+### Naming and discovery
+
+Skill folders must follow these rules:
+
+    * Folder name: lowercase-with-hyphens (e.g., `jat-command-reducer-snapshot-flow`)
+    * Main file name: exactly `SKILL.md`
+    * YAML `name:` field in `SKILL.md` MUST exactly match the folder name
+    * `description:` field MUST include trigger keywords (e.g., "Use when: command, reducer, snapshot")
+
+### When to create skills
+
+Create a new skill when:
+
+    * A workflow is specialized and should load only for specific tasks (not always-on)
+    * Implementation patterns are complex or repetitive and benefit from bundled references
+    * Domain knowledge is missing from existing contracts or instructions
+    * Maintenance or debugging guidance would reduce context overhead for agents
+
+Do NOT create a skill for guidance that should always apply to a subsystem; use instructions instead.
+
+### Skill catalog maintenance
+
+The `README.md` in `.github/skills/` maintains the catalog.
+
+Agents SHOULD keep this catalog aligned whenever skills are added, renamed, or removed.
+
+### Linking to contracts and instructions
+
+Each skill should link back to related contracts or instructions when relevant.
+
+### Skill-to-agent wiring requirement
+
+Every skill in `.github/skills/` MUST be represented in the Skill-to-Agent Wiring table in this file for governance traceability.
+
+This requirement is documentation/governance scope only and does not alter IDE runtime skill discovery behavior.
+
 ## Required updates
 
 Agents MUST update this instruction file in the same change set when any of the following occurs:
