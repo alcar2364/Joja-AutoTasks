@@ -74,7 +74,7 @@ merge on build failure.
 
 ## Notes
 
-- This workflow is a required status check; configure as branch protection rule for `development`
+- This workflow is a required status check for `main`, and should also be enabled for any protected `release/*` branches used for stabilization before promotion to stable
 - `EnableModDeploy=false` ensures no game installation is required in CI
 - `EnableModZip=false` speeds up build (packaging not needed for validation)
 - **Testing is manual**: Admin must run the full test suite locally before approving any code PR

@@ -81,7 +81,10 @@ Auto-generate release notes from commits since the previous tag:
 
 ## Notes
 
-- Workflow must be triggered from the main branch (not from a detached HEAD)
+- Release preparation should happen on a short-lived `release/*` branch cut from `development`
+- Create the release tag from the promoted `main` commit after the release branch is merged to stable
+- Hotfix tags should likewise be created from the promoted `main` commit
+- Workflow must be triggered from the tagged `main` lineage (not from a detached HEAD)
 - Tags must follow semantic versioning (`v0.1.0`, `v1.0.0-beta.1`)
 - Release drafts require manual publish; full tags auto-publish
 - GitHub Release creation is a manual step; this workflow creates a `[release]` issue with all details for the maintainer to act on

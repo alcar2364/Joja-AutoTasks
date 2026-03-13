@@ -30,7 +30,8 @@ Current implemented core is a Phase 1 foundation:
 		* Tests project: net8.0
 * Core build dependency: Pathoschild.Stardew.ModBuildConfig 4.4.0
 * Test stack: xUnit, Moq, Microsoft.NET.Test.Sdk, coverlet.collector
-* CI/workflows: `.github/workflows/ci.yml` runs build + tests on every push and PR to `main`
+* Branch model: `development` is the default integration branch, `main` is the stable branch, `release/*` branches are short-lived stabilization branches, and `hotfix/*` branches start from `main` for emergency stable fixes.
+* CI/workflows: `.github/workflows/ci.yml` runs build validation on code pushes and PRs targeting `development`, `main`, and `release/*`
 
 ## Bootstrap and Environment Setup (Validated)
 
@@ -191,6 +192,29 @@ The CI workflow (`.github/workflows/ci.yml`) mirrors these local steps. Run them
 2. `dotnet test "Tests\JojaAutoTasks.Tests.csproj"`
 3. If touched area requires it, run focused tests listed in `Tests/README.md`
 4. Align with `.github/pull_request_template.md` testing checkboxes
+
+## Branch Strategy
+
+Use this repository branch model unless the user explicitly asks for a one-off exception:
+
+1. `development` is the default branch and integration branch for normal work.
+2. `main` is the stable branch for known-good promoted code.
+3. `feature/*` branches start from and return to `development`.
+4. `release/*` branches start from `development` for release prep, stabilization, and release-only fixes.
+5. `hotfix/*` branches start from `main` for urgent stable fixes.
+6. After a release or hotfix reaches `main`, sync it back into `development` so the lines do not drift.
+
+Pull request intent:
+
+* feature work -> `development`
+* release promotion -> `main`
+* hotfix promotion -> `main`, then back-merge into `development`
+
+Protection intent:
+
+* `main` is the protected stable branch
+* `development` is the default integration branch and may use lighter protections
+* `release/*` branches can be protected temporarily when used for stabilization
 
 ## Architecture and Project Layout Map
 
