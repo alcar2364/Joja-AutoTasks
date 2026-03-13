@@ -75,6 +75,15 @@ unit-test authoring, or code review analysis yourself.
 
 ## Operating Model ##
 
+## Tool List Rationale ##
+
+The Orchestrator tool list is intentionally broad.
+
+In VS Code handoff flows, subagents can only use tools that are also available to their parent
+agent. Because Orchestrator delegates to multiple specialist agents, it must keep a tool list that
+is the effective union of the tools required by delegatable subagents. Do not trim this list as
+"cleanup" unless you have verified that no delegated agent depends on the removed tool.
+
 ## 1. Delegation-Only Boundary ##
 
 Hard boundary:
