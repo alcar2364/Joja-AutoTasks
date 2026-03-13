@@ -22,9 +22,14 @@ internal sealed class ModEntry : Mod
     {
         _runtime = BootstrapContainer.Build(helper, Monitor);
 
-        // Initialize UI snapshot subscription manager. Cannot be null after this point
-        // because StateStore initialization is guaranteed to have completed.
+        // BootstrapContainer constructs StateStore before ModRuntime is returned, so
+        // subscription setup is safe once the runtime-owned store reference is
+        // available. SubscriptionManager initialization and subscription depends
+        // on successful runtime composition.
+
         UiSnapshotSubscriptionManager.Initialize(_runtime.StateStore);
+
+        Monitor.Log("Subscribing to task snapshot updates.", LogLevel.Trace);
         _snapshotSubscriptionToken = UiSnapshotSubscriptionManager.Subscribe(_snapshot => { });
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -59,12 +64,13 @@ internal sealed class ModEntry : Mod
     // Saving remains signal-only so persistence work never runs inside SMAPI's saving hook.
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        // Dispose of the snapshot after saving to prevent memory leaks
+        // Dispose of the snapshot before saving to prevent memory leaks
         // Guarded so that if saving occurs before subscription is established, 
         // it won't throw null-reference
         _runtime.LifecycleCoordinator.HandleSavingInProgress();
         if (_snapshotSubscriptionToken is not null)
-        {
+        {   
+            Monitor.Log("Disposing of task snapshot subscription before saving.", LogLevel.Trace);
             _snapshotSubscriptionToken.Dispose();
             _snapshotSubscriptionToken = null;
         }

@@ -149,38 +149,44 @@ and command dispatch.
       event; lifecycle documentation.
 - [x] **Must exclude:** View model implementations, property binding, UI rendering.
 
-### 1B - Wire UISnapshotSubscriptionManager into ModEntry lifecycle with ordering guard
+### 1B - Wire UISnapshotSubscriptionManager into ModEntry lifecycle with ordering<BR>guard
 
-- [ ] **Action:** In `ModEntry.Entry`, **after `StateStore` and `StateContainer`
+- [x] **Action:** In `ModEntry.Entry`, **after `StateStore` and `StateContainer`
       are fully initialized** (verify initialization order: `StateStore`, `SnapshotProjector`,
       `StateContainer` must all be available before Subscribe is called), call `UISnapshotSubscriptionManager.Subscribe`
       with a lambda or delegate that receives `TaskSnapshot` updates. Store returned
-      `IDisposable` token. **Add explicit guard assertion**: `StateStore.Instance`
-      must not be `null`; if `null`, skip subscription with logged warning and return
-      gracefully (do not throw). In `ModEntry.OnSaving`, call `Dispose` on the stored
-      token to tear down subscription before game save (disposing token unsubscribes
+      `IDisposable` token. Use the runtime-composed StateStore only after BootstrapContainer.Build(...)
+      completes, and document that subscription setup depends on successful runtime
+      composition.”. In `ModEntry.OnSaving`, call `Dispose` on the stored token
+      to tear down subscription before game save (disposing token unsubscribes
       only that specific callback).
-- [ ] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization
+- [x] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization
       ordering guard).
-- [ ] **Verify:** Build succeeds; `ModEntry` loads without throwing; `StateStore`
+- [x] **Verify:** Build succeeds; `ModEntry` loads without throwing; `StateStore`
       initialization order guard prevents null-reference during subscription;
       tracing subscription is established during `Entry` and can be verified through  
       log (add minimal log statement when subscription established); token disposal
       properly unsubscribes.
-- [ ] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager`
+- [x] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager`
       into `ModEntry` lifecycle with initialization order guard"
-- [ ] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully
-      initialized; explicit null-check guard on `StateStore.Instance`; token disposal
-      in `OnSaving`; minimal logging to confirm subscription lifecycle; documented
-      initialization order constraint.
-- [ ] **Must exclude:** View model implementation, UI rendering, command dispatch
+- [x] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully
+      initialized; composition/order guarantee + minimal lifecycle logging on `_runtime.StateStore`;
+      token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle; 
+      documented initialization order constraint.
+- [x] **Must exclude:** View model implementation, UI rendering, command dispatch
       setup (defer to later steps).
 
 ### 1C - Create UIViewModelBase with INotifyPropertyChanged
 
-- [ ] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as abstract base class implementing `INotifyPropertyChanged`. Use PropertyChanged.SourceGenerator annotation ([ObservableProperty]) on fields to auto-generate property change notifications. Add protected OnPropertyChanged method for manual notification if needed.
-- [ ] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class `UIViewModelBase : INotifyPropertyChanged`).
-- [ ] **Verify:** Build succeeds; INotifyPropertyChanged interface is implemented; PropertyChanged event is available to subscribers; compile-time generation succeeds.
+- [ ] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as abstract base class
+      implementing `INotifyPropertyChanged`. Use PropertyChanged.SourceGenerator
+      annotation ([ObservableProperty]) on fields to auto-generate property change
+      notifications. Add protected OnPropertyChanged method for manual notification
+      if needed.
+- [ ] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class
+      `UIViewModelBase : INotifyPropertyChanged`).
+- [ ] **Verify:** Build succeeds; INotifyPropertyChanged interface is implemented;
+      PropertyChanged event is available to subscribers; compile-time generation succeeds.
 - [ ] **Suggested commit:** `phase4(step1C): add UIViewModelBase with INPC via PropertyChanged.SourceGenerator`
 - [ ] **Must include:** INotifyPropertyChanged implementation; PropertyChanged event; [ObservableProperty] annotation support; protected methods for property change notification.
 - [ ] **Must exclude:** Concrete view model implementations (HudViewModel, TaskListViewModel); business logic property definitions.
