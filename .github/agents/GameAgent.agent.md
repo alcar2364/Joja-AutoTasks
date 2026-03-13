@@ -82,8 +82,7 @@ When implementing, use this precedence order:
 7. JSON-STYLE-CONTRACT.instructions.md
 8. grepai-semantic-search.instructions.md
 9. external-resources.instructions.md
-10. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-   Guide.md`)
+10. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 11. established stable patterns in the touched subsystem
 
 If sources conflict, state the conflict and follow the higher-priority source.

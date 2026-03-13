@@ -5,7 +5,7 @@ argument-hint:  Describe what workspace artifact to create, edit, or revise; inc
                 file(s), the type of artifact (design guide section, user-facing doc, plan, task list),
                 any constraints or style requirements, and desired reviewer sequencing (`pre`, `post`, `none`, `auto`).
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [GameAgent, UIAgent, StarMLAgent, Refactorer, Planner, Researcher, Reviewer, GodAgent]
 handoffs:
 -   label: Agent customization work
@@ -105,8 +105,7 @@ When managing workspace artifacts, use this precedence order:
 2. WORKSPACE-CONTRACTS.instructions.md (Section 8 — file creation and naming rules)
 3. existing conventions already established in the workspace
 4. VS Code / GitHub Copilot custom agent conventions
-5. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-   Guide.md`)
+5. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 6. standard Markdown best practices
 
 If sources conflict, state the conflict and follow the higher-priority source.
@@ -131,7 +130,7 @@ If sources conflict, state the conflict and follow the higher-priority source.
 
 ## 3.1 Design guide sections ##
 
-Location: `.github/Joja AutoTasks Design Guide/`
+Location: `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`
 
 Naming: `Section NN - Title.md`
 

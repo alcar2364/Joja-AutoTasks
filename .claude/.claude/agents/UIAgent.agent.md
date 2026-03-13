@@ -5,7 +5,7 @@ argument-hint: Describe the UI feature, fix, or refactor; include the approved p
 description: "Use when: implementing frontend C# HUD/menu/view-model interaction logic (excluding .sml authoring)."
 name: UIAgent
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [Reviewer, GameAgent, StarMLAgent, Planner, Researcher]
 handoffs:
 -   label: UI patch verification handoff
@@ -78,12 +78,12 @@ Prefer **small, contract‑compliant edits** over sweeping UI rewrites.
 8. UI-COMPONENT-PATTERNS.instructions.md
 9. starml-cheatsheet.instructions.md
 10. CSHARP-STYLE-CONTRACT.instructions.md
-11. external-resources.instructions.md
-12. visual-design-language.instructions.md
-13. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-    Guide.md`)
-14. StardewUI documentation provided by the maintainer
-15. Established patterns in the touched subsystem
+11. grepai-semantic-search.instructions.md
+12. external-resources.instructions.md
+13. visual-design-language.instructions.md
+14. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
+15. StardewUI documentation provided by the maintainer
+16. Established patterns in the touched subsystem
 
 If sources conflict, follow the highest‑priority source and call out the
 conflict.

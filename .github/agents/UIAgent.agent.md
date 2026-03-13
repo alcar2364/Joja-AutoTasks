@@ -81,8 +81,7 @@ Prefer **small, contract‑compliant edits** over sweeping UI rewrites.
 11. grepai-semantic-search.instructions.md
 12. external-resources.instructions.md
 13. visual-design-language.instructions.md
-14. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-    Guide.md`)
+14. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 15. StardewUI documentation provided by the maintainer
 16. Established patterns in the touched subsystem
 

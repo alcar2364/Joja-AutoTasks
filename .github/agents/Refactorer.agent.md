@@ -87,8 +87,7 @@ When refactoring, use this precedence order:
 9. SML-STYLE-CONTRACT.instructions.md
 10. grepai-semantic-search.instructions.md
 11. external-resources.instructions.md
-12. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-    Guide.md`)
+12. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 13. established stable patterns in the touched subsystem
 
 If sources conflict, state the conflict and follow the higher-priority source.

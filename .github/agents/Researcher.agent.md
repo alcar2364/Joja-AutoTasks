@@ -100,8 +100,7 @@ When researching, use this precedence order:
 8. UI-COMPONENT-PATTERNS.instructions.md
 9. grepai-semantic-search.instructions.md
 10. external-resources.instructions.md
-11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-    Guide.md`)
+11. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
 12. existing stable code patterns in the touched subsystem
 13. approved external sources provided by the maintainer
 
@@ -136,6 +135,7 @@ user specifically asks for implementation guidance.
 For atomic commit checklist creation tasks, your workflow must include
 an explicit implementation-issue discovery step: read
 `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and
+report issues scheduled for the target phase or still open with applicable scope.
 ## 3.2 Scope discipline ##
 
 You must respect user scope exactly.

@@ -5,7 +5,7 @@ argument-hint:  Describe the backend feature, fix, or refactor; include the appr
                 available, target subsystem(s), relevant files/symbols, and any scope limits such as no behavior
                 change, single-file, or touched-region only.
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read, agent, edit, search, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read, agent, edit, search, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [Reviewer, Planner, Researcher, UIAgent, StarMLAgent]
 handoffs:
   - label: Review backend patch
@@ -80,10 +80,10 @@ When implementing, use this precedence order:
 5. BACKEND-ARCHITECTURE-CONTRACT.instructions.md
 6. CSHARP-STYLE-CONTRACT.instructions.md
 7. JSON-STYLE-CONTRACT.instructions.md
-8. external-resources.instructions.md
-9. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
-   Guide.md`)
-10. established stable patterns in the touched subsystem
+8. grepai-semantic-search.instructions.md
+9. external-resources.instructions.md
+10. Joja AutoTasks Design Guide (start from `Project/Planning/Joja AutoTasks Design Guide/JojaAutoTasks Design Guide.md`)
+11. established stable patterns in the touched subsystem
 
 If sources conflict, state the conflict and follow the higher-priority source.
 
