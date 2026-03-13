@@ -24,7 +24,6 @@ Domain:
     * native Copilot memory usage guidance
     * combines former intent from:
         - contract-auto-loader
-        - context-engineering-loader
         - design-guide-context-augmenter
         - ci-cd-workflow-loader
         - handoff-optimizer

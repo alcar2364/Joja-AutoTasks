@@ -34,81 +34,82 @@ This instruction file is the authoritative no-overlap map for JAT agents, instru
 
 Every instruction file below is wired to at least one agent.
 
-| Instruction                                                | Primary Agent  | Also Used By                                                                                                                        |
-| ---------------------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| agent-boundaries-and-wiring-governance.instructions.md     | GodAgent       | Orchestrator, Reviewer                                                                                                              |
-| atomic-commit-execution-checklist-creation.instructions.md | Planner        | Researcher, Reviewer, WorkspaceAgent, Orchestrator                                                                                  |
-| backend-architecture-contract.instructions.md              | GameAgent      | Planner, Reviewer, Refactorer                                                                                                       |
- 
-| csharp-style-contract.instructions.md                      | GameAgent      | UIAgent, Refactorer, UnitTestAgent, Reviewer, CSharpMentor                                                                          |
-| external-resources.instructions.md                         | Researcher     | GameAgent, UIAgent, StarMLAgent, Troubleshooter                                                                                     |
-| frontend-architecture-contract.instructions.md             | UIAgent        | StarMLAgent, Reviewer, Planner                                                                                                      |
-| grepai-semantic-search.instructions.md                     | Researcher     | GameAgent, UIAgent, Refactorer, Reviewer, Planner, Troubleshooter, CSharpMentor                                                     |
-| github-actions-ci-cd-best-practices.instructions.md        | Troubleshooter | WorkspaceAgent, GodAgent                                                                                                            |
-| json-style-contract.instructions.md                        | GameAgent      | Refactorer, Reviewer                                                                                                                |
-| performance-optimization.instructions.md                   | Troubleshooter | GameAgent, UIAgent, Reviewer                                                                                                        |
-| powershell-terminal-best-practices.instructions.md         | Troubleshooter | All agents using run_in_terminal, including GitAgent                                                                                |
-| review-and-verification-contract.instructions.md           | Reviewer       | Orchestrator, UnitTestAgent                                                                                                         |
-| security-and-owasp.instructions.md                         | Reviewer       | Troubleshooter, GameAgent, UIAgent                                                                                                  |
-| self-explanatory-code-commenting.instructions.md           | Refactorer     | GameAgent, UIAgent, UnitTestAgent                                                                                                   |
-| sml-style-contract.instructions.md                         | StarMLAgent    | UIAgent, Reviewer                                                                                                                   |
-| starml-cheatsheet.instructions.md                          | StarMLAgent    | UIAgent, Researcher                                                                                                                 |
-| ui-component-patterns.instructions.md                      | UIAgent        | StarMLAgent, Planner                                                                                                                |
-| ui-hud-patterns.instructions.md                            | UIAgent        | StarMLAgent, Planner                                                                                                                |
-| ui-interaction-patterns.instructions.md                    | UIAgent        | StarMLAgent, Planner                                                                                                                |
-| ui-menu-patterns.instructions.md                           | UIAgent        | StarMLAgent, Planner                                                                                                                |
-| unit-testing-contract.instructions.md                      | UnitTestAgent  | Reviewer, Planner                                                                                                                   |
-| update-docs-on-code-change.instructions.md                 | WorkspaceAgent | Reviewer, Troubleshooter                                                                                                            |
-| visual-design-language.instructions.md                     | UIAgent        | StarMLAgent, WorkspaceAgent                                                                                                         |
-| workspace-contracts.instructions.md                        | Orchestrator   | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor                                                                           |
+| Instruction                                                | Primary Agent | Also Used By                                       |
+| ---------------------------------------------------------- | ------------- | -------------------------------------------------- |
+| agent-boundaries-and-wiring-governance.instructions.md     | GodAgent      | Orchestrator, Reviewer                             |
+| atomic-commit-execution-checklist-creation.instructions.md | Planner       | Researcher, Reviewer, WorkspaceAgent, Orchestrator |
+| backend-architecture-contract.instructions.md              | GameAgent     | Planner, Reviewer, Refactorer                      |
+
+| csharp-style-contract.instructions.md | GameAgent | UIAgent, Refactorer, UnitTestAgent, Reviewer, CSharpMentor |
+| external-resources.instructions.md | Researcher | GameAgent, UIAgent, StarMLAgent, Troubleshooter |
+| frontend-architecture-contract.instructions.md | UIAgent | StarMLAgent, Reviewer, Planner |
+| grepai-semantic-search.instructions.md | Researcher | GameAgent, UIAgent, Refactorer, Reviewer, Planner, Troubleshooter, CSharpMentor |
+| github-actions-ci-cd-best-practices.instructions.md | Troubleshooter | WorkspaceAgent, GodAgent |
+| json-style-contract.instructions.md | GameAgent | Refactorer, Reviewer |
+| performance-optimization.instructions.md | Troubleshooter | GameAgent, UIAgent, Reviewer |
+| powershell-terminal-best-practices.instructions.md | Troubleshooter | All agents using run_in_terminal, including GitAgent |
+| review-and-verification-contract.instructions.md | Reviewer | Orchestrator, UnitTestAgent |
+| security-and-owasp.instructions.md | Reviewer | Troubleshooter, GameAgent, UIAgent |
+| self-explanatory-code-commenting.instructions.md | Refactorer | GameAgent, UIAgent, UnitTestAgent |
+| sml-style-contract.instructions.md | StarMLAgent | UIAgent, Reviewer |
+| starml-cheatsheet.instructions.md | StarMLAgent | UIAgent, Researcher |
+| ui-component-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| ui-hud-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| ui-interaction-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| ui-menu-patterns.instructions.md | UIAgent | StarMLAgent, Planner |
+| unit-testing-contract.instructions.md | UnitTestAgent | Reviewer, Planner |
+| update-docs-on-code-change.instructions.md | WorkspaceAgent | Reviewer, Troubleshooter |
+| visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
+| workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor |
 
 ## Skill-to-Agent Wiring
+
 **Advisory note:** In VS Code, skill triggering is automatic and discovery-based — the IDE discovers skills by scanning `SKILL.md` files directly. The wiring table below is **advisory only**; it documents conventional ownership for governance purposes but is **not required** for skill invocation. Future maintainers must not add speculative bulk wiring rows for skills that have no established agent ownership rationale.
 
 Every skill folder in `.github/skills` is mapped to at least one agent.
 
-| Skill                                                 | Primary Agent  | Also Used By                    |
-| ----------------------------------------------------- | -------------- | ------------------------------- |
-| create-architectural-decision-record                  | Planner        | WorkspaceAgent                  |
-| create-github-issue-feature-from-specification        | WorkspaceAgent | Planner                         |
-| create-github-issues-feature-from-implementation-plan | WorkspaceAgent | Planner                         |
-| create-github-pull-request-from-specification         | WorkspaceAgent | Reviewer                        |
-| create-implementation-plan                            | Planner        | Orchestrator                    |
-| create-readme                                         | WorkspaceAgent | GodAgent                        |
-| csharp-mentor-response-templates                      | CSharpMentor   | Reviewer                        |
- 
-| csharp-docs                                           | WorkspaceAgent | Reviewer                        |
-| atomic-commit-execution-checklist-creation           | Planner        | WorkspaceAgent                  |
-| csharp-mstest                                         | UnitTestAgent  | Reviewer                        |
-| csharp-xunit                                          | UnitTestAgent  | Reviewer                        |
-| dotnet-best-practices                                 | GameAgent      | Refactorer, Reviewer            |
-| dotnet-upgrade                                        | Refactorer     | Troubleshooter                  |
-| ef-core                                               | GameAgent      | Refactorer                      |
-| git-commit                                            | GitAgent       | Orchestrator, WorkspaceAgent    |
-| godagent-workflow-patterns-and-assets                 | GodAgent       | Orchestrator                    |
-| jat-build-debug-and-deployment-workflow               | Troubleshooter | GameAgent                       |
-| jat-command-reducer-snapshot-flow                     | GameAgent      | Reviewer                        |
-| jat-dependency-injection-and-composition              | GameAgent      | Refactorer                      |
-| jat-error-handling-and-validation-patterns            | GameAgent      | Troubleshooter                  |
-| jat-event-lifecycle-and-game-coupling                 | GameAgent      | Researcher                      |
-| jat-external-resources                                | Researcher     | GameAgent, UIAgent, StarMLAgent |
-| jat-identifier-determinism-patterns                   | GameAgent      | UnitTestAgent, Reviewer         |
-| jat-persistence-migration-and-reconstruction          | GameAgent      | Reviewer                        |
-| jat-smapi-debugging-and-diagnostics                   | Troubleshooter | GameAgent                       |
-| jat-snapshot-binding-and-ui-data-flow                 | UIAgent        | StarMLAgent                     |
-| jat-starml-cheatsheet                                 | StarMLAgent    | UIAgent                         |
-| jat-task-generation-and-rule-evaluation               | GameAgent      | Planner                         |
-| jat-testing-patterns-and-fixtures                     | UnitTestAgent  | Reviewer                        |
-| jat-ui-component-patterns                             | UIAgent        | StarMLAgent                     |
-| jat-visual-design-language                            | UIAgent        | StarMLAgent, WorkspaceAgent     |
-| planner-checklist-and-output-format                   | Planner        | Reviewer, Orchestrator          |
- 
-| reviewer-checklist-and-output-format                  | Reviewer       | Orchestrator                    |
-| self-splitting-parallel-execution                     | GameAgent      | UIAgent, UnitTestAgent, Refactorer, Researcher, WorkspaceAgent |
-| starml-output-format                                  | StarMLAgent    | UIAgent                         |
-| troubleshooter-output-format                          | Troubleshooter | Orchestrator                    |
- 
-| update-specification                                  | Planner        | WorkspaceAgent                  |
+| Skill                                                 | Primary Agent  | Also Used By   |
+| ----------------------------------------------------- | -------------- | -------------- |
+| create-architectural-decision-record                  | Planner        | WorkspaceAgent |
+| create-github-issue-feature-from-specification        | WorkspaceAgent | Planner        |
+| create-github-issues-feature-from-implementation-plan | WorkspaceAgent | Planner        |
+| create-github-pull-request-from-specification         | WorkspaceAgent | Reviewer       |
+| create-implementation-plan                            | Planner        | Orchestrator   |
+| create-readme                                         | WorkspaceAgent | GodAgent       |
+| csharp-mentor-response-templates                      | CSharpMentor   | Reviewer       |
+
+| csharp-docs | WorkspaceAgent | Reviewer |
+| atomic-commit-execution-checklist-creation | Planner | WorkspaceAgent |
+| csharp-mstest | UnitTestAgent | Reviewer |
+| csharp-xunit | UnitTestAgent | Reviewer |
+| dotnet-best-practices | GameAgent | Refactorer, Reviewer |
+| dotnet-upgrade | Refactorer | Troubleshooter |
+| ef-core | GameAgent | Refactorer |
+| git-commit | GitAgent | Orchestrator, WorkspaceAgent |
+| godagent-workflow-patterns-and-assets | GodAgent | Orchestrator |
+| jat-build-debug-and-deployment-workflow | Troubleshooter | GameAgent |
+| jat-command-reducer-snapshot-flow | GameAgent | Reviewer |
+| jat-dependency-injection-and-composition | GameAgent | Refactorer |
+| jat-error-handling-and-validation-patterns | GameAgent | Troubleshooter |
+| jat-event-lifecycle-and-game-coupling | GameAgent | Researcher |
+| jat-external-resources | Researcher | GameAgent, UIAgent, StarMLAgent |
+| jat-identifier-determinism-patterns | GameAgent | UnitTestAgent, Reviewer |
+| jat-persistence-migration-and-reconstruction | GameAgent | Reviewer |
+| jat-smapi-debugging-and-diagnostics | Troubleshooter | GameAgent |
+| jat-snapshot-binding-and-ui-data-flow | UIAgent | StarMLAgent |
+| jat-starml-cheatsheet | StarMLAgent | UIAgent |
+| jat-task-generation-and-rule-evaluation | GameAgent | Planner |
+| jat-testing-patterns-and-fixtures | UnitTestAgent | Reviewer |
+| jat-ui-component-patterns | UIAgent | StarMLAgent |
+| jat-visual-design-language | UIAgent | StarMLAgent, WorkspaceAgent |
+| planner-checklist-and-output-format | Planner | Reviewer, Orchestrator |
+
+| reviewer-checklist-and-output-format | Reviewer | Orchestrator |
+| self-splitting-parallel-execution | GameAgent | UIAgent, UnitTestAgent, Refactorer, Researcher, WorkspaceAgent |
+| starml-output-format | StarMLAgent | UIAgent |
+| troubleshooter-output-format | Troubleshooter | Orchestrator |
+
+| update-specification | Planner | WorkspaceAgent |
 
 ## Required updates
 
@@ -153,7 +154,9 @@ When Troubleshooter confirms a root cause that reveals a major architecture prob
 - Confirmed root cause (with emphasis on architectural significance)
 - Fix summary and verification evidence
 - Suggested target docs and exact updates needed
+
 ## Required updates
+
 ## Hook enforcement
 
 Runtime enforcement is wired through `.github/hooks/ecosystem-maintenance/ecosystem-maintenance.sh` on `sessionEnd`.

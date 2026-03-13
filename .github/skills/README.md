@@ -20,7 +20,6 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | create-implementation-plan                            | [create-implementation-plan/SKILL.md](create-implementation-plan/SKILL.md)                                                       |
 | create-readme                                         | [create-readme/SKILL.md](create-readme/SKILL.md)                                                                                 |
 | atomic-commit-execution-checklist-creation | [atomic-commit-execution-checklist-creation/SKILL.md](atomic-commit-execution-checklist-creation/SKILL.md) |
-| create-specification                                  | [create-specification/SKILL.md](create-specification/SKILL.md)                                                                   |
 | csharp-docs                                           | [csharp-docs/SKILL.md](csharp-docs/SKILL.md)                                                                                     |
 | csharp-mstest                                         | [csharp-mstest/SKILL.md](csharp-mstest/SKILL.md)                                                                                 |
 | csharp-xunit                                          | [csharp-xunit/SKILL.md](csharp-xunit/SKILL.md)                                                                                   |
@@ -43,9 +42,8 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 | jat-testing-patterns-and-fixtures                     | [jat-testing-patterns-and-fixtures/SKILL.md](jat-testing-patterns-and-fixtures/SKILL.md)                                         |
 | jat-ui-component-patterns                             | [jat-ui-component-patterns/SKILL.md](jat-ui-component-patterns/SKILL.md)                                                         |
 | jat-visual-design-language                            | [jat-visual-design-language/SKILL.md](jat-visual-design-language/SKILL.md)                                                       |
-| refactor                                              | [refactor/SKILL.md](refactor/SKILL.md)                                                                                           |
 | self-splitting-parallel-execution                     | [self-splitting-parallel-execution/SKILL.md](self-splitting-parallel-execution/SKILL.md)                                         |
-| update-implementation-plan                            | [update-implementation-plan/SKILL.md](update-implementation-plan/SKILL.md)                                                       |
+ 
 | update-specification                                  | [update-specification/SKILL.md](update-specification/SKILL.md)                                                                   |
 
 ## Wiring Requirement

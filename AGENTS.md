@@ -148,7 +148,6 @@ Instruction index for external agents (`.github/instructions/`):
 	- `update-docs-on-code-change.instructions.md`
 	- `atomic-commit-execution-checklist-creation.instructions.md`
 	- `github-actions-ci-cd-best-practices.instructions.md`
-	- `context-engineering.instructions.md`
 	- `external-resources.instructions.md`
 	- `ui-component-patterns.instructions.md`
 	- `visual-design-language.instructions.md`

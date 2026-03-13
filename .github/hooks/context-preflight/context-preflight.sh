@@ -12,7 +12,6 @@ if command -v jq >/dev/null 2>&1; then
 fi
 
 if echo "$PROMPT" | grep -qiE '(create|new file|new module|refactor|reorganize|folder|structure|rename|move file)'; then
-  echo "[context-preflight] Load: .github/instructions/context-engineering.instructions.md"
   echo "[context-preflight] Load: .github/instructions/csharp-style-contract.instructions.md"
 fi
 
