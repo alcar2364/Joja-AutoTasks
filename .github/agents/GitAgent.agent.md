@@ -98,6 +98,7 @@ back to implementation agents is the user's responsibility based on what they wa
 
 When asked to compose commits:
 
+0. follow `.github/skills/git-commit/SKILL.md` as the canonical commit message format reference for this repository
 1. inspect `git status` and changed files
 2. propose or apply atomic grouping aligned to user intent
 3. draft concise commit messages with intent + scope

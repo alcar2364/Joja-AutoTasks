@@ -1,123 +1,86 @@
 ﻿---
 name: git-commit
-description: 'Execute git commit with conventional commit message analysis, intelligent staging, and message generation. Use when user asks to commit changes, create a git commit, or mentions "/commit". Supports: (1) Auto-detecting type and scope from changes, (2) Generating conventional commit messages from diff, (3) Interactive commit with optional type/scope/description overrides, (4) Intelligent file staging for logical grouping'
+description: 'Compose and execute JAT-standard commits using phase(step): imperative description format aligned to Atomic Commit Execution Checklists. Use when user asks to commit changes, group staged work, or draft commit messages in this repository.'
 license: MIT
 ---
 
-# Git Commit with Conventional Commits
+# JAT Git Commit Standard
 
-## Overview
+## Canonical Message Format
 
-Create standardized, semantic git commits using the Conventional Commits specification. Analyze the actual diff to determine appropriate type, scope, and message.
-
-## Conventional Commit Format
+Use this repository-specific format for the first line of every commit:
 
 ```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
+phaseN(stepXY): imperative description
 ```
 
-## Commit Types
+Where:
 
-| Type       | Purpose                        |
-| ---------- | ------------------------------ |
-| `feat`     | New feature                    |
-| `fix`      | Bug fix                        |
-| `docs`     | Documentation only             |
-| `style`    | Formatting/style (no logic)    |
-| `refactor` | Code refactor (no feature/fix) |
-| `perf`     | Performance improvement        |
-| `test`     | Add/update tests               |
-| `build`    | Build system/dependencies      |
-| `ci`       | CI/config changes              |
-| `chore`    | Maintenance/misc               |
-| `revert`   | Revert commit                  |
+- `phaseN` maps to the active implementation checklist phase (for example `phase1`, `phase2`, `phase3`, `phase4`).
+- `stepXY` maps to exactly one checklist step identifier (for example `step1A`, `step7D`, `step10C`).
+- Description is imperative, concise, and scoped to that single step.
 
-## Breaking Changes
+This format is tied to files under `Project/Tasks/ImplementationPlan/Phase * - Atomic Commit Execution Checklist.md`.
+
+## Scope Rules
+
+- One logical change per commit.
+- One checklist step per commit.
+- If work spans multiple checklist steps, split into multiple commits.
+- Do not stage unrelated files to satisfy a single step message.
+
+## Commit Body Policy
+
+Add a commit body when any of these apply:
+
+- validation evidence should be preserved with the commit
+- behavior or contract changes need explicit callouts
+- the step touches multiple subsystems and needs cross-file impact notes
+
+Recommended body structure:
 
 ```
-# Exclamation mark after type/scope
-feat!: remove deprecated endpoint
+<optional short rationale bullets>
 
-# BREAKING CHANGE footer
-feat: allow config to extend other configs
-
-BREAKING CHANGE: `extends` key behavior changed
+Validation: <command1> ; <command2>
 ```
 
-## Workflow
+Validation line examples:
 
-### 1. Analyze Diff
+- `Validation: dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false ; dotnet test Tests/JojaAutoTasks.Tests.csproj`
+- `Validation: not run (docs-only change)`
 
-```bash
-# If files are staged, use staged diff
-git diff --staged
+## Forbidden Patterns
 
-# If nothing staged, use working tree diff
-git diff
+Do not use generic Conventional Commits prefixes in this repository:
 
-# Also check status
-git status --porcelain
-```
+- `feat:`
+- `fix:`
+- `docs:`
+- `chore:`
+- any other `<type>:` SaaS or badge-style prefixing pattern
 
-### 2. Stage Files (if needed)
+Do not use vague subjects like "misc updates" or "cleanup" without a phase/step binding.
 
-If nothing is staged or you want to group changes differently:
+## JAT Examples (from ImplementationPlan)
 
-```bash
-# Stage specific files
-git add path/to/file1 path/to/file2
+- `phase1(step1A): add minimal ModEntry shell`
+- `phase1(step5C): wire coordinator outputs to dispatcher`
+- `phase2(step4A): add deterministic built-in and task-builder TaskId constructors`
+- `phase3(step5C): wire snapshot generation and SnapshotChanged event`
+- `phase4(step3D): add IDisposable with deterministic unsubscription`
 
-# Stage by pattern
-git add *.test.*
-git add src/components/*
+## Commit Workflow
 
-# Interactive staging
-git add -p
-```
+1. Identify the exact checklist step being completed.
+2. Stage only files required for that step.
+3. Confirm staged diff matches the step scope.
+4. Compose `phase(step): description` subject.
+5. Add body and `Validation:` line when needed.
+6. Commit once scope and evidence are coherent.
 
-**Never commit secrets** (.env, credentials.json, private keys).
+## Safety Guardrails
 
-### 3. Generate Commit Message
-
-Analyze the diff to determine:
-
-- **Type**: What kind of change is this?
-- **Scope**: What area/module is affected?
-- **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
-
-### 4. Execute Commit
-
-```bash
-# Single line
-git commit -m "<type>[scope]: <description>"
-
-# Multi-line with body/footer
-git commit -m "$(cat <<'EOF'
-<type>[scope]: <description>
-
-<optional body>
-
-<optional footer>
-EOF
-)"
-```
-
-## Best Practices
-
-- One logical change per commit
-- Present tense: "add" not "added"
-- Imperative mood: "fix bug" not "fixes bug"
-- Reference issues: `Closes #123`, `Refs #456`
-- Keep description under 72 characters
-
-## Git Safety Protocol
-
-- NEVER update git config
-- NEVER run destructive commands (--force, hard reset) without explicit request
-- NEVER skip hooks (--no-verify) unless user asks
-- NEVER force push to main/master
-- If commit fails due to hooks, fix and create NEW commit (don't amend)
+- Never run destructive git operations without explicit user approval.
+- Never include secrets in commits.
+- Prefer creating a follow-up commit over amending unless the user explicitly asks to amend.
