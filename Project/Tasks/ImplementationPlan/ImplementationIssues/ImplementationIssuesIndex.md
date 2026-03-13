@@ -31,7 +31,7 @@ This file is the active summary view of all unresolved implementation issues tra
 | 111 | Deferment | Implement built-in task generators with deterministic output and command emission. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5 | Open | Low |  |  |
 | 112 | Deferment | Populate deadline field consistently from generator/rule inputs. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5+ | Scheduled | Low |  |  |
 | 113 | Deferment | Implement task-type ordering/comparison behavior in runtime usage paths. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5+ | Open | Low |  |  |
-| 114 | Deferment | Implement Task Builder rule evaluation pipeline. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Scheduled | Low |  |  |
+| 114 | Deferment | Implement Task Builder rule evaluation pipeline. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Open | Low |  |  |
 | 115 | Deferment | Implement rule-driven command generation from evaluated Task Builder rules. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Open | Low |  |  |
 | 116 | Deferment | Implement persistence save/load for full State Store state across sessions. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
 | 117 | Deferment | Persist manual task counter across sessions to preserve deterministic manual TaskId continuity. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
