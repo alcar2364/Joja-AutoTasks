@@ -211,6 +211,14 @@ External-agent best practices for this repository:
 - Do not silently resolve code-vs-doc mismatches; ask the user which direction is correct.
 - Prefer small patches over broad rewrites.
 - Preserve existing naming/style conventions unless the task requires a deliberate change.
+- When identifying possible improvements, distinguish between contract issues,
+  design improvements, and optional polish.
+- Push back on real architecture, checklist, or implementation issues when the
+  concern is justified by source-of-truth documents or concrete code risk.
+- Avoid unnecessary churn or speculative cleanup when the current design is
+  already sufficient for the requested scope.
+- Treat the user as the final design decision-maker; explain tradeoffs clearly
+  so the user can choose intentionally.
 
 Quick apply matrix:
 
