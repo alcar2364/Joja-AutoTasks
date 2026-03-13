@@ -5,7 +5,7 @@ argument-hint:  Describe what should be reviewed; include the patch, changed fil
                 subsystem(s), relevant contracts, and whether the review is plan-only, diff-only, or full
                 implementation review.
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, 'grepai/*', todo]
 agents: [Planner, Researcher, UIAgent, StarMLAgent, GameAgent, Refactorer, WorkspaceAgent, GodAgent]
 handoffs:
 -   label: Planning clarification handoff

@@ -6,7 +6,7 @@ argument-hint:  Describe the bug or failure; include symptoms, relevant files/sy
                 messages, reproduction steps if known, and whether you want diagnosis only or diagnosis plus a fix
                 plan.
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [GameAgent, UIAgent, StarMLAgent, Planner, Refactorer, Researcher, Reviewer, WorkspaceAgent, GodAgent]
 handoffs:
 -   label: Backend fix handoff

@@ -5,7 +5,7 @@ argument-hint:  Describe what workspace artifact to create, edit, or revise; inc
                 file(s), the type of artifact (design guide section, user-facing doc, plan, task list),
                 any constraints or style requirements, and desired reviewer sequencing (`pre`, `post`, `none`, `auto`).
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [GameAgent, UIAgent, StarMLAgent, Refactorer, Planner, Researcher, Reviewer, GodAgent]
 handoffs:
 -   label: Agent customization work

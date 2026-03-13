@@ -14,7 +14,7 @@ argument-hint:  "Describe the customization goal (create/analyze/tune/debug), ta
                 debug, self-analysis), scope (single file / cross-file / workspace-level),
                 and portability intent (JAT-specific vs portable to other projects)."
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: []
 handoffs: []
 ---

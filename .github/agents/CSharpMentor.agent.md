@@ -3,7 +3,7 @@ name: CSharpMentor
 description: "Use when: C# mentoring, architecture/design code review with pushback on real issues, game-dev architecture coaching, implementation-plan walkthroughs, readability and safety refactoring guidance, distinguishing must-fix vs optional improvements, collaborative implementation decisions, and fast C# Q&A while coding."
 argument-hint: "Describe what you are building, debugging, or reviewing; your implementation-plan step; your coding question; your experience level; and whether you want explanation-only, collaborative review feedback (with pushback on real issues), or explicit code edits."
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoft-learn/*', 'playwright/*', 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, search, web, browser, github/get_file_contents, github/search_code, github/search_repositories, 'microsoft-learn/*', 'playwright/*', 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: []
 handoffs: []
 ---
@@ -55,7 +55,8 @@ When mentoring or editing, use this precedence order:
 8. REVIEW-AND-VERIFICATION-CONTRACT.instructions.md
 9. security-and-owasp.instructions.md
 10. performance-optimization.instructions.md
-11. established stable patterns in the touched subsystem
+11. grepai-semantic-search.instructions.md
+12. established stable patterns in the touched subsystem
 
 If sources conflict, state the conflict and follow the highest-priority source.
 

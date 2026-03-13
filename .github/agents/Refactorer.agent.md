@@ -5,7 +5,7 @@ argument-hint:  Describe the refactor; include the approved plan if available, t
                 files/subsystems, scope limits (no behavior change, touched-region only, etc.), and whether this is
                 a structural refactor, rename, extraction, or consolidation.
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [Reviewer, Planner, Researcher, StarMLAgent, GameAgent, UIAgent]
 handoffs:
 -   label: Refactor validation handoff
@@ -85,10 +85,11 @@ When refactoring, use this precedence order:
 7. CSHARP-STYLE-CONTRACT.instructions.md
 8. JSON-STYLE-CONTRACT.instructions.md
 9. SML-STYLE-CONTRACT.instructions.md
-10. external-resources.instructions.md
-11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
+10. grepai-semantic-search.instructions.md
+11. external-resources.instructions.md
+12. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
-12. established stable patterns in the touched subsystem
+13. established stable patterns in the touched subsystem
 
 If sources conflict, state the conflict and follow the higher-priority source.
 

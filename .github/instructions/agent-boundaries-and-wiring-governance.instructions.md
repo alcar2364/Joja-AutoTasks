@@ -43,6 +43,7 @@ Every instruction file below is wired to at least one agent.
 | csharp-style-contract.instructions.md                      | GameAgent      | UIAgent, Refactorer, UnitTestAgent, Reviewer, CSharpMentor                                                                          |
 | external-resources.instructions.md                         | Researcher     | GameAgent, UIAgent, StarMLAgent, Troubleshooter                                                                                     |
 | frontend-architecture-contract.instructions.md             | UIAgent        | StarMLAgent, Reviewer, Planner                                                                                                      |
+| grepai-semantic-search.instructions.md                     | Researcher     | GameAgent, UIAgent, Refactorer, Reviewer, Planner, Troubleshooter, CSharpMentor                                                    |
 | github-actions-ci-cd-best-practices.instructions.md        | Troubleshooter | WorkspaceAgent, GodAgent                                                                                                            |
 | json-style-contract.instructions.md                        | GameAgent      | Refactorer, Reviewer                                                                                                                |
 | performance-optimization.instructions.md                   | Troubleshooter | GameAgent, UIAgent, Reviewer                                                                                                        |

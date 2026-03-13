@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "skills": {
+    "grepai-chunking": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "b5ec21cc665028850cca7a593dc48336ab2a2fe8c010839c999d6e7833d54b51"
+    },
+    "grepai-config-reference": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "247231541b25c8f4c52d93fe13223e10381608439d96b4fcafac6aa0e5fc9d3e"
+    },
+    "grepai-embeddings-lmstudio": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "ecfa6770025495e8c89c502d1d39544c8a3c48be40059305e8ea47d6c950ae9d"
+    },
+    "grepai-embeddings-ollama": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "11a8b7fa2c95046f532d6abd9f51d3036216995f5d99db0326fbb95216678e2e"
+    },
+    "grepai-embeddings-openai": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "81356b4ebeac85d2c377118c93040b780ca9b15c18bbfdb6ba4e4e68b32dad8b"
+    },
+    "grepai-ignore-patterns": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "909733d137c8e6053e91dbba03922e38e2a7d7beeca7e4a3e75ec9a0e3a48ef2"
+    },
+    "grepai-init": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "576c0a018b84a8a78ede2063d1b6943ca071760e07d2d20480de843f7753cb1b"
+    },
+    "grepai-installation": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "9f6222bff0036c38dcf7680648930536b1fce353a4fd3da5a4d5e7b62e8d39ad"
+    },
+    "grepai-languages": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "97839c8bc08fed48e1e0a9d5b213af41f374af48b1ef88a1a54f9b43774e4a9c"
+    },
+    "grepai-mcp-claude": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "cf4e1884cb52056997bb14dc27dbfbd87c20cfbfc30247a3fa29249c49c5497e"
+    },
+    "grepai-mcp-cursor": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "0a0281df350a0e99f00d60a5c429ef81123225bee68c85c6a2ef38b6ebeb0646"
+    },
+    "grepai-mcp-tools": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "f82982a52e8e417f8e39dc7bc576e58fe9cde944fca1b6241b6c51ca1596ec04"
+    },
+    "grepai-ollama-setup": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "9d180c6fc4896cf22b9569435c644415ee2b499be7fa611675d32a4ef4bf8ee0"
+    },
+    "grepai-quickstart": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "51e9d3c176d1f9ea4fbabdd65275e0b18c67137082e6944f4da29f5604233a89"
+    },
+    "grepai-search-advanced": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "fc674697f6266c94c59493157ff250ca87b404a25c274ab8c4ab4ab26c811634"
+    },
+    "grepai-search-basics": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "c5131b467cf79a749e7bac6fcf73d860575a37c100a8af04c21270dabd69e3d5"
+    },
+    "grepai-search-boosting": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "6ef872aea0f11357cb73369bd710b52a2f2a09d1daacf4355a0622bb5d063f00"
+    },
+    "grepai-search-tips": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "3f20b55609c40dc1efb78fe55264c46720163980e910155a425ca8e138dde98d"
+    },
+    "grepai-storage-gob": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "b6ab390bf91706edb20bbb1b382ac66e5d9539a0179a5f7bc5d6ab4db7b254de"
+    },
+    "grepai-storage-postgres": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "1db12a932e4a452aef7023b92cfb553660355995402c237c3e7c0c45879d72b1"
+    },
+    "grepai-storage-qdrant": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "0c73c8ca7f125469f119cb6a031c8f25d14fd5504162b1ffc034f30572eb457f"
+    },
+    "grepai-trace-callees": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "eee6390cfe41d561e9bf7649db1f01af5762ce6ade1b39bc49ef9ae88314e19e"
+    },
+    "grepai-trace-callers": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "3b916c64abbf22a66ef68f93a636acba9a00a2f5479dde514d94c1df08dd4447"
+    },
+    "grepai-trace-graph": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "b5518148686e66640fdf23bc463ccfe126288906136151538b8644955f54a16a"
+    },
+    "grepai-troubleshooting": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "2734ea81b3955faa82da1623c39f6fa3b141215a3b72d9c45e600bbbe022be25"
+    },
+    "grepai-watch-daemon": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "8aa12d1c3afcbde0c125375297f93d50f97d8737f15266126ea473777b6acf9f"
+    },
+    "grepai-workspaces": {
+      "source": "yoanbernabeu/grepai-skills",
+      "sourceType": "github",
+      "computedHash": "e479e89f76c2545b56a47a4afaa59c7b89c709f32d5754cc62cfa58967149f9b"
+    }
+  }
+}

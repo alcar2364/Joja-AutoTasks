@@ -5,7 +5,7 @@ argument-hint: Describe the feature, bug, refactor, or question; include target 
 description: "Use when: finding relevant files, patterns, and context before planning or coding."
 name: Researcher
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, web, browser, github/get_file_contents, github/list_issues, github/search_code, github/search_issues, github/search_repositories, 'microsoftdocs/mcp/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, read/problems, read/readFile, agent, search, web, browser, github/get_file_contents, github/list_issues, github/search_code, github/search_issues, github/search_repositories, 'microsoftdocs/mcp/*', 'grepai/*', todo]
 agents: [Planner, UIAgent, StarMLAgent, GameAgent, Refactorer, Reviewer, Troubleshooter, WorkspaceAgent, GodAgent]
 handoffs:
         - label: Planner follow-up
@@ -98,11 +98,12 @@ When researching, use this precedence order:
 6. JSON-STYLE-CONTRACT.instructions.md
 7. SML-STYLE-CONTRACT.instructions.md
 8. UI-COMPONENT-PATTERNS.instructions.md
-9. external-resources.instructions.md
-10. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
+9. grepai-semantic-search.instructions.md
+10. external-resources.instructions.md
+11. Joja AutoTasks Design Guide (start from `.github/Joja AutoTasks Design Guide/JojaAutoTasks Design
     Guide.md`)
-11. existing stable code patterns in the touched subsystem
-12. approved external sources provided by the maintainer
+12. existing stable code patterns in the touched subsystem
+13. approved external sources provided by the maintainer
 
 If sources conflict, you must state the conflict explicitly and identify
 which higher-priority source controls.

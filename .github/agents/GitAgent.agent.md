@@ -5,7 +5,7 @@ argument-hint:  Describe your git goal (question, commit composition, branch cle
                 conflict resolution, release prep), scope (single commit vs multi-commit), and safety
                 constraints (no push, no history rewrite, no destructive commands).
 target: vscode
-tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/readFile, search, github/get_file_contents, github/search_code, github/search_repositories, 'gitkraken/*', todo]
+tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/readFile, search, github/get_file_contents, github/search_code, github/search_repositories, 'gitkraken/*', 'grepai/*', todo]
 agents: []
 handoffs: []
 ---
