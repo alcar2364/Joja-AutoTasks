@@ -121,8 +121,8 @@ finding maps back to a migrated DEF item.
 3. Revisit the queued findings after Phase 4 closes, or earlier only if the
    user explicitly pulls one forward.
 4. Use this report to seed the eventual post-phase implementation review report
-  and later ImplementationIssues updates once Phase 4 is complete and the
-  relevant finding is ready for canonical tracking.
+   and later ImplementationIssues updates once Phase 4 is complete and the
+   relevant finding is ready for canonical tracking.
 
 ## Outcome
 

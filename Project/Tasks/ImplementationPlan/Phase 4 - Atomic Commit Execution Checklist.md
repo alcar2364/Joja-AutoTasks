@@ -1,11 +1,11 @@
 # Phase 4 - Atomic Commit Execution Checklist
 
-| **Detail**             | **Description**                                                                                                                   |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Phase:**             | Phase 4 (View Model Infrastructure)                                                                                               |
-| **Scope:**             | INPC-based view model foundation, snapshot subscription<br>lifecycle, UI command dispatch, command/snapshot<br>boundary integrity |
-| **Target Issues:**     | Phase 4 `ImplementationIssues` items; legacy refs DEF-007, DEF-008, DEF-009, DEF-010, DEF-032                                          |
-| **Status:**            | Draft-Ready for Execution                                                                                                         |
+| **Detail**         | **Description**                                                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Phase:**         | Phase 4 (View Model Infrastructure)                                                                                               |
+| **Scope:**         | INPC-based view model foundation, snapshot subscription<br>lifecycle, UI command dispatch, command/snapshot<br>boundary integrity |
+| **Target Issues:** | Phase 4 `ImplementationIssues` items; legacy refs DEF-007, DEF-008, DEF-009, DEF-010, DEF-032                                     |
+| **Status:**        | Draft-Ready for Execution                                                                                                         |
 
 ## Guardrails (Must Stay True)
 
@@ -48,34 +48,48 @@ across all included surfaces.**
 
 - **`UIViewModelBase`** — Base class implementing `INotifyPropertyChanged` via `PropertyChanged.SourceGenerator`;
   defines property change notification pattern
+  defines property change notification pattern
 - **`HudViewModel`** — HUD surface view model; subscribes to `SnapshotChanged` and
+  projects task summary/status data into bindable properties
   projects task summary/status data into bindable properties
 - **`TaskListViewModel`** — Task list/history surface view model; manages `TaskSnapshot`
   collection with deterministic reconciliation
+  collection with deterministic reconciliation
 - **`HudTaskRowViewModel`** — HUD row item view model; projects individual task
+  properties with binding support
   properties with binding support
 - **`TaskDetailViewModel`** — Detail surface view model; provides comprehensive
   task information and edit capability binding
+  task information and edit capability binding
 - **`HistoryViewModel`** — History/past tasks surface view model; maintains sorted,
+  reconciled task history collection
   reconciled task history collection
 - **`ManualTaskEditorViewModel`** — Editor surface view model for manual task creation/editing;
   manages form state and validation binding
+  manages form state and validation binding
 - **`ConfigViewModel`** — Configuration surface view model; projects config state
+  and dispatches config changes (if Phase 4 scope includes config UI)
   and dispatches config changes (if Phase 4 scope includes config UI)
 - **`UISnapshotSubscriptionManager`** — Lifecycle coordinator for view model subscription/unsubscription;
   handles per-viewmodel dispose safety with token-based unsubscribe semantics
+  handles per-viewmodel dispose safety with token-based unsubscribe semantics
 - **`ConfigLoader Exception Hardening`** — Deterministic fallback logic and structured
   logging in config read/normalize catch paths
+  logging in config read/normalize catch paths
 - **`UI Command Dispatch`** — Pattern for marshaling user commands (add task, complete,
+  pin, etc.) from UI into StateStore command system
   pin, etc.) from UI into StateStore command system
 
 ### Prerequisites
 
 - **Phase 1** (Lifecycle/Config): ModEntry, lifecycle hooks (OnSaving, UpdateTicked),
   ConfigLoader, logging
+  ConfigLoader, logging
 - **Phase 2** (State Foundation): StateStore, StateContainer, SnapshotProjector,
   TaskSnapshot and related domain models
+  TaskSnapshot and related domain models
 - **Phase 3** (Commands/Handlers): Command contracts, command handlers, deterministic
+  state mutation pattern
   state mutation pattern
 
 Phase 4 builds on these by wiring UI surface observation into snapshot subscription
@@ -89,15 +103,20 @@ and command dispatch.
 - Phase 3 provides command contracts and deterministic handlers
 - Phase 3 provides `StateStore` with `SnapshotChanged` event and `TaskSnapshot`
   projections
+  projections
 
 **This Phase:**
 
 - Implements UI foundation (view models, property binding, subscription lifecycle)
 - Establishes snapshot-to-UI projection pattern (read-only snapshots → bindable
   properties)
+  properties)
 - Establishes UI-to-command pattern (user action → command → snapshot update → UI
   refresh)
+  refresh)
 - Resolves in-phase deferments: DEF-007 (terminology), DEF-008 (subscription lifecycle),
+  DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception
+  hardening)
   DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception
   hardening)
 
@@ -106,6 +125,7 @@ and command dispatch.
 - Phase 5 (HUD/Menu UI): Render HudViewModel and TaskListViewModel into game surfaces
 - Phase 6 (User Interactions): Wire click/input handlers into command dispatch
 - Phase 7+ (Polish/Persistence): Performance optimization, save/load integration,
+  extended features
   extended features
 
 ### Design Guide References
@@ -166,11 +186,13 @@ and command dispatch.
       initialization order guard prevents null-reference during subscription;
       tracing subscription is established during `Entry` and can be verified through  
        log (add minimal log statement when subscription established); token disposal
+       log (add minimal log statement when subscription established); token disposal
       properly unsubscribes.
 - [x] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager`
       into `ModEntry` lifecycle with initialization order guard"
 - [x] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully
       initialized; composition/order guarantee + minimal lifecycle logging on `_runtime.StateStore`;
+      token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle;
       token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle;
       documented initialization order constraint.
 - [x] **Must exclude:** View model implementation, UI rendering, command dispatch
@@ -563,10 +585,67 @@ and command dispatch.
       `phase4(step8C): finalize scope validation and implementation-issue coverage`
 - [ ] **Must include:** File change inventory; scope alignment verification;
       ImplementationIssues coverage check.
+- [ ] **Action:** Review all files changed during Phase 4 (new files and edits
+      to existing files) to confirm scope matches Phase 4 requirements: UI
+      foundation (view models, subscription, binding), ConfigLoader
+      hardening, command dispatch. Verify no scope expansion into Phase 5
+      (HUD/menu rendering), Phase 6 (click handlers/input), or unplanned
+      areas. Generate file change summary (use git diff or manual review).
+      Verify all Phase 4-scoped ImplementationIssues compatibility items
+      (legacy DEF-007, 008, 009, 010, 032) are addressed.
+- [ ] **Scope:** Code review and file inventory; this checklist; git log or
+      change summary.
+- [ ] **Verify:** File changes are within Phase 4 scope; no unintended Phase
+      5/6 work; all 5 in-phase ImplementationIssues compatibility items are
+      covered.
+- [ ] **Suggested commit:**
+      `phase4(step8C): finalize scope validation and implementation-issue coverage`
+- [ ] **Must include:** File change inventory; scope alignment verification;
+      ImplementationIssues coverage check.
 - [ ] **Must exclude:** Out-of-scope code changes, Phase 5 work.
 
 ### 8D - Reconcile Phase 4 ImplementationIssues coverage and document findings
+### 8D - Reconcile Phase 4 ImplementationIssues coverage and document findings
 
+- [ ] **Action:** Review
+      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
+      and the associated issue records for any Phase 4-scoped items tracked
+      through `legacy_id` compatibility references.
+      Match them against the Phase 4 checklist: DEF-007 (terminology ambiguity,
+      Step 6), DEF-008 (snapshot subscription lifecycle, Step 3), DEF-009
+      (INPC/reconciliation, Step 4), DEF-010 (UI-local state ownership, Step
+      5), and DEF-032 (ConfigLoader exception hardening, Step 2).
+      Record findings in local audit notes or a review artifact. Move resolved
+      Phase 4 issues into
+      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`
+      with archived date and resolution notes while preserving DEF identifiers
+      only as `legacy_id` compatibility references where applicable. If new
+      follow-up work is discovered during Phase 4, add it to the
+      ImplementationIssues system without minting new DEF identifiers. If
+      architecture or scope issues are found during this gate, reviewer +
+      GodAgent draft `Project/Planning/Phase 4 Implementation Review Report.md`
+      and route follow-up work to the user-owned post-phase checklist.
+- [ ] **Scope:**
+      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`,
+      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`,
+      relevant per-issue records, this Phase 4 checklist, and optional
+      post-phase review artifacts.
+- [ ] **Verify:** All in-phase ImplementationIssues compatibility items
+      (DEF-007, 008, 009, 010, 032) are mapped to Phase 4 steps; resolved
+      Phase 4 issues are archived with context where applicable; implementer
+      findings are recorded; any new follow-up issues are added to the
+      ImplementationIssues system; and review documentation is drafted when
+      needed.
+- [ ] **Suggested commit:**
+      `phase4(step8D): reconcile implementation issues and post-phase routing`
+- [ ] **Must include:** Mapping of DEF-007/008/009/010/032 to Phase 4 steps;
+      archive updates with resolution context where applicable; implementer
+      findings or audit notes; any new ImplementationIssues entries needed for
+      follow-up; and a review report with post-phase routing when issues are
+      found.
+- [ ] **Must exclude:** Retroactive edits to prior phase items without
+      explicit justification; inline fixes for architectural issues (route to
+      post-phase instead).
 - [ ] **Action:** Review
       `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
       and the associated issue records for any Phase 4-scoped items tracked
@@ -619,10 +698,10 @@ and command dispatch.
 
 - Every blocking constraint violation must have a documented resolution path
 - Issues must be either resolved before Phase 4 close or explicitly routed
-      into the ImplementationIssues system with post-phase handling; preserve a
-      DEF identifier only as a legacy compatibility reference when applicable
+  into the ImplementationIssues system with post-phase handling; preserve a
+  DEF identifier only as a legacy compatibility reference when applicable
 - Reviewer: draft Phase 4 Implementation Review Report if architectural issues
-      surface; do not attempt inline fixes
+  surface; do not attempt inline fixes
 
 ---
 
@@ -631,10 +710,16 @@ and command dispatch.
 - [ ] All substeps 1A through 8D are complete.
 - [ ] Implementation scope matches Phase 4 requirements (no unintended
       expansion into Phase 5/6).
+- [ ] Implementation scope matches Phase 4 requirements (no unintended
+      expansion into Phase 5/6).
 - [ ] All guardrails are preserved and verified in code.
 - [ ] Unit tests pass; Phase 1-4 test suite is comprehensive and
       deterministic (~160-170 total tests).
+- [ ] Unit tests pass; Phase 1-4 test suite is comprehensive and
+      deterministic (~160-170 total tests).
 - [ ] Build succeeds without errors or warnings.
+- [ ] All five in-phase ImplementationIssues compatibility items are addressed
+      (legacy DEF-007, 008, 009, 010, 032):
 - [ ] All five in-phase ImplementationIssues compatibility items are addressed
       (legacy DEF-007, 008, 009, 010, 032):
   - DEF-007: Terminology ambiguity resolved (Step 6)
@@ -642,6 +727,14 @@ and command dispatch.
   - DEF-009: INPC/reconciliation implemented (Step 4)
   - DEF-010: UI-local state ownership established (Step 5)
   - DEF-032: ConfigLoader exception hardening completed (Step 2)
+- [ ] ImplementationIssues reconciliation completed: resolved Phase 4 items
+      archived with phase/date/notes where applicable; any new follow-up work
+      added through the ImplementationIssues system without creating new
+      DEF-NNN identifiers.
+- [ ] If scope or architecture issues found, review report drafted and
+      post-phase routing documented (user-owned
+      `Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` for
+      remediation).
 - [ ] ImplementationIssues reconciliation completed: resolved Phase 4 items
       archived with phase/date/notes where applicable; any new follow-up work
       added through the ImplementationIssues system without creating new
@@ -658,28 +751,32 @@ and command dispatch.
 
 **If scope/architecture issues are discovered during Step 8D
 (ImplementationIssues reconciliation) or earlier gates:**
+**If scope/architecture issues are discovered during Step 8D
+(ImplementationIssues reconciliation) or earlier gates:**
 
 1. **Create Review Report:**
-       `Project/Planning/Phase 4 Implementation Review Report.md`
-       - Section: Issue Analysis (categorized by severity: blocking, important,
-             minor)
-       - Section: Remediation Guidance (recommended fixes, complexity level,
-             phase for attempted resolution)
-       - Section: Evidence (file paths, line number citations, test failures,
-             constraint violations)
+   `Project/Planning/Phase 4 Implementation Review Report.md`
+   - Section: Issue Analysis (categorized by severity: blocking, important,
+     minor)
+   - Section: Remediation Guidance (recommended fixes, complexity level,
+     phase for attempted resolution)
+   - Section: Evidence (file paths, line number citations, test failures,
+     constraint violations)
 
 2. **Draft Post-Phase Checklist:**
-       `Project/Tasks/ImplementationPlan/Phase 4 - Post-Phase Atomic Commit Execution Checklist.md`
-       - User-owned execution checklist for addressing issues identified in Phase
-             4 review
+   `Project/Tasks/ImplementationPlan/Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` - User-owned execution checklist for addressing issues identified in Phase
+   4 review
    - Do NOT implement fixes inline in Phase 4 completion gate
-       - Route to user for prioritization and scheduling in post-phase atomic
-             execution cycle
+     - Route to user for prioritization and scheduling in post-phase atomic
+       execution cycle
 
 3. **ImplementationIssues Update:** Append new follow-up issues from Phase 4 to
-      the `ImplementationIssues` system. Preserve DEF identifiers in `legacy_id`
-      only when reconciling migrated legacy items.
+   the `ImplementationIssues` system. Preserve DEF identifiers in `legacy_id`
+   only when reconciling migrated legacy items.
 
+**Note:** This phase assumes clean completion (no blocking issues). If issues
+are found, this routing ensures structured documentation and user control over
+post-phase remediation.
 **Note:** This phase assumes clean completion (no blocking issues). If issues
 are found, this routing ensures structured documentation and user control over
 post-phase remediation.
