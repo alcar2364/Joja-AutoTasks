@@ -64,6 +64,7 @@ Every instruction file below is wired to at least one agent.
 | workspace-contracts.instructions.md                        | Orchestrator   | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor                                                                           |
 
 ## Skill-to-Agent Wiring
+**Advisory note:** In VS Code, skill triggering is automatic and discovery-based — the IDE discovers skills by scanning `SKILL.md` files directly. The wiring table below is **advisory only**; it documents conventional ownership for governance purposes but is **not required** for skill invocation. Future maintainers must not add speculative bulk wiring rows for skills that have no established agent ownership rationale.
 
 Every skill folder in `.github/skills` is mapped to at least one agent.
 
@@ -150,11 +151,7 @@ When Troubleshooter confirms a root cause that reveals a major architecture prob
 - Confirmed root cause (with emphasis on architectural significance)
 - Fix summary and verification evidence
 - Suggested target docs and exact updates needed
-
-**Threshold for delegation:** Major architecture problems, design-guide gaps, contract violations — not minor coding errors.
-
-This workflow does **not** give Troubleshooter documentation ownership. Troubleshooter routes the documentation task; WorkspaceAgent owns non-agent Markdown editing.
-
+## Required updates
 ## Hook enforcement
 
 Runtime enforcement is wired through `.github/hooks/ecosystem-maintenance/ecosystem-maintenance.sh` on `sessionEnd`.

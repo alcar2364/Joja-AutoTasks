@@ -37,8 +37,8 @@ This workspace currently has 32 skills under `.github/skills/`.
 
 ## Troubleshooting
 
-| Problem | Check |
-| --- | --- |
-| Skill not discoverable | Folder name matches `name:` in `SKILL.md` |
-| Skill opens but seems wrong | Verify the correct skill was mapped in the wiring file |
-| Agent does not use a skill | Update `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md` |
+| Problem                     | Check                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| Skill not discoverable      | Folder name matches `name:` in `SKILL.md`                                            |
+| Skill opens but seems wrong | Verify the correct skill was mapped in the wiring file                               |
+| Agent does not use a skill  | Update `.github/instructions/agent-boundaries-and-wiring-governance.instructions.md` |
