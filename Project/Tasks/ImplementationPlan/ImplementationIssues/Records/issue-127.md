@@ -1,7 +1,7 @@
 ---
 issue_number: 127
 legacy_id: ""
-type: "Deferment"
+type: "Review follow-up"
 title: "Implementation Issue 127: Evaluate DayKey internal representation by storing year/season/day components alongside canonical string for comparison and calculation ergonomics."
 summary: "Evaluate DayKey internal representation by storing year/season/day components alongside canonical string for comparison and calculation ergonomics."
 created_phase: "Phase 3"
@@ -13,7 +13,7 @@ github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/127"
 resolution_pr: ""
 created_by: "alcar2364"
 created_at: "2026-03-11T14:27:13Z"
-updated_at: "2026-03-13T04:28:19Z"
+updated_at: "2026-03-13T04:33:42Z"
 sync_state: "github-synced"
 notes: "Requires design decision on storage-versus-parse tradeoff"
 ---
