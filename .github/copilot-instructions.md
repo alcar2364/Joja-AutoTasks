@@ -1,108 +1,77 @@
-# Joja AutoTasks - Copilot Coding Agent Onboarding
+# Joja AutoTasks: AI Operating Contract
 
-## Read This First
+Use this file as the default execution contract for work in this repository.
+Prefer it over broad repository discovery. Search code or docs only when this file is missing
+needed detail or appears stale.
 
-1. Trust this document as the primary operational guide for this repository.
-2. Only search the repo when information here is missing or proven wrong.
-3. Keep edits scoped and deterministic; this project enforces strong architecture boundaries.
+## Primary Goal
 
-## Repository Summary
+Work in ways that preserve deterministic behavior, strong subsystem boundaries, and low-churn
+edits.
 
-Joja AutoTasks is a Stardew Valley SMAPI mod that provides deterministic in-game task tracking.
-It is designed around a command/snapshot architecture with strict separation between lifecycle
-signal forwarding, canonical state ownership, persistence, and UI consumption.
+Repository context that matters:
 
-Current implemented core is a Phase 1 foundation:
+- Joja AutoTasks is a Stardew Valley SMAPI mod.
+- The architecture is command/snapshot oriented.
+- Canonical state ownership, lifecycle forwarding, persistence, and UI consumption are separate
+  responsibilities.
 
-* SMAPI entrypoint and lifecycle hook forwarding
-* config loading/normalization with version handling
-* deterministic identifier/domain primitives
-* dispatcher/lifecycle guardrails and deterministic unit tests
+## Decision Order
 
-## High-Level Repository Facts
+When instructions conflict, use this order:
 
-* Repository type: .NET/C# SMAPI mod + xUnit test project
-* Primary language: C#
-* Tracked repo size: about 180 tracked files
-* Tracked extension mix: mostly Markdown docs/instructions, plus C# source and JSON config
-* Target frameworks:
-		* Mod project: net6.0
-		* Tests project: net8.0
-* Core build dependency: Pathoschild.Stardew.ModBuildConfig 4.4.0
-* Test stack: xUnit, Moq, Microsoft.NET.Test.Sdk, coverlet.collector
-* Branch model: `development` is the default integration branch, `main` is the stable branch, `release/*` branches are short-lived stabilization branches, and `hotfix/*` branches start from `main` for emergency stable fixes.
-* CI/workflows: `.github/workflows/ci.yml` runs build validation on code pushes and PRs targeting `development`, `main`, and `release/*`
+1. Explicit user request
+2. [`AGENTS.md`](../AGENTS.md)
+3. This file
+4. Relevant files under [`.github/instructions/`](./instructions/)
+5. Design docs under [`Project/Planning/`](../Project/Planning/)
 
-## Bootstrap and Environment Setup (Validated)
+## Behavior Model
 
-Always run from repository root.
+- Keep changes scoped, deterministic, and minimal.
+- Do not widen scope silently.
+- State assumptions when they affect behavior or architecture.
+- Ask before any destructive, high-impact, or contract-changing work.
+- Prefer small patches over broad rewrites.
+- Do not treat absence of documentation as permission to redesign.
 
-Required tooling and environment:
+## Architecture Invariants
 
-1. .NET SDKs (validated locally):
-		* 8.0.203
-		* 9.0.311
-		* 10.0.103
-2. Stardew Valley + SMAPI installation is required for run/deploy tasks.
-3. Game path must resolve through ModBuildConfig:
+Do not violate these unless the user explicitly requests a contract change:
 
-```powershell
-dotnet msbuild JojaAutoTasks.csproj -nologo -getProperty:GamePath
-```
+- Do not introduce direct state mutation paths that bypass command or state-store boundaries.
+- Preserve deterministic identifier behavior, ordering guarantees, and snapshot semantics.
+- Keep lifecycle signal forwarding separate from state ownership and persistence.
+- Keep backend/game logic, UI C# interaction logic, and StarML responsibilities separate.
+- Preserve the composition-root role of startup wiring.
 
-Validated result in this environment:
+If code appears to conflict with docs, stop and surface the mismatch instead of choosing a side
+unilaterally.
 
-* C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley
+## Edit Strategy
 
-Recommended bootstrap sequence:
+Default workflow for non-trivial tasks:
 
-```powershell
-dotnet clean JojaAutoTasks.sln -c Debug
-dotnet restore JojaAutoTasks.sln
-```
+1. Read only the instructions relevant to the task.
+2. Inspect the smallest code surface that can answer the question.
+3. Plan briefly if the change is multi-step or risky.
+4. Implement the smallest correct patch.
+5. Run the narrowest validation that proves the change.
 
-## Build, Test, Run, and Packaging Commands (Validated)
+For small, localized tasks, implement directly.
 
-### Build (check-only)
+## Validation
+
+Run commands from repository root.
+
+Default code validation:
 
 ```powershell
 dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
-```
-
-Observed time: about 0.6-1.7 seconds.
-Postcondition: `bin/Debug/net6.0/JojaAutoTasks.dll` exists.
-
-### Build (debug deploy + zip)
-
-```powershell
-dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=true -p:EnableModZip=true
-```
-
-Observed time: about 0.85 seconds.
-Postconditions:
-
-* deployed mod folder exists at `<GamePath>\Mods\JojaAutoTasks`
-* zip created in `bin/Debug/net6.0/` (example: `JojaAutoTasks 0.1.0.zip`)
-
-### Build (release package)
-
-```powershell
-dotnet build JojaAutoTasks.csproj -c Release -p:EnableModDeploy=false -p:EnableModZip=true
-```
-
-Observed time: about 0.83 seconds.
-Postcondition: release zip created in `bin/Release/net6.0/`.
-
-### Test
-
-```powershell
 dotnet test "Tests\JojaAutoTasks.Tests.csproj"
 ```
 
-Observed time: about 2.9-3.9 seconds.
-Observed result: 110 passed, 0 failed.
-
-Focused test examples (from Tests/README.md):
+Focused test examples:
 
 ```powershell
 dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorTests
@@ -111,160 +80,46 @@ dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~Updat
 dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~ConfigLoaderMigrationSafetyTests
 ```
 
-### Run (SMAPI)
-
-```powershell
-$gamePath = (dotnet msbuild JojaAutoTasks.csproj -nologo -getProperty:GamePath).Trim()
-$smapiExe = Join-Path $gamePath 'StardewModdingAPI.exe'
-Start-Process -FilePath $smapiExe -WorkingDirectory $gamePath
-```
-
-Observed launch time: about 0.04 seconds to spawn process.
-
-### Close running game/SMAPI (safe cleanup)
-
-```powershell
-$processNames = @('Stardew Valley', 'StardewValley', 'StardewModdingAPI')
-Get-Process -ErrorAction SilentlyContinue |
-Where-Object { $processNames -contains $_.ProcessName } |
-Stop-Process -Force
-```
-
-## Lint/Formatting/Static Analysis
-
-No dedicated lint command or CI linter workflow is currently defined. The CI workflow
-(`.github/workflows/ci.yml`) enforces build and test success only.
-
-Operational validation gate for this repo is:
-
-1. successful build of mod project (check-only)
-2. successful unit test run
-3. targeted tests when touching specific areas (see PR template and Tests/README.md)
-
-## Command Order, Failures, and Workarounds
-
-Known-good sequences:
-
-### Fast local verify
-
-```powershell
-dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
-dotnet test "Tests\JojaAutoTasks.Tests.csproj"
-```
-
-### Clean rebuild verify
+Clean bootstrap when needed:
 
 ```powershell
 dotnet clean JojaAutoTasks.sln -c Debug
 dotnet restore JojaAutoTasks.sln
-dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
-dotnet test "Tests\JojaAutoTasks.Tests.csproj"
 ```
 
-### In-game debug cycle
+Known pitfall:
 
-```powershell
-dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=true -p:EnableModZip=true
-# then launch SMAPI
-```
+- `dotnet test --no-build` can fail immediately after cleaning test outputs because the test DLL
+  may not exist yet. Use normal `dotnet test` or build first.
 
-Observed failure mode:
+## Documentation Policy
 
-* Running `dotnet test ... --no-build` immediately after `dotnet clean Tests\JojaAutoTasks.Tests.csproj -c Debug`
-	fails because the test DLL is missing (`Tests\bin\Debug\net8.0\JojaAutoTasks.Tests.dll` not found).
-* Workaround: run normal `dotnet test` (without `--no-build`) or build tests first.
+When code changes alter behavior, contracts, build/setup, or architecture intent, update the
+relevant existing docs in the same change. Do not create redundant documentation or restate code
+structure that the repository already expresses clearly.
 
-Timeout notes:
+## Communication Style
 
-* No command failures due to timeout were observed during validation.
+Optimize for agent usefulness over prose quality:
 
-VS Code tasks notes:
+- Be concise, direct, and explicit.
+- Separate facts, assumptions, and open questions.
+- Prefer operational guidance over explanation.
+- Preserve a calm, collaborative, no-drama tone.
+- When multiple valid paths exist, present the tradeoff that matters most.
 
-* `.vscode/tasks.json` defines helpful commands (build variants, SMAPI run, close game), but `.vscode`
-	is ignored by `.gitignore`; do not assume task definitions exist in every clone.
-* When task terminals are reused, output may include prior command history. Verify the final execution block.
+## Routing Hints
 
-## Pre-PR Validation (Replicate Locally)
+Load only the contract files needed for the task:
 
-The CI workflow (`.github/workflows/ci.yml`) mirrors these local steps. Run them before opening a PR:
+- Backend/gameplay C#: [`backend-architecture-contract.instructions.md`](./instructions/backend-architecture-contract.instructions.md)
+- UI/view-model C#: [`frontend-architecture-contract.instructions.md`](./instructions/frontend-architecture-contract.instructions.md)
+- C# style: [`csharp-style-contract.instructions.md`](./instructions/csharp-style-contract.instructions.md)
+- Tests: [`unit-testing-contract.instructions.md`](./instructions/unit-testing-contract.instructions.md)
+- Review/risk checks: [`review-and-verification-contract.instructions.md`](./instructions/review-and-verification-contract.instructions.md)
+- Docs updates: [`update-docs-on-code-change.instructions.md`](./instructions/update-docs-on-code-change.instructions.md)
 
-1. `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false`
-2. `dotnet test "Tests\JojaAutoTasks.Tests.csproj"`
-3. If touched area requires it, run focused tests listed in `Tests/README.md`
-4. Align with `.github/pull_request_template.md` testing checkboxes
+## Final Rule
 
-## Branch Strategy
-
-Use this repository branch model unless the user explicitly asks for a one-off exception:
-
-1. `development` is the default branch and integration branch for normal work.
-2. `main` is the stable branch for known-good promoted code.
-3. `feature/*` branches start from and return to `development`.
-4. `release/*` branches start from `development` for release prep, stabilization, and release-only fixes.
-5. `hotfix/*` branches start from `main` for urgent stable fixes.
-6. After a release or hotfix reaches `main`, sync it back into `development` so the lines do not drift.
-
-Pull request intent:
-
-* feature work -> `development`
-* release promotion -> `main`
-* hotfix promotion -> `main`, then back-merge into `development`
-
-Protection intent:
-
-* `main` is the protected stable branch
-* `development` is the default integration branch and may use lighter protections
-* `release/*` branches can be protected temporarily when used for stabilization
-
-## Architecture and Project Layout Map
-
-### Root inventory
-
-`.git/`, `.github/`, `.vscode/`, `Configuration/`, `Domain/`, `Events/`, `Infrastructure/`,
-`Lifecycle/`, `Startup/`, `StateStore/`, `Tests/`, `ModEntry.cs`, `JojaAutoTasks.csproj`,
-`JojaAutoTasks.sln`, `manifest.json`, `README.md`, `LICENSE.txt`.
-
-### Major architectural elements
-
-* `ModEntry.cs`: SMAPI entrypoint; subscribes lifecycle events and throttles UpdateTicked forwarding.
-* `Startup/BootstrapContainer.cs`: composition root wiring logger, config loader, dispatcher,
-	lifecycle coordinator.
-* `Startup/ModRuntime.cs`: runtime dependency container.
-* `Configuration/ModConfig.cs`: persisted config schema and `CurrentConfigVersion`.
-* `Configuration/ConfigLoader.cs`: config read, fallback, and version normalization.
-* `Lifecycle/LifecycleCoordinator.cs`: lifecycle signal forwarding and debug-aware tick logging.
-* `Events/IEventDispatcher.cs` and `Events/EventDispatcher.cs`: lifecycle dispatch contract and current
-	deterministic no-op implementation.
-* `Domain/Identifiers/`: canonical value types (`TaskId`, `RuleId`, `SubjectId`, `DayKey`) and format/factory helpers.
-* `Domain/Tasks/`: immutable task domain object and enums.
-* `StateStore/Commands/`: command contracts (for state mutation boundary evolution).
-* `Tests/`: unit tests grouped by subsystem (`Configuration`, `Lifecycle`, `Events`, `Hooks`, `Domain`).
-
-### Documentation and contracts location
-
-* Primary technical docs: `Project/Planning/Joja AutoTasks Design Guide/`
-* Architecture reference map: `Project/Planning/Architecture Map.md`
-* Core contracts/instructions: `.github/instructions/*.instructions.md`
-* PR validation checklist: `.github/pull_request_template.md`
-* Test conventions and focused command list: `Tests/README.md`
-
-### README status
-
-`README.md` is currently minimal (`Project repository initialized.`).
-Use the design guide and architecture map in `Project/Planning/` as the operational source
-of truth for implementation context.
-
-## Non-Obvious Dependencies and Behaviors
-
-1. `Pathoschild.Stardew.ModBuildConfig` drives GamePath resolution, deploy-copy behavior, and zip packaging.
-2. Test project references the mod project; test runs also build mod output.
-3. Manifest `MinimumApiVersion` is `4.4.0`, aligned with ModBuildConfig package baseline.
-4. Copilot hooks exist under `.github/hooks/` for prompt/session guardrails, but these are not a replacement
-	 for build/test validation.
-
-## Final Operating Rule for Agents
-
-Trust this onboarding file first. Do not start broad repo searches unless:
-
-1. required information is missing here, or
-2. a command/file/path documented here no longer behaves as described.
+Trust this file for operational guidance, but verify against code when behavior is the source of
+truth.
