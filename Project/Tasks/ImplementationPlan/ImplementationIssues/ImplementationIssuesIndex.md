@@ -35,7 +35,7 @@ This file is the active summary view of all unresolved implementation issues tra
 | 115 | Deferment | Implement rule-driven command generation from evaluated Task Builder rules. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Open | Low |  |  |
 | 116 | Deferment | Implement persistence save/load for full State Store state across sessions. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Scheduled | Low |  |  |
 | 117 | Deferment | Persist manual task counter across sessions to preserve deterministic manual TaskId continuity. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
-| 118 | Deferment | Implement version migration logic for persisted schema evolution safety. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Scheduled | Low |  |  |
+| 118 | Deferment | Implement version migration logic for persisted schema evolution safety. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
 | 119 | Deferment | Persist baseline values needed for deterministic comparisons across loads. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
 | 120 | Deferment | Add UI interactions that dispatch commands through canonical state boundaries. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Scheduled | Low |  |  |
 | 121 | Deferment | Implement visual feedback tied to state changes in UI surfaces. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Open | Low |  |  |
