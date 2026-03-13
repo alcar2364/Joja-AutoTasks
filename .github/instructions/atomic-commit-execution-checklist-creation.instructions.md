@@ -55,7 +55,7 @@ The Researcher gathers:
 - Design contracts and constraints relevant to the phase
 - Any existing code/structure that impacts scope
 - External references (e.g., SMAPI API docs, third-party libraries)
-- **Active deferments from `Project/Tasks/Implementation Plan/Deferments Index.md`** that are scheduled for or relevant to the target phase
+- **Active implementation issues from `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`** that are scheduled for or relevant to the target phase
 
 **Output:** Research summary with citations, identifying:
 - Key subsystems and their responsibilities
@@ -63,7 +63,7 @@ The Researcher gathers:
 - Dependencies between steps
 - Known constraints and guardrails
 - Gaps or ambiguities requiring clarification
-- **Relevant active deferments** (DEF-NNN IDs) scheduled for the target phase or marked "Open" with applicable scope
+- **Relevant active implementation issues** (especially `Deferment`, `Open issue`, `Ambiguity / question`, `Architecture concern`, and `Review follow-up`) scheduled for the target phase or marked open with applicable scope
 
 **Researcher delegates to Planner.**
 
@@ -78,7 +78,7 @@ The Planner creates a **step-by-step breakdown** of the phase:
 - **Substeps (NA, NB, NC, ...)** — granular, atomic commits (one per substep)
 - **Unit Tests section** — tests that lock constraints and catch drift
 - **Final Review section** — verification checkpoints before phase completion
-- **Deferment-related substeps or explicit re-deferment** — for active deferments scheduled to this phase
+- **Implementation-issue-related substeps or explicit re-deferral** — for active implementation issues scheduled to this phase
 
 Planner does NOT draft the final Markdown format. Planner structures the plan so Reviewer can validate it and WorkspaceAgent can draft it.
 
@@ -87,7 +87,7 @@ Planner does NOT draft the final Markdown format. Planner structures the plan so
 - What are the dependencies between substeps?
 - How many explicit test substeps are needed?
 - What guardrails must be preserved?
-- **Which active deferments (from Researcher findings) are resolved in-scope vs. re-deferred with rationale?**
+- **Which active implementation issues (from Researcher findings) are resolved in-scope vs. explicitly re-deferred or left open with rationale?**
 
 **Reviewer validates the plan before WorkspaceAgent drafts.**
 
@@ -338,14 +338,14 @@ Step goal:
 * [ ] Must include: scope validation notes.
 * [ ] Must exclude: rewriting code unrelated to phase requirements.
 
-### 8D - Reconcile deferments ###
+### 8D - Reconcile implementation issues ###
 
-* [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
-* [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
-* [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
-* [ ] Suggested commit: `phase1(step8D): reconcile deferments after Phase 1 completion`
-* [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
-* [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
+* [ ] Action: review checklist for newly identified implementation issues and reconcile with `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and the corresponding issue records under `ImplementationIssues/Records/`.
+* [ ] Scope: this checklist file, `ImplementationIssuesIndex.md`, `ImplementationIssuesArchive.md`, and affected record files under `ImplementationIssues/Records/`.
+* [ ] Verify: newly identified items are captured as implementation issue records with correct type/priority/source/scheduled target; resolved items are updated so the archive view reflects completion evidence and date.
+* [ ] Suggested commit: `phase1(step8D): reconcile implementation issues after Phase 1 completion`
+* [ ] Must include: any new implementation issue records needed for review findings or deferments; status/history updates for resolved items; phase/date/resolution notes.
+* [ ] Must exclude: retroactive edits to unrelated historical issues without explicit justification.
 
 ## Final Completion Gate Checklist ##
 
@@ -360,63 +360,64 @@ At the end, add a completion summary:
 * [ ] Unit tests pass and cover all Phase constraints.
 * [ ] Final review checklist is complete and signed off.
 * [ ] Build and test suite succeed.
-* [ ] Deferments reconciled: newly deferred items added to Deferments Index; resolved deferments moved to Archive.
+* [ ] Implementation issues reconciled: newly identified issues captured in records/indexes; resolved issues reflected in the archive view with completion evidence.
 * [ ] Phase is ready for the next phase to begin.
 ```
 
-## Deferment Workflow ##
+## Implementation Issues Workflow ##
 
 ### Purpose ###
 
-Deferments are tracked centrally to ensure work items deferred during one phase are not lost and can be scheduled/resolved in later phases.
+Implementation issues are tracked centrally so work discovered during planning, review, or phase completion is not lost and can be scheduled, resolved, or archived later.
 
 ### Source of Truth ###
 
-- **`Project/Tasks/Implementation Plan/Deferments Index.md`** is the canonical active list of all unresolved deferments across all phases.
-- **`Project/Tasks/Implementation Plan/Deferments Archive.md`** is the permanent historical record of resolved deferments.
-- **Checklist inline deferment notes** are phase-local work items until reconciled at phase completion.
+- **`Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`** is the canonical active summary of unresolved implementation issues across phases.
+- **`Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`** is the archive summary of resolved or archived implementation issues.
+- **`Project/Tasks/ImplementationPlan/ImplementationIssues/Records/`** contains the canonical per-issue record files.
+- **Checklist inline notes** are phase-local observations until reconciled into the Implementation Issues system at phase completion.
 
 ### Workflow Integration ###
 
 **During Checklist Creation (Researcher):**
-  - Read active deferments from `Project/Tasks/Implementation Plan/Deferments Index.md`
-- Report deferments scheduled for the target phase or marked "Open" with applicable scope
-- Include DEF-NNN IDs in research findings
+  - Read active implementation issues from `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
+- Report issues scheduled for the target phase or still open with applicable scope
+- Include issue numbers, types, and any legacy deferment IDs when present
 
 **During Checklist Planning (Planner):**
-- Incorporate scheduled deferments into checklist steps/substeps if resolving them in-scope
-- Explicitly re-defer with rationale if not addressing in this phase (note in checklist or propose Index update)
-- Add deferment reconciliation substep in Final Completion Gate section (typically last substep before final summary)
+- Incorporate scheduled implementation issues into checklist steps/substeps if resolving them in-scope
+- Explicitly re-defer or keep open with rationale if not addressing them in this phase
+- Add implementation issue reconciliation substep in Final Completion Gate section (typically last substep before final summary)
 
 **During Phase Completion:**
-- Append newly identified deferments from checklist to Deferments Index with next sequential DEF-NNN ID
-- Move resolved deferments from Deferments Index to Deferments Archive with:
-  - Resolved In Phase: the phase number/name where deferment was completed
-  - Archived Date: completion date (YYYY-MM-DD format)
-  - Resolution Notes: brief summary of how/why deferment was resolved
+- Add newly identified findings as implementation issue records with the appropriate issue type, priority, source, and scheduled target
+- Update resolved implementation issue records with:
+  - status/history notes showing what phase resolved the issue
+  - updated date and any resolution PR or completion evidence
+  - archived/resolved state so the archive summary reflects completion
 - For scope/architecture findings discovered in completion review:
    - document findings and remediation guidance in a post-phase implementation review report
    - create/queue a user-owned post-phase implementation atomic execution checklist
    - do not implement those fixes inside the completion gate checklist step
 
-### Example Deferment Reconciliation Substep ###
+### Example Implementation Issue Reconciliation Substep ###
 
 ```
-### 8D - Reconcile deferments ###
+### 8D - Reconcile implementation issues ###
 
-* [ ] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
-* [ ] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
-* [ ] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
-* [ ] Suggested commit: `phase2(step8D): reconcile deferments after Phase 2 completion`
-* [ ] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
-* [ ] Must exclude: retroactive edits to previous phase deferments without explicit justification.
+* [ ] Action: review checklist for newly identified implementation issues and reconcile with `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and `ImplementationIssues/Records/`.
+* [ ] Scope: this checklist file, `ImplementationIssuesIndex.md`, `ImplementationIssuesArchive.md`, and affected record files.
+* [ ] Verify: new issue records exist for newly identified findings; resolved issue records have updated status/history so archive output reflects completion.
+* [ ] Suggested commit: `phase2(step8D): reconcile implementation issues after Phase 2 completion`
+* [ ] Must include: any new implementation issue records; status/history updates for resolved items; phase/date/resolution notes.
+* [ ] Must exclude: retroactive edits to unrelated historical issues without explicit justification.
 ```
 
-### Deferment ID Format ###
+### Legacy Deferment IDs ###
 
-- Use sequential DEF-NNN IDs (e.g., DEF-001, DEF-002, DEF-027)
-- Assign the next available ID when creating a new deferment during reconciliation
-- Preserve the original ID when moving from Index to Archive
+- Preserve `legacy_id` values such as `DEF-NNN` when an implementation issue originated from the old deferments system
+- New implementation issues use the GitHub issue number as the canonical identifier
+- Only assign a new `legacy_id` when intentionally backfilling a legacy deferment mapping; otherwise leave it blank
 
 ## Key Principles ##
 
@@ -479,7 +480,7 @@ When the Researcher gathers context, they should answer:
 - [ ] What implementation scope boundaries make sense (one file? one responsibility boundary)?
 - [ ] Are there listed guardrails/constraints in the design guide to preserve?
 - [ ] What test coverage is recommended or implied?
-- [ ] **What active deferments (from `Project/Tasks/Implementation Plan/Deferments Index.md`) are scheduled for this phase or marked "Open" with applicable scope?**
+- [ ] **What active implementation issues (from `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`) are scheduled for this phase or still open with applicable scope?**
 
 ## Planner Output Checklist ##
 
@@ -490,8 +491,8 @@ The Planner should produce:
 - [ ] Implementation checkpoint granularity decisions
 - [ ] Dependencies or ordering constraints between substeps
 - [ ] Unit test substeps (which constraints to test)
-- [ ] **Deferment incorporation plan: which active deferments (from Researcher findings) are resolved in-scope, and which are explicitly re-deferred with rationale (defer note in checklist or proposed update to Deferments Index)**
-- [ ] **Deferment reconciliation substep in Final Completion Gate section**
+- [ ] **Implementation issue incorporation plan: which active issues (from Researcher findings) are resolved in-scope, and which are explicitly re-deferred/left open with rationale**
+- [ ] **Implementation issue reconciliation substep in Final Completion Gate section**
 - [ ] Final review substeps (guardrail audit, atomic boundary check)
 - [ ] Any clarifications or ambiguities from the design guide
 

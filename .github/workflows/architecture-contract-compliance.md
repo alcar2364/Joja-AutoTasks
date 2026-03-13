@@ -25,6 +25,9 @@ safe-outputs:
     report-as-issue: false
   add-comment:
     pull-requests: true
+  create-issue:
+    title-prefix: "[arch] "
+    labels: [agentic-workflow, implementation-issue, issue-type: architecture-concern, priority: high]
 if: |
   github.event_name == 'pull_request' ||
   github.event_name == 'workflow_dispatch' ||
@@ -34,8 +37,8 @@ if: |
 # Architecture Contract Compliance & Determinism — PR Boundary Checker
 
 Analyze changed C# files in pull requests for violations of JAT's strict architectural boundaries
-and determinism contract. Posts findings as a PR review comment; does not auto-block (requires
-human sign-off for Blockers).
+and determinism contract. Posts findings as a PR review comment and, when violations are actionable
+but not fixed in the PR, may create follow-up Implementation Issues for tracked remediation.
 
 This workflow incorporates the PR-triggered determinism regression detection previously handled
 by the separate `determinism-regression-detector` workflow (now consolidated here).
@@ -133,3 +136,5 @@ Post a single PR review comment with sections:
 - Blockers should be flagged as a review request requiring explicit maintainer dismissal
 - If no PR diff is available (workflow_dispatch), scan all files in Domain/, StateStore/, Lifecycle/
 - Reference the contract files when explaining each finding (link to the relevant contract section)
+- If findings are intentionally deferred or left unresolved after review, emit a tracked Implementation Issue rather than leaving the concern only in a PR comment
+- Default follow-up type: `Architecture concern`; use `Review follow-up` only when the architecture is sound but remediation still needs tracking

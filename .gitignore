@@ -66,6 +66,7 @@ nunit-*.xml
 .tmp*
 .dotnet/
 Project/.prettierrc
+.venv
 
 # Agent ecosystem archives
 .github/archive/

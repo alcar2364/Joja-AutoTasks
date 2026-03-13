@@ -65,7 +65,7 @@ You are responsible for:
 5. producing an ordered implementation plan
 6. calling out invariants, risks, and review points
 7. defining what "done" means for the requested scope
-8. **when creating atomic commit execution checklists: incorporating active deferments (from Researcher findings) into checklist steps/substeps if resolving them in-scope, or explicitly re-deferring with rationale**
+8. **when creating atomic commit execution checklists: incorporating active implementation issues (from Researcher findings) into checklist steps/substeps if resolving them in-scope, or explicitly re-deferring/keeping them open with rationale**
 
 You must prefer **contract-compliant minimal plans** over broad redesigns.
 

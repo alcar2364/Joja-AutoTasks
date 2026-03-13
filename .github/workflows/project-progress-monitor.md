@@ -1,6 +1,6 @@
 ---
 name: project-progress-monitor
-description: "Weekly monitor for implementation phase progress and aging deferred work items."
+description: "Weekly monitor for implementation phase progress and implementation issue backlog hygiene."
 on:
   schedule: weekly
   workflow_dispatch:
@@ -24,26 +24,27 @@ safe-outputs:
     title-prefix: "[progress] "
     max: 1
   create-issue:
-    title-prefix: "[deferments] "
-    labels: [agentic-workflow, deferments, needs-review]
+    title-prefix: "[implementation-issues] "
+    labels: [agentic-workflow, implementation-issue, issue-type: review-follow-up, priority: medium]
 ---
 
-# Project Progress Monitor — Phase Dashboard & Deferments Aging Tracker
+# Project Progress Monitor — Phase Dashboard & Implementation Issues Backlog Tracker
 
 Weekly combined view of implementation phase progress and deferred work item health. This workflow
 merges the responsibilities of the former `phase-progress-tracker` (daily) and
-`deferments-monitor` (weekly) into a single weekly run.
+`deferments-monitor` (weekly) into a single weekly run, using the Implementation Issues system as the backlog source of truth.
 
 ## Context
 
 - Repository: `${{ github.repository }}`
 - Checklist directory: `Project/Tasks/Implementation Plan/`
 - Checklist pattern: `Phase N - Atomic Commit Execution Checklist.md`
-- Deferments index: `Project/Tasks/Implementation Plan/Deferments Index.md`
-- Deferments archive: `Project/Tasks/Implementation Plan/Deferments Archive.md`
+- Implementation Issues index: `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
+- Implementation Issues archive: `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`
+- Implementation issue records: `Project/Tasks/ImplementationPlan/ImplementationIssues/Records/`
 - Checkbox syntax: `- [x]` (complete), `- [ ]` (incomplete)
-- Deferment ID format: `DEF-NNN`
-- Deferment aging threshold: 28 days (4 weeks) from creation date
+- Legacy deferment ID format (when present): `DEF-NNN`
+- Backlog aging threshold: 28 days (4 weeks) from record creation or last meaningful update
 
 ## Part 1: Phase Progress Analysis
 
@@ -83,47 +84,52 @@ For each In Progress phase, identify Steps where:
 > would trivially flag every step between Monday runs. 14 days provides a meaningful signal
 > that a step has genuinely stalled across two consecutive weekly checks.
 
-## Part 2: Deferments Aging Analysis
+## Part 2: Implementation Issues Backlog Analysis
 
-### Parse Deferments Index
+### Parse Implementation Issues Index
 
-Read `Deferments Index.md` and extract all active deferments:
+Read `ImplementationIssuesIndex.md` and supporting record files and extract all active implementation issues:
 
-- Deferment ID (DEF-NNN)
+- GitHub issue number
+- Legacy deferment ID (if present)
+- Issue type
 - Description / title
-- Originally deferred in phase
+- Created phase
 - Scheduled for phase
-- Creation date
+- Creation date / updated date
 - Current status
+- Priority
 
 ### Determine Currently Active Phase
 
 Use the phase analysis from Part 1 to determine which phase is currently active.
 
-### Identify Aging Deferments
+### Identify Aging Implementation Issues
 
-Flag deferments that are:
+Flag implementation issues that are:
 
 **Category A — Overdue (Phase Mismatch):**
-- Deferment's "Scheduled For" phase is a phase that has already been completed
-- These items were supposed to be addressed but were not resolved or re-deferred
+- Issue `scheduled_target` points to a phase that has already been completed
+- Issue status remains `Open`, `Scheduled`, `In progress`, or `Blocked`
+- These items were supposed to be addressed but were not resolved, archived, or explicitly re-targeted
 
 **Category B — Stale (Age Threshold):**
-- Creation date is more than 28 days ago
-- The deferment has not moved to the archive
-- Not scheduled for a specific future phase (open-ended deferments)
+- Issue has been open for more than 28 days with no meaningful status/target movement
+- The issue has not moved to the archive
+- Especially important for `Critical`, `High`, `Ambiguity / question`, or `Architecture concern` items
 
 **Category C — Phase-Active But Unresolved:**
-- Deferment's "Scheduled For" phase matches the currently active phase
+- Issue `scheduled_target` matches the currently active phase
 - Not yet resolved
 - These should be prioritized in the current implementation cycle
 
-### Validate Archive Integrity
+### Validate Backlog Integrity
 
-Read `Deferments Archive.md` to verify:
+Read `ImplementationIssuesArchive.md` and the issue record set to verify:
 
-- No deferment IDs appear in both the index and archive (data integrity check)
-- All archive entries have a resolution date and phase
+- No issue numbers appear in both the active index and archive summary
+- Legacy deferment IDs, when present, do not map to multiple active issues
+- Archived/resolved entries have resolution notes or status history
 
 ## Output
 
@@ -151,39 +157,40 @@ category:
 - Phase 2, Step 3: [step title] — last activity: YYYY-MM-DD
 ```
 
-### Deferments Report (only when aging items found)
+### Implementation Issues Backlog Report (only when aging items found)
 
-If aging or overdue deferments are found, create an issue titled
-`[deferments] Weekly Aging Report — <WEEK>`:
+If aging or overdue implementation issues are found, create an implementation issue titled
+`[implementation-issues] Weekly Backlog Hygiene Report — <WEEK>`:
 
 ```markdown
-## Deferments Weekly Aging Report
+## Implementation Issues Weekly Backlog Hygiene Report
 *Week of YYYY-MM-DD*
 
 ### 🚨 Overdue (Scheduled phase already complete)
-- DEF-NNN: [description] — Scheduled for Phase N (now complete)
+- #NNN: [description] — Scheduled for Phase N (now complete)
 
-### ⚠️ Stale (> 28 days, open-ended)
-- DEF-NNN: [description] — Created YYYY-MM-DD (N days ago)
+### ⚠️ Stale (> 28 days, not progressing)
+- #NNN: [description] — Last updated YYYY-MM-DD (N days ago)
 
 ### 📋 Phase-Active (Scheduled for current phase, unresolved)
-- DEF-NNN: [description] — Prioritize in current phase
+- #NNN: [description] — Prioritize in current phase
 
 ### Summary
-- Total active deferments: N
+- Total active implementation issues: N
 - Resolved since last report: N
 - Newly created since last report: N
 ```
 
-If all deferments are within their expected window, skip the deferments issue (silence is success).
+If all implementation issues are within their expected window, skip the backlog issue (silence is success).
 
 ## Behavior Notes
 
 - Runs weekly; no longer runs daily (previous `phase-progress-tracker` ran daily)
 - The discussion is created in the `general` category; restrict this category to admins for
   admin-only visibility
-- This workflow does NOT modify checklist files or the deferments index/archive
-- The deferments lifecycle is managed by the human maintainer during phase completion gates
+- This workflow does NOT modify checklist files or implementation issue records
+- This workflow should reference the Implementation Issues system as the canonical backlog source of truth
+- When a hygiene issue is emitted, it should be treated as a `review-follow-up` implementation issue for triage rather than a standalone reporting artifact
 - If all phases are 100% complete: post a celebratory notice in the discussion
 - If no phases exist: skip (no output)
-- Reference: `atomic-commit-execution-checklist-creation.instructions.md` for the full deferment workflow
+- Reference: `atomic-commit-execution-checklist-creation.instructions.md` for the full implementation issue reconciliation workflow

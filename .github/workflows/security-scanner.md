@@ -28,7 +28,7 @@ safe-outputs:
     report-as-issue: false
   create-issue:
     title-prefix: "[security] "
-    labels: [agentic-workflow, security, needs-review]
+    labels: [agentic-workflow, implementation-issue, issue-type: open-issue, priority: high, security]
     close-older-issues: true
     max: 2
 ---
@@ -78,16 +78,30 @@ Search for common secret patterns in source files:
 
 ## Output Rules
 
-- **Critical/High CodeQL findings:** Create a security issue immediately (even on first occurrence)
-- **Moderate CodeQL findings:** Accumulate for weekly discussion
-- **Vulnerable NuGet packages:** Create issue with package name, current version, advisory, fix version
-- **Secret patterns:** Create issue immediately; do NOT post pattern details in public issue body
+- **Critical/High CodeQL findings:** Create an implementation issue immediately (even on first occurrence)
+- **Moderate CodeQL findings:** Create or update an implementation issue when the finding is actionable and persistent
+- **Vulnerable NuGet packages:** Create an implementation issue with package name, current version, advisory, fix version
+- **Secret patterns:** Create an implementation issue immediately; do NOT post pattern details in public issue body
 - **Clean scan:** No output (silence is success)
+
+## Implementation Issues Mapping
+
+- Default type: `Open issue`
+- Use `Architecture concern` when the finding is primarily a boundary/ownership/design defect
+- Use `priority: critical` or `priority: high` for exploitable/security-sensitive findings
+- Include the expected Implementation Issues body sections where possible:
+  - summary
+  - source (`security-scanner`)
+  - scheduled target
+  - rationale and context
+  - impact
+  - implementation notes
+  - acceptance / closing criteria
 
 ## Notes
 
 - CodeQL results appear in the GitHub Security → Code Scanning tab
 - Results are also annotated inline on PR diffs when scanning PRs
-- CodeQL findings are reported via `safe-outputs.create-issue`; direct security-events upload is not used in strict mode
+- CodeQL findings should be emitted as Implementation Issues rather than generic review tickets; direct security-events upload is not used in strict mode
 - This workflow enforces the OWASP guidance in `.github/instructions/security-and-owasp.instructions.md`
 - Mod reads/writes SMAPI save data — deserialization paths deserve careful CodeQL review

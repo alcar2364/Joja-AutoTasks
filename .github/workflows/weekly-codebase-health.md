@@ -20,7 +20,7 @@ tools:
 safe-outputs:
   create-issue:
     title-prefix: "[codebase-health] "
-    labels: [agentic-workflow, codebase-health, needs-review]
+    labels: [agentic-workflow, implementation-issue, issue-type: architecture-concern, priority: medium, codebase-health]
     close-older-issues: true
     max: 3
 ---
@@ -57,7 +57,7 @@ The PR-triggered determinism scan has been merged into `architecture-contract-co
 
 ### Output
 
-Create at most 1 issue per run (targeting the largest class). Close existing `[codebase-health]` issues if the previously flagged class has been split.
+Create at most 1 implementation issue per run (targeting the largest class). Close or archive older codebase-health implementation issues if the previously flagged class has been split or the concern is no longer valid.
 
 - Title: `[codebase-health] Refactor: <ClassName> — Split <N> responsibilities into separate classes`
 - Body sections:
@@ -78,7 +78,7 @@ Create at most 1 issue per run (targeting the largest class). Close existing `[c
 
 ### Output
 
-- Weekly issue with dependency analysis (grouped by mod project / test project / transitive)
+- Weekly implementation issue with dependency analysis (grouped by mod project / test project / transitive)
 - Include: current version, available updates, recommendations
 - Note any security advisories or maintenance concerns
 - Title: `[codebase-health] Dependencies: <primary finding>`
@@ -112,7 +112,7 @@ forbidden patterns.
 
 ### Output
 
-Create issue if any patterns found in full scan:
+Create an implementation issue if any patterns are found in the full scan:
 
 - Title: `[codebase-health] Determinism: Non-deterministic patterns found`
 - Summary of patterns found per directory
@@ -120,6 +120,13 @@ Create issue if any patterns found in full scan:
 
 ## Summary Output Format
 
-Each analysis produces at most one issue. Total maximum: 3 issues per weekly run.
+Each analysis produces at most one implementation issue. Total maximum: 3 issues per weekly run.
 
 If none of the three analyses find issues: no output for that analysis category.
+
+## Implementation Issues Mapping
+
+- Large-class structural findings: `Architecture concern`
+- Dependency freshness / maintainability findings: `Open issue` unless they indicate architectural risk
+- Determinism violations: `Architecture concern` or `Review follow-up` depending on severity and certainty
+- Prefer filling the Implementation Issues body sections so the issue can sync cleanly into local records

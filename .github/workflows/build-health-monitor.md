@@ -26,7 +26,7 @@ safe-outputs:
     report-as-issue: false
   create-issue:
     title-prefix: "[ci] "
-    labels: [agentic-workflow, ci-health, needs-review]
+    labels: [agentic-workflow, implementation-issue, issue-type: review-follow-up, priority: medium, ci-health]
     max: 2
 ---
 
@@ -68,13 +68,16 @@ Monitor the health of build and test pipelines, detecting failures and environme
 
 ## Output
 
-- Create issues only for persistent, actionable failures
+- Create implementation issues only for persistent, actionable failures
 - Title: `[ci] <System>: <Failure description>`
 - Include: Failure logs, recent changes, reproduction steps
 - Link to related test output or build logs
+- Default issue type: `Review follow-up`
+- Escalate to `Architecture concern` if the recurring failure points to a contract/boundary problem rather than ordinary breakage
+- Include `source: build-health-monitor` and a concrete scheduled target when severity is `High`
 
 ## Notes
 
-- Environment issues (SDK versions) route to docs update
-- Code issues route to responsible subsystem agent
-- Flaky test issues should trigger isolation and determinism review
+- Environment issues can remain documentation-oriented when they are not actionable implementation backlog items
+- Code issues should be emitted as implementation issues for the responsible subsystem to pick up
+- Flaky test issues should trigger `review-follow-up` implementation issues with determinism/isolation guidance

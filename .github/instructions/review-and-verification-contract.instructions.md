@@ -369,7 +369,7 @@ is an accidental mistake.
 
 When reviewing a phase completion gate/checklist, reviewers MUST:
 
-    - finalize the checklist review artifacts (build/test evidence, guardrail audit, scope audit, deferment reconciliation)
+    - finalize the checklist review artifacts (build/test evidence, guardrail audit, scope audit, implementation issue reconciliation)
     - document scope/architecture issues, ambiguity, and remediation in a **post-phase implementation review report**
     - avoid implementing those scope/architecture fixes during the review pass
     - route fixes into a **post-phase implementation atomic execution checklist** owned by the user
