@@ -14,10 +14,8 @@ Inputs
 
 Verification Steps
 1. Enumerate all legacy hook specs (`*.hook.md`) in legacy path.
-2. Load `.github/hooks/LEGACY_COVERAGE_MAP.md`.
-3. Verify each legacy hook stem is mapped to at least one runtime bundle/script.
-4. Verify each mapped runtime bundle has `hooks.json` and executable `*.sh` script(s).
-5. Verify script paths in `hooks.json` exist.
+2. Verify each runtime hook bundle has `hooks.json` and executable `*.sh` script(s).
+3. Verify script paths in `hooks.json` exist.
 
 Required Output
 1. Coverage matrix summary

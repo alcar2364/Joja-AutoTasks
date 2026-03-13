@@ -19,8 +19,6 @@ This document defines the active Agent customization layout for Joja AutoTasks.
 │   ├── <bundle>/
 │   │   ├── hooks.json
 │   │   └── *.sh
-│   ├── legacy-md/
-│   │   └── *.hook.md
 │   └── README.md
 └── skills/
     ├── <skill-name>/
@@ -38,7 +36,6 @@ This document defines the active Agent customization layout for Joja AutoTasks.
 | Prompt | `.github/prompts/` | `{name}.prompt.md` | `orchestrate-work-item.prompt.md` |
 | Hook bundle config | `.github/hooks/<bundle>/` | `hooks.json` | `.github/hooks/context-preflight/hooks.json` |
 | Hook bundle script | `.github/hooks/<bundle>/` | `*.sh` | `.github/hooks/context-preflight/context-preflight.sh` |
-| Legacy hook spec | `.github/hooks/legacy-md/` | `{name}.hook.md` | `state-mutation-guard.hook.md` |
 | Skill | `.github/skills/<skill-name>/` | `SKILL.md` | `.github/skills/jat-external-resources/SKILL.md` |
 
 ## Discovery Rules
@@ -57,5 +54,5 @@ This document defines the active Agent customization layout for Joja AutoTasks.
 
 ## Notes
 
-- Runtime hooks execute from hook bundles under `.github/hooks/<bundle>/`; markdown files in `.github/hooks/legacy-md/` are reference-only.
+- Runtime hooks execute from hook bundles under `.github/hooks/<bundle>/`.
 - Skill folder names must exactly match each skill file's YAML `name:` field.

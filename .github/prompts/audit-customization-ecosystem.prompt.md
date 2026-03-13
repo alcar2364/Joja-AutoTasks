@@ -18,7 +18,6 @@ Audit Checklist
 3. Validate every skill is mapped to at least one agent.
 4. Validate prompts have frontmatter (`name`, `description`, `agent`) and index coverage in `.github/prompts/README.md`.
 5. Validate runtime hook bundles under `.github/hooks/*/hooks.json` reference executable scripts.
-6. Validate legacy hook situations in `.github/hooks/legacy-md/` are mapped by `.github/hooks/LEGACY_COVERAGE_MAP.md`.
 
 Required Output
 1. Findings by severity (blocking, major, minor)

@@ -95,20 +95,11 @@ Runtime trigger:
 
 Domain:
 
-    * validates that every legacy markdown hook scenario maps to an executable runtime bundle
-    * enforces `.github/hooks/LEGACY_COVERAGE_MAP.md`
+    * validates runtime hook bundle integrity and cross-file consistency
 
-## Legacy Hook Specs ##
+## Runtime Hook Bundles ##
 
-Previous markdown-only hook specs were archived (not deleted) at:
-
-    * `.github/hooks/legacy-md/`
-
-Legacy coverage mapping is maintained in:
-
-    * `.github/hooks/LEGACY_COVERAGE_MAP.md`
-
-These files are reference material and do not execute directly.
+Hooks execute from bundle folders containing `hooks.json` plus executable `*.sh` scripts.
 
 ## Trigger Model ##
 

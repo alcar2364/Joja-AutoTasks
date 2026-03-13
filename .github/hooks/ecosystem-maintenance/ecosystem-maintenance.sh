@@ -90,10 +90,6 @@ if echo "$CHANGED" | grep -qE '^\.github/'; then
   echo "[ecosystem-maintenance] Customization changes detected. Verify cross-file references and naming consistency."
 fi
 
-if echo "$CHANGED" | grep -qE '^\.github/hooks/legacy-md/.*\.hook\.md$|^\.github/hooks/LEGACY_COVERAGE_MAP\.md$'; then
-  echo "[ecosystem-maintenance] Legacy hook coverage sources changed. Re-run legacy-coverage-audit bundle."
-fi
-
 NEW_INSTRUCTION_ADDED=0
 if echo "$ADDED" | grep -qE '^\.github/instructions/.+\.instructions\.md$'; then
   NEW_INSTRUCTION_ADDED=1
