@@ -37,4 +37,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: migrate legacy deferments into implementation issues"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin HEAD && git push && break
+            sleep $((i * 5))
+          done || exit 1
