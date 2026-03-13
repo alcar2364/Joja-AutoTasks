@@ -13,7 +13,6 @@ This folder contains on-demand skills for the JAT agent ecosystem.
 
 | Skill | File |
 | --- | --- |
-| breakdown-feature-implementation | [breakdown-feature-implementation/SKILL.md](breakdown-feature-implementation/SKILL.md) |
 | create-architectural-decision-record | [create-architectural-decision-record/SKILL.md](create-architectural-decision-record/SKILL.md) |
 | create-github-issue-feature-from-specification | [create-github-issue-feature-from-specification/SKILL.md](create-github-issue-feature-from-specification/SKILL.md) |
 | create-github-issues-feature-from-implementation-plan | [create-github-issues-feature-from-implementation-plan/SKILL.md](create-github-issues-feature-from-implementation-plan/SKILL.md) |

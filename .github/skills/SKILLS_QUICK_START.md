@@ -2,7 +2,7 @@
 
 # Skills Quick Start for JAT
 
-This workspace currently has 33 skills under `.github/skills/`.
+This workspace currently has 32 skills under `.github/skills/`.
 
 ## What a Skill Is
 

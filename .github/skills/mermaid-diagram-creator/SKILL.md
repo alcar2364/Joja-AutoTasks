@@ -198,26 +198,5 @@ flowchart LR
     classDef domain fill:#F8F3E8,stroke:#B88A43,color:#4B3415,stroke-width:1.6px;
     classDef support fill:#F4F7FA,stroke:#6F7F92,color:#2F3A47,stroke-width:1.5px;
     classDef iface fill:#FFFFFF,stroke:#2C6BE0,color:#17304F,stroke-width:1.8px,stroke-dasharray: 6 4;
-
-    subgraph runtime["Runtime Spine"]
-        direction LR
-    end
-
-    subgraph state_engine["State Command Engine"]
-        direction LR
-    end
-
-    subgraph foundations["Domain Foundations"]
-        direction LR
-    end
 ```
 ````
-
-## Final Delivery Pattern
-
-When the diagram is complete, report:
-
-- where the file was created or updated
-- that the diagram excludes `Tests/`
-- that the Mermaid block is extension-compatible
-- whether validation was manual only or automated
