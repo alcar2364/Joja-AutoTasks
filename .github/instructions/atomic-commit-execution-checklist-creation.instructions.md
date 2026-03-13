@@ -4,9 +4,9 @@ description: "Create an atomic commit execution checklist from a design guide ph
 applyTo: "**/*Atomic Commit Execution Checklist*.md"
 ---
 
-# Atomic Commit Execution Checklist Creation #
+# Atomic Commit Execution Checklist Creation
 
-## Purpose ##
+## Purpose
 
 An **atomic commit execution checklist** is a detailed, implementation-ready plan that breaks down a design phase into small, individually-testable commits. Its goal is to:
 
@@ -18,7 +18,7 @@ An **atomic commit execution checklist** is a detailed, implementation-ready pla
 
 This instruction file describes how to create such a checklist.
 
-## When to Create ##
+## When to Create
 
 Create an atomic commit execution checklist when:
 
@@ -28,28 +28,31 @@ Create an atomic commit execution checklist when:
 4. You want explicit test coverage and verification steps before moving to the next phase
 
 Do NOT create a checklist for:
+
 - Exploratory work or research tasks
 - Ad-hoc bug fixes (use a smaller task list instead)
 - Phases already executed and documented
 
-## Planning Phase Workflow ##
+## Planning Phase Workflow
 
 To create a checklist, follow this multi-agent workflow:
 
-### 1. Orchestrator (Intake) ###
+### 1. Orchestrator (Intake)
 
 The user requests a checklist for a specific design phase or feature.
 
 **Input from user:**
+
 - Reference to the design guide phase or feature specification
 - Scope of implementation (what problem/feature is being addressed)
 - Any constraints or previous phase context
 
 **Orchestrator delegates to Researcher.**
 
-### 2. Researcher (Context Discovery) ###
+### 2. Researcher (Context Discovery)
 
 The Researcher gathers:
+
 - The full design guide phase specification (architecture, responsibilities, dependencies)
 - Any relevant previous checklists for earlier phases (to avoid overlap and ensure continuity)
 - Design contracts and constraints relevant to the phase
@@ -58,6 +61,7 @@ The Researcher gathers:
 - **Active implementation issues from `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`** that are scheduled for or relevant to the target phase
 
 **Output:** Research summary with citations, identifying:
+
 - Key subsystems and their responsibilities
 - Atomic commit granularity (what fits in one commit)
 - Dependencies between steps
@@ -67,11 +71,12 @@ The Researcher gathers:
 
 **Researcher delegates to Planner.**
 
-### 3. Planner (Structure Design) ###
+### 3. Planner (Structure Design)
 
 The Planner creates a **step-by-step breakdown** of the phase:
 
 **Output structure:**
+
 - **Guardrails section** — principles/constraints that must remain true throughout the phase (not checkboxes during planning)
 - **Steps (N)** — major milestones (e.g., "Bootstrap SMAPI Skeleton", "Add Logging Foundation")
 - **Phase Overview section** — architectural context for the phase (goal, components, prerequisites, relationships, and design guide citations)
@@ -83,6 +88,7 @@ The Planner creates a **step-by-step breakdown** of the phase:
 Planner does NOT draft the final Markdown format. Planner structures the plan so Reviewer can validate it and WorkspaceAgent can draft it.
 
 **Key planning decisions:**
+
 - What is the commit granularity? (One file? One feature? One boundary?)
 - What are the dependencies between substeps?
 - How many explicit test substeps are needed?
@@ -91,16 +97,18 @@ Planner does NOT draft the final Markdown format. Planner structures the plan so
 
 **Reviewer validates the plan before WorkspaceAgent drafts.**
 
-### 4. Reviewer (Plan Validation) ###
+### 4. Reviewer (Plan Validation)
 
 The Reviewer checks the Planner's structured plan against:
 
 **First priority: Design guide alignment**
+
 - Does the plan cover all responsibilities specified in the design phase?
 - Is the plan a faithful decomposition of the design guide phase?
 - Are there sub-phases or dependencies missing?
 
 **Second priority: Workspace contracts and standards**
+
 - Do guardrails match the design phase constraints?
 - Is the step structure clear and followable?
 - Are unit test substeps comprehensive?
@@ -108,13 +116,14 @@ The Reviewer checks the Planner's structured plan against:
 - Can both humans and AI agents follow the instructions?
 
 **Reviewer output:**
+
 - Approval or specific fixes needed in the plan structure
 - Any guardrails or test coverage gaps to add
 - Clarity issues (ambiguous action descriptions, missing verification criteria)
 
 **After approval, Reviewer delegates to WorkspaceAgent.**
 
-### 5. WorkspaceAgent (Checklist Drafting) ###
+### 5. WorkspaceAgent (Checklist Drafting)
 
 The WorkspaceAgent **creates the final Markdown checklist file directly** from the Reviewer-approved plan.
 
@@ -122,15 +131,16 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
 
 **Output:** A complete checklist file written to the target location (e.g., `Project/Tasks/Implementation Plan/Phase N - Atomic Commit Execution Checklist.md`).
 
-## Checklist Structure Requirements ##
+## Checklist Structure Requirements
 
-### Guardrails Section ###
+### Guardrails Section
 
 **Purpose:** Define principles/constraints that must remain true throughout implementation.
 
 **Format:** Checkbox list (unchecked during planning, checked during final review if agent/human reviews)
 
 **Example:**
+
 ```
 ## Guardrails (Must Stay True) ##
 
@@ -141,28 +151,29 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
 
 **Key point:** Guardrails are NOT execution checkboxes. They are design principles to preserve. They are checked OFF only during final review after coding is complete.
 
-### Phase Overview ###
+### Phase Overview
 
 **Purpose:** Provide architectural context for this implementation phase.
 
 **Required content:**
 
-* [ ] **Phase Goal**: One-paragraph summary of what this phase delivers and why
-* [ ] **Architecture Components**: List of major systems/classes/boundaries being implemented
-* [ ] **Prerequisites**: What prior phases must be complete and what they provide
-* [ ] **Architecture Relationships**: How this phase's components relate to:
+- [ ] **Phase Goal**: One-paragraph summary of what this phase delivers and why
+- [ ] **Architecture Components**: List of major systems/classes/boundaries being implemented
+- [ ] **Prerequisites**: What prior phases must be complete and what they provide
+- [ ] **Architecture Relationships**: How this phase's components relate to:
   - Prior phases (what they build on)
   - Future phases (what foundation they provide)
   - Overall system architecture (where they fit)
-* [ ] **Design Guide References**: Citations to relevant design guide sections
+- [ ] **Design Guide References**: Citations to relevant design guide sections
 
-### Steps (Major Milestones) ###
+### Steps (Major Milestones)
 
 **Format:** `## N) [Step Title] ##`
 
 **Each step must include:**
 
 1. **Step goal** — One-sentence purpose of the step
+
    ```
    * [ ] [Goal description]
    ```
@@ -175,6 +186,7 @@ The WorkspaceAgent **creates the final Markdown checklist file directly** from t
    ```
 
 **Example:**
+
 ```
 ## 1) Bootstrap SMAPI Skeleton ##
 
@@ -196,34 +208,40 @@ Step goal:
 * [ ] All substeps in Step 1 complete (1A, 1B, 1C).
 ```
 
-### Substeps (Implementation Checkpoints) ###
+### Substeps (Implementation Checkpoints)
 
 **Format:** `### NA - [Substep title] ###`
 
 **Each substep must include:**
 
 1. **Action** — What to do (clear, concise)
+
    ```
    * [ ] Action: [description of change]
    ```
 
 2. **Scope** — Files and symbols affected (explicit boundaries)
+
    ```
    * [ ] Scope: [file paths and/or symbol names]
    ```
 
 3. **Verify** — How to test that the change worked
+
    ```
    * [ ] Verify: [testable criterion]
    ```
 
 4. **Suggested commit** — Workflow reminder (optional, not enforced)
+
    ```
    * [ ] Suggested commit: `[suggested message]`
    ```
+
    **Important:** This is a workflow reminder, not a verification requirement. Committing after each substep is recommended for progress tracking and easier rollback, but is not checked during phase completion. Developers may use different commit messages as long as work is traceable.
 
 5. **Must include** — What the change must add/change
+
    ```
    * [ ] Must include: [list of requirements]
    ```
@@ -234,6 +252,7 @@ Step goal:
    ```
 
 **Example:**
+
 ```
 ### 1A - Add baseline entry shell ###
 
@@ -245,7 +264,7 @@ Step goal:
 * [ ] Must exclude: config/lifecycle/dispatcher internals.
 ```
 
-### Unit Tests Section ###
+### Unit Tests Section
 
 **Purpose:** Define tests that lock phase constraints and catch drift.
 
@@ -254,12 +273,14 @@ Step goal:
 **Key design rule:** Unit test substeps must be **executable by both human and AI agents**.
 
 **Guidance for clarity:**
+
 - Use precise test names and target files (e.g., `ConfigLoaderTests.cs`)
 - State what assertions or checks are needed (methods, coverage areas)
 - Keep language implementation-agnostic (e.g., "add tests for X" not "use xUnit with Moq")
 - Allow flexibility in test framework/style as long as constraints are met
 
 **Example:**
+
 ```
 ## 7) Add Phase 1 Verification Tests ##
 
@@ -286,7 +307,7 @@ Step goal:
 * [ ] Must exclude: dispatcher-specific tests and production refactors.
 ```
 
-### Final Review Section ###
+### Final Review Section
 
 **Purpose:** Verification checkpoints once implementation and all tests are complete.
 
@@ -295,15 +316,17 @@ Step goal:
 **Key design rule:** Review substeps must be **executable by both human and AI agents (Reviewer)**.
 
 **Guidance for clarity:**
+
 - State what to check (e.g., "verify build succeeds")
 - State what artifact to produce or update (checklist, audit notes)
 - Specify acceptance criteria (all tests pass, no scope drift)
 - Allow flexibility in how the check is performed (automated vs. manual audit)
 - If scope/architecture issues are found during completion review, require a
-   post-phase implementation review report and a user-owned post-phase
-   implementation atomic execution checklist instead of inline implementation fixes
+  post-phase implementation review report and a user-owned post-phase
+  implementation atomic execution checklist instead of inline implementation fixes
 
 **Example:**
+
 ```
 ## 8) Phase 1 Completion Gate ##
 
@@ -352,16 +375,18 @@ Step goal:
 At the end, add a completion summary:
 
 ```
-## Final Completion Gate Checklist ##
 
-* [ ] All substeps 1A through NC are complete.
-* [ ] Implementation scope matches phase requirements (no unintended expansion).
-* [ ] All guardrails are preserved.
-* [ ] Unit tests pass and cover all Phase constraints.
-* [ ] Final review checklist is complete and signed off.
-* [ ] Build and test suite succeed.
-* [ ] Implementation issues reconciled: newly identified issues captured in records/indexes; resolved issues reflected in the archive view with completion evidence.
-* [ ] Phase is ready for the next phase to begin.
+## Final Completion Gate Checklist
+
+- [ ] All substeps 1A through NC are complete.
+- [ ] Implementation scope matches phase requirements (no unintended expansion).
+- [ ] All guardrails are preserved.
+- [ ] Unit tests pass and cover all Phase constraints.
+- [ ] Final review checklist is complete and signed off.
+- [ ] Build and test suite succeed.
+- [ ] Implementation issues reconciled: newly identified issues captured in records/indexes; resolved issues reflected in the archive view with completion evidence.
+- [ ] Phase is ready for the next phase to begin.
+
 ```
 
 ## Implementation Issues Workflow ##
@@ -403,14 +428,16 @@ Implementation issues are tracked centrally so work discovered during planning, 
 ### Example Implementation Issue Reconciliation Substep ###
 
 ```
-### 8D - Reconcile implementation issues ###
 
-* [ ] Action: review checklist for newly identified implementation issues and reconcile with `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and `ImplementationIssues/Records/`.
-* [ ] Scope: this checklist file, `ImplementationIssuesIndex.md`, `ImplementationIssuesArchive.md`, and affected record files.
-* [ ] Verify: new issue records exist for newly identified findings; resolved issue records have updated status/history so archive output reflects completion.
-* [ ] Suggested commit: `phase2(step8D): reconcile implementation issues after Phase 2 completion`
-* [ ] Must include: any new implementation issue records; status/history updates for resolved items; phase/date/resolution notes.
-* [ ] Must exclude: retroactive edits to unrelated historical issues without explicit justification.
+### 8D - Reconcile implementation issues
+
+- [ ] Action: review checklist for newly identified implementation issues and reconcile with `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and `ImplementationIssues/Records/`.
+- [ ] Scope: this checklist file, `ImplementationIssuesIndex.md`, `ImplementationIssuesArchive.md`, and affected record files.
+- [ ] Verify: new issue records exist for newly identified findings; resolved issue records have updated status/history so archive output reflects completion.
+- [ ] Suggested commit: `phase2(step8D): reconcile implementation issues after Phase 2 completion`
+- [ ] Must include: any new implementation issue records; status/history updates for resolved items; phase/date/resolution notes.
+- [ ] Must exclude: retroactive edits to unrelated historical issues without explicit justification.
+
 ```
 
 ### Legacy Deferment IDs ###
@@ -549,3 +576,4 @@ This instruction file is designed to be portable across projects and phases. Whe
 
 If a project has its own atomic commit guidelines or design-phase templates, the Researcher should identify and cite them.
 
+```
