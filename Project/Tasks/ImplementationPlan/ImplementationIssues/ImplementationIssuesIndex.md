@@ -37,7 +37,7 @@ This file is the active summary view of all unresolved implementation issues tra
 | 117 | Deferment | Persist manual task counter across sessions to preserve deterministic manual TaskId continuity. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
 | 118 | Deferment | Implement version migration logic for persisted schema evolution safety. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
 | 119 | Deferment | Persist baseline values needed for deterministic comparisons across loads. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 7 Persistence) | Phase 7 | Open | Low |  |  |
-| 120 | Deferment | Add UI interactions that dispatch commands through canonical state boundaries. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Scheduled | Low |  |  |
+| 120 | Deferment | Add UI interactions that dispatch commands through canonical state boundaries. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Open | Low |  |  |
 | 121 | Deferment | Implement visual feedback tied to state changes in UI surfaces. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Open | Low |  |  |
 | 122 | Deferment | Add batch command transaction support for grouped atomic state updates. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 9 | Open | Low |  |  |
 | 123 | Deferment | Add undo history mechanics for command/state reversibility. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 9 | Open | Low |  |  |

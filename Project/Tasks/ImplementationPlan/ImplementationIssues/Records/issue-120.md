@@ -1,19 +1,19 @@
 ---
 issue_number: 120
-legacy_id: "DEF-021"
+legacy_id: ""
 type: "Deferment"
 title: "Implementation Issue 120: Add UI interactions that dispatch commands through canonical state boundaries."
 summary: "Add UI interactions that dispatch commands through canonical state boundaries."
 created_phase: "Phase 3"
 source: "Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD)"
 scheduled_target: "Phase 8/9"
-status: "Scheduled"
+status: "Open"
 priority: "Low"
-github_url: ""
+github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/120"
 resolution_pr: ""
-created_by: "migration"
-created_at: "2026-03-12T22:37:53+00:00"
-updated_at: "2026-03-12T22:37:53+00:00"
+created_by: "alcar2364"
+created_at: "2026-03-11T14:27:07Z"
+updated_at: "2026-03-13T04:28:24Z"
 sync_state: "github-synced"
 notes: ""
 ---
@@ -22,7 +22,7 @@ notes: ""
 
 ## Rationale And Context
 
-Migrated from the legacy Deferments Index.
+
 
 ## Impact
 
@@ -34,8 +34,8 @@ Migrated from the legacy Deferments Index.
 
 ## Acceptance / Closing Criteria
 
-Resolve the deferred work and archive the issue.
+
 
 ## History / Resolution Notes
 
-Migrated automatically from the legacy deferment system.
+
