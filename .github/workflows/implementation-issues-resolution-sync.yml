@@ -41,4 +41,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: sync implementation issue resolution links from PR #${{ github.event.pull_request.number }}"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin HEAD && git push && break
+            sleep $((i * 5))
+          done || exit 1
