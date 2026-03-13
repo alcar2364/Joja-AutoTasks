@@ -25,7 +25,7 @@ safe-outputs:
     max: 1
   create-issue:
     title-prefix: "[implementation-issues] "
-    labels: [agentic-workflow, implementation-issue, issue-type: review-follow-up, priority: medium]
+    labels: [agentic-workflow, implementation-issue, "issue-type: review-follow-up", "priority: medium"]
 ---
 
 # Project Progress Monitor — Phase Dashboard & Implementation Issues Backlog Tracker

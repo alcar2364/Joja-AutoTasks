@@ -26,7 +26,7 @@ safe-outputs:
     report-as-issue: false
   create-issue:
     title-prefix: "[ci] "
-    labels: [agentic-workflow, implementation-issue, issue-type: review-follow-up, priority: medium, ci-health]
+    labels: [agentic-workflow, implementation-issue, "issue-type: review-follow-up", "priority: medium", "ci-health"]
     max: 2
 ---
 

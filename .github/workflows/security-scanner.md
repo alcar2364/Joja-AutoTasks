@@ -28,7 +28,7 @@ safe-outputs:
     report-as-issue: false
   create-issue:
     title-prefix: "[security] "
-    labels: [agentic-workflow, implementation-issue, issue-type: open-issue, priority: high, security]
+    labels: [agentic-workflow, implementation-issue, "issue-type: open-issue", "priority: high", "security"]
     close-older-issues: true
     max: 2
 ---

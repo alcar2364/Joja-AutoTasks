@@ -27,7 +27,7 @@ safe-outputs:
     pull-requests: true
   create-issue:
     title-prefix: "[arch] "
-    labels: [agentic-workflow, implementation-issue, issue-type: architecture-concern, priority: high]
+    labels: [agentic-workflow, implementation-issue, "issue-type: architecture-concern", "priority: high"]
 if: |
   github.event_name == 'pull_request' ||
   github.event_name == 'workflow_dispatch' ||

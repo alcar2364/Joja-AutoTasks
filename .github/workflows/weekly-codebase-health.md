@@ -20,7 +20,7 @@ tools:
 safe-outputs:
   create-issue:
     title-prefix: "[codebase-health] "
-    labels: [agentic-workflow, implementation-issue, issue-type: architecture-concern, priority: medium, codebase-health]
+    labels: [agentic-workflow, implementation-issue, "issue-type: architecture-concern", "priority: medium", "codebase-health"]
     close-older-issues: true
     max: 3
 ---
