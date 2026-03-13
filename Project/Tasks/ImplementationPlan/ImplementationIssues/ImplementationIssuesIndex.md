@@ -29,7 +29,7 @@ This file is the active summary view of all unresolved implementation issues tra
 | 109 | Deferment | Add UI-local state ownership for selection, filters, and scroll while keeping snapshot state canonical. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 4 ViewModels) | Phase 4 | Open | Low |  |  |
 | 110 | Deferment | Implement task generation logic that emits State Store commands instead of direct mutations. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5 | Open | Low |  |  |
 | 111 | Deferment | Implement built-in task generators with deterministic output and command emission. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5 | Open | Low |  |  |
-| 112 | Deferment | Populate deadline field consistently from generator/rule inputs. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5+ | Scheduled | Low |  |  |
+| 112 | Deferment | Populate deadline field consistently from generator/rule inputs. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5+ | Open | Low |  |  |
 | 113 | Deferment | Implement task-type ordering/comparison behavior in runtime usage paths. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5+ | Open | Low |  |  |
 | 114 | Deferment | Implement Task Builder rule evaluation pipeline. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Open | Low |  |  |
 | 115 | Deferment | Implement rule-driven command generation from evaluated Task Builder rules. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 6 Rule Engine) | Phase 6 | Open | Low |  |  |
