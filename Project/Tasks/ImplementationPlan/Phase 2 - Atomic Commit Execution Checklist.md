@@ -327,10 +327,11 @@ Step goal:
     * [x] Must include: final checklist status and defer notes.
     * [x] Must exclude: state-store implementation.
 
-## Deferments Registered In Index
+## Deferments Registered In ImplementationIssues
 
-This checklist created or reinforced the following deferments in
-`Project/Tasks/Implementation Plan/Deferments Index.md`:
+This checklist created or reinforced the following deferments in the
+ImplementationIssues system (`ImplementationIssuesIndex.md` plus migrated
+`legacy_id` mappings in per-issue records):
 
     * [x] `DEF-001` Translation-impacting localization/runtime behavior deferred to Phase 3+ (Step `4D`).
     * [x] `DEF-002` Manual task ID issuance/counter ownership deferred to Phase 3 State Store path (Step `4C`).

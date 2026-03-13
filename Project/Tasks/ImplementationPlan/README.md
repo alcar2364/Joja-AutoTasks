@@ -1,18 +1,35 @@
-# Implementation Plan Folder Rules #
+# Implementation Plan Folder Rules
 
-This folder stores implementation plans and checklists for Joja AutoTasks.
+This folder stores implementation plans, execution checklists, audit artifacts,
+and the canonical implementation-issue tracker for Joja AutoTasks.
 
-## Required Structure ##
+## Required Structure
 
-    * Keep all implementation plan artifacts as `.md` files directly in this folder.
-    * Do not create subfolders under this folder for phases, milestones, or topics.
-    * If nested folders appear, move their `.md` files back to this folder.
+- Keep phase execution checklists and other atomic execution checklist artifacts
+  as `.md` files directly in this folder.
+- Store audit and triage artifacts under `Audits/`.
+- Store active and archived implementation-issue tracking artifacts under
+  `ImplementationIssues/`.
+- Do not recreate `Deferments/`; that legacy tracking system is retired.
 
-## Naming Guidance ##
+## Naming Guidance
 
-    * Use clear, descriptive filenames that reflect the artifact intent.
-    * For phase checklists, prefer `Phase N - ...` naming for natural sort order.
+- Use clear, descriptive filenames that reflect the artifact intent.
+- For phase checklists, prefer `Phase N - ...` naming for natural sort order.
+- For audit artifacts, keep the existing phase-oriented descriptive names and
+  place them under `Audits/`.
 
-## Scope ##
+## Canonical Tracking Rules
 
-    * This rule applies to all future implementation plan and checklist creation.
+- New unresolved implementation issues belong in the
+  `ImplementationIssues/` system.
+- Legacy `DEF-###` identifiers remain valid as compatibility identifiers and
+  should be preserved in `legacy_id` fields when an issue originated in the
+  retired deferment system.
+- Historical deferment records that never received GitHub issue numbers belong
+  in `ImplementationIssues/ImplementationIssuesArchive.md`.
+
+## Scope
+
+- This rule applies to all future implementation plan, checklist, audit, and
+  implementation-issue tracking artifacts.

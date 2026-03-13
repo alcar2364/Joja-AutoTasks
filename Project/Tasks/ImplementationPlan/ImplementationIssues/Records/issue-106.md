@@ -1,6 +1,6 @@
 ---
 issue_number: 106
-legacy_id: ""
+legacy_id: "DEF-007"
 type: "Deferment"
 title: "Implementation Issue 106: Resolve TaskSourceType versus SourceIdentifier ambiguity and clarify/refactor domain terminology if needed."
 summary: "Resolve TaskSourceType versus SourceIdentifier ambiguity and clarify/refactor domain terminology if needed."
@@ -11,15 +11,9 @@ status: "Open"
 priority: "Low"
 github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/106"
 resolution_pr: ""
-<<<<<<< Updated upstream
-created_by: "alcar2364"
-created_at: "2026-03-11T14:26:55Z"
-updated_at: "2026-03-13T04:28:35Z"
-=======
 created_by: "migration"
 created_at: "2026-03-12T22:37:53+00:00"
 updated_at: "2026-03-13T04:28:34+00:00"
->>>>>>> Stashed changes
 sync_state: "github-synced"
 notes: "Open question on domain model clarity"
 ---
@@ -28,20 +22,10 @@ notes: "Open question on domain model clarity"
 
 ## Rationale And Context
 
-
-
 ## Impact
-
-
 
 ## Implementation Notes
 
-
-
 ## Acceptance / Closing Criteria
 
-
-
 ## History / Resolution Notes
-
-

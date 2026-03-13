@@ -1,6 +1,6 @@
 ---
 issue_number: 104
-legacy_id: ""
+legacy_id: "DEF-005"
 type: "Deferment"
 title: "Implementation Issue 104: Add deterministic task-type ordering/comparer implementation after generator/task-type coverage stabilizes."
 summary: "Add deterministic task-type ordering/comparer implementation after generator/task-type coverage stabilizes."
@@ -11,15 +11,9 @@ status: "Open"
 priority: "Low"
 github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/104"
 resolution_pr: ""
-<<<<<<< Updated upstream
-created_by: "alcar2364"
-created_at: "2026-03-11T14:26:53Z"
-updated_at: "2026-03-13T04:28:37Z"
-=======
 created_by: "migration"
 created_at: "2026-03-12T22:37:53+00:00"
 updated_at: "2026-03-13T04:28:36+00:00"
->>>>>>> Stashed changes
 sync_state: "github-synced"
 notes: ""
 ---
@@ -28,20 +22,10 @@ notes: ""
 
 ## Rationale And Context
 
-
-
 ## Impact
-
-
 
 ## Implementation Notes
 
-
-
 ## Acceptance / Closing Criteria
 
-
-
 ## History / Resolution Notes
-
-

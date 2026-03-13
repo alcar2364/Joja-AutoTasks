@@ -112,8 +112,9 @@ GitHub UI setup.
 Legacy `DEF-###` deferments are migrated into this system as
 `type: Deferment` records and keep `legacy_id` for compatibility.
 
-## Compatibility Window
+The migration is complete. Active and archived deferment history now lives in
+this folder's records, index, and archive artifacts.
 
-The legacy `Deferments/` folder remains temporarily as a compatibility
-reference only. New issue tracking work should use this folder and its
-workflows.
+Legacy deferments that never received GitHub issue numbers are represented in
+`ImplementationIssuesArchive.md` with neutral placeholders rather than invented
+issue metadata.

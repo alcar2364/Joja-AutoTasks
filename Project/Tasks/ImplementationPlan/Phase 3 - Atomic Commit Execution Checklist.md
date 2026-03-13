@@ -575,11 +575,11 @@ Step goal:
 
 ### 10D - Reconcile deferments
 
-    * [x] Action: review checklist for newly identified deferments and reconcile with `Project/Tasks/Implementation Plan/Deferments Index.md`.
-    * [x] Scope: this checklist file, Deferments Index.md, Deferments Archive.md.
-    * [x] Verify: newly deferred items appended to Deferments Index with next sequential DEF-NNN ID; resolved deferments moved from Index to Archive with phase evidence and date.
+    * [x] Action: review checklist for newly identified deferments and reconcile with the `Project/Tasks/ImplementationPlan/ImplementationIssues/` system.
+    * [x] Scope: this checklist file, `ImplementationIssuesIndex.md`, `ImplementationIssuesArchive.md`, and migrated issue records with `legacy_id` mappings.
+    * [x] Verify: newly deferred items are tracked in ImplementationIssues records/index; migrated legacy deferments preserve DEF identifiers in `legacy_id`; resolved legacy deferments are archived with phase evidence and date.
     * [x] Suggested commit: `phase3(step10D): reconcile deferments after Phase 3 completion`
-    * [x] Must include: any new deferment entries in Index; any resolved deferment moves from Index to Archive; date and resolution notes.
+    * [x] Must include: any new implementation-issue entries needed for deferred work; any resolved legacy deferment archive entries; date and resolution notes.
     * [x] Must exclude: retroactive edits to previous phase deferments without explicit justification.
 
 ## Step 10 Completion
@@ -600,20 +600,23 @@ logic.
 
 ### Deferred Items
 
-**Open deferment in index:** `DEF-031` evaluates renaming `DayKey` to `DateKey`
-to better express that the value represents a specific canonical date key
-(`Year{N}-{Season}{D}`), not only an ordinal day value.
+**Active ImplementationIssues entry:** issue `132` (`legacy_id: DEF-031`)
+evaluates renaming `DayKey` to `DateKey` to better express that the value
+represents a specific canonical date key (`Year{N}-{Season}{D}`), not only an
+ordinal day value.
 
-**Open deferment in index:** `DEF-027` evaluates whether `TaskRecord` should be a
-record class or remain value-semantics focused.
-Needs investigation on reference semantics in state dictionary versus value semantics.
-Record structs copy on mutation (safer, potentially more copying). Record classes allow
-in-place updates (potentially fewer copies, more mutation risk). Evaluate typical
-`TaskRecord` size and mutation patterns before deciding.
+**Active ImplementationIssues entry:** issue `126` (`legacy_id: DEF-027`)
+evaluates whether `TaskRecord` should be a record class or remain
+value-semantics focused.
+Needs investigation on reference semantics in state dictionary versus value
+semantics.
+Record structs copy on mutation (safer, potentially more copying). Record
+classes allow in-place updates (potentially fewer copies, more mutation risk).
+Evaluate typical `TaskRecord` size and mutation patterns before deciding.
 
-**Open deferment in index:** `DEF-028` evaluates refactoring `DayKey` to store
-year/season/day components in addition to canonical string for easier
-comparisons/calculations.
+**Active ImplementationIssues entry:** issue `127` (`legacy_id: DEF-028`)
+evaluates refactoring `DayKey` to store year/season/day components in addition
+to canonical string for easier comparisons/calculations.
 Potential shape:
 
 ```csharp
@@ -623,13 +626,14 @@ private readonly int _day;
 private readonly string _dayKey; // derived, for display/persistence
 ```
 
-**Open deferment in index:** `DEF-029` evaluates the permanent home for
-`ManualTaskCounter`. Currently placed in `State/Models/` as a Phase 3
-working location. For full symmetry with engine task ID generation, the counter
-must be accessible outside `State` when Phase 8 UI triggers manual task
-creation. The counter feeds `TaskIdFactory.CreateManual(n)` the same way SMAPI
-game state feeds `TaskIdFactory.CreateBuiltIn(...)` — but unlike those inputs,
-the counter is stateful mod-owned state, not a value type. Candidate locations:
+**Active ImplementationIssues entry:** issue `131` (`legacy_id: DEF-029`)
+evaluates the permanent home for `ManualTaskCounter`. Currently placed in
+`State/Models/` as a Phase 3 working location. For full symmetry with engine
+task ID generation, the counter must be accessible outside `State` when Phase 8
+UI triggers manual task creation. The counter feeds
+`TaskIdFactory.CreateManual(n)` the same way SMAPI game state feeds
+`TaskIdFactory.CreateBuiltIn(...)` — but unlike those inputs, the counter is
+stateful mod-owned state, not a value type. Candidate locations:
 
 - `Domain/Identifiers/` — consistent with other identifier infrastructure, but
   currently only holds immutable value types and a static factory; adding a
@@ -640,7 +644,8 @@ the counter is stateful mod-owned state, not a value type. Candidate locations:
 Resolve when Phase 5 (generators) establishes the generator service pattern,
 or when Phase 8 (UI) creates the first concrete consumer.
 
-Deferment mapping in `Project/Tasks/Implementation Plan/Deferments Index.md`:
+Deferment mapping in the ImplementationIssues system (`ImplementationIssuesIndex.md`
+plus per-issue `legacy_id` fields):
 
 - **Deferred to Phase 4**
   - `DEF-007`: Resolve `TaskSourceType` versus `SourceIdentifier` ambiguity and clarify or rename if needed.

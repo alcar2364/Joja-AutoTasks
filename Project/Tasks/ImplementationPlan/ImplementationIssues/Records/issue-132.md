@@ -1,6 +1,6 @@
 ---
 issue_number: 132
-legacy_id: ""
+legacy_id: "DEF-031"
 type: "Deferment"
 title: "Implementation Issue 132: Evaluate renaming `DayKey` to `DateKey` while preserving canonical `Year{N}-{Season}{D}` key format and contracts."
 summary: "Evaluate renaming `DayKey` to `DateKey` while preserving canonical `Year{N}-{Season}{D}` key format and contracts."
@@ -11,15 +11,9 @@ status: "Open"
 priority: "Low"
 github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/132"
 resolution_pr: ""
-<<<<<<< Updated upstream
-created_by: "alcar2364"
-created_at: "2026-03-12T02:05:46Z"
-updated_at: "2026-03-13T04:28:17Z"
-=======
 created_by: "migration"
 created_at: "2026-03-12T22:37:53+00:00"
 updated_at: "2026-03-13T04:28:16+00:00"
->>>>>>> Stashed changes
 sync_state: "github-synced"
 notes: "Naming-only clarity proposal; no format change requested"
 ---
@@ -28,20 +22,10 @@ notes: "Naming-only clarity proposal; no format change requested"
 
 ## Rationale And Context
 
-
-
 ## Impact
-
-
 
 ## Implementation Notes
 
-
-
 ## Acceptance / Closing Criteria
 
-
-
 ## History / Resolution Notes
-
-
