@@ -73,8 +73,15 @@ Closed issues are archived immediately.
 - GitHub-first creation is the preferred path.
 - Local-first creation is supported for records without an issue number.
 - GitHub Actions are the primary automation mechanism.
+- `development` is the canonical branch for implementation issue records and sync automation.
 - Agentic workflow tooling is fallback-only if standard GitHub Actions
   cannot safely perform a required task.
+
+## Branching Model
+
+- All implementation-issue workflow automation checks out and pushes `development` explicitly.
+- Issue events and merged PR events do not write directly to the repository default branch unless that branch is also `development`.
+- Promote implementation-issue record changes to `main` through the normal `development` merge flow.
 
 ## GitHub Templates
 

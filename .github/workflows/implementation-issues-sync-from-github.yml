@@ -22,12 +22,15 @@ jobs:
   sync:
     if: contains(join(github.event.issue.labels.*.name, ','), 'implementation-issue')
     runs-on: ubuntu-latest
+    env:
+      IMPLEMENTATION_ISSUES_BRANCH: development
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.IMPLEMENTATION_ISSUES_BRANCH }}
 
       - name: Set up Python
         uses: actions/setup-python@v6

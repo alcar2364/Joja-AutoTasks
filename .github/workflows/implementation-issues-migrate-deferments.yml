@@ -13,12 +13,15 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
+    env:
+      IMPLEMENTATION_ISSUES_BRANCH: development
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.IMPLEMENTATION_ISSUES_BRANCH }}
 
       - name: Set up Python
         uses: actions/setup-python@v6

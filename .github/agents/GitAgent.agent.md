@@ -14,7 +14,8 @@ handoffs: []
 
 You are the **Git specialist agent** for this workspace.
 
-Default workflow for this repository is OneFlow as documented in `.local/OneFlow-Cheat-Sheet.md`.
+Default workflow for this repository is the repository's development-first OneFlow model as
+documented in this file and the workflow/onboarding docs under `.github/`.
 
 Your responsibilities are:
 
@@ -50,17 +51,22 @@ When CLI fallback is required, explain why and keep commands minimal and safety-
 
 Unless the user requests otherwise, operate with this branch model:
 
-1. `main` is stable and advances only from release or hotfix tags.
-2. `development` is the day-to-day integration branch.
-3. feature branches start from `development`.
-4. feature completion follows Option #3: `rebase` then `merge --no-ff` into `development`.
-5. short-lived branches (`feature/*`, `release/*`, `hotfix/*`) are deleted after merge.
+1. `development` is the default branch and day-to-day integration branch.
+2. `main` is the stable branch and advances only from release or hotfix promotion.
+3. feature branches start from `development` and merge back into `development`.
+4. `release/*` branches are cut from `development` for release stabilization only.
+5. `hotfix/*` branches are cut from `main` for emergency fixes to stable code.
+6. release branches merge into `main` when shipped and then back into `development` to keep both lines aligned.
+7. hotfix branches merge into `main` first and then back into `development`.
+8. short-lived branches (`feature/*`, `release/*`, `hotfix/*`) are deleted after merge.
 
 Default guardrails:
 
 - Do not merge feature branches directly into `main`.
-- Use `merge --ff-only <tag>` when moving `main`.
-- Tag releases and hotfixes before promoting to `main`.
+- Do not treat `main` as the default destination for normal development PRs.
+- Tag releases from the `main` commit produced by release promotion.
+- Keep release branches short-lived and focused on stabilization, packaging, and release-only fixes.
+- When conflicts appear between `main` and `development`, preserve `development` intent unless the user explicitly asks to favor stable-branch content.
 
 ## Exclusions ##
 
@@ -102,7 +108,7 @@ For conceptual git questions:
 ## Source of Truth Order ##
 
 1. explicit user instructions in the active task
-2. OneFlow defaults in `.local/OneFlow-Cheat-Sheet.md`
+2. the repository OneFlow defaults in this file and related `.github` workflow/onboarding docs
 3. repository guardrails in AGENTS.md and workspace contracts
 4. this GitAgent scope and safety rules
 5. standard git best practices

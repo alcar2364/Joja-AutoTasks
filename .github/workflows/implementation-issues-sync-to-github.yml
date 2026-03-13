@@ -18,12 +18,15 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      IMPLEMENTATION_ISSUES_BRANCH: development
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.IMPLEMENTATION_ISSUES_BRANCH }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -46,4 +49,4 @@ jobs:
             exit 0
           fi
           git commit -m "chore: backfill implementation issue metadata"
-          git push
+          git push origin HEAD:${IMPLEMENTATION_ISSUES_BRANCH}
