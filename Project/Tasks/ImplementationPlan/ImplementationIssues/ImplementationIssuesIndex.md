@@ -40,7 +40,7 @@ This file is the active summary view of all unresolved implementation issues tra
 | 120 | Deferment | Add UI interactions that dispatch commands through canonical state boundaries. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Scheduled | Low |  |  |
 | 121 | Deferment | Implement visual feedback tied to state changes in UI surfaces. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 8+ Menu/HUD) | Phase 8/9 | Open | Low |  |  |
 | 122 | Deferment | Add batch command transaction support for grouped atomic state updates. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 9 | Scheduled | Low |  |  |
-| 123 | Deferment | Add undo history mechanics for command/state reversibility. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 9 | Scheduled | Low |  |  |
+| 123 | Deferment | Add undo history mechanics for command/state reversibility. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 9 | Open | Low |  |  |
 | 124 | Deferment | Add dismissed task tracking lifecycle and storage behavior. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | Phase 8 | Scheduled | Low |  | May be V2 scope |
 | 125 | Deferment | Add multiplayer synchronization for shared task state consistency. | Phase 3 | Phase 3 checklist, Deferred Items (V2) | V2+ | Open | Low |  | May be V2 scope |
 | 126 | Deferment | Evaluate whether TaskRecord should remain a value type or become a reference type based on mutation patterns and state dictionary semantics. | Phase 3 | Phase 3 checklist, Deferred Items (open issue: TaskRecord type decision) | Phase 5 | Scheduled | Low |  | Decision required before deeper optimization/refactor work |
