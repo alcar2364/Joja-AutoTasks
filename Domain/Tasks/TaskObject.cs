@@ -3,7 +3,7 @@ using JojaAutoTasks.Domain.Identifiers;
 namespace JojaAutoTasks.Domain.Tasks;
 
 /// <summary>Represents an immutable task snapshot in the domain model.</summary>
-public sealed class TaskObject
+internal sealed class TaskObject
 {
     // -- Public API -- //
     public TaskId Id { get; }
@@ -33,7 +33,7 @@ public sealed class TaskObject
         "Major Code Smell",
         "S107:Methods should not have too many parameters",
         Justification = "Domain model constructor requires explicit parameters for immutable TaskObject fields.")]
-    public TaskObject(
+    internal TaskObject(
         TaskId id,
         TaskCategory category,
         TaskSourceType sourceType,
