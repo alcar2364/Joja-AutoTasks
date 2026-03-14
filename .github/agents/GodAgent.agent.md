@@ -197,11 +197,11 @@ Agents are stored at `.github/agents/`. Workspace configuration is `.github/copi
 ### 6.2 JAT Style Contracts ###
 
 JAT maintains explicit contracts:
-- `CSHARP-STYLE-CONTRACT.instructions.md` (PascalCase types, camelCase locals, Allman braces)
-- `SML-STYLE-CONTRACT.instructions.md` (kebab-case attributes, pipe-syntax events)
-- `JSON-STYLE-CONTRACT.instructions.md` (C# property casing, 2-space indent)
-- `BACKEND-ARCHITECTURE-CONTRACT.instructions.md`, `FRONTEND-ARCHITECTURE-CONTRACT.instructions.md`
-- `UNIT-TESTING-CONTRACT.instructions.md`, `REVIEW-AND-VERIFICATION-CONTRACT.instructions.md`
+- `csharp-style-contract.instructions.md` (PascalCase types, camelCase locals, Allman braces)
+- `sml-style-contract.instructions.md` (kebab-case attributes, pipe-syntax events)
+- `json-style-contract.instructions.md` (C# property casing, 2-space indent)
+- `backend-architecture-contract.instructions.md`, `frontend-architecture-contract.instructions.md`
+- `unit-testing-contract.instructions.md`, `review-and-verification-contract.instructions.md`
 
 Consult these contracts when designing JAT agent scope and tool restrictions.
 

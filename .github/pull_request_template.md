@@ -61,8 +61,10 @@ If this PR contains code changes, an admin must verify the following before appr
         integration (`LifecycleCoordinatorIntegrationTests`).
     * [ ] If ModEntry HUD lifecycle ownership wiring changed (`SaveLoaded`,
         `DayStarted`, `ReturnedToTitle`), admin verified
-        `HudHostLifecycleTests` cover exactly-one active snapshot/toast
-        subscriptions after day-start recreation, disposal-before-replacement
+        `HudHostLifecycleTests` cover exactly-one active snapshot subscription,
+        exactly-one UI-layer toast subscription where the subscriber is
+        `HudViewModel` and `HudHost` direct `ToastRequested` subscription count
+        remains zero after day-start recreation, disposal-before-replacement
         host subscription ordering, and fresh `HudViewModel` recreation.
 
 If this PR contains **only documentation changes**, testing is not required.
