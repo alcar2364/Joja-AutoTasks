@@ -75,6 +75,20 @@ Version 1 supports the following rule types:
     | Repeating   | A task that resets according to a schedule          |
     | Milestone   | A long-term achievement or goal                     |
 
+| Wizard Rule Type | Engine TaskType | Engine Persistence | Notes |
+|---|---|---|---|
+| Reminder | Reminder | Persistent | One-time or persistent reminder |
+| Reminder (daily) | Reminder | Daily | Daily recurring reminder; resets each day |
+| Progress | Progress | Persistent | Goal persists until target reached |
+| Repeating | Progress | Daily | Daily goal; resets each day with new day-keyed TaskID |
+| Milestone | Progress | Persistent | Progress + optional Deadline |
+
+This table maps wizard-facing Rule Types to the `OutputModel.TaskType` and
+`OutputModel.Persistence` fields defined in §6.8. The wizard is a pure UX layer
+over the engine's serialization model. `Milestone` has no distinct engine type
+— it serializes as `TaskType: Progress` and may include an optional `Deadline`
+field.
+
 In this document, Rule Type defines engine behavior, while Task Category
 defines UI organization labels.
 
@@ -266,3 +280,24 @@ In this flow:
     - the State Store owns canonical runtime mutation
     - HUD and Menu render the resulting snapshot
     - no direct runtime task mutation occurs inside wizard steps
+
+## 14.17 Rule Editing and Backward Navigation ##
+
+Backward navigation must preserve all data already entered in later steps.
+No step data is discarded when the player navigates back to a previous wizard
+step.
+
+Opening the wizard to edit an existing rule must pre-populate all wizard steps
+with the rule's current values.
+
+Metadata-only edits (title, description, category, icon) keep `TaskID` stable.
+The existing task is updated in-place via `AddOrUpdateTaskCommand`, and no
+progress or completion state is lost.
+
+Identity-affecting edits (trigger, subject, or progress model change) remove
+the old task via `RemoveTaskCommand`. The engine generates a fresh task on the
+next evaluation pass. Progress carryover is attempted if `TaskType` and
+`SubjectId` are compatible; progress resets if incompatible.
+
+Before confirming an identity-affecting edit, the player must be shown a
+warning explaining that existing progress may be lost.

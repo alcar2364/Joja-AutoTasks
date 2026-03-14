@@ -120,6 +120,14 @@ Seeded baseline variance entry:
 | Variance ID | Canonical source | Variant artifact | Justification | Decision | Closure target | Status |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | VAR-001 | Identifier naming in design docs (`RuleID`, `SubjectID`) | Current code symbols and file paths (`RuleId`, `SubjectId`; `Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs`) | Legacy docs and checklist wording still use older acronym style | Keep code canonical and update legacy docs incrementally | Doc-sync closure before Version 1 RC | Open |
+| VAR-002 | Section 03 / Section 21 identifier naming (`Manual_N`) | Test files using `ManualTask_N` | Legacy naming split; `Manual_N` is canonical; `ManualTask_N` appears in some test fixtures | Keep `Manual_N` canonical; update test fixtures incrementally | Doc-sync closure before Version 1 RC | Open |
+| VAR-003 | Section 07 rule evaluation model ("commands only" wording) | Pre-fix wording in Section 07 that said "commands or actions" | Pre-fix divergence; resolved by T1 doc fix in this phase | Resolved by T1 doc fix | Closed by T1 in this phase | Closed |
+| VAR-004 | Section 09 persistence model (history exclusion in §9.12) | Pre-fix wording excluded historical task ledger from V1 | Pre-fix divergence; resolved by T1/T5 doc fixes adding ledger to `SaveData` and removing the stale §9.12 exclusion | Resolved by T1/T5 Section 09 doc fixes | Closed by T1/T5 in this phase | Closed |
+
+**Note:** Findings that represent bugs to fix (rather than accepted
+divergences) are tracked in the `ImplementationIssues` folder
+(`Project/Tasks/ImplementationPlan/ImplementationIssues/`), not in this
+variance register.
 
 ## 21.4 Phase 1 — Project Skeleton and Lifecycle ##
 

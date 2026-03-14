@@ -75,21 +75,20 @@ computed progress percent) should not be persisted in the ledger.
 
 ## 11.4 Snapshot Capture Timing ##
 
-A snapshot must be captured when the game transitions to a new in-game
-day.
+A snapshot must be captured during the `OnSaving` handler, when the player goes
+to sleep, using the current day's `DayKey`. It is not captured at
+`OnDayStarted`.
 
 Capture sequence:
 
-1. The current day ends.
-2. The State Store publishes the final task snapshot for that day.
-3. The snapshot is copied into a `DailyTaskSnapshot`.
-4. The `DailyTaskSnapshot` is written to the ledger under the previous
+1. The Lifecycle Coordinator receives the `OnSaving` signal.
+2. The Daily Snapshot Ledger reads the current task snapshot from the State
+   Store (read-only).
+3. The snapshot is written to the ledger under today's `DayKey`.
+4. The ledger entry for this day is now complete and immutable.
 
-```text
-`DayKey`.
-```
-
-This ensures the ledger reflects the final task state for that day.
+For the full day-transition sequence including new-day task generation, see
+Section 02 §2.5 and Section 12 §12.10.
 
 ## 11.5 Snapshot Data Source ##
 

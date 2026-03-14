@@ -336,46 +336,37 @@ Menu-local state (selection, filters, sorting state, current history
 date) must remain within the menu subsystem and must not be persisted as
 task state unless explicitly defined as configuration.
 
-## 20.8 Notification and toast system ##
+## 20.8 Notification and Toast System ##
 
-The HUD may display brief notification toasts for important events.
+V1 uses the game's native `Game1.addHUDMessage()` API for task
+auto-completion notifications. No custom toast component is built in V1.
 
-Toasts are non-interactive, auto-dismissing messages that appear near
-the HUD. They are driven by state changes, not by UI code directly.
+### 20.8.1 Toast Triggers (V1) ###
 
-### 20.8.1 Toast triggers ###
+The only V1 toast trigger is engine-driven task auto-completion
+(`IsPlayerInitiated = false` on `CompleteTaskCommand`). All other triggers
+(rule first activates, reminder fires, daily summary) are deferred to V2.
 
-Toasts may be shown when:
+### 20.8.2 Toast Ownership Boundary ###
 
-```text
-- A task completes automatically
-- A Task Builder rule first activates
-- A manual task reminder fires
-- A daily summary is captured
-```
+`HudHost` is the only caller of the native `Game1.addHUDMessage()` API in V1.
+`HudViewModel` raises a `NotificationRequested` C# event (not a game API call).
+`HudHost` subscribes to `NotificationRequested` and performs the game API call.
+This preserves the "no direct game API access from subsystem view-models"
+boundary.
 
-Toasts must not appear for routine state refreshes or minor progress
-updates.
+### 20.8.3 Toast Event Routing ###
 
-#### 20.8.2 Toast behavior ####
+The State Store fires `ToastRequested(ToastEvent)` before `SnapshotChanged`
+when a true `Incomplete → Completed` transition occurs with
+`IsPlayerInitiated = false`. See §8.12 for the full `ToastRequested` event
+contract and `ToastEvent` structure.
 
-```text
-- Toasts auto-dismiss after a short duration (approximately 3-5
-seconds)
-- Multiple toasts queue and display sequentially, not stacked
-- Toasts must not block gameplay input
-- The player may configure toast visibility and duration through the
-configuration system (Section 15)
-```
+### 20.8.4 V2 Upgrade Path ###
 
-#### 20.8.3 Toast rendering ####
-
-Toasts are rendered as part of the HUD drawable's view tree. Toast
-visibility is driven by the `HudViewModel` (Section 10A) which manages
-a toast queue and exposes the current toast for binding.
-
-The visual design of toasts follows the notification system defined in
-`visual-design-language.instructions.md` (Section 11).
+V2 may add: custom toast queue management, configurable duration, additional
+toast triggers (rule activation, reminders, daily summary), and a custom toast
+UI component.
 
 ## 20.9 Gamepad and controller support ##
 

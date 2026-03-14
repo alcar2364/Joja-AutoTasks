@@ -76,6 +76,11 @@ Examples:
     - Persistent rule: `TaskBuilder_17_ItemWood`
     - Daily rule: `TaskBuilder_42_Daily_Year2-Spring12`
 
+**Note:** When a `DayKey` is embedded in a `TaskID`, the hyphen within the
+`DayKey` token is preserved (e.g., `Year2-Spring12`). The `_` character is the
+`TaskID` component separator only. See Section 3.8 for the canonical `DayKey`
+format.
+
 Including the day key ensures that daily recurring tasks generate a new task
 instance for each day while still remaining deterministic.
 
@@ -104,6 +109,11 @@ Example:
     - `Manual_4`
     - `Manual_5`
 
+**Normative rule:** `Manual_N` is the canonical prefix for manual task
+identifiers. The prefix `ManualTask_N` is a non-canonical legacy variant and
+must not be used in new code or documentation. The canonical form aligns with
+the `SourceType` prefix pattern used in Section 3.3 and Section 3.5.
+
 The counter MUST be persisted as part of the `StoreUserState` structure
 (Section 9.8) to ensure it survives across sessions.
 
@@ -113,21 +123,26 @@ Manual task identifiers persist across sessions and are stored in persistence.
 
 ## 3.7 RuleId Model ##
 
-`RuleId` is an immutable value object that wraps a normalized rule token.
+`RuleId` is an immutable value object that follows an auto-incrementing integer
+counter pattern, parallel to `ManualTaskCounter` in §3.6.
 
-Current implementation behavior:
+Normative definition:
 
-    - Outer whitespace is trimmed before validation.
-    - Null, empty, and whitespace-only values are rejected.
-    - Equality and hash semantics are ordinal and case-sensitive.
-    - Sequential RuleId issuance is deferred until rule-generation flow is implemented.
+    - `RuleId` is an auto-incrementing integer counter, parallel in pattern to
+      `ManualTaskCounter` (§3.6).
+    - The value object wraps the counter value as a numeric string internally
+      (e.g., `"17"`).
+    - `RuleId` is serialized as an integer in JSON (e.g., `"ruleId": 17`).
+    - The counter is persisted in `StoreUserState` alongside
+      `ManualTaskCounter`.
+    - The counter only increments, never resets or regresses.
 
-Example values:
+Examples:
 
-    - `Rule-Alpha`
-    - `Rule-17`
+    - Internal value-object representation: `RuleId = "17"`
+    - Serialized JSON form: `"ruleId": 17`
 
-These invariants keep rule-based identity stable across reconstruction and comparison paths.
+See `ManualTaskCounter` in §3.6 as the parallel pattern.
 
 ## 3.8 DayKey Model ##
 

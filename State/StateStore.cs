@@ -7,6 +7,8 @@ using JojaAutoTasks.State.Models;
 
 namespace JojaAutoTasks.State;
 
+// What is StateStore according to the code below?
+// StateStore is the central hub for managing the state of tasks in the JojaAutoTasks mod. It maintains a StateContainer that holds all task records and provides methods to dispatch commands that modify the state. It also handles day transitions by removing expired tasks and notifies subscribers when the task snapshot changes. Additionally, it has a method to create manual tasks and handles loading and returning to title events. 
 internal sealed class StateStore
 {
     private readonly StateContainer _stateContainer = new();

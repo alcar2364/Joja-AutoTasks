@@ -58,7 +58,7 @@ Each component has a dedicated purpose.
 
 ## 6.3 Rule Identity ##
 
-Each rule is assigned a stable Rule ID at creation time.
+Each rule is assigned a stable integer Rule ID at creation time.
 
 Example:
 
@@ -67,6 +67,9 @@ RuleID = 17
 ```
 
 Rule IDs must never change after creation.
+
+Rule IDs are auto-incrementing integers issued by the `RuleIdCounter`,
+parallel to `ManualTaskCounter`. See §3.7.
 
 Rule IDs are used when generating deterministic task identifiers. Canonical
 TaskID structure is defined in Section 3.3, and Task Builder-specific TaskID

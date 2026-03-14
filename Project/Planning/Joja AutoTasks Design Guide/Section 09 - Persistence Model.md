@@ -42,12 +42,13 @@ Persistence does not contain UI state or transient engine data.
 
 ## 9.3 Saved Data Categories ##
 
-The persistence system stores four primary categories of data.
+The persistence system stores five primary categories of data.
 
 1. Player Rule Definitions  
 2. Manual Tasks  
 3. Rule Runtime Data (Baselines)  
-4. Store-Level User State
+4. Store-Level User State  
+5. Daily Snapshot Ledger
 
 These are sufficient to rebuild the full task system after loading a save.
 
@@ -55,13 +56,15 @@ These are sufficient to rebuild the full task system after loading a save.
 
 Conceptual structure:
 
+```text
 SaveData
-
     - SaveSchemaVersion
     - TaskBuilderRules
     - ManualTasks
     - RuleRuntimeData
     - StoreUserState
+    - DailySnapshotLedger
+```
 
 Field descriptions:
 
@@ -79,6 +82,9 @@ Runtime values required for rule correctness such as baselines.
 
 StoreUserState  
 User-controlled flags such as pinned tasks.
+
+DailySnapshotLedger  
+Append-only ledger of daily task snapshots. Storage format is defined in Section 11 §11.7.
 
 ## 9.5 Rule Persistence ##
 
@@ -169,12 +175,14 @@ These values are stored in a store-level state structure.
 
 Conceptual structure:
 
+```text
 StoreUserState
-
     - CompletedTasks
     - PinnedTasks
+    - OnboardingAcknowledged
+```
 
-Fields contain collections of Task IDs.
+Fields contain collections of Task IDs unless otherwise noted.
 
 Example:
 
@@ -185,6 +193,9 @@ CompletedTasks
 PinnedTasks
 
     - Manual_3
+
+OnboardingAcknowledged  
+Boolean flag. Set to `true` when the player dismisses the first-run experience. Persisted so the onboarding flow is not shown again on subsequent loads.
 
 These flags are applied after tasks are reconstructed during initialization.
 
@@ -253,7 +264,6 @@ The Version 1 persistence system excludes several features.
     - Multiplayer synchronization
     - Remote data sharing
     - Cloud storage
-    - Historical task ledger
 
 These systems may be added in future versions.
 
@@ -274,3 +284,13 @@ Rules:
     locale.
 
 This aligns with minimal persistence and deterministic reconstruction rules.
+
+## 9.14 Daily Snapshot Ledger Persistence ##
+
+The `DailySnapshotLedger` is persisted as part of `SaveData`.
+
+Its JSON storage format is defined in Section 11 §11.7.
+
+The ledger is append-only; historical entries must never be overwritten.
+
+See Section 11 §11.7 for the full storage structure.

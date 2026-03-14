@@ -255,6 +255,13 @@ Conceptual structure:
 }
 ```
 
+**V1 note:** V1 ships with only `ConfigVersion: 1`. No migration steps are
+defined for V1 because there is only one config version. The cross-reference to
+Section 18 is for the migration pipeline pattern (how migrations are structured
+and executed), not for any specific config migration steps. Future config
+migrations will be added to Section 18 when `ConfigVersion` increments in a
+later release.
+
 Configuration migrations must preserve existing user preferences when
 possible. Migration rules are defined in Section 18.
 

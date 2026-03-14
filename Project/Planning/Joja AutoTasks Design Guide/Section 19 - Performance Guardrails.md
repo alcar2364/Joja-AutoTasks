@@ -175,6 +175,14 @@ Required evidence for gate closure:
     - Debug diagnostics are bounded and can be disabled without impacting
     gameplay correctness.
 
+**Gate G5 — V1 measurable thresholds (subject to revision):**
+
+- No single evaluation pass may process more than **50 rules per tick**.
+- Evaluation context construction must complete within **5 ms** on reference
+  hardware.
+- These are V1 targets. If profiling reveals a different budget is appropriate,
+  the thresholds must be updated in this section before the gate is closed.
+
 Scope-budget coupling rule:
 
     - If performance risk exceeds the stage budget, the team may defer

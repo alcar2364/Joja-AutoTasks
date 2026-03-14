@@ -82,8 +82,11 @@ Evaluation failures must follow these rules:
     - The failure must be logged for diagnostics.
     - Other rules must continue evaluating normally.
 
-A rule that repeatedly fails evaluation should be automatically disabled
-after a defined failure threshold.
+**Normative (V1):** A rule that accumulates **3 consecutive evaluation
+failures within a single session** is automatically disabled for the remainder
+of that session. The failure count resets when the session ends (return to
+title or game close). The threshold is configurable via `DebugConfig` for
+development and diagnostic purposes.
 
 ## 16.7 State store command safety ##
 

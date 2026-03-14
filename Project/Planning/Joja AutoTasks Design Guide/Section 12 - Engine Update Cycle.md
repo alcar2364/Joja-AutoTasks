@@ -183,18 +183,10 @@ If no task state changed, a new snapshot should not be published.
 
 Day transitions trigger several system actions.
 
-When a new in-game day begins:
-
-1. Capture the previous day snapshot in the Daily Snapshot Ledger
-
-```text
-(Section 11).
-```
-
-1. Remove expired daily tasks.
-2. Reset daily rule baselines where required.
-3. Trigger rule evaluation for the new day.
-4. Publish a refreshed task snapshot.
+The normative day-start ownership table — mapping each step to its owning layer
+— is defined in **Section 02 §2.5** (On Day Start / On Player Sleep). Section
+2.5 is the canonical source. The sequence is not restated here to prevent
+drift.
 
 This ensures daily tasks are recreated deterministically.
 
@@ -218,20 +210,13 @@ Persistence behavior must follow the rules defined in Section 9.
 When the player returns to the title screen, the engine must tear down
 all runtime state.
 
-Teardown sequence:
+The canonical teardown sequence is defined in **Section 02 §2.5** ("On
+Returned to Title"). Section 2.5 is the authoritative specification. This
+section cross-references it rather than restating the sequence to prevent drift
+between sections.
 
-1. Dispose all View Models and unsubscribe from SnapshotChanged
-2. Dispose the HUD drawable
-3. Clear the State Store
-4. Drain and discard the evaluation queue
-5. Null cached game state references
-6. Reset engine lifecycle to pre-initialization state
-
-This ensures the mod is safe to re-initialize on the next
-`OnSaveLoaded` without residual state from the previous session.
-
-See Section 2.5 (On Returned to Title) for the architectural teardown
-requirements.
+This ensures the mod is safe to re-initialize on the next `OnSaveLoaded`
+without residual state from the previous session.
 
 ## 12.12 Performance Constraints ##
 

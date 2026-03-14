@@ -93,7 +93,7 @@ TaskRecord
 - ProgressCurrent
 - ProgressTarget
 - Metadata
-- DeadlineFields
+- DeadlineStoredFields
 - UserFlags
 ```
 
@@ -136,11 +136,16 @@ task's completion condition, not solely by progress saturation (see Section 4.4.
 Metadata  
 Title, description, category, icon, and display information.
 
-DeadlineFields  
-Derived deadline information such as due date and remaining days.
+DeadlineStoredFields  
+Persisted deadline data stored on `TaskRecord`. This includes only the saved
+deadline fields, not derived projection values. See Section 04 §4.10.
 
 UserFlags  
 User-controlled properties such as pinning.
+
+`DeadlineFields` exists only on the derived `TaskView` / snapshot projection.
+The State Store persists `DeadlineStoredFields` on `TaskRecord` and computes
+`DeadlineFields` when generating read models. See Section 04 §4.10.
 
 ## 8.5 Immutable Snapshot Model ##
 
@@ -186,6 +191,18 @@ Example commands include:
 - PinTaskCommand
 - UnpinTaskCommand
 ```
+
+```text
+CompleteTaskCommand contract:
+  TaskId            — TaskId (required)
+  CompletionDay     — DayKey (required)
+  IsPlayerInitiated — bool   (default: false)
+```
+
+UI callers always pass `IsPlayerInitiated = true`.
+
+Engine callers pass `IsPlayerInitiated = false` (or omit, relying on the
+default).
 
 Commands may originate from:
 
@@ -246,7 +263,7 @@ AddOrUpdateTaskCommand
 - ProgressCurrent
 - ProgressTarget
 - Status
-- DeadlineFields
+- DeadlineStoredFields
 ```
 
 Reducer behavior:
@@ -258,6 +275,11 @@ If the task exists
 → Update engine-controlled fields only.
 
 User-controlled fields must never be overwritten.
+
+`AddOrUpdateTaskCommand` carries persisted deadline input as
+`DeadlineStoredFields`. Derived `DeadlineFields` are not written into the State
+Store; they are computed when projecting `TaskView` snapshot output. See
+Section 04 §4.10.
 
 ## 8.9 Preserving User-Controlled State ##
 
@@ -342,6 +364,29 @@ The State Store exposes a snapshot-changed event:
 ``` cs
 public event Action<TaskSnapshot>? SnapshotChanged;
 ```
+
+ToastRequested event contract:
+
+```cs
+public event Action<ToastEvent>? ToastRequested;
+```
+
+`ToastRequested` is fired before `SnapshotChanged` when all conditions are
+true:
+
+- `CompleteTaskCommand.IsPlayerInitiated == false`
+- Prior task status == `Incomplete`
+- New task status == `Completed`
+
+`ToastEvent` structure:
+
+```text
+Type      — ToastType enum (TaskAutoCompleted = 0; V2 may add others)
+TaskTitle — string (task display title at completion time)
+```
+
+Replaying a completion command against an already-completed task does not emit
+another `ToastRequested` (transition-based, not command-based).
 
 Subscribers include:
 

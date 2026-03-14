@@ -112,7 +112,11 @@ Rules must declare whether they generate:
 Examples:
 
 - Persistent: `TaskBuilder_17_ItemWood`
-- Daily: `TaskBuilder_42_Daily_Year2_Spring12`
+- Daily: `TaskBuilder_42_Daily_Year2-Spring12`
+
+**Note:** `_` is the `TaskID` component separator. The hyphen inside the
+embedded `DayKey` token is preserved as part of the canonical `DayKey` format
+(e.g., `Year2-Spring12`). Do not replace the hyphen with an underscore.
 
 Key constraint:
 
@@ -161,6 +165,12 @@ Example:
 - Cut down 5 trees every day
 - Baseline captured at start of day
 - Progress computed against that baseline only for the day's `TaskID`
+
+**Normative (V1):** Daily baselines are stored in the daily snapshot ledger
+entry for that day, not in `RuleRuntimeData`. On mid-day reload (e.g., after a
+crash), the daily baseline is re-captured at the start of the next evaluation
+pass. Progress for the day resets to zero. This is accepted V1 behavior and is
+not a bug.
 
 ## 7.7 Rule Runtime Cache
 
@@ -242,7 +252,7 @@ Each evaluation cycle follows:
 3. Evaluate rules using two-phase evaluation.
 4. Convert results into normalized Task Objects.
 5. Merge results into the unified pipeline with built-in and manual tasks.
-6. Publish to the State Store via commands or actions only.
+6. Publish to the State Store via commands only.
 
 Key constraint:
 
@@ -327,7 +337,7 @@ Rule: Collect 300 wood to build coop
 
 Rule: Cut down 5 trees every day
 
-- `TaskID` includes day key: `TaskBuilder_42_Daily_Year2_Spring12`
+- `TaskID` includes day key: `TaskBuilder_42_Daily_Year2-Spring12`
 - `BaselineMode`: `CaptureDaily`
 - Baseline captured at day start for that instance
 - Progress tracked for the day only
@@ -337,7 +347,7 @@ Rule: Cut down 5 trees every day
 
 Rule: Reach floor 70 by Spring 25
 
-- `DueDayKey = YearX_Spring25`
+- `DueDayKey = YearX-Spring25`
 - Derived: `DaysRemaining`
 - Derived: `IsOverdue`
 - Status remains `Incomplete` until goal met and does not become `Failed` in

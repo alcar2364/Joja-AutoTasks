@@ -136,28 +136,39 @@ plus a fixed deterministic fallback chain.
 
 Version 1 ordering chain:
 
-1. Pinned tasks first (pin state comes from the State Store).
-2. Task-type rank from an in-code deterministic ordering map.
-3. Task Creation Day.
-4. Canonical Task ID string.
+1. Completion status — Incomplete tasks first, completed tasks last
+2. Pin state — Within each completion group, pinned tasks sort first
+3. Task-type rank — Within pinned/unpinned groups, the in-code ordering map
+   applies
+4. Task Creation Day — Fallback within the same type rank
+5. Canonical Task ID — Final tiebreaker
 
-Example default task-type ordering map:
+Normative ordering map:
 
-    - Attend festival
-    - Spouse interaction
-    - Pet interaction
-    - Petting/Milking/Shearing Farm Animals
-    - Collect animal products
-    - Water crops
-    - Harvest crops
-    - Harvest trees
-    - Collect from machines
-    - Collect needed resources
-    - Social tasks
-    - etc.
+| Rank | TaskCategory / Task Type |
+|------|--------------------------|
+| 1 | Festival / Calendar event |
+| 2 | Spouse interaction |
+| 3 | Pet interaction |
+| 4 | Farm animal care (petting, milking, shearing) |
+| 5 | Collect animal products |
+| 6 | Water crops |
+| 7 | Harvest crops |
+| 8 | Harvest trees |
+| 9 | Collect from machines |
+| 10 | Collect/gather resources |
+| 11 | Social tasks |
+| 12 | Quest progress |
+| 13 | Skill/progression goals |
+| 14 | Reminder tasks |
+| 99 | Manual tasks (lowest automatic rank) |
 
-The ordering chain is derived at runtime and does not require a persisted
-per-task priority field in the Task Object.
+**Normative note:** The map key is `TaskCategory`. Tasks not matching any
+explicit category entry use rank 99. The ordering map is an in-code constant
+and does not require a persisted per-task priority field.
+
+**Note:** Completion status is the primary sort key. A pinned completed task
+sorts below all incomplete tasks but above other completed tasks.
 
 Pinned tasks are stored in the State Store and persisted between sessions.
 
@@ -233,3 +244,60 @@ Key design principles:
 
 This architecture ensures that UI systems, the task engine, and persistence
 logic remain cleanly separated
+
+## 4.10 Deadline Fields Model ##
+
+Two concrete structures represent deadline data in the system.
+
+### DeadlineStoredFields (persisted, on TaskRecord)
+
+Stored on `TaskRecord`. Contains only the fields that are saved to disk.
+
+```text
+DeadlineStoredFields
+  DueDayKey     — DayKey  (last valid day; required)
+  ExpiresAtTime — int?    (optional in-game time integer, e.g. 2200 = 10pm)
+```
+
+`null` on `TaskRecord.DeadlineStoredFields` means the task has no deadline.
+
+### DeadlineFields (derived read model, on TaskView)
+
+Computed fresh at every projection. Never persisted.
+
+```text
+DeadlineFields
+  DueDayKey      — DayKey  (passed through from stored)
+  ExpiresAtTime  — int?    (passed through from stored)
+  DaysRemaining  — int     (derived; negative = overdue)
+  IsOverdue      — bool    (derived; today's sequence > DueDayKey's sequence)
+  IsWindowClosed — bool    (derived; today == DueDayKey AND currentTime >= ExpiresAtTime)
+```
+
+`null` on `TaskView.DeadlineFields` means the task has no deadline.
+
+### V1 Display Rules
+
+| State | Display suffix | Completion affordance |
+|-------|----------------|-----------------------|
+| Normal future deadline | `· 5d` | Enabled |
+| Due today, window open | `· Today` or `· Until 10pm` | Enabled |
+| Due today, window closed | `· Window Closed` | Disabled |
+| Past due day | `· OVERDUE` | Disabled (time-window tasks) |
+
+Deadline is shown as an inline suffix on the task title row in the HUD and
+menu.
+
+### Canonical ExpiresAtTime Example
+
+The festival-window pattern is the canonical example for `ExpiresAtTime`. A
+festival task with `DueDayKey = Year2-Summer11` and `ExpiresAtTime = 1400`
+(2pm) becomes window-closed at 2pm on Summer 11. The task remains in the list
+as incomplete and is preserved in the end-of-day snapshot.
+
+### V2 Upgrade Path
+
+- Auto-removal of tasks when window closes (optional V2)
+- Auto-removal after due day passes (optional V2)
+- Configurable display format for deadline suffix (V2)
+- Failed/Expired status enum (optional V2+)

@@ -17,14 +17,19 @@ and reminders.
 
 The mod includes:
 
-    - Automatic task detection
-    - A powerful user-defined Task Builder
-    - Manual task creation
+Version 1 features:
+
+    - Automatic task tracking (built-in generators)
+    - Manual task creation (Task Builder)
+    - Manual tasks
     - Daily task tracking
     - Historical task snapshots
     - Completion tracking
     - HUD display and full task management menu
-    - Statistics and analytics (V2)
+
+Version 2 (planned):
+
+    - Statistics and analytics
 
 ## 1.2 Task Types ##
 
@@ -58,14 +63,12 @@ The mod supports three core task types.
     Players can create their own automatic tracking rules using the Task Builder
     system.
 
-    Example:
+    The Task Builder lets players define custom automatic goals, such as
+    tracking progress toward collecting 300 wood for a building. The system
+    detects the player’s current wood count and marks the task complete when
+    the requirement is met.
 
-    * Track progress toward collecting 300 wood for a building.
-
-    The system detects the player’s current wood count and marks the task
-    complete when the requirement is met.
-
-    Other possible examples:
+    Additional examples include:
 
     * Collect X resources
     * Complete a quest objective

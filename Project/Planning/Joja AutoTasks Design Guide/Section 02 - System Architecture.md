@@ -221,28 +221,34 @@ This wiring pattern enables:
 
 ### On Day Start ###
 
-1. Determine new day key
-2. Generate today’s tasks:
+**Sleep flow (`OnSaving`) — ownership:**
 
-    * built-in automatic tasks
-    * Task Builder tasks
-    * carry-forward persistent tasks
+| Step | Owning Layer | Notes |
+|------|-------------|-------|
+| Receive `OnSaving` signal | `LifecycleCoordinator` | Signal-only forwarding; no data ownership |
+| Capture previous day's snapshot | `DailySnapshotLedger` | Reads State Store snapshot; writes to ledger at sleep time |
+| Persist all data to disk | Persistence | Rules, manual tasks, baselines, user state, ledger |
 
-3. Apply completion detection and progress evaluation
-4. Store “today state” in runtime store
-5. UI refresh
+**New-day flow (`OnDayStarted`) — ownership:**
+
+| Step | Owning Layer | Notes |
+|------|-------------|-------|
+| Receive `OnDayStarted` signal | `LifecycleCoordinator` | Signal-only, ordered forwarding |
+| Remove expired daily tasks | `StateStore` (via `DayTransitionHandler`) | Owns task expiration; no external commands emitted |
+| Reset daily baselines | `StateStore` (via `DayTransitionHandler`) | Clears `CaptureDaily` baseline values |
+| Run new-day evaluation pass | Task Engine | Evaluates all sources; emits commands to store |
+| Publish refreshed snapshot | `StateStore` | After all commands applied |
+| Update HUD/menu | `HudHost` / view models | Receive snapshot via `SnapshotChanged` event |
+
+**Normative note:** The `LifecycleCoordinator` forwards signals in order
+without owning any data. The snapshot is captured at sleep time (`OnSaving`),
+not at the start of the next day, to ensure it reflects the true final state of
+the day.
 
 ### On Player Sleep (End of Day) ###
 
-1. Create snapshot of:
-
-    * completed tasks
-    * incomplete tasks
-    * progress values
-
-2. Write snapshot into history store
-3. Display snapshot to user on summary screen (after game summary screens)
-4. Persist on next save cycle (or immediately if desired)
+The sleep flow ownership table above is the normative specification for
+end-of-day processing.
 
 ### On Relevant Game Events (During Day) ###
 
@@ -264,6 +270,11 @@ Key requirement:
 When the player returns to the title screen, the mod must tear down all
 runtime state to prevent stale data from leaking into a subsequent save
 load.
+
+**Canonical teardown specification:** This section (§2.5 "On Returned to
+Title") is the single authoritative source for the teardown sequence. Section
+12 §12.11.1 cross-references this section rather than restating the sequence.
+Any future teardown additions must be made here only.
 
 Teardown sequence:
 

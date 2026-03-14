@@ -165,21 +165,23 @@ domain.
 
 ## 13.10 Built-in generator set ##
 
-Version 1 includes the following example built-in generators.
+Version 1 includes the following built-in generators. The generators listed
+below are the minimum V1 commitment. The set may expand, but none of the listed
+generators may be dropped from V1.
 
-| GeneratorID                |   Domain     | Example Tasks          |
-|  ------------------------- | ------------ | ---------------------- |
-|  BuiltIn.Crops.Water       | Crops        | Water crops            |
-|  BuiltIn.Crops.Harvest     | Crops        | Harvest ready crops    |
-|  BuiltIn.Animals.Pet       | Animals      | Pet animals            |
-|  BuiltIn.Animals.Milk      | Animals      | Milk cows / goats      |
-|  BuiltIn.Machines.Harvest  | Machines     | Collect machine output |
-|  BuiltIn.Calendar.Festival | Calendar     | Attend festival        |
-|  BuiltIn.Calendar.Birthday | Calendar     | Gift NPC birthday      |
+| GeneratorID | Domain | Example Tasks | V1 Required |
+|---|---|---|---|
+| `BuiltIn.Crops.Water` | Crops | Water crops | ✅ |
+| `BuiltIn.Crops.Harvest` | Crops | Harvest ready crops | ✅ |
+| `BuiltIn.Animals.Pet` | Animals | Pet animals | ✅ |
+| `BuiltIn.Animals.Milk` | Animals | Milk cows / goats | ✅ |
+| `BuiltIn.Machines.Harvest` | Machines | Collect machine output | ✅ |
+| `BuiltIn.Calendar.Festival` | Calendar | Attend festival | ✅ |
+| `BuiltIn.Calendar.Birthday` | Calendar | Gift NPC birthday | ✅ |
+| `BuiltIn.Quest.Progress` | Quests | Active quest progress | ✅ |
 
-The exact set may expand for Version 1 but should remain focused on core
-gameplay elements. Future versions may add more generators based on player
-feedback and design goals.
+All generators marked V1 Required must ship in Version 1. Additional generators
+may be added in later phases or future versions.
 
 ## 13.11 Generator configuration ##
 

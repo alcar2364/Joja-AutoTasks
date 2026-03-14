@@ -96,6 +96,26 @@ Conceptual interface:
         // ... domain-specific accessors
     }
 
+| Method | V1 Required | Purpose |
+|--------|-------------|---------|
+| `GetPlayerItems()` | ✅ V1 | Inventory-based generators and rules |
+| `GetFarmAnimals()` | ✅ V1 | Animal care generator |
+| `GetLocations()` | ✅ V1 | Machine output generator (scans locations for machines) |
+| `GetSkillLevel(SkillType)` | ✅ V1 | Skill-level conditions in Task Builder rules |
+| `GetCurrentDayKey()` | ✅ V1 | All generators (day-keyed task identity) |
+| `GetCurrentTime()` | ✅ V1 | Time-window evaluation (`ExpiresAtTime`) |
+| `GetCalendarEvents()` | ✅ V1 | Calendar generator (birthdays, festivals) |
+| `GetActiveQuests()` | ✅ V1 | Quest progress generator |
+| `GetCropsNeedingWater()` | ✅ V1 | Crop watering generator |
+| `GetCropsReadyToHarvest()` | ✅ V1 | Crop harvest generator |
+| `GetNPCBirthdays()` | ✅ V1 | Birthday generator |
+| `GetHouseUpgradeLevel()` | V2+ | House upgrade condition support |
+| `GetToolUpgradeState()` | V2+ | Tool upgrade condition support |
+
+Methods marked V2+ are not required for the V1 generator set defined in
+§13.10. They may be added in future phases without breaking the V1 interface
+contract.
+
 This abstraction enables:
 
     - Unit testing rule evaluation with mock game state
@@ -148,7 +168,7 @@ Each generator:
     - Does not store mutable state inside the generator
     - Uses the shared context instead of direct SMAPI queries where possible
 
-Generator examples:
+V1 built-in generators:
 
     - Crop care generator
         * Watering
@@ -168,6 +188,10 @@ Generator examples:
         * Active quest progress tasks
 
 Generators output tasks into the shared pipeline.
+
+The normative V1 generator set is defined in Section 13 §13.10. The generators
+listed here are illustrative of the domain structure; §13.10 is the
+authoritative V1 commitment.
 
 ## 5.5 Task Builder Rule Engine ##
 
