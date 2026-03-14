@@ -131,41 +131,35 @@ Future versions may introduce user-defined categories.
 
 ## 4.6 Deterministic Task-Type Ordering ##
 
-Default ordering behavior in the HUD and task menu is derived from task type,
-plus a fixed deterministic fallback chain.
+Default ordering behavior in the HUD and task menu is derived from
+`TaskCategory`, plus a fixed deterministic fallback chain.
 
 Version 1 ordering chain:
 
 1. Completion status — Incomplete tasks first, completed tasks last
 2. Pin state — Within each completion group, pinned tasks sort first
-3. Task-type rank — Within pinned/unpinned groups, the in-code ordering map
-   applies
-4. Task Creation Day — Fallback within the same type rank
+3. TaskCategory rank — Within pinned/unpinned groups, the in-code category
+   ordering map applies
+4. Task Creation Day — Fallback within the same category rank
 5. Canonical Task ID — Final tiebreaker
 
 Normative ordering map:
 
-| Rank | TaskCategory / Task Type |
-|------|--------------------------|
-| 1 | Festival / Calendar event |
-| 2 | Spouse interaction |
-| 3 | Pet interaction |
-| 4 | Farm animal care (petting, milking, shearing) |
-| 5 | Collect animal products |
-| 6 | Water crops |
-| 7 | Harvest crops |
-| 8 | Harvest trees |
-| 9 | Collect from machines |
-| 10 | Collect/gather resources |
-| 11 | Social tasks |
-| 12 | Quest progress |
-| 13 | Skill/progression goals |
-| 14 | Reminder tasks |
-| 99 | Manual tasks (lowest automatic rank) |
+| Rank | TaskCategory |
+|------|--------------|
+| 1 | `Farming` |
+| 2 | `Animals` |
+| 3 | `Machines` |
+| 4 | `Social` |
+| 5 | `Exploration` |
+| 6 | `Resources` |
 
 **Normative note:** The map key is `TaskCategory`. Tasks not matching any
-explicit category entry use rank 99. The ordering map is an in-code constant
-and does not require a persisted per-task priority field.
+explicit category entry use rank 99. Manual tasks with no assigned
+`TaskCategory` also use rank 99. The ordering map is an in-code constant and
+does not require a persisted per-task priority field. The canonical
+`TaskCategory` values are defined in Section 4.5 and in
+`Domain/Tasks/TaskCategory.cs`.
 
 **Note:** Completion status is the primary sort key. A pinned completed task
 sorts below all incomplete tasks but above other completed tasks.
