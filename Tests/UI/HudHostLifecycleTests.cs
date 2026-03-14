@@ -26,7 +26,7 @@ public sealed class HudHostLifecycleTests
     }
 
     [Fact]
-    public void LifecycleTransitions_LeaveExactlyOneActiveToastSubscriptionAfterDayStartedRecreation()
+    public void LifecycleTransitions_LeaveExactlyOneActiveUiToastSubscriptionAfterDayStartedRecreation()
     {
         Store stateStore = CreateInitializedStore();
         ModEntryHudLifecycle lifecycle = CreateLifecycleHarness();
@@ -35,11 +35,17 @@ public sealed class HudHostLifecycleTests
         lifecycle.HandleDayStarted();
         lifecycle.HandleDayStarted();
 
+        int totalUiToastSubscriptionCount = CountStateStoreSubscribers(
+            stateStore,
+            "ToastRequested",
+            IsUiLayerToastHandler);
+
         int hostToastSubscriptionCount = CountStateStoreSubscribers(
             stateStore,
             "ToastRequested",
             IsHudHostToastHandler);
 
+        Assert.Equal(1, totalUiToastSubscriptionCount);
         Assert.Equal(1, hostToastSubscriptionCount);
     }
 
@@ -163,6 +169,17 @@ public sealed class HudHostLifecycleTests
     private static bool IsHudHostToastHandler(Delegate handler)
     {
         return handler.Method.DeclaringType == typeof(HudHost)
+               && handler.Method.Name == "OnToastReceived";
+    }
+
+    private static bool IsUiLayerToastHandler(Delegate handler)
+    {
+        return IsHudHostToastHandler(handler) || IsHudViewModelToastHandler(handler);
+    }
+
+    private static bool IsHudViewModelToastHandler(Delegate handler)
+    {
+        return handler.Method.DeclaringType == typeof(HudViewModel)
                && handler.Method.Name == "OnToastReceived";
     }
 

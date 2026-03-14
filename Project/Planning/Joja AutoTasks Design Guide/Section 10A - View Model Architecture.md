@@ -88,27 +88,17 @@ using PropertyChanged.SourceGenerator;
 
 public partial class TaskRowViewModel
 {
-```
-
 [Notify] private string title = "";
 [Notify] private string status = "";
 [Notify] private int progressCurrent;
 [Notify] private int progressTarget;
-
-```text
-
-```
 
 // Derived property — auto-detected by source generator
 public float ProgressPercent =>
     ProgressTarget > 0
         ? (float)ProgressCurrent / ProgressTarget
         : 0f;
-
-```text
-
 }
-
 ```
 
 Fields that never change after construction (e.g., `TaskID`) do not need
@@ -149,14 +139,11 @@ The following View Models are expected for Version 1.
 `HudViewModel`
 
 ```text
-- Exposes the filtered/sorted task list for the HUD
-- Owns HUD-local state: collapsed, scroll position
-- Subscribes to State Store snapshot changes
-- Subscribes to StateStore.ToastRequested via UiToastSubscriptionManager
-- Respects HUD configuration (max visible tasks, show completed)
-- Raises NotificationRequested (C# event) when ToastRequested fires
+- Stateless intent converter (no subscription ownership)
+- Public method OnToastReceived(ToastEvent toast) accepts backend event and converts to UI intent
+- Raises NotificationRequested event with task title
 - Does NOT call game APIs directly
-- Unsubscribes from ToastRequested on disposal
+- Does NOT manage lifecycle or subscription tokens
 ```
 
 `UiToastSubscriptionManager`
@@ -165,17 +152,18 @@ The following View Models are expected for Version 1.
 - Static class; mirrors UiSnapshotSubscriptionManager exactly
 - Wraps StateStore.ToastRequested event
 - Provides Initialize(StateStore) and Subscribe(Action<ToastEvent>) → IDisposable
-- Same SnapshotSubscription/NoOpSubscription token pattern as UiSnapshotSubscriptionManager
+- Subscription owned by HudHost (the UI-layer host), not by HudViewModel
 ```
 
 `HudHost`
 
 ```text
 - Owns the HUD IViewDrawable lifecycle
-- Subscribes to HudViewModel.NotificationRequested (a C# event on the view model)
-- On NotificationRequested: calls Game1.addHUDMessage(title, type)
+- Owns StateStore.ToastRequested subscription via UiToastSubscriptionManager
+- Owns HudViewModel.NotificationRequested listener (a C# event on the view model)
+- Event flow: ToastRequested → OnToastReceived() → viewModel.OnToastReceived() → NotificationRequested → OnNotificationRequested() → Game1.addHUDMessage()
 - This is the only place in the codebase that calls the native banner API
-- Recreated on each DayStarted (disposing the prior instance first)
+- Recreated on each DayStarted (disposing the prior instance and all owned subscriptions first)
 - Disposed on return-to-title teardown
 ```
 
@@ -376,7 +364,7 @@ expected task counts in V1)
 
 ## 10A.12 Historical Data Access Pattern ##
 
-### IDailySnapshotLedger Interface
+### IDailySnapshotLedger Interface ###
 
 HistoryViewModel accesses historical data through a dedicated read-only
 interface:
@@ -391,7 +379,7 @@ IDailySnapshotLedger
 The ledger is read-only from the view model's perspective. HistoryViewModel
 never writes to or modifies historical records.
 
-### HistoryViewModel Data Source Contract
+### HistoryViewModel Data Source Contract ###
 
 HistoryViewModel receives IDailySnapshotLedger via constructor injection,
 parallel to the UiSnapshotSubscriptionManager pattern for live data.
@@ -411,7 +399,7 @@ HistoricalTaskRowViewModel
   - V1 only — no progress bar, no category icon
 ```
 
-### V1 Navigation Rules
+### V1 Navigation Rules ###
 
 - Navigation: Previous/Next day arrows only. Current day label between arrows.
 - No calendar picker, no jump-to-date, no scrollable day list in V1.
@@ -419,23 +407,23 @@ HistoricalTaskRowViewModel
 - Arrows disabled at the earliest possible day (← Previous disabled).
 - Player cannot navigate to today or future days from the History section.
 
-### Navigation Boundary Table
+### Navigation Boundary Table ###
 
 | Condition | ← Previous | → Next |
-|---|---|---|
+| --- | --- | --- |
 | Ledger is empty | Disabled | Disabled |
 | Viewing most recent recorded day | Enabled (if earlier days exist) | Disabled |
 | Viewing an intermediate day | Enabled | Enabled |
 | Viewing the earliest possible day | Disabled | Enabled |
 
-### Empty State and Missing Day Handling
+### Empty State and Missing Day Handling ###
 
 - If the ledger is empty: show "No history recorded yet." Both arrows disabled.
 - If GetSnapshot(DayKey) returns null: show "No data recorded for this day."
   Navigation arrows remain enabled so the player can skip past the gap.
 - The mod does not attempt to reconstruct or infer history for missing days.
 
-### V2 Upgrade Path
+### V2 Upgrade Path ###
 
 - Split-panel layout: left panel shows scrollable day list (most recent first);
   right panel shows task list for selected day.

@@ -2,20 +2,17 @@
 
 ## Purpose
 
-This document provides a **code-level implementation map** of the Joja AutoTasks architecture,
-supplementing the design guide with concrete class names, method signatures, and data flow patterns.
+This document provides a **code-level implementation map** of the Joja AutoTasks architecture, supplementing the design guide with concrete class names, method signatures, and data flow patterns.
 
 Use this map to:
 
-    - Understand how conceptual design sections map to actual code structure
-    - Navigate the codebase when implementing or debugging features
-    - Identify relationships between architectural layers
-    - Locate key classes and methods for specific functionality
-    - Understand data flow through the system
+- Understand how conceptual design sections map to actual code structure
+- Navigate the codebase when implementing or debugging features
+- Identify relationships between architectural layers
+- Locate key classes and methods for specific functionality
+- Understand data flow through the system
 
-This is a **developer reference document** focused on implementation details. For conceptual
-architecture and design rationale, see the primary design guide sections in
-`Project/Planning/Joja AutoTasks Design Guide/`.
+This is a **developer reference document** focused on implementation details. For conceptual architecture and design rationale, see the primary design guide sections in `Project/Planning/Joja AutoTasks Design Guide/`.
 
 ## Document Conventions
 
@@ -23,16 +20,14 @@ architecture and design rationale, see the primary design guide sections in
 
 This document references design guide sections using the format:
 
-    - **[Section N]** — refers to Section N in the design guide
+- **[Section N]** — refers to Section N in the design guide
 
 ### Code References
 
-    - `ClassName` — refers to an implemented or planned class
-    - `MethodName()` — refers to a method signature
-    - `PropertyName` — refers to a property
-    - **Namespace.ClassName** — fully qualified type when needed for clarity
-
----
+- `ClassName` — refers to an implemented or planned class
+- `MethodName()` — refers to a method signature
+- `PropertyName` — refers to a property
+- **Namespace.ClassName** — fully qualified type when needed for clarity
 
 ## Table of Contents
 
@@ -50,66 +45,42 @@ This document references design guide sections using the format:
 12. [Data Flow Summary](#12-data-flow-summary)
 13. [Implementation Status](#13-implementation-status)
 
----
-
 ## 1. System Overview
 
 ### 1.1 High-Level Architecture
 
 Joja AutoTasks follows a **layered architecture** with clear separation of concerns:
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│                    UI Layer (HUD + Menu)                │
-│              (StardewUI binding consumers)              │
-└──────────────────────┬──────────────────────────────────┘
-                       │ reads snapshots / sends commands
-                       ↓
-┌─────────────────────────────────────────────────────────┐
-│                   State Store (Command Model)           │
-│    Commands → Command Handlers → State → Snapshots      │
-└──────────────────────┬──────────────────────────────────┘
-                       │ publishes snapshots
-                       ↓
-┌─────────────────────────────────────────────────────────┐
-│            Task Generation & Evaluation Engine          │
-│   Built-in Generators | Task Builder Rules | Manual     │
-└──────────────────────┬──────────────────────────────────┘
-                       │ uses
-                       ↓
-┌─────────────────────────────────────────────────────────┐
-│                    Domain Model Layer                   │
-│      TaskObject, TaskId, Identifiers, Enums, etc.       │
-└──────────────────────┬──────────────────────────────────┘
-                       │ persisted by
-                       ↓
-┌─────────────────────────────────────────────────────────┐
-│                    Persistence Layer                    │
-│        Save/Load, Migration, Snapshot Ledger            │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    UI["UI Layer\nHUD + Menu\n(StardewUI binding consumers)"]
+    Store["State Store\n(Command Model)\nCommands → Handlers → State → Snapshots"]
+    Engine["Task Generation & Evaluation Engine\n(Built-in Generators | Rules | Manual)"]
+    Domain["Domain Model Layer\nTaskObject, TaskId, Identifiers, Enums"]
+    Persist["Persistence Layer\nSave/Load, Migration, Snapshot Ledger"]
+
+    UI -->|reads snapshots / sends commands| Store
+    Store -->|publishes snapshots| Engine
+    Engine -->|uses| Domain
+    Domain -->|persisted by| Persist
 ```
 
 ### 1.2 Key Architectural Principles
 
 **Determinism**  
-Task identifiers and evaluation results remain stable across save loads and evaluations.
-See **[Section 3]** for identifier model details.
+Task identifiers and evaluation results remain stable across save loads and evaluations. See **[Section 3]** for identifier model details.
 
 **Immutability**  
-Domain objects (TaskObject, identifiers) are immutable value types or records.
-State mutations occur only through State Store commands.
+Domain objects (TaskObject, identifiers) are immutable value types or records. State mutations occur only through State Store commands.
 
 **Command Pattern**  
-State changes flow through commands processed by command handlers, never direct mutation.
-See **[Section 8]** for State Store command model.
+State changes flow through commands processed by command handlers, never direct mutation. See **[Section 8]** for State Store command model.
 
 **Snapshot Isolation**  
-UI systems receive read-only snapshots, preventing accidental state corruption.
-See **[Section 10]** for UI binding model.
+UI systems receive read-only snapshots, preventing accidental state corruption. See **[Section 10]** for UI binding model.
 
 **Constructor Injection**  
-Dependencies are wired via constructor parameters, enabling unit testing and clear dependency graphs.
-See **[Section 2.4]** for subsystem composition.
+Dependencies are wired via constructor parameters, enabling unit testing and clear dependency graphs. See **[Section 2.4]** for subsystem composition.
 
 ---
 
@@ -138,6 +109,7 @@ Initializes the mod runtime via `BootstrapContainer.Build()` and subscribes to S
 **Event Handlers:**
 
 ```csharp
+
 private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
 private void OnDayStarted(object? sender, DayStartedEventArgs e)
@@ -543,8 +515,7 @@ public string Value { get; }
 
 **Usage:**
 
-SubjectId is embedded in TaskId when tasks target specific entities, ensuring unique task
-instances per subject.
+SubjectId is embedded in TaskId when tasks target specific entities, ensuring unique task instances per subject.
 
 ---
 
@@ -758,8 +729,7 @@ public enum TaskSourceType
 
 > **Progress saturation does not imply automatic task completion.**
 
-Task completion is determined by the task's **completion condition**, not solely by whether
-`ProgressCurrent >= ProgressMax`.
+Task completion is determined by the task's **completion condition**, not solely by whether `ProgressCurrent >= ProgressMax`.
 
 **Example:**
 
@@ -773,8 +743,7 @@ Reason: The player must still build the Coop. Progress saturation alone does
 not satisfy the task's completion condition.
 ```
 
-This design allows tasks to track progress independently from completion logic, supporting
-complex multi-step goals.
+This design allows tasks to track progress independently from completion logic, supporting complex multi-step goals.
 
 ---
 
@@ -1139,9 +1108,9 @@ All generators are invoked during task evaluation cycle, producing a unified tas
 2. Rule serialized to `RuleDefinition` object
 3. Rule persisted to save data
 4. On evaluation cycle:
-   * Rule evaluated against `EvaluationContext`
-   * If conditions met, task generated
-   * Task added to unified task list
+   - Rule evaluated against `EvaluationContext`
+   - If conditions met, task generated
+   - Task added to unified task list
 
 **Key Components (planned):**
 
@@ -1438,8 +1407,7 @@ UI Re-renders
 
 **View Model Layer (from [Section 10A]):**
 
-View Models receive snapshot change events, diff against current state, and update INPC
-properties so StardewUI's binding engine detects and renders changes automatically.
+View Models receive snapshot change events, diff against current state, and update INPC properties so StardewUI's binding engine detects and renders changes automatically.
 
 ---
 
@@ -1470,8 +1438,7 @@ public sealed class TaskView
 }
 ```
 
-**Note:** Progress fields are tracking metrics; completion determined by conditions
-(**[Section 4.4.1]**).
+**Note:** Progress fields are tracking metrics; completion determined by conditions (**[Section 4.4.1]**).
 
 **Related Design Guide:** **[Section 10.4]** — Task View Structure
 
@@ -1569,10 +1536,10 @@ DeleteTaskCommand       // Delete manual task
 
 1. Determine new `DayKey`
 2. Generate today's tasks:
-   * Evaluate EvaluationContext
-   * Run built-in generators
-   * Evaluate Task Builder rules
-   * Load manual tasks
+   - Evaluate EvaluationContext
+   - Run built-in generators
+   - Evaluate Task Builder rules
+   - Load manual tasks
 3. Publish new snapshot
 4. Archive yesterday's snapshot to ledger
 5. Update UI
@@ -1823,8 +1790,7 @@ UI Initialized
 
 ### 13.1 Current implemented baseline
 
-Completed implementation currently reflects the Phase 1 foundation plus
-deterministic identifier/domain primitives.
+Completed implementation currently reflects the Phase 1 foundation plus deterministic identifier/domain primitives.
 
 **Completed:**
 
@@ -1849,22 +1815,22 @@ deterministic identifier/domain primitives.
 Implementation sequencing follows Design Guide Section 21.
 
 | Stage | Scope | Status intent |
-| ---- | ---- | ---- |
+| --- | --- | --- |
 | Now | Phase 1 through Phase 10, plus required Phase 11 and Phase 12 baseline slices | Build Version 1 without dropping Task Builder or either UI surface |
 | Next | Remaining Phase 11 and Phase 12 depth | Hardening and UX depth without scope reduction |
 | Later | Post-Version-1 expansion (for example, statistics dashboards) | Extend safely on top of stable Version 1 architecture |
 
 Capability-level ownership is canonical in Design Guide Section 21.3.1.
 
-| Capability | Phase owner | Stage |
-| ---- | ---- | ---- |
-| Menu dashboard management surface | Phase 8 | Now |
-| HUD in-game task surface | Phase 9 | Now |
-| Task Builder wizard rule-definition flow | Phase 10 | Now |
-| History day browsing and day navigation baseline | Phase 11 | Now |
-| History filtering and quick-jump depth | Phase 11 | Next |
-| Debug diagnostics and manual trigger tooling baseline | Phase 12 | Now |
-| Debug ergonomics and tuning depth | Phase 12 | Next |
+| Capability                                            | Phase owner | Stage |
+| ----------------------------------------------------- | ----------- | ----- |
+| Menu dashboard management surface                     | Phase 8     | Now   |
+| HUD in-game task surface                              | Phase 9     | Now   |
+| Task Builder wizard rule-definition flow              | Phase 10    | Now   |
+| History day browsing and day navigation baseline      | Phase 11    | Now   |
+| History filtering and quick-jump depth                | Phase 11    | Next  |
+| Debug diagnostics and manual trigger tooling baseline | Phase 12    | Now   |
+| Debug ergonomics and tuning depth                     | Phase 12    | Next  |
 
 ---
 
