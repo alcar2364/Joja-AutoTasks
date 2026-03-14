@@ -80,34 +80,7 @@ Do **not** silently expand scope. If broader changes are needed, state what and 
 
 ### 2.3 Portability & Bootstrap Mode ###
 
-GodAgent must work across projects with different agent ecosystems. Operating principles:
-
-**Bootstrap Discovery (on startup or first use in a new project):**
-1. Read `/memories/session/agent-registry.md` — if it exists, use the cached registry and skip steps 2–4
-2. Scan the project for agent files (check `.github/agents/`, `.agents/`, `.claude/agents/`)
-3. Extract agent `name:` fields and handoff references
-4. Build an agent registry (name → filepath, capabilities)
-5. Detect which agents exist (e.g., does this project have a Researcher? A custom Reviewer?)
-6. Write the discovered registry to `/memories/session/agent-registry.md` so later invocations in this session skip the scan
-
-**Hybrid Auto-Detect with Fallback:**
-- Try-detect project conventions (style contracts, naming rules, directory structure)
-- Use what exists; fall back to universal defaults if missing
-- Read `/memories/repo/` for previously verified project facts (build commands, confirmed conventions, known ecosystem drift) before relying solely on real-time file scans
-
-**Handoff Adaptation:**
-- When tasks require delegation, check the local agent registry
-- If a needed agent exists, use it; if not, proceed without delegating
-- Document missing handoff opportunities (e.g., "Researcher would help here" as a note for future setup)
-
-Example flow:
-```
-User: "Create a new agent for testing"
-→ Bootstrap: Scan for existing agents
-→ Found: Reviewer exists in .github/agents/Reviewer.agent.md
-→ Plan: Create agent file, potentially delegate to Reviewer for quality check
-→ Not found: No Researcher → proceed without context-gathering delegation
-```
+For portability and bootstrap procedures, follow skill `.github/skills/godagent-workflow-patterns-and-assets/SKILL.md`.
 
 ### 2.4 Mandatory Adjacent-Artifact Audit ###
 
@@ -194,9 +167,12 @@ Agents are stored at `.github/agents/`. Workspace configuration is `.github/copi
 ├── prompts/
 │   └── *.prompt.md
 ├── hooks/
-│   ├── <bundle>/
-│   │   ├── hooks.json
-│   │   └── *.sh
+│   ├── context-preflight/
+│   ├── ecosystem-maintenance/
+│   ├── safety-guardrails/
+│   ├── self-splitting-enforcement/
+│   ├── terminal-command-validation/
+│   └── validation-postflight/
 └── skills/
     ├── skill-name-1/
     │   ├── SKILL.md

@@ -255,32 +255,4 @@ Prefer short loops over long lectures.
 
 ## 11. Rapid Response Templates ##
 
-Use these templates to keep help fast and consistent.
-
-## 11.1 Concept question template ##
-
-1. Direct answer in one sentence
-2. Why it matters in this code path
-3. Small example tied to the current file/symbol
-4. Quick verify command or check
-
-## 11.2 "What should I code next?" template ##
-
-1. Next edit location
-2. Exact small change
-3. Reason this is the right next step
-4. Validation step
-
-## 11.3 "Fix this bug" template ##
-
-1. likely root cause
-2. smallest safe fix
-3. edge case to include
-4. test or repro confirmation
-
-## 11.4 "Refactor this" template ##
-
-1. readability/safety issue
-2. refactor move with minimal behavior change
-3. risk check
-4. done-criteria checklist
+For rapid response templates, follow skill `.github/skills/csharp-mentor-response-templates/SKILL.md`.
