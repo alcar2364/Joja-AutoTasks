@@ -124,6 +124,11 @@ normal gameplay.
 The view model bound to the HUD drawable follows the patterns defined
 in Section 10A.
 
+Drawable creation and disposal belong to UI composition/startup wiring.
+Version 1 does not require a dedicated `HudHost` type as part of the
+canonical design; a helper may exist as an implementation detail later
+if HUD lifecycle management needs one.
+
 #### 20.6.2 HUD interactions ####
 
 The HUD must support the following interactions:
@@ -194,8 +199,8 @@ support drag-to-reposition on drawables)
 ```
 
 If drag repositioning requires manual coordinate tracking, that logic
-lives in the HUD host code (the class that owns the `IViewDrawable`),
-not in the view model or StarML.
+lives in HUD lifecycle/composition wiring rather than in the view model
+or StarML.
 
 #### 20.6.5 HUD rendering constraints ####
 
@@ -349,18 +354,22 @@ The only V1 toast trigger is engine-driven task auto-completion
 
 ### 20.8.2 Toast Ownership Boundary ###
 
-`HudHost` is the only caller of the native `Game1.addHUDMessage()` API in V1.
-`HudViewModel` raises a `NotificationRequested` C# event (not a game API call).
-`HudHost` subscribes to `NotificationRequested` and performs the game API call.
-This preserves the "no direct game API access from subsystem view-models"
-boundary.
+`UiNotificationBridge` is the native-toast integration boundary in V1.
+It subscribes to backend notification events and performs the native
+`Game1.addHUDMessage()` call. `HudViewModel` does not call game APIs
+directly. This preserves the "no direct game API access from subsystem
+view-models" boundary.
 
 ### 20.8.3 Toast Event Routing ###
 
 The State Store fires `ToastRequested(ToastEvent)` before `SnapshotChanged`
 when a true `Incomplete → Completed` transition occurs with
-`IsPlayerInitiated = false`. See §8.12 for the full `ToastRequested` event
-contract and `ToastEvent` structure.
+`IsPlayerInitiated = false`. V1 event flow is:
+
+`StateStore.ToastRequested → UiNotificationBridge → Game1.addHUDMessage()`
+
+See §8.12 for the full `ToastRequested` event contract and `ToastEvent`
+structure.
 
 ### 20.8.4 V2 Upgrade Path ###
 

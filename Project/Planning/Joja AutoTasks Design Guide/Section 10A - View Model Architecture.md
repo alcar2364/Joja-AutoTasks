@@ -25,6 +25,10 @@ The View Model layer solves this by:
 not belong in the State Store
 ```
 
+Native notifications are a separate UI integration concern. They may
+listen to backend events, but they are not part of the StardewUI
+binding-context/view-model layer.
+
 ## 10A.2 Architecture Position ##
 
 The View Model layer sits between the State Store and the UI surfaces.
@@ -139,32 +143,12 @@ The following View Models are expected for Version 1.
 `HudViewModel`
 
 ```text
-- Stateless intent converter (no subscription ownership)
-- Public method OnToastReceived(ToastEvent toast) accepts backend event and converts to UI intent
-- Raises NotificationRequested event with task title
+- The primary binding context for the HUD drawable
+- Subscribes to State Store snapshot updates
+- Reconciles HUD task rows against the latest snapshot
+- Owns HUD-local state such as scroll position, collapse state, and selection
+- Dispatches commands for HUD interactions such as completion and pinning
 - Does NOT call game APIs directly
-- Does NOT manage lifecycle or subscription tokens
-```
-
-`UiToastSubscriptionManager`
-
-```text
-- Static class; mirrors UiSnapshotSubscriptionManager exactly
-- Wraps StateStore.ToastRequested event
-- Provides Initialize(StateStore) and Subscribe(Action<ToastEvent>) → IDisposable
-- Subscription owned by HudHost (the UI-layer host), not by HudViewModel
-```
-
-`HudHost`
-
-```text
-- Owns the HUD IViewDrawable lifecycle
-- Owns StateStore.ToastRequested subscription via UiToastSubscriptionManager
-- Owns HudViewModel.NotificationRequested listener (a C# event on the view model)
-- Event flow: ToastRequested → OnToastReceived() → viewModel.OnToastReceived() → NotificationRequested → OnNotificationRequested() → Game1.addHUDMessage()
-- This is the only place in the codebase that calls the native banner API
-- Recreated on each DayStarted (disposing the prior instance and all owned subscriptions first)
-- Disposed on return-to-title teardown
 ```
 
 `HudTaskRowViewModel`
@@ -172,6 +156,15 @@ The following View Models are expected for Version 1.
 ```text
 - Represents a single task row in the HUD
 - Fields: title, status, progress, category icon, completion affordance
+```
+
+`UiNotificationBridge`
+
+```text
+- Thin UI integration component for native V1 notifications
+- Subscribes to backend notification events such as StateStore.ToastRequested
+- Translates backend notification payloads into native game UI calls such as Game1.addHUDMessage()
+- Separate from StardewUI binding contexts and task-row reconciliation
 ```
 
 #### Menu View Models ####
@@ -262,6 +255,10 @@ This event-driven model ensures UI updates happen only when state
 actually changes, consistent with the performance guardrails in
 Section 19.
 
+For the HUD, `HudViewModel` is the snapshot subscriber. Native
+notifications use a separate event subscription path through
+`UiNotificationBridge` and do not pass through the HUD binding context.
+
 ## 10A.7 UI-Local State ##
 
 Certain state belongs exclusively to the UI layer and MUST NOT be stored
@@ -313,7 +310,7 @@ when it is deactivated.
 HUD View Model lifecycle:
 
 ```text
-- Created when the save is loaded and HUD is initialized
+- Created when the HUD surface/drawable is initialized by UI composition/startup wiring
 - Disposed when the player returns to title or HUD is destroyed
 ```
 
@@ -333,6 +330,9 @@ Wizard View Model lifecycle:
 
 Disposal MUST unsubscribe from State Store events to prevent memory
 leaks and stale updates.
+
+`UiNotificationBridge` follows the same general subscription hygiene for
+its own backend event listeners, but it is not itself a view model.
 
 ## 10A.10 StardewUI Update Tick Integration ##
 

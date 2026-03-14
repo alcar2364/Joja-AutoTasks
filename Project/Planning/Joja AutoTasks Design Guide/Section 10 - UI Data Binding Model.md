@@ -52,6 +52,11 @@ snapshots. View Models receive snapshot change events, diff against
 current state, and update INPC properties so that StardewUI's binding
 engine detects and renders changes automatically.
 
+For the HUD, `HudViewModel` is the binding boundary between the
+published task snapshot and the StardewUI drawable. It projects
+snapshot data into bindable HUD state such as task rows, summary
+display values, and HUD-local interaction state.
+
 See Section 10A for the complete View Model architecture, including
 INPC implementation strategy, collection binding, and lifecycle rules.
 
@@ -116,7 +121,14 @@ HUD responsibilities:
 
 The HUD receives its data from the latest snapshot.
 
+The HUD binds through `HudViewModel`, which translates the latest
+snapshot into bindable HUD state for StardewUI rendering.
+
 The HUD never modifies task state directly.
+
+Native V1 toast notifications are not part of the HUD data-binding
+model. They use a separate UI notification path described in
+Section 10A and Section 20.
 
 ## 10.6 Task Menu Interface ##
 
@@ -179,6 +191,9 @@ Typical refresh cycle:
 3. UI components re-render visible elements
 
 This ensures UI always reflects the current task state.
+
+Toast notifications follow a separate event-driven path and do not
+participate in snapshot reconciliation or HUD binding updates.
 
 ## 10.10 Scroll and Pagination Behavior ##
 
