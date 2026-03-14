@@ -161,6 +161,21 @@ BaselineWood: 200
 
 This allows the engine to correctly resume progress tracking after a reload.
 
+`RuleRuntimeData` stores baselines for persistent tasks only. These are tasks
+that use `BaselineMode: CaptureAtCreation`.
+
+Daily baselines for tasks that use `BaselineMode: CaptureDaily` are stored in
+the daily snapshot ledger entry for that day, not in `RuleRuntimeData`.
+
+On a mid-day reload, such as after a crash or a manual save-load, the daily
+baseline is re-captured at the start of the next evaluation pass and progress
+for that day resets to zero.
+
+This is accepted V1 behavior and is not a bug.
+
+See Section 7 §7.6.2 for the normative baseline capture rules and §9.14 for
+ledger persistence.
+
 ## 9.8 Store-Level User State Persistence ##
 
 Some task properties are controlled directly by the player.
@@ -180,7 +195,14 @@ StoreUserState
     - CompletedTasks
     - PinnedTasks
     - OnboardingAcknowledged
+    - ManualTaskCounter
 ```
+
+ManualTaskCounter  
+Integer. Monotonically incrementing counter used to generate stable `Manual_N`
+task identifiers. This counter must only increment, never reset or regress.
+See Section 3 §3.6 for the canonical `Manual_N` identifier format and counter
+rules.
 
 Fields contain collections of Task IDs unless otherwise noted.
 
@@ -269,6 +291,9 @@ These systems may be added in future versions.
 
 The initial persistence model focuses only on correctness and stability.
 
+**Note:** The daily snapshot ledger is **included** in V1 persistence and is
+not an exclusion. Ledger persistence is defined in §9.14.
+
 ## 9.13 Localization Persistence Boundary ##
 
 Persistence remains canonical and locale-neutral.
@@ -294,3 +319,35 @@ Its JSON storage format is defined in Section 11 §11.7.
 The ledger is append-only; historical entries must never be overwritten.
 
 See Section 11 §11.7 for the full storage structure.
+
+## 9.15 Orphan Rehydration Handling ##
+
+An orphan is a persisted `CompletedTasks`, `PinnedTasks`, or `RuleRuntimeData`
+entry that references a `TaskID` that no longer exists after rule evaluation
+regenerates tasks on load.
+
+Orphans occur when:
+
+    - A rule is deleted between sessions.
+    - A rule is edited in a way that changes its `SubjectId`, producing a new
+    `TaskID` and leaving the old `TaskID` ungenerated.
+    - A daily task's `TaskID` changes due to day rollover, so the prior day's
+    `DayKey`-keyed entry is no longer a live task.
+
+V1 behavior is normative: orphan records are silently discarded during the load
+process. They are not logged, not quarantined, and not surfaced to the player.
+This is accepted V1 behavior.
+
+For `CompletedTasks` and `PinnedTasks`, discarding occurs during Section 9
+§9.9 load process step 6, "Apply user state flags to tasks." Flags are applied
+only to tasks that exist in the reconstructed task list after rule evaluation.
+Any flag referencing a non-existent `TaskID` is dropped at that point.
+
+For `RuleRuntimeData`, orphan cleanup occurs during the same load cycle after
+rule evaluation reconstructs the live task set and before the first snapshot is
+published. Runtime entries are retained only for `TaskID` values that still
+exist in the reconstructed task list.
+
+For future reference, a V2 orphan quarantine structure could retain discarded
+entries for diagnostic purposes, allowing developers to inspect stale state
+without affecting live task behavior. This is out of scope for V1.
