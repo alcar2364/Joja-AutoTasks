@@ -25,6 +25,7 @@ internal sealed record TaskView
     // -- Command-Specific Fields -- //
     internal TaskStatus Status { get; }
     internal DayKey? CompletionDay { get; }
+    internal DeadlineFields? DeadlineFields { get; }
 
 
     internal TaskView(
@@ -39,7 +40,8 @@ internal sealed record TaskView
         DayKey creationDay,
         DayKey? completionDay,
         string sourceIdentifier,
-        bool isPinned)
+        bool isPinned,
+        DeadlineFields? deadlineFields = null)
     {
         Id = id;
         Category = category;
@@ -53,5 +55,6 @@ internal sealed record TaskView
         CompletionDay = completionDay;
         SourceIdentifier = sourceIdentifier;
         IsPinned = isPinned;
+        DeadlineFields = deadlineFields;
     }
 }

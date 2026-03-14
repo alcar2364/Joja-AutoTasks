@@ -10,8 +10,9 @@ internal sealed class CompleteTaskCommand : IStateCommand
     public TaskId TaskId { get; }
 
     internal DayKey CompletionDay { get; }
+    internal bool IsPlayerInitiated { get; }
 
-    internal CompleteTaskCommand(TaskId taskId, DayKey completionDay)
+    internal CompleteTaskCommand(TaskId taskId, DayKey completionDay, bool isPlayerInitiated = false)
     {
         // -- Guards -- //
         if (taskId == default)
@@ -26,5 +27,6 @@ internal sealed class CompleteTaskCommand : IStateCommand
 
         TaskId = taskId;
         CompletionDay = completionDay;
+        IsPlayerInitiated = isPlayerInitiated;
     }
 }

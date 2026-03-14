@@ -1,3 +1,4 @@
+using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Lifecycle;
@@ -32,7 +33,7 @@ public class LifecycleCoordinatorTests
 
         LifecycleCoordinator sut = CreateSut(dispatcher);
 
-        sut.HandleSaveLoaded();
+        sut.HandleSaveLoaded(DayKeyFactory.Create(1, "Spring", 1), 600);
 
         Assert.Single(dispatcher.Calls);
         Assert.Equal(nameof(IEventDispatcher.DispatchSaveLoaded), dispatcher.Calls[0]);
@@ -45,7 +46,7 @@ public class LifecycleCoordinatorTests
 
         LifecycleCoordinator sut = CreateSut(dispatcher);
 
-        sut.HandleDayStarted();
+        sut.HandleDayStarted(DayKeyFactory.Create(1, "Spring", 1), 600);
 
         Assert.Single(dispatcher.Calls);
         Assert.Equal(nameof(IEventDispatcher.DispatchDayStarted), dispatcher.Calls[0]);
@@ -98,7 +99,7 @@ public class LifecycleCoordinatorTests
         LifecycleCoordinator sut = CreateSut(dispatcher);
 
         sut.HandleGameLaunched();
-        sut.HandleSaveLoaded();
+        sut.HandleSaveLoaded(DayKeyFactory.Create(1, "Spring", 1), 600);
 
         Assert.Equal(2, dispatcher.Calls.Count);
         Assert.Equal(nameof(IEventDispatcher.DispatchGameLaunched), dispatcher.Calls[0]);
@@ -141,6 +142,11 @@ public class LifecycleCoordinatorTests
         public void DispatchSavingInProgress()
         {
             Calls.Add(nameof(DispatchSavingInProgress));
+        }
+
+        public void DispatchTimeChanged(DayKey currentDay, int currentTime)
+        {
+            Calls.Add(nameof(DispatchTimeChanged));
         }
 
         public void DispatchUpdateTicked()

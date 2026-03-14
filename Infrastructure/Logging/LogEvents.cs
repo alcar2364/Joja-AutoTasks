@@ -20,4 +20,6 @@ internal static class LogEvents
     public const string LifecycleReturnedToTitle = "lifecycle.returned_to_title";
     public const string LifecycleSavingInProgress = "lifecycle.saving.in_progress";
     public const string LifecycleUpdateTickedGuard = "lifecycle.update_ticked.guard";
+
+    public const string StateBootstrapGuard = "state.bootstrap_guard";
 }

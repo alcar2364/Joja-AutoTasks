@@ -167,6 +167,7 @@ public sealed class CommandValidationTests
 
         Assert.Equal(taskId, command.TaskId);
         Assert.Equal(completionDay, command.CompletionDay);
+        Assert.False(command.IsPlayerInitiated);
     }
 
     [Fact]

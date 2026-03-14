@@ -34,6 +34,7 @@ public sealed class ManualTaskCounterTests
         TaskSnapshot? latestSnapshot = null;
         DayKey creationDay = DayKeyFactory.Create(1, "Spring", 1);
 
+        stateStore.InitializeTimeContext(creationDay, 600);
         stateStore.SnapshotChanged += snapshot => latestSnapshot = snapshot;
 
         for (int issuedIndex = 0; issuedIndex < 6; issuedIndex++)
@@ -68,6 +69,7 @@ public sealed class ManualTaskCounterTests
         TaskSnapshot? latestSnapshot = null;
         DayKey creationDay = DayKeyFactory.Create(1, "Spring", 1);
 
+        stateStore.InitializeTimeContext(creationDay, 600);
         stateStore.SnapshotChanged += snapshot => latestSnapshot = snapshot;
 
         stateStore.DispatchCreateManualTaskCommand(TaskCategory.Farming, "Before reset 0", null, creationDay);
@@ -75,6 +77,7 @@ public sealed class ManualTaskCounterTests
 
         stateStore.OnReturnToTitle();
 
+        stateStore.InitializeTimeContext(creationDay, 600);
         stateStore.DispatchCreateManualTaskCommand(TaskCategory.Farming, "After reset 0", null, creationDay);
         stateStore.DispatchCreateManualTaskCommand(TaskCategory.Farming, "After reset 1", null, creationDay);
 

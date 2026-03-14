@@ -1,4 +1,5 @@
 using System.Reflection;
+using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Configuration;
 using JojaAutoTasks.Events;
 using JojaAutoTasks.Infrastructure.Logging;
@@ -195,6 +196,11 @@ public class UpdateTickedGuardTests
         public void DispatchSavingInProgress()
         {
             Calls.Add(nameof(DispatchSavingInProgress));
+        }
+
+        public void DispatchTimeChanged(DayKey currentDay, int currentTime)
+        {
+            Calls.Add(nameof(DispatchTimeChanged));
         }
 
         public void DispatchUpdateTicked()

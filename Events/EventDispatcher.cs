@@ -1,3 +1,5 @@
+using JojaAutoTasks.Domain.Identifiers;
+
 namespace JojaAutoTasks.Events;
 
 /// <summary>Implements lifecycle dispatch as a deterministic Phase 1 no-op.</summary>
@@ -21,6 +23,10 @@ internal sealed class EventDispatcher : IEventDispatcher
     }
 
     public void DispatchSavingInProgress()
+    {
+    }
+
+    public void DispatchTimeChanged(DayKey currentDay, int currentTime)
     {
     }
 

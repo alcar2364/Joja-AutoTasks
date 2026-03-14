@@ -109,8 +109,8 @@ public class CommandHandlerDeterminismTests
         applyCommandSequence(leftState);
         applyCommandSequence(rightState);
 
-        TaskSnapshot leftSnapshot = SnapshotProjector.Project(leftState);
-        TaskSnapshot rightSnapshot = SnapshotProjector.Project(rightState);
+        TaskSnapshot leftSnapshot = SnapshotProjector.Project(leftState, DayKeyFactory.Create(1, "Spring", 1), 600);
+        TaskSnapshot rightSnapshot = SnapshotProjector.Project(rightState, DayKeyFactory.Create(1, "Spring", 1), 600);
 
         Assert.Equal(leftSnapshot.Version, rightSnapshot.Version);
         Assert.Equal(ToComparableViews(leftSnapshot), ToComparableViews(rightSnapshot));

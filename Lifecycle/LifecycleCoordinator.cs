@@ -1,3 +1,4 @@
+using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Events;
 using JojaAutoTasks.State;
@@ -11,6 +12,7 @@ internal sealed class LifecycleCoordinator
     private readonly ModLogger _logger;
     private readonly IEventDispatcher _eventDispatcher;
     private readonly StateStore _stateStore;
+    private bool _sessionActive;
 
     // -- Constructor -- //
     internal LifecycleCoordinator(ModLogger logger, IEventDispatcher eventDispatcher, StateStore stateStore)
@@ -18,6 +20,7 @@ internal sealed class LifecycleCoordinator
         _logger = logger;
         _eventDispatcher = eventDispatcher;
         _stateStore = stateStore;
+        _stateStore.SetWarnAction(message => _logger.Warn(LogEvents.StateBootstrapGuard, message));
     }
 
     // -- Public API -- //
@@ -27,22 +30,28 @@ internal sealed class LifecycleCoordinator
         _eventDispatcher.DispatchGameLaunched();
     }
 
-    internal void HandleSaveLoaded()
+    internal void HandleSaveLoaded(DayKey currentDay, int currentTime)
     {
         _logger.Debug(LogEvents.LifecycleSaveLoaded, "Lifecycle event: Save loaded");
+        _stateStore.InitializeTimeContext(currentDay, currentTime);
         _eventDispatcher.DispatchSaveLoaded();
         _stateStore.OnSaveLoaded();
+        _sessionActive = true;
     }
 
-    internal void HandleDayStarted()
+    internal void HandleDayStarted(DayKey newDay, int currentTime)
     {
         _logger.Debug(LogEvents.LifecycleDayStarted, "Lifecycle event: Day started");
+        _stateStore.InitializeTimeContext(newDay, currentTime);
         _eventDispatcher.DispatchDayStarted();
+        _stateStore.OnDayStarted(newDay, currentTime);
+        _sessionActive = true;
     }
 
     internal void HandleReturnedToTitle()
     {
         _logger.Debug(LogEvents.LifecycleReturnedToTitle, "Lifecycle event: Returned to title");
+        _sessionActive = false;
         _eventDispatcher.DispatchReturnedToTitle();
         _stateStore.OnReturnToTitle();
     }
@@ -51,6 +60,17 @@ internal sealed class LifecycleCoordinator
     {
         _logger.Debug(LogEvents.LifecycleSavingInProgress, "Lifecycle event: Saving in progress");
         _eventDispatcher.DispatchSavingInProgress();
+    }
+
+    internal void HandleTimeChanged(DayKey currentDay, int currentTime)
+    {
+        if (!_sessionActive)
+        {
+            return;
+        }
+
+        _eventDispatcher.DispatchTimeChanged(currentDay, currentTime);
+        _stateStore.OnTimeChanged(currentDay, currentTime);
     }
 
     internal void HandleUpdateTicked(bool isDebugMode)

@@ -1,5 +1,7 @@
+using JojaAutoTasks.Domain.Identifiers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using JojaAutoTasks.Startup;
 using JojaAutoTasks.Ui;
 
@@ -14,6 +16,7 @@ internal sealed class ModEntry : Mod
     // -- State -- //
     private uint _nextTickLogAt;
     private IDisposable? _snapshotSubscriptionToken;
+    private IDisposable? _toastSubscriptionToken;
 
     // -- Public API -- //
     /// <summary>Initializes the mod entry point.</summary>
@@ -28,15 +31,19 @@ internal sealed class ModEntry : Mod
         // on successful runtime composition.
 
         UiSnapshotSubscriptionManager.Initialize(_runtime.StateStore);
+        UiToastSubscriptionManager.Initialize(_runtime.StateStore);
 
         Monitor.Log("Subscribing to task snapshot updates.", LogLevel.Trace);
         _snapshotSubscriptionToken = UiSnapshotSubscriptionManager.Subscribe(_snapshot => { });
+        Monitor.Log("Subscribing to task toast updates.", LogLevel.Trace);
+        _toastSubscriptionToken = UiToastSubscriptionManager.Subscribe(_toast => { });
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         helper.Events.GameLoop.DayStarted += OnDayStarted;
         helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         helper.Events.GameLoop.Saving += OnSaving;
+        helper.Events.GameLoop.TimeChanged += OnTimeChanged;
         helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     }
 
@@ -48,12 +55,16 @@ internal sealed class ModEntry : Mod
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-        _runtime.LifecycleCoordinator.HandleSaveLoaded();
+        DayKey currentDay = CreateCurrentDayKey();
+        int currentTime = Game1.timeOfDay;
+        _runtime.LifecycleCoordinator.HandleSaveLoaded(currentDay, currentTime);
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
-        _runtime.LifecycleCoordinator.HandleDayStarted();
+        DayKey currentDay = CreateCurrentDayKey();
+        int currentTime = Game1.timeOfDay;
+        _runtime.LifecycleCoordinator.HandleDayStarted(currentDay, currentTime);
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
@@ -64,16 +75,27 @@ internal sealed class ModEntry : Mod
     // Saving remains signal-only so persistence work never runs inside SMAPI's saving hook.
     private void OnSaving(object? sender, SavingEventArgs e)
     {
-        // Dispose of the snapshot before saving to prevent memory leaks
-        // Guarded so that if saving occurs before subscription is established, 
-        // it won't throw null-reference
         _runtime.LifecycleCoordinator.HandleSavingInProgress();
         if (_snapshotSubscriptionToken is not null)
-        {   
+        {
             Monitor.Log("Disposing of task snapshot subscription before saving.", LogLevel.Trace);
             _snapshotSubscriptionToken.Dispose();
             _snapshotSubscriptionToken = null;
         }
+
+        if (_toastSubscriptionToken is not null)
+        {
+            Monitor.Log("Disposing of task toast subscription before saving.", LogLevel.Trace);
+            _toastSubscriptionToken.Dispose();
+            _toastSubscriptionToken = null;
+        }
+    }
+
+    private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
+    {
+        DayKey currentDay = CreateCurrentDayKey();
+        int currentTime = Game1.timeOfDay;
+        _runtime.LifecycleCoordinator.HandleTimeChanged(currentDay, currentTime);
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -97,5 +119,10 @@ internal sealed class ModEntry : Mod
         }
 
         return false;
+    }
+
+    private static DayKey CreateCurrentDayKey()
+    {
+        return DayKeyFactory.Create(Game1.year, Game1.currentSeason, Game1.dayOfMonth);
     }
 }

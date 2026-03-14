@@ -69,7 +69,7 @@ public sealed class DayBoundaryTests
             publishedSnapshot = snapshot;
         };
 
-        stateStore.OnDayStarted(DayKeyFactory.Create(1, "Spring", 2));
+        stateStore.OnDayStarted(DayKeyFactory.Create(1, "Spring", 2), 600);
 
         Assert.Equal(1, snapshotEventCount);
         Assert.NotNull(publishedSnapshot);
@@ -89,7 +89,7 @@ public sealed class DayBoundaryTests
         int snapshotEventCount = 0;
         stateStore.SnapshotChanged += _ => snapshotEventCount++;
 
-        stateStore.OnDayStarted(currentDay);
+        stateStore.OnDayStarted(currentDay, 600);
 
         Assert.Equal(0, snapshotEventCount);
     }
@@ -124,6 +124,7 @@ public sealed class DayBoundaryTests
             creationDay: creationDay,
             completionDay: null,
             sourceIdentifier: "manual:test",
-            isPinned: false);
+            isPinned: false,
+            deadlineStoredFields: null);
     }
 }

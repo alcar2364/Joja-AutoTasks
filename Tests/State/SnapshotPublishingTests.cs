@@ -17,6 +17,7 @@ public sealed class SnapshotPublishingTests
         List<TaskSnapshot> publishedSnapshots = new();
         TaskId taskId = new("Manual_SnapshotPublish_AddUpdate");
 
+        stateStore.InitializeTimeContext(DayKeyFactory.Create(1, "Spring", 1), 600);
         stateStore.SnapshotChanged += snapshot => publishedSnapshots.Add(snapshot);
 
         stateStore.Dispatch(CreateManualAddOrUpdateCommand(
@@ -68,6 +69,7 @@ public sealed class SnapshotPublishingTests
         TaskId taskId = new("Manual_SnapshotPublish_AddComplete");
         DayKey completionDay = DayKeyFactory.Create(1, "Spring", 3);
 
+        stateStore.InitializeTimeContext(DayKeyFactory.Create(1, "Spring", 1), 600);
         stateStore.SnapshotChanged += snapshot => publishedSnapshots.Add(snapshot);
 
         stateStore.Dispatch(CreateManualAddOrUpdateCommand(

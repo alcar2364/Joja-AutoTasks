@@ -38,7 +38,7 @@ public class LifecycleCoordinatorIntegrationTests
             latestSnapshot = snapshot;
         };
 
-        Exception? captured = Record.Exception(() => sut.HandleSaveLoaded());
+        Exception? captured = Record.Exception(() => sut.HandleSaveLoaded(day, 600));
 
         Assert.Null(captured);
         Assert.Single(dispatcher.Calls);
@@ -81,6 +81,7 @@ public class LifecycleCoordinatorIntegrationTests
         };
 
         DayKey day = DayKeyFactory.Create(1, "Spring", 1);
+        stateStore.InitializeTimeContext(day, 600);
 
         stateStore.DispatchCreateManualTaskCommand(
             category: TaskCategory.Farming,
@@ -92,6 +93,7 @@ public class LifecycleCoordinatorIntegrationTests
 
         Assert.Equal(1, snapshotEventCount);
 
+        stateStore.InitializeTimeContext(day, 600);
         stateStore.DispatchCreateManualTaskCommand(
             category: TaskCategory.Farming,
             title: "Post-title task",
@@ -145,6 +147,11 @@ public class LifecycleCoordinatorIntegrationTests
         public void DispatchSavingInProgress()
         {
             Calls.Add(nameof(DispatchSavingInProgress));
+        }
+
+        public void DispatchTimeChanged(DayKey currentDay, int currentTime)
+        {
+            Calls.Add(nameof(DispatchTimeChanged));
         }
 
         public void DispatchUpdateTicked()

@@ -25,6 +25,8 @@ internal sealed class TaskRecord
     // -- Command-Specific Fields -- //
     internal TaskStatus Status { get; set; }
     internal DayKey? CompletionDay { get; set; }
+    internal DeadlineStoredFields? DeadlineStoredFields { get; set; }
+
 
 
     internal TaskRecord(
@@ -39,7 +41,8 @@ internal sealed class TaskRecord
         DayKey creationDay,
         DayKey? completionDay,
         string sourceIdentifier,
-        bool isPinned)
+        bool isPinned,
+        DeadlineStoredFields? deadlineStoredFields = null)
     {
         Id = id;
         Category = category;
@@ -53,5 +56,6 @@ internal sealed class TaskRecord
         CompletionDay = completionDay;
         SourceIdentifier = sourceIdentifier;
         IsPinned = isPinned;
+        DeadlineStoredFields = deadlineStoredFields;
     }
 }

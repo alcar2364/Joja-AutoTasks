@@ -1,3 +1,5 @@
+using JojaAutoTasks.Domain.Identifiers;
+
 namespace JojaAutoTasks.Events;
 
 /// <summary>Defines lifecycle signals emitted by the mod runtime.</summary>
@@ -13,6 +15,8 @@ internal interface IEventDispatcher
     void DispatchReturnedToTitle();
 
     void DispatchSavingInProgress();
+
+    void DispatchTimeChanged(DayKey currentDay, int currentTime);
 
     void DispatchUpdateTicked();
 }

@@ -1,4 +1,5 @@
 using System.Reflection;
+using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Events;
 using Xunit;
 
@@ -20,6 +21,7 @@ public class EventDispatcherTests
             sut.DispatchDayStarted();
             sut.DispatchReturnedToTitle();
             sut.DispatchSavingInProgress();
+            sut.DispatchTimeChanged(DayKeyFactory.Create(1, "Spring", 1), 600);
             sut.DispatchUpdateTicked();
         });
 
@@ -40,9 +42,11 @@ public class EventDispatcherTests
         canonical.DispatchDayStarted();
         canonical.DispatchReturnedToTitle();
         canonical.DispatchSavingInProgress();
+        canonical.DispatchTimeChanged(DayKeyFactory.Create(1, "Spring", 1), 600);
         canonical.DispatchUpdateTicked();
 
         reversed.DispatchUpdateTicked();
+        reversed.DispatchTimeChanged(DayKeyFactory.Create(1, "Spring", 1), 600);
         reversed.DispatchSavingInProgress();
         reversed.DispatchReturnedToTitle();
         reversed.DispatchDayStarted();
@@ -71,6 +75,7 @@ public class EventDispatcherTests
     [InlineData(nameof(IEventDispatcher.DispatchDayStarted))]
     [InlineData(nameof(IEventDispatcher.DispatchReturnedToTitle))]
     [InlineData(nameof(IEventDispatcher.DispatchSavingInProgress))]
+    [InlineData(nameof(IEventDispatcher.DispatchTimeChanged))]
     [InlineData(nameof(IEventDispatcher.DispatchUpdateTicked))]
     public void DispatchMethods_HaveNoOperationalIlBeyondNopAndReturn(string methodName)
     {

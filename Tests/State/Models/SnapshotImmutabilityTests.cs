@@ -18,7 +18,7 @@ public class SnapshotImmutabilityTests
 
         state.Set(taskId, canonicalRecord);
 
-        TaskSnapshot snapshot = SnapshotProjector.Project(state);
+        TaskSnapshot snapshot = SnapshotProjector.Project(state, DayKeyFactory.Create(1, "Spring", 1), 600);
 
         canonicalRecord.Title = "Mutated title";
         canonicalRecord.Description = "Mutated description";
@@ -37,10 +37,10 @@ public class SnapshotImmutabilityTests
         TaskId taskId = new("manual_snapshot_stability");
 
         state.Set(taskId, CreateRecord(taskId, "Before update", null, 0));
-        TaskSnapshot firstSnapshot = SnapshotProjector.Project(state);
+        TaskSnapshot firstSnapshot = SnapshotProjector.Project(state, DayKeyFactory.Create(1, "Spring", 1), 600);
 
         state.Set(taskId, CreateRecord(taskId, "After update", "new description", 5));
-        TaskSnapshot secondSnapshot = SnapshotProjector.Project(state);
+        TaskSnapshot secondSnapshot = SnapshotProjector.Project(state, DayKeyFactory.Create(1, "Spring", 1), 600);
 
         TaskView firstProjected = Assert.Single(firstSnapshot.TaskViews);
         TaskView secondProjected = Assert.Single(secondSnapshot.TaskViews);
@@ -61,7 +61,7 @@ public class SnapshotImmutabilityTests
         TaskId taskId = new("manual_snapshot_readonly");
 
         state.Set(taskId, CreateRecord(taskId, "Immutable list", null, 2));
-        TaskSnapshot snapshot = SnapshotProjector.Project(state);
+        TaskSnapshot snapshot = SnapshotProjector.Project(state, DayKeyFactory.Create(1, "Spring", 1), 600);
 
         Assert.IsAssignableFrom<IReadOnlyList<TaskView>>(snapshot.TaskViews);
 

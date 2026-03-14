@@ -1,4 +1,6 @@
 using System.Linq;
+using JojaAutoTasks.Domain.Identifiers;
+using JojaAutoTasks.State.DayBoundary;
 using JojaAutoTasks.State.Models;
 
 namespace JojaAutoTasks.State;
@@ -7,7 +9,7 @@ namespace JojaAutoTasks.State;
 internal sealed class SnapshotProjector
 {
 
-    internal static TaskSnapshot Project(StateContainer stateContainer)
+    internal static TaskSnapshot Project(StateContainer stateContainer, DayKey currentDay, int currentTime)
     {
         long version = stateContainer.Version;
 
@@ -27,7 +29,10 @@ internal sealed class SnapshotProjector
                 creationDay: record.CreationDay,
                 completionDay: record.CompletionDay,
                 sourceIdentifier: record.SourceIdentifier,
-                isPinned: record.IsPinned))
+                isPinned: record.IsPinned,
+                deadlineFields: record.DeadlineStoredFields is null
+                    ? null
+                    : DeadlineEvaluator.Evaluate(record.DeadlineStoredFields, currentDay, currentTime)))
             .ToList()
             .AsReadOnly();
 
