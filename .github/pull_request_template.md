@@ -19,6 +19,7 @@ If this PR contains code changes, an admin must verify the following before appr
 
     * [ ] Admin has run `dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false` locally and the build succeeds.
     * [ ] Admin has run `dotnet test "Tests/JojaAutoTasks.Tests.csproj"` locally and all tests pass.
+    * [ ] If tests were created or extended, UnitTestAgent handoff is included.
     * [ ] If `OnUpdateTicked` flow changed, admin verified tests cover deterministic
     	tick throttling and the guard-block no-op path (no runtime access, no
     	second dispatch in-window).
@@ -37,14 +38,32 @@ If this PR contains code changes, an admin must verify the following before appr
     * [ ] If snapshot creation/publishing changed, admin verified snapshot
     	immutability and publishing (`SnapshotImmutabilityTests`,
     	`SnapshotPublishingTests`).
+    * [ ] If deadline evaluation or projection behavior changed, admin verified
+    	deadline edge matrix and projection coverage (`DeadlineEvaluatorTests`,
+    	`SnapshotPublishingTests`).
     * [ ] If day transition/expiration logic changed, admin verified day-boundary
     	expiration (`DayBoundaryTests`).
+    * [ ] If bootstrap initialization/guard behavior changed, admin verified
+    	bootstrap guard policy, warning dedupe, and reset behavior
+    	(`BootstrapGuardTests`).
+    * [ ] If completion toast behavior changed, admin verified auto-complete-only
+    	toast emission, no duplicate re-complete toasts, and toast-before-snapshot
+    	ordering (`ToastTransitionTests`).
+    * [ ] If time-change lifecycle forwarding changed, admin verified inactive
+        ignore behavior, no projection-context initialization while inactive,
+        active forwarding, and no snapshot publication from time changes alone
+        (`TimeChangedGatingTests`).
     * [ ] If manual task ID sequencing changed, admin verified manual ID
-    	sequencing (`ManualTaskCounterTests`).
+        sequencing (`ManualTaskCounterTests`).
     * [ ] If StateStore boundaries changed, admin verified state boundary
-    	enforcement (`StateStoreBoundaryTests`).
+        enforcement (`StateStoreBoundaryTests`).
     * [ ] If lifecycle init/teardown wiring changed, admin verified lifecycle
-    	integration (`LifecycleCoordinatorIntegrationTests`).
+        integration (`LifecycleCoordinatorIntegrationTests`).
+    * [ ] If ModEntry HUD lifecycle ownership wiring changed (`SaveLoaded`,
+        `DayStarted`, `ReturnedToTitle`), admin verified
+        `HudHostLifecycleTests` cover exactly-one active snapshot/toast
+        subscriptions after day-start recreation, disposal-before-replacement
+        host subscription ordering, and fresh `HudViewModel` recreation.
 
 If this PR contains **only documentation changes**, testing is not required.
 

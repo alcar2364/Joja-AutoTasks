@@ -167,6 +167,75 @@ public sealed class SnapshotPublishingTests
         Assert.Equal(0, publishedCount);
     }
 
+    [Fact]
+    public void Project_WhenTaskRecordHasDeadlineStoredFields_TaskViewDeadlineFieldsIsPopulatedCorrectly()
+    {
+        StateContainer stateContainer = new();
+        TaskId taskId = new("Manual_SnapshotProject_DeadlineFields");
+        DayKey dueDay = DayKeyFactory.Create(1, "Spring", 5);
+
+        TaskRecord record = new(
+            id: taskId,
+            category: TaskCategory.Farming,
+            sourceType: TaskSourceType.Manual,
+            title: "Harvest Parsnips",
+            description: null,
+            status: TaskStatus.Incomplete,
+            progressCurrent: 0,
+            progressMax: 1,
+            creationDay: DayKeyFactory.Create(1, "Spring", 1),
+            completionDay: null,
+            sourceIdentifier: "manual:test",
+            isPinned: false,
+            deadlineStoredFields: new DeadlineStoredFields(dueDay, expiresAtTime: 2200));
+
+        stateContainer.Set(taskId, record);
+
+        TaskSnapshot snapshot = SnapshotProjector.Project(
+            stateContainer,
+            DayKeyFactory.Create(1, "Spring", 3),
+            currentTime: 600);
+
+        TaskView taskView = Assert.Single(snapshot.TaskViews);
+        DeadlineFields deadlineFields = Assert.IsType<DeadlineFields>(taskView.DeadlineFields);
+        Assert.Equal(dueDay, deadlineFields.DueDayKey);
+        Assert.Equal(2, deadlineFields.DaysRemaining);
+        Assert.False(deadlineFields.IsOverdue);
+        Assert.False(deadlineFields.IsWindowClosed);
+    }
+
+    [Fact]
+    public void Project_WhenTaskRecordHasNullDeadlineStoredFields_TaskViewDeadlineFieldsIsNull()
+    {
+        StateContainer stateContainer = new();
+        TaskId taskId = new("Manual_SnapshotProject_DeadlineFields_Null");
+
+        TaskRecord record = new(
+            id: taskId,
+            category: TaskCategory.Farming,
+            sourceType: TaskSourceType.Manual,
+            title: "Water crops",
+            description: null,
+            status: TaskStatus.Incomplete,
+            progressCurrent: 0,
+            progressMax: 1,
+            creationDay: DayKeyFactory.Create(1, "Spring", 1),
+            completionDay: null,
+            sourceIdentifier: "manual:test",
+            isPinned: false,
+            deadlineStoredFields: null);
+
+        stateContainer.Set(taskId, record);
+
+        TaskSnapshot snapshot = SnapshotProjector.Project(
+            stateContainer,
+            DayKeyFactory.Create(1, "Spring", 1),
+            currentTime: 600);
+
+        TaskView taskView = Assert.Single(snapshot.TaskViews);
+        Assert.Null(taskView.DeadlineFields);
+    }
+
     private static AddOrUpdateTaskCommand CreateManualAddOrUpdateCommand(
         TaskId taskId,
         string title,

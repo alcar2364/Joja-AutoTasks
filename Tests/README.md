@@ -39,6 +39,18 @@ Current coverage in `Lifecycle/` includes: 1. `HandleGameLaunched` forwards only
 These tests are intentionally forwarding-focused and do not assert dispatcher internals or
 processing logic.
 
+## HUD Lifecycle Test Matrix
+
+Current coverage in `UI/` includes:
+
+1. `ModEntryHudLifecycle` day-start recreation keeps exactly one active
+   `HudHost` snapshot subscription.
+1. `ModEntryHudLifecycle` day-start recreation keeps exactly one active
+   `HudHost` toast subscription.
+1. Replacement `HudHost` subscribes only after prior host disposal ordering.
+1. Day-start recreation uses a fresh `HudViewModel` instance
+   (UI-local state reset semantics).
+
 ## Hooks Test Matrix
 
 Current coverage in `Hooks/` includes: 1. deterministic throttle interval for `ModEntry.ShouldForwardUpdateTick` (`0` true,
@@ -53,6 +65,20 @@ single-dispatch forwarding semantics, and safe no-op guard-block paths.
 
 Current coverage in `Events/` includes: 1. all dispatch methods are explicit no-ops (no-op contract) 1. dispatcher remains stateless (no instance fields) 1. dispatch call order has no behavioral impact (order-invariant behavior) 1. no-op IL contract is enforced across all public dispatch methods
 
+## State Test Matrix
+
+Current coverage in `State/` includes:
+
+1. `DeadlineEvaluatorTests` covers day/time edges for remaining/overdue/closed.
+1. `BootstrapGuardTests` covers policy modes, warning dedupe, and reset.
+1. `ToastTransitionTests` covers auto-complete only and toast-before-snapshot.
+1. `TimeChangedGatingTests` covers inactive ignore (including no
+   projection-context initialization) and active-only forwarding.
+1. `CommandHandlerDeterminismTests` covers `CompleteTaskCommand` parity for
+   `isPlayerInitiated` true/false.
+1. `SnapshotPublishingTests` covers projection for null/populated
+   `DeadlineStoredFields`.
+
 ## Determinism Rules for Tests
 
 All tests should: 1. avoid wall-clock dependencies 1. avoid random data unless explicitly seeded 1. avoid dependence on unordered collection iteration 1. isolate state per test
@@ -65,6 +91,9 @@ design
 ## Review Checklist for New Tests
 
 Before submitting new tests: 1. test name describes expected behavior clearly 1. assertions validate behavior, not just non-null 1. at least one edge case is covered 1. interaction checks are included where dependency calls are meaningful 1. if production files changed, the mod project still builds without test-only dependencies 1. tests pass locally via:
+
+Required workflow: complete UnitTestAgent handoff after creating or extending
+unit tests.
 
 ```powershell
 dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false
@@ -142,8 +171,40 @@ For focused Section 9 state boundary enforcement validation:
 dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~StateStoreBoundaryTests
 ```
 
+For focused Section 9 deadline evaluator validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~DeadlineEvaluatorTests
+```
+
+Includes an explicit due-date equality guard (`Evaluate_WhenTodayMatchesDueDate_IsOverdueIsFalse`).
+
+For focused Section 9 bootstrap guard validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~BootstrapGuardTests
+```
+
+For focused Section 9 toast transition validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~ToastTransitionTests
+```
+
+For focused Section 9 time-changed gating validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~TimeChangedGatingTests
+```
+
 For focused lifecycle init/teardown integration validation:
 
 ```powershell
 dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~LifecycleCoordinatorIntegrationTests
+```
+
+For focused HUD lifecycle ownership validation:
+
+```powershell
+dotnet test "Tests\JojaAutoTasks.Tests.csproj" --filter FullyQualifiedName~HudHostLifecycleTests
 ```

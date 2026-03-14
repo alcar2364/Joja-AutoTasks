@@ -42,6 +42,66 @@ public class CommandHandlerDeterminismTests
     }
 
     [Fact]
+    public void CompleteTaskCommandHandler_WhenIsPlayerInitiatedFalse_ProducesCorrectCompletedTransition()
+    {
+        TaskId taskId = new("manual_det_complete_player_false");
+        DayKey completionDay = DayKeyFactory.Create(1, "Spring", 2);
+        AddOrUpdateTaskCommandHandler addOrUpdateHandler = new();
+        CompleteTaskCommandHandler completeHandler = new();
+
+        AssertDeterministicSnapshot(sequenceState =>
+        {
+            addOrUpdateHandler.Handle(CreateManualAddOrUpdateCommand(taskId, "Complete me", null, 0), sequenceState);
+            completeHandler.Handle(new CompleteTaskCommand(taskId, completionDay, isPlayerInitiated: false), sequenceState);
+        });
+
+        StateContainer state = new();
+        addOrUpdateHandler.Handle(CreateManualAddOrUpdateCommand(taskId, "Complete me", null, 0), state);
+        completeHandler.Handle(new CompleteTaskCommand(taskId, completionDay, isPlayerInitiated: false), state);
+
+        TaskSnapshot snapshot = SnapshotProjector.Project(state, DayKeyFactory.Create(1, "Spring", 1), 600);
+        TaskView view = Assert.Single(snapshot.TaskViews);
+        Assert.Equal(TaskStatus.Completed, view.Status);
+        Assert.Equal(completionDay, view.CompletionDay);
+    }
+
+    [Fact]
+    public void CompleteTaskCommandHandler_WhenIsPlayerInitiatedTrue_ProducesSameCompletedTransition()
+    {
+        TaskId taskId = new("manual_det_complete_player_true");
+        DayKey completionDay = DayKeyFactory.Create(1, "Spring", 2);
+        AddOrUpdateTaskCommandHandler addOrUpdateHandler = new();
+        CompleteTaskCommandHandler completeHandler = new();
+
+        AssertDeterministicSnapshot(sequenceState =>
+        {
+            addOrUpdateHandler.Handle(CreateManualAddOrUpdateCommand(taskId, "Complete me", null, 0), sequenceState);
+            completeHandler.Handle(new CompleteTaskCommand(taskId, completionDay, isPlayerInitiated: true), sequenceState);
+        });
+
+        StateContainer falseState = new();
+        StateContainer trueState = new();
+
+        addOrUpdateHandler.Handle(CreateManualAddOrUpdateCommand(taskId, "Complete me", null, 0), falseState);
+        addOrUpdateHandler.Handle(CreateManualAddOrUpdateCommand(taskId, "Complete me", null, 0), trueState);
+
+        completeHandler.Handle(new CompleteTaskCommand(taskId, completionDay, isPlayerInitiated: false), falseState);
+        completeHandler.Handle(new CompleteTaskCommand(taskId, completionDay, isPlayerInitiated: true), trueState);
+
+        TaskSnapshot falseSnapshot = SnapshotProjector.Project(falseState, DayKeyFactory.Create(1, "Spring", 1), 600);
+        TaskSnapshot trueSnapshot = SnapshotProjector.Project(trueState, DayKeyFactory.Create(1, "Spring", 1), 600);
+
+        TaskView falseView = Assert.Single(falseSnapshot.TaskViews);
+        TaskView trueView = Assert.Single(trueSnapshot.TaskViews);
+
+        Assert.Equal(TaskStatus.Completed, falseView.Status);
+        Assert.Equal(TaskStatus.Completed, trueView.Status);
+        Assert.Equal(completionDay, falseView.CompletionDay);
+        Assert.Equal(completionDay, trueView.CompletionDay);
+        Assert.Equal(ToComparableViews(falseSnapshot), ToComparableViews(trueSnapshot));
+    }
+
+    [Fact]
     public void UncompleteTaskCommandHandler_WhenApplyingSameSequence_ProducesSameSnapshot()
     {
         TaskId taskId = new("manual_det_uncomplete");

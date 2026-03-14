@@ -12,11 +12,10 @@ internal sealed class ModEntry : Mod
 {
     // -- Dependencies -- //
     private ModRuntime _runtime = null!;
+    private readonly ModEntryHudLifecycle _hudLifecycle = new();
 
     // -- State -- //
     private uint _nextTickLogAt;
-    private IDisposable? _snapshotSubscriptionToken;
-    private IDisposable? _toastSubscriptionToken;
 
     // -- Public API -- //
     /// <summary>Initializes the mod entry point.</summary>
@@ -32,11 +31,6 @@ internal sealed class ModEntry : Mod
 
         UiSnapshotSubscriptionManager.Initialize(_runtime.StateStore);
         UiToastSubscriptionManager.Initialize(_runtime.StateStore);
-
-        Monitor.Log("Subscribing to task snapshot updates.", LogLevel.Trace);
-        _snapshotSubscriptionToken = UiSnapshotSubscriptionManager.Subscribe(_snapshot => { });
-        Monitor.Log("Subscribing to task toast updates.", LogLevel.Trace);
-        _toastSubscriptionToken = UiToastSubscriptionManager.Subscribe(_toast => { });
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -58,37 +52,27 @@ internal sealed class ModEntry : Mod
         DayKey currentDay = CreateCurrentDayKey();
         int currentTime = Game1.timeOfDay;
         _runtime.LifecycleCoordinator.HandleSaveLoaded(currentDay, currentTime);
+        _hudLifecycle.HandleSaveLoaded();
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
         DayKey currentDay = CreateCurrentDayKey();
         int currentTime = Game1.timeOfDay;
+        _hudLifecycle.HandleDayStarted();
         _runtime.LifecycleCoordinator.HandleDayStarted(currentDay, currentTime);
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
     {
         _runtime.LifecycleCoordinator.HandleReturnedToTitle();
+        _hudLifecycle.HandleReturnedToTitle();
     }
 
     // Saving remains signal-only so persistence work never runs inside SMAPI's saving hook.
     private void OnSaving(object? sender, SavingEventArgs e)
     {
         _runtime.LifecycleCoordinator.HandleSavingInProgress();
-        if (_snapshotSubscriptionToken is not null)
-        {
-            Monitor.Log("Disposing of task snapshot subscription before saving.", LogLevel.Trace);
-            _snapshotSubscriptionToken.Dispose();
-            _snapshotSubscriptionToken = null;
-        }
-
-        if (_toastSubscriptionToken is not null)
-        {
-            Monitor.Log("Disposing of task toast subscription before saving.", LogLevel.Trace);
-            _toastSubscriptionToken.Dispose();
-            _toastSubscriptionToken = null;
-        }
     }
 
     private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
@@ -124,5 +108,56 @@ internal sealed class ModEntry : Mod
     private static DayKey CreateCurrentDayKey()
     {
         return DayKeyFactory.Create(Game1.year, Game1.currentSeason, Game1.dayOfMonth);
+    }
+}
+
+internal sealed class ModEntryHudLifecycle
+{
+    private readonly Func<HudViewModel> _createViewModel;
+    private readonly Func<HudViewModel, HudHost> _createHost;
+    private HudHost? _hudHost;
+    private HudViewModel? _hudViewModel;
+
+    internal ModEntryHudLifecycle()
+        : this(
+            createViewModel: static () => new HudViewModel(),
+            createHost: static viewModel => new HudHost(viewModel))
+    {
+    }
+
+    internal ModEntryHudLifecycle(
+        Func<HudViewModel> createViewModel,
+        Func<HudViewModel, HudHost> createHost)
+    {
+        _createViewModel = createViewModel;
+        _createHost = createHost;
+    }
+
+    internal HudViewModel? CurrentViewModel => _hudViewModel;
+
+    internal void HandleSaveLoaded()
+    {
+        _hudViewModel = _createViewModel();
+        _hudHost = _createHost(_hudViewModel);
+    }
+
+    internal void HandleDayStarted()
+    {
+        DisposeCurrent();
+        _hudViewModel = _createViewModel();
+        _hudHost = _createHost(_hudViewModel);
+    }
+
+    internal void HandleReturnedToTitle()
+    {
+        DisposeCurrent();
+        _hudHost = null;
+        _hudViewModel = null;
+    }
+
+    private void DisposeCurrent()
+    {
+        _hudHost?.Dispose();
+        _hudViewModel?.Dispose();
     }
 }
