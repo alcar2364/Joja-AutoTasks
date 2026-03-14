@@ -111,6 +111,7 @@ internal sealed class ModEntry : Mod
     }
 }
 
+// TODO: Should not be another lifecycle coordinator class. Refactor to unify with ModRuntime lifecycle coordination or merge into ModRuntime directly.
 internal sealed class ModEntryHudLifecycle
 {
     private readonly Func<HudViewModel> _createViewModel;

@@ -7,9 +7,9 @@ This mod provides an **automatic task management system integrated directly into
 
 The system allows players to:
 
-    - Automatically track common gameplay tasks
-    - Build custom automatic tracking rules through a Task Builder
-    - Create manual tasks when automation is not possible
+- Automatically track common gameplay tasks
+- Build custom automatic tracking rules through a Task Builder
+- Create manual tasks when automation is not possible
 
 The mod functions as an in-game productivity and task tracking system, designed
 to reduce mental overhead and help players keep track of goals, responsibilities,
@@ -19,13 +19,13 @@ The mod includes:
 
 Version 1 features:
 
-    - Automatic task tracking (built-in generators)
-    - Manual task creation (Task Builder)
-    - Manual tasks
-    - Daily task tracking
-    - Historical task snapshots
-    - Completion tracking
-    - HUD display and full task management menu
+- Automatic task tracking (built-in generators)
+- Manual task creation (Task Builder)
+- Manual tasks
+- Daily task tracking
+- Historical task snapshots
+- Completion tracking
+- HUD display and full task management menu
 
 Version 2 (planned):
 

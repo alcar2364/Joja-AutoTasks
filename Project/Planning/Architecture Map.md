@@ -94,9 +94,9 @@ Dependencies are wired via constructor parameters, enabling unit testing and cle
 
 **`ModEntry`** (namespace: `JojaAutoTasks`)
 
-    - **Inheritance:** `StardewModdingAPI.Mod`
-    - **Purpose:** SMAPI entrypoint and game event forwarding
-    - **Location:** `ModEntry.cs`
+- **Inheritance:** `StardewModdingAPI.Mod`
+- **Purpose:** SMAPI entrypoint and game event forwarding
+- **Location:** `ModEntry.cs`
 
 **Key Methods:**
 
@@ -132,8 +132,8 @@ Throttles `UpdateTicked` to once every 6 seconds (360 ticks) to avoid performanc
 
 **`BootstrapContainer`** (namespace: `JojaAutoTasks.Startup`)
 
-    - **Purpose:** Composition root — builds dependency graph and wires all subsystems
-    - **Location:** `Startup/BootstrapContainer.cs`
+- **Purpose:** Composition root — builds dependency graph and wires all subsystems
+- **Location:** `Startup/BootstrapContainer.cs`
 
 **Key Methods:**
 
@@ -153,8 +153,8 @@ Constructs and returns `ModRuntime` with all dependencies initialized:
 
 **`ModRuntime`** (namespace: `JojaAutoTasks.Startup`)
 
-    - **Purpose:** Runtime container holding all major subsystem references
-    - **Location:** `Startup/ModRuntime.cs`
+- **Purpose:** Runtime container holding all major subsystem references
+- **Location:** `Startup/ModRuntime.cs`
 
 **Properties:**
 
@@ -169,8 +169,8 @@ public LifecycleCoordinator LifecycleCoordinator { get; }
 
 **`LifecycleCoordinator`** (namespace: `JojaAutoTasks.Lifecycle`)
 
-    - **Purpose:** Coordinates lifecycle signal sequencing and forwards events to `EventDispatcher`
-    - **Location:** `Lifecycle/LifecycleCoordinator.cs`
+- **Purpose:** Coordinates lifecycle signal sequencing and forwards events to `EventDispatcher`
+- **Location:** `Lifecycle/LifecycleCoordinator.cs`
 
 **Constructor:**
 
@@ -199,12 +199,12 @@ Each method logs the event and forwards to the `EventDispatcher` for downstream 
 
 **Purpose:** Decouple lifecycle coordination from runtime processors.
 
-#### Key Classes
+#### Event Dispatch Contract
 
 **`IEventDispatcher`** (namespace: `JojaAutoTasks.Events`)
 
-    - **Purpose:** Contract for lifecycle event dispatch
-    - **Location:** `Events/IEventDispatcher.cs`
+- **Purpose:** Contract for lifecycle event dispatch
+- **Location:** `Events/IEventDispatcher.cs`
 
 **Methods:**
 
@@ -221,17 +221,17 @@ void DispatchUpdateTicked();
 
 **`EventDispatcher`** (namespace: `JojaAutoTasks.Events`)
 
-    - **Purpose:** Implements lifecycle dispatch contract (currently no-op in Phase 1)
-    - **Location:** `Events/EventDispatcher.cs`
-    - **Current Status:** **Phase 1 stub** — all methods are no-ops pending Phase 2+ runtime wiring
+- **Purpose:** Implements lifecycle dispatch contract (currently no-op in Phase 1)
+- **Location:** `Events/EventDispatcher.cs`
+- **Current Status:** **Phase 1 stub** — all methods are no-ops pending Phase 2+ runtime wiring
 
 **Future Behavior (Phase 2+):**
 
 Will route events to:
 
-    - State Store for evaluation triggers
-    - Persistence layer for save/load operations
-    - UI systems for refresh notifications
+- State Store for evaluation triggers
+- Persistence layer for save/load operations
+- UI systems for refresh notifications
 
 ---
 
@@ -239,12 +239,12 @@ Will route events to:
 
 **Purpose:** Load and manage mod configuration from `config.json`.
 
-#### Key Classes
+#### Configuration Components
 
 **`ModConfig`** (namespace: `JojaAutoTasks.Configuration`)
 
-    - **Purpose:** Persisted configuration schema
-    - **Location:** `Configuration/ModConfig.cs`
+- **Purpose:** Persisted configuration schema
+- **Location:** `Configuration/ModConfig.cs`
 
 **Properties:**
 
@@ -264,8 +264,8 @@ public const int CurrentConfigVersion = 1;
 
 **`ConfigLoader`** (namespace: `JojaAutoTasks.Configuration`)
 
-    - **Purpose:** Loads config from file, applies migrations, handles defaults
-    - **Location:** `Configuration/ConfigLoader.cs`
+- **Purpose:** Loads config from file, applies migrations, handles defaults
+- **Location:** `Configuration/ConfigLoader.cs`
 
 **Constructor:**
 
@@ -359,7 +359,7 @@ public string Value { get; }
 
 **Interface Implementations:**
 
-    - `IEquatable<TaskId>`
+- `IEquatable<TaskId>`
 
 **Key Methods:**
 
@@ -375,8 +375,8 @@ Uses `StringComparer.Ordinal` for case-sensitive, culture-invariant comparison.
 
 **Validation:**
 
-    - Must not be null, empty, or whitespace after normalization
-    - Enforced via `IdentifierUtility.ValidateIdentifier()`
+- Must not be null, empty, or whitespace after normalization
+- Enforced via `IdentifierUtility.ValidateIdentifier()`
 
 **Conceptual Structure (from [Section 3.3]):**
 
@@ -386,9 +386,9 @@ TaskId = {SourcePrefix}_{StableSourceId}_{SubjectIdentifier?}_{DayKey?}
 
 **Examples:**
 
-    - `BuiltIn_WaterCrops_Farm1_Year1-Summer15`
-    - `TaskBuilder_CustomRule42_NPC_Abigail_Year1-Summer15`
-    - `Manual_3`
+- `BuiltIn_WaterCrops_Farm1_Year1-Summer15`
+- `TaskBuilder_CustomRule42_NPC_Abigail_Year1-Summer15`
+- `Manual_3`
 
 ---
 
@@ -409,11 +409,11 @@ public static TaskId CreateTaskBuilder(string ruleId, string? subjectIdentifier 
 
 **Behavior Notes:**
 
-    - Uses stable source prefixes (`BuiltIn`, `TaskBuilder`)
-    - Preserves deterministic part ordering when composing IDs
-    - Omits null/empty optional parts before joining with `_`
-    - Manual task IDs use canonical `Manual_{Counter}` shape (issuance deferred to Phase 3)
-    - Returns validated `TaskId` instances
+- Uses stable source prefixes (`BuiltIn`, `TaskBuilder`)
+- Preserves deterministic part ordering when composing IDs
+- Omits null/empty optional parts before joining with `_`
+- Manual task IDs use canonical `Manual_{Counter}` shape (issuance deferred to Phase 3)
+- Returns validated `TaskId` instances
 
 ---
 
@@ -445,9 +445,9 @@ DayKey = Year{N}-{Season}{D} (e.g., "Year1-Summer15")
 
 **Key Characteristics:**
 
-    - Stable across save loads
-    - Uses fixed non-localized season tokens with invariant casing
-    - Used for task creation timestamps and snapshot ledger keys
+- Stable across save loads
+- Uses fixed non-localized season tokens with invariant casing
+- Used for task creation timestamps and snapshot ledger keys
 
 ---
 
@@ -473,17 +473,17 @@ public string Value { get; }
 
 **Model (from [Section 3.7]):**
 
-    - `RuleId` is a deterministic canonical token assigned to each Task Builder rule.
-    - Pre-Step-7 status: `RuleId` is implemented as a validated wrapper value type.
-    - Sequential-generation enforcement is deferred until RuleId generation exists.
+- `RuleId` is a deterministic canonical token assigned to each Task Builder rule.
+- Pre-Step-7 status: `RuleId` is implemented as a validated wrapper value type.
+- Sequential-generation enforcement is deferred until RuleId generation exists.
 
 **Stability Requirement:**
 
 RuleId must remain stable across:
 
-    - Save loads
-    - Configuration changes
-    - Mod version upgrades
+- Save loads
+- Configuration changes
+- Mod version upgrades
 
 ---
 
@@ -509,9 +509,9 @@ public string Value { get; }
 
 **Examples (from [Section 3.5]):**
 
-    - `NPC_Abigail` — for social tasks
-    - `Crop_Parsnip_Farm1` — for farming tasks
-    - `Location_Mine_Floor50` — for exploration tasks
+- `NPC_Abigail` — for social tasks
+- `Crop_Parsnip_Farm1` — for farming tasks
+- `Location_Mine_Floor50` — for exploration tasks
 
 **Usage:**
 
@@ -543,10 +543,10 @@ Throws `ArgumentException` if the identifier is null, empty, or invalid.
 
 **Validation Rules:**
 
-    - Must not be null or empty after normalization
-    - Must not contain only whitespace
-    - Length constraints (if defined)
-    - Character restrictions (if defined)
+- Must not be null or empty after normalization
+- Must not contain only whitespace
+- Length constraints (if defined)
+- Character restrictions (if defined)
 
 ---
 
@@ -602,15 +602,15 @@ public TaskObject(
 
 **Validation (in constructor):**
 
-    - Title must not be null or whitespace
-    - SourceIdentifier must not be null or whitespace
-    - ProgressCurrent ≥ 0
-    - ProgressMax > 0
-    - If Status == Completed:
-        * CompletionDay must be provided
-        * ProgressCurrent ≥ ProgressMax
-    - If Status == Incomplete:
-        * CompletionDay must be null
+- Title must not be null or whitespace
+- SourceIdentifier must not be null or whitespace
+- ProgressCurrent ≥ 0
+- ProgressMax > 0
+- If Status == Completed:
+  - CompletionDay must be provided
+  - ProgressCurrent ≥ ProgressMax
+- If Status == Incomplete:
+  - CompletionDay must be null
 
 **Immutability:**
 
@@ -640,10 +640,10 @@ public enum TaskStatus
 
 **Future Extensions (Phase 2+):**
 
-    - `Dismissed`
-    - `Hidden`
-    - `Failed`
-    - `Snoozed`
+- `Dismissed`
+- `Hidden`
+- `Failed`
+- `Snoozed`
 
 **Related Design Guide:** **[Section 4.3]** — Task Status
 
@@ -675,9 +675,9 @@ internal enum TaskCategory
 
 Used for:
 
-    - Menu organization
-    - HUD grouping (optional)
-    - Statistical analysis
+- Menu organization
+- HUD grouping (optional)
+- Statistical analysis
 
 **Related Design Guide:** **[Section 4.5]** — Task Categories
 
@@ -704,10 +704,10 @@ public enum TaskSourceType
 
 **Usage:**
 
-    - Determines evaluation behavior
-    - Affects persistence strategy
-    - Influences UI presentation
-    - `TaskSourceType.Manual` maps to `Manual` as the canonical TaskId source prefix
+- Determines evaluation behavior
+- Affects persistence strategy
+- Influences UI presentation
+- `TaskSourceType.Manual` maps to `Manual` as the canonical TaskId source prefix
 
 **Related Design Guide:** **[Section 5.2]** — Task Sources and Engine Inputs
 
@@ -721,9 +721,9 @@ public enum TaskSourceType
 
 `ProgressCurrent` and `ProgressTarget` serve:
 
-    - Progress tracking for display
-    - HUD/UI progress bar rendering
-    - Support for rule evaluation logic
+- Progress tracking for display
+- HUD/UI progress bar rendering
+- Support for rule evaluation logic
 
 **Critical Invariant:**
 
@@ -773,10 +773,10 @@ Snapshot Published (read-only view)
 
 **Key Properties:**
 
-    - **Single Source of Truth:** Canonical task state lives here
-    - **Controlled Mutation:** Only commands can modify state
-    - **Snapshot Isolation:** External systems receive immutable snapshots
-    - **Deterministic Handlers:** Same input + same state yields same output
+- **Single Source of Truth:** Canonical task state lives here
+- **Controlled Mutation:** Only commands can modify state
+- **Snapshot Isolation:** External systems receive immutable snapshots
+- **Deterministic Handlers:** Same input + same state yields same output
 
 ---
 
@@ -790,10 +790,10 @@ Snapshot Published (read-only view)
 
 **Implemented responsibilities:**
 
-    - Routes `IStateCommand` instances to concrete handlers
-    - Publishes `SnapshotChanged` when state version changes
-    - Runs day-boundary expiration cleanup on `OnDayStarted(DayKey)`
-    - Issues deterministic manual IDs via `TaskIdFactory.CreateManual(int)`
+- Routes `IStateCommand` instances to concrete handlers
+- Publishes `SnapshotChanged` when state version changes
+- Runs day-boundary expiration cleanup on `OnDayStarted(DayKey)`
+- Issues deterministic manual IDs via `TaskIdFactory.CreateManual(int)`
 
 **Key methods:**
 
@@ -820,9 +820,9 @@ private long _version;
 
 **Key behavior:**
 
-    - `Set` / `Remove` increment version
-    - `Clear` resets state and version
-    - External consumers do not receive mutable dictionary access
+- `Set` / `Remove` increment version
+- `Clear` resets state and version
+- External consumers do not receive mutable dictionary access
 
 ---
 
@@ -832,8 +832,8 @@ private long _version;
 
 **Locations:**
 
-    - `State/Commands/`
-    - `State/Handlers/`
+- `State/Commands/`
+- `State/Handlers/`
 
 **Implemented command contract:**
 
@@ -855,12 +855,12 @@ internal interface ICommandHandler<TCommand> where TCommand : IStateCommand
 
 **Implemented command set:**
 
-    - `AddOrUpdateTaskCommand`
-    - `CompleteTaskCommand`
-    - `UncompleteTaskCommand`
-    - `RemoveTaskCommand`
-    - `PinTaskCommand`
-    - `UnpinTaskCommand`
+- `AddOrUpdateTaskCommand`
+- `CompleteTaskCommand`
+- `UncompleteTaskCommand`
+- `RemoveTaskCommand`
+- `PinTaskCommand`
+- `UnpinTaskCommand`
 
 ---
 
@@ -929,14 +929,14 @@ Snapshots are projected via `SnapshotProjector` and published after version-chan
 
 **Locations:**
 
-    - `State/DayBoundary/ExpirationDetector.cs`
-    - `State/DayBoundary/DayTransitionHandler.cs`
+- `State/DayBoundary/ExpirationDetector.cs`
+- `State/DayBoundary/DayTransitionHandler.cs`
 
 **Behavior:**
 
-    - `ExpirationDetector` selects expired task IDs from canonical state
-    - `DayTransitionHandler` removes them via `RemoveTaskCommandHandler`
-    - `StateStore.OnDayStarted(DayKey)` publishes a fresh snapshot if state changed
+- `ExpirationDetector` selects expired task IDs from canonical state
+- `DayTransitionHandler` removes them via `RemoveTaskCommandHandler`
+- `StateStore.OnDayStarted(DayKey)` publishes a fresh snapshot if state changed
 
 ---
 
@@ -956,9 +956,9 @@ Snapshots are projected via `SnapshotProjector` and published after version-chan
 
 **Invariants:**
 
-    - Command processing is **synchronous**
-    - Command handlers are **deterministic** (same input + same state → same output)
-    - No external state access within handlers
+- Command processing is **synchronous**
+- Command handlers are **deterministic** (same input + same state → same output)
+- No external state access within handlers
 
 ---
 
@@ -1015,10 +1015,10 @@ public TimeContext Time => _time ??= BuildTimeContext();
 
 **Benefits:**
 
-    - Reduces repeated expensive lookups
-    - Enables unit testing with mock state
-    - Provides deterministic evaluation inputs
-    - Supports caching and throttling
+- Reduces repeated expensive lookups
+- Enables unit testing with mock state
+- Provides deterministic evaluation inputs
+- Supports caching and throttling
 
 ---
 
@@ -1051,9 +1051,9 @@ Injected into `EvaluationContext` during mod initialization.
 
 **Benefits:**
 
-    - Unit testing with mocked game state
-    - Deterministic evaluation isolated from game environment
-    - Clean separation between engine logic and SMAPI coupling
+- Unit testing with mocked game state
+- Deterministic evaluation isolated from game environment
+- Clean separation between engine logic and SMAPI coupling
 
 ---
 
@@ -1083,9 +1083,9 @@ public class CollectMachineOutputGenerator : ITaskGenerator
 
 **Generator Characteristics:**
 
-    - **Stateless:** no mutable state inside generator
-    - **Deterministic:** same context → same tasks
-    - **Domain-focused:** each generator handles one gameplay area
+- **Stateless:** no mutable state inside generator
+- **Deterministic:** same context → same tasks
+- **Domain-focused:** each generator handles one gameplay area
 
 **Usage:**
 
@@ -1143,10 +1143,10 @@ public interface IRuleEvaluator
 
 **Characteristics:**
 
-    - Fully persisted (not derived from rules)
-    - No automatic evaluation
-    - Completion-marking structure exists, but runtime behavior is deferred
-    - Follows same `TaskObject` structure as generated tasks
+- Fully persisted (not derived from rules)
+- No automatic evaluation
+- Completion-marking structure exists, but runtime behavior is deferred
+- Follows same `TaskObject` structure as generated tasks
 
 **Lifecycle:**
 
@@ -1354,9 +1354,9 @@ public sealed class DailySnapshot
 
 **Usage:**
 
-    - Enables task history browsing in UI
-    - Supports analytics and statistics (V2)
-    - Persisted separately from active task state
+- Enables task history browsing in UI
+- Supports analytics and statistics (V2)
+- Persisted separately from active task state
 
 ---
 
@@ -1450,13 +1450,13 @@ public sealed class TaskView
 
 **Responsibilities (from [Section 2.1]):**
 
-    - Display active tasks for the day
-    - Support scrolling and selection
-    - Show task details for selected task
-    - Allow configurable visibility of completed tasks
-    - Support optional grouping by category
-    - Expandable/Collapsible
-    - Can open Menu dashboard from HUD
+- Display active tasks for the day
+- Support scrolling and selection
+- Show task details for selected task
+- Allow configurable visibility of completed tasks
+- Support optional grouping by category
+- Expandable/Collapsible
+- Can open Menu dashboard from HUD
 
 **Data Source:**
 
@@ -1474,26 +1474,26 @@ User clicks "complete" → UI emits `CompleteTaskCommand` → State Store proces
 
 **Capabilities (from [Section 2.1]):**
 
-    - Full task list management (today + history browsing)
-    - Task details view
-    - Manual task creation/editing
-    - Task Builder wizard launch and management
-    - Statistics dashboard (V2)
-    - Filtering/sorting/searching
-    - Task tracking options (enable/disable built-in tasks)
-    - HUD display configuration
+- Full task list management (today + history browsing)
+- Task details view
+- Manual task creation/editing
+- Task Builder wizard launch and management
+- Statistics dashboard (V2)
+- Filtering/sorting/searching
+- Task tracking options (enable/disable built-in tasks)
+- HUD display configuration
 
 **Data Sources:**
 
-    - Current day snapshot
-    - Daily snapshot ledger for history browsing
-    - Configuration for settings
+- Current day snapshot
+- Daily snapshot ledger for history browsing
+- Configuration for settings
 
 **Navigation:**
 
-    - Day browser (prev/next day)
-    - Task detail drill-down
-    - Task Builder wizard overlay
+- Day browser (prev/next day)
+- Task detail drill-down
+- Task Builder wizard overlay
 
 ---
 
@@ -1569,17 +1569,17 @@ DeleteTaskCommand       // Delete manual task
 
 **Current Implementation:**
 
-    - `ModEntry` subscribes to SMAPI events
-    - `LifecycleCoordinator` logs events and forwards to `EventDispatcher`
-    - `EventDispatcher` is a **no-op stub** — no downstream processing
+- `ModEntry` subscribes to SMAPI events
+- `LifecycleCoordinator` logs events and forwards to `EventDispatcher`
+- `EventDispatcher` is a **no-op stub** — no downstream processing
 
 **Phase 2+ Expansion:**
 
 `EventDispatcher` will route events to:
 
-    - State Store (for evaluation triggers)
-    - Persistence layer (for save/load)
-    - UI systems (for refresh)
+- State Store (for evaluation triggers)
+- Persistence layer (for save/load)
+- UI systems (for refresh)
 
 ---
 
@@ -1635,9 +1635,9 @@ public sealed class EventDispatcher : IEventDispatcher
 
 **Benefits:**
 
-    - Clean separation of concerns
-    - Decouples lifecycle from subsystem logic
-    - Enables unit testing of lifecycle sequencing
+- Clean separation of concerns
+- Decouples lifecycle from subsystem logic
+- Enables unit testing of lifecycle sequencing
 
 ---
 
@@ -1661,10 +1661,10 @@ public bool EnableDebugMode { get; set; } = false;
 
 **Future Extensions:**
 
-    - HUD display settings
-    - Task tracking toggles
-    - UI theme preferences
-    - Performance tuning options
+- HUD display settings
+- Task tracking toggles
+- UI theme preferences
+- Performance tuning options
 
 ---
 
@@ -1672,10 +1672,10 @@ public bool EnableDebugMode { get; set; } = false;
 
 **Responsibilities:**
 
-    - Load config from `config.json` via SMAPI
-    - Apply safe defaults if file missing
-    - Validate config values
-    - Support future migration logic
+- Load config from `config.json` via SMAPI
+- Apply safe defaults if file missing
+- Validate config values
+- Support future migration logic
 
 **Current Implementation:**
 
@@ -1688,9 +1688,9 @@ public ModConfig Load()
 
 **Future Expansion:**
 
-    - Config validation
-    - Migration from older config versions
-    - Merge partial configs with defaults
+- Config validation
+- Migration from older config versions
+- Merge partial configs with defaults
 
 ---
 
@@ -1794,17 +1794,17 @@ Completed implementation currently reflects the Phase 1 foundation plus determin
 
 **Completed:**
 
-    - ✅ `ModEntry` SMAPI integration
-    - ✅ `BootstrapContainer` dependency composition
-    - ✅ `ModRuntime` container
-    - ✅ `LifecycleCoordinator` event sequencing
-    - ✅ `EventDispatcher` contract and deterministic stub implementation
-    - ✅ `ModConfig` schema and `ConfigLoader`
-    - ✅ Domain model primitives: `TaskObject`, `TaskId`, `DayKey`, `RuleId`, `SubjectId`
-    - ✅ Domain enums: `TaskStatus`, `TaskCategory`, `TaskSourceType`
-    - ✅ `IdentifierUtility` validation and normalization
-    - ✅ Deterministic `TaskIdFactory` constructors
-    - ✅ `ModLogger` infrastructure
+- ✅ `ModEntry` SMAPI integration
+- ✅ `BootstrapContainer` dependency composition
+- ✅ `ModRuntime` container
+- ✅ `LifecycleCoordinator` event sequencing
+- ✅ `EventDispatcher` contract and deterministic stub implementation
+- ✅ `ModConfig` schema and `ConfigLoader`
+- ✅ Domain model primitives: `TaskObject`, `TaskId`, `DayKey`, `RuleId`, `SubjectId`
+- ✅ Domain enums: `TaskStatus`, `TaskCategory`, `TaskSourceType`
+- ✅ `IdentifierUtility` validation and normalization
+- ✅ Deterministic `TaskIdFactory` constructors
+- ✅ `ModLogger` infrastructure
 
 **Status:** Foundation complete; no-drop staged delivery continues from Phase 2 onward.
 
@@ -1844,9 +1844,7 @@ This map follows design-guide-first reconciliation:
 
 Seeded baseline variance tracked by design docs:
 
-    - `VAR-001`: legacy `RuleID`/`SubjectID` naming in some older docs vs
-    code canonical `RuleId`/`SubjectId` naming and file paths
-    (`Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs`).
+- `VAR-001`: legacy `RuleID`/`SubjectID` naming in some older docs vs code canonical `RuleId`/`SubjectId` naming and file paths (`Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs`).
 
 ---
 
@@ -1854,28 +1852,28 @@ Seeded baseline variance tracked by design docs:
 
 ### Design Guide Sections
 
-    - **[Section 1]** — Product Definition
-    - **[Section 2]** — System Architecture
-    - **[Section 3]** — Deterministic Identifier Model
-    - **[Section 4]** — Core Data Model
-    - **[Section 5]** — Task Generation and Evaluation Engine
-    - **[Section 6]** — Task Builder Rule Serialization
-    - **[Section 7]** — Rule Evaluation Model
-    - **[Section 8]** — State Store Command Model
-    - **[Section 9]** — Persistence Model
-    - **[Section 10]** — UI Data Binding Model
-    - **[Section 10A]** — View Model Architecture
-    - **[Section 11]** — Daily Snapshot Ledger
-    - **[Section 12]** — Engine Update Cycle
-    - **[Section 13]** — Built-in Task Generators
-    - **[Section 14]** — Task Builder Wizard UX
-    - **[Section 15]** — Configuration System
-    - **[Section 16]** — Error Handling and Rule Validation
-    - **[Section 17]** — Debug and Development Tools
-    - **[Section 18]** — Versioning and Migration Strategy
-    - **[Section 19]** — Performance Guardrails
-    - **[Section 20]** — UI System Design
-    - **[Section 21]** — Implementation Plan
+- **[Section 1]** — Product Definition
+- **[Section 2]** — System Architecture
+- **[Section 3]** — Deterministic Identifier Model
+- **[Section 4]** — Core Data Model
+- **[Section 5]** — Task Generation and Evaluation Engine
+- **[Section 6]** — Task Builder Rule Serialization
+- **[Section 7]** — Rule Evaluation Model
+- **[Section 8]** — State Store Command Model
+- **[Section 9]** — Persistence Model
+- **[Section 10]** — UI Data Binding Model
+- **[Section 10A]** — View Model Architecture
+- **[Section 11]** — Daily Snapshot Ledger
+- **[Section 12]** — Engine Update Cycle
+- **[Section 13]** — Built-in Task Generators
+- **[Section 14]** — Task Builder Wizard UX
+- **[Section 15]** — Configuration System
+- **[Section 16]** — Error Handling and Rule Validation
+- **[Section 17]** — Debug and Development Tools
+- **[Section 18]** — Versioning and Migration Strategy
+- **[Section 19]** — Performance Guardrails
+- **[Section 20]** — UI System Design
+- **[Section 21]** — Implementation Plan
 
 ---
 
@@ -1885,18 +1883,18 @@ Seeded baseline variance tracked by design docs:
 
 **Maintenance Notes:**
 
-    - Update this document after canonical design guide updates are merged
-    - Add actual class signatures when code is written
-    - Include code location paths for new components
-    - Mark sections ✅ complete as phases progress
-    - Add new architectural patterns as they emerge
-    - Record justified design-vs-map drift in the Section 21 variance register
+- Update this document after canonical design guide updates are merged
+- Add actual class signatures when code is written
+- Include code location paths for new components
+- Mark sections ✅ complete as phases progress
+- Add new architectural patterns as they emerge
+- Record justified design-vs-map drift in the Section 21 variance register
 
 **Coordination with Design Guide:**
 
-    - This document **supplements** the design guide with code-level details
-    - Design guide sections remain the **authoritative source** for architecture rationale
-    - Conflicts between this map and design guide should be resolved in favor of design guide
+- This document **supplements** the design guide with code-level details
+- Design guide sections remain the **authoritative source** for architecture rationale
+- Conflicts between this map and design guide should be resolved in favor of design guide
 
 ---
 
@@ -1904,14 +1902,12 @@ Seeded baseline variance tracked by design docs:
 
 The following topics will be added as implementation progresses:
 
-    - View Model INPC implementation patterns
-    - StardewUI binding specifics
-    - Reducer unit testing patterns
-    - Performance profiling and optimization checkpoints
-    - Debug tool integration
-    - SMAPI API abstraction patterns
-    - Extensibility hooks for community extensions
+- View Model INPC implementation patterns
+- StardewUI binding specifics
+- Reducer unit testing patterns
+- Performance profiling and optimization checkpoints
+- Debug tool integration
+- SMAPI API abstraction patterns
+- Extensibility hooks for community extensions
 
 ---
-
-**End of Architecture Map**

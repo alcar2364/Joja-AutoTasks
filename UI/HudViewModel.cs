@@ -2,7 +2,7 @@ using JojaAutoTasks.State;
 
 namespace JojaAutoTasks.Ui;
 
-internal sealed class HudViewModel
+internal sealed class HudViewModel : IDisposable
 {
     internal event Action<string>? NotificationRequested;
 
@@ -10,4 +10,11 @@ internal sealed class HudViewModel
     {
         NotificationRequested?.Invoke(toast.TaskTitle);
     }
+
+    public void Dispose()
+    {
+        // Unsubscribe from all events to prevent memory leaks
+        NotificationRequested = null;
+    }
+    
 }

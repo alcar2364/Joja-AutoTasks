@@ -276,15 +276,13 @@ Title") is the single authoritative source for the teardown sequence. Section
 12 §12.11.1 cross-references this section rather than restating the sequence.
 Any future teardown additions must be made here only.
 
-Teardown sequence:
-
 1. Dispose all View Models and unsubscribe from SnapshotChanged
-2. Dispose the HUD drawable (`IViewDrawable`)
-3. Clear the State Store (active tasks, snapshot, command queue)
+2. Dispose the HUD drawable
+3. Clear the State Store
 4. Drain and discard the evaluation queue
-5. Null cached game state references (evaluation context,
-    `IGameStateProvider` cache)
-6. Reset engine lifecycle to pre-initialization state
+5. Drain and discard the outbound effect queue
+6. Null cached game state references
+7. Reset engine lifecycle to pre-initialization state
 
 The mod must be safe to re-initialize on the next `OnSaveLoaded`
 without residual state from the previous session.
