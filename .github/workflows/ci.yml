@@ -27,8 +27,11 @@ permissions:
 
 jobs:
   build:
-    name: Build
+    name: Build and Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout code
@@ -46,13 +49,25 @@ jobs:
       - name: Add reference assemblies
         uses: Pathoschild/SMAPI-ModBuildWorkflow/add-reference-assemblies@v0
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          queries: security-and-quality
+
       - name: Restore
         run: dotnet restore JojaAutoTasks.sln
+
+      # || true keeps this warning-only until packages are confirmed clean;
+      # remove once no advisories are reported on a passing run.
+      - name: Check for vulnerable packages
+        run: dotnet list JojaAutoTasks.sln package --vulnerable --include-transitive || true
 
       - name: Build
         run: dotnet build JojaAutoTasks.csproj -c Debug -p:EnableModDeploy=false -p:EnableModZip=false --no-restore
 
-      # NOTE: Automated tests are NOT run in CI. An admin must run
-      #   dotnet test "Tests/JojaAutoTasks.Tests.csproj"
-      # locally and confirm all tests pass before approving and merging
-      # any pull request that changes code.
+      - name: Test
+        run: dotnet test "Tests/JojaAutoTasks.Tests.csproj" --no-restore
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
