@@ -218,16 +218,20 @@ I did not add a finalizer. The view models only own managed snapshot-subscriptio
 
 ### 4.1 Step Goal
 
-- [ ] Implement bindable properties in HudViewModel and TaskListViewModel that project TaskSnapshot data. Establish INPC notification on property changes. Implement deterministic collection reconciliation by stable key.
+- [x] Implement bindable properties in HudViewModel and TaskListViewModel that project TaskSnapshot data. Establish INPC notification on property changes. Implement deterministic collection reconciliation by stable key.
 
 ### 4A - Define HudViewModel properties and snapshot projection
 
-- [ ] **Action:** In `UI/ViewModels/HudViewModel.cs`, define properties (with [ObservableProperty] annotation or manual backing fields and OnPropertyChanged calls) for: ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastUpdateTime. Implement `OnSnapshotChanged(TaskSnapshot snapshot)` method that receives snapshot, extracts counts from snapshot.Tasks collection, and updates properties. Use task status and pin state to compute counts deterministically.
-- [ ] **Scope:** `UI/ViewModels/HudViewModel.cs` (HudViewModel properties: ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastUpdateTime; OnSnapshotChanged method).
-- [ ] **Verify:** Properties are bindable (INotifyPropertyChanged notifications trigger); OnSnapshotChanged computes counts correctly; counts match snapshot data deterministically.
-- [ ] **Suggested commit:** `phase4(step4A): implement HudViewModel properties with snapshot projection`
-- [ ] **Must include:** Observable properties (ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastUpdateTime); OnSnapshotChanged implementation; deterministic count computation.
-- [ ] **Must exclude:** UI rendering, user input handling, command dispatch.
+- [x] **Action:** In `UI/ViewModels/HudViewModel.cs`, define properties (with [ObservableProperty] annotation or manual backing fields and OnPropertyChanged calls) for: ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastUpdateTime. Implement `OnSnapshotChanged(TaskSnapshot snapshot)` method that receives snapshot, extracts counts from snapshot.Tasks collection, and updates properties. Use task status and pin state to compute counts deterministically.
+- [x] **Scope:** `UI/ViewModels/HudViewModel.cs` (HudViewModel properties: ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastSnapshotVersion; OnSnapshotChanged method).
+- [x] **Verify:** Properties are bindable (INotifyPropertyChanged notifications trigger); OnSnapshotChanged computes counts correctly; counts match snapshot data deterministically.
+- [x] **Suggested commit:** `phase4(step4A): implement HudViewModel properties with snapshot projection`
+- [x] **Must include:** Observable properties (ActiveTaskCount, CompletedTaskCount, PinnedTaskCount, LastSnapshotVersion); OnSnapshotChanged implementation; deterministic count computation.
+- [x] **Must exclude:** UI rendering, user input handling, command dispatch.
+
+#### 4A.1 Notes for Reviewer:
+
+I changed LastUpdateTime to LastSnapshotVersion with type long to track the version of the last snapshot received. This provides a more deterministic and meaningful way to track snapshot updates, as it directly reflects the state change sequence rather than relying on wall-clock time which may not correlate with snapshot changes. We also had not given LastUpdateTime a clear definition in TaskSnapshot, so this change establishes a more concrete contract for tracking snapshot updates in the view model. This may require a documentation update to the game design doc.
 
 ### 4B - Implement TaskListViewModel collection and reconciliation with explicit procedure
 
