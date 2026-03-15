@@ -408,6 +408,10 @@ Implementation issues are tracked centrally so work discovered during planning, 
   - Read active implementation issues from `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
 - Report issues scheduled for the target phase or still open with applicable scope
 - Include issue numbers, types, and any legacy deferment IDs when present
+- Run mandatory pre-publish consistency checks before handoff to Planner:
+   - Section 21 section-to-phase mapping check against the candidate checklist phase scope
+   - `ImplementationIssues` scheduling conflict check between the index and referenced issue records
+   - merged-duplicate check to ensure only one active tracker remains per merged scope
 
 **During Checklist Planning (Planner):**
 - Incorporate scheduled implementation issues into checklist steps/substeps if resolving them in-scope
@@ -541,6 +545,10 @@ The Reviewer should verify:
 - [ ] Unit test substeps are comprehensive
 - [ ] Final review section checks guardrails and scope boundaries
 - [ ] Both human and AI agents can follow the instructions
+- [ ] Mandatory pre-publish checks were executed and passed:
+   - [ ] Section 21 section-to-phase mapping consistency
+   - [ ] `ImplementationIssues` index/record scheduling consistency
+   - [ ] merged-duplicate active-tracker consistency
 
 **Plan Quality:**
 - [ ] No ambiguities in step/substep descriptions
@@ -563,6 +571,10 @@ The WorkspaceAgent should:
 - [ ] Ensure unit test section is clear enough for human or UnitTestAgent
 - [ ] Ensure final review section is clear enough for human or Reviewer
 - [ ] Include final completion gate checklist summarizing all prerequisites
+- [ ] Re-run and confirm the same three mandatory pre-publish checks before final file write:
+   - [ ] Section 21 section-to-phase mapping consistency
+   - [ ] `ImplementationIssues` index/record scheduling consistency
+   - [ ] merged-duplicate active-tracker consistency
 
 ## Important Notes for Project Portability ##
 

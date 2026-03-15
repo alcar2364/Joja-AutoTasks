@@ -1,99 +1,54 @@
 # Phase 4 - Atomic Commit Execution Checklist
 
-| **Detail**         | **Description**                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Phase:**         | Phase 4 (View Model Infrastructure)                                                                                               |
-| **Scope:**         | INPC-based view model foundation, snapshot subscription<br>lifecycle, UI command dispatch, command/snapshot<br>boundary integrity |
-| **Target Issues:** | Phase 4 `ImplementationIssues` items; legacy refs DEF-007, DEF-008, DEF-009, DEF-010, DEF-032                                     |
-| **Status:**        | Draft-Ready for Execution                                                                                                         |
+| **Detail** | **Description** |
+| --- | --- |
+| **Phase:** | Phase 4 (View Model Infrastructure) |
+| **Scope:** | INPC-based view model foundation, snapshot subscription<br>lifecycle, UI command dispatch, command/snapshot<br>boundary integrity |
+| **Target Issues:** | Phase 4 `ImplementationIssues` items: #159 (includes merged #86), #100, #106, #107, #108, #109 |
+| **Status:** | Draft-Ready for Execution |
 
 ## Guardrails (Must Stay True)
 
-- [ ] **Command/Snapshot Boundary Integrity**: UIViewModel receives snapshots from
-      state subscription; never mutates canonical state directly. All state writes
-      route through commands.
-- [ ] **Deterministic Reconciliation by Stable Key**: Collection/item reconciliation
-      uses stable identifiers (TaskId, RuleId, etc.) with sorted iteration; no reliance
-      on list order or mutation sequence.
-- [ ] **Subscription Lifecycle Ownership**: ViewModels subscribe to SnapshotChanged
-      on initialization; unsubscribe on disposal. No dangling subscriptions.
-- [ ] **No Optimistic Canonical Mutation**: UI never writes to StateStore, StateContainer,
-      or StateHandle directly. Only read canonical state through snapshots.
-- [ ] **ManualTask\_{N} Terminology Baseline**: All new property names, comments,
-      and UI text use `ManualTask_{N}` wording consistently (not "Manual Rule" or
-      "Custom Task").
-- [ ] **DEF-032 Exception-Only Boundary**: ConfigLoader catch-path hardening limited
-      to exception handling, fallback logic, and structured logging. No config schema
-      expansion, version migration logic, or feature-level decision-making in catch paths.
+- [ ] **Command/Snapshot Boundary Integrity**: UIViewModel receives snapshots from state subscription; never mutates canonical state directly. All state writes route through commands.
+- [ ] **Deterministic Reconciliation by Stable Key**: Collection/item reconciliation uses stable identifiers (TaskId, RuleId, etc.) with sorted iteration; no reliance on list order or mutation sequence.
+- [ ] **Subscription Lifecycle Ownership**: ViewModels subscribe to SnapshotChanged on initialization; unsubscribe on disposal. No dangling subscriptions.
+- [ ] **No Optimistic Canonical Mutation**: UI never writes to StateStore, StateContainer, or StateHandle directly. Only read canonical state through snapshots.
+- [ ] **Manual\_{N} Terminology Baseline**: All new property names, comments, and UI text use `Manual_{N}` wording consistently (not "Manual Rule" or "Custom Task").
+- [ ] **Issue 159 Exception-Only Boundary**: ConfigLoader catch-path hardening limited to exception handling, fallback logic, and structured logging. No config schema expansion, version migration logic, or feature-level decision-making in catch paths.
+- [ ] **Scope Boundary Guardrail**: Phase 4 work is limited to view-model infrastructure, subscription lifecycle, INPC projection/reconciliation, command dispatch boundary wiring, and ConfigLoader exception hardening. Do not pull in Phase 5 generators, Phase 6 rule engine behavior, Phase 7 persistence expansion, or Phase 8/9 UI rendering and interaction work.
+- [ ] **Explicit Exclusions Guardrail**: Exclude Section 20.8 toast routing, Section 20.10 onboarding implementation flows, and gamepad verification work from Phase 4. These are delivered in later UI-focused phases.
 
 ## Phase Overview
 
 ### Phase Goal
 
-Implement deterministic, testable UI infrastructure founded on INPC-based view models
-that subscribe to snapshot changes and project state into bindable properties. Establish
-the command/snapshot boundary integrity pattern and resolve terminology ambiguity
-(DEF-007),snapshot subscription lifecycle (DEF-008), INPC/collection reconciliation
-mechanics (DEF-009), UI-local state ownership patterns (DEF-010), and ConfigLoader
-exception hardening (DEF-032). Phase 4 outputs are testable without running Stardew
-Valley.
+Implement deterministic, testable UI infrastructure founded on INPC-based view models that subscribe to snapshot changes and project state into bindable properties. Establish the command/snapshot boundary integrity pattern and resolve terminology ambiguity (Issue #106), snapshot subscription lifecycle (Issue #107), INPC/collection reconciliation mechanics (Issue #108), UI-local state ownership patterns (Issue #109), ConfigLoader exception hardening (Issue #159, merged from #86), and localization/ translation runtime behavior retargeted to this phase (Issue #100). Phase 4 outputs are testable without running Stardew Valley.
 
-**Phase scope includes initial consumer view models (HudViewModel, TaskListViewModel)
-and additional catalog surface view models (HudTaskRowViewModel, TaskDetailViewModel,
-HistoryViewModel, ManualTaskEditorViewModel, ConfigViewModel) with complete coverage
-of subscription initialization, snapshot projection, and command dispatch patterns
-across all included surfaces.**
+Explicitly out of scope for this checklist: Section 20.8 toast routing, Section 20.10 onboarding implementation details, and gamepad verification.
+
+**Phase scope includes initial consumer view models (HudViewModel, TaskListViewModel) and additional catalog surface view models (HudTaskRowViewModel, TaskDetailViewModel, HistoryViewModel, ManualTaskEditorViewModel, ConfigViewModel) with complete coverage of subscription initialization, snapshot projection, and command dispatch patterns across all included surfaces.**
 
 ### Architecture Components
 
-- **`UIViewModelBase`** — Base class implementing `INotifyPropertyChanged` via `PropertyChanged.SourceGenerator`;
-  defines property change notification pattern
-  defines property change notification pattern
-- **`HudViewModel`** — HUD surface view model; subscribes to `SnapshotChanged` and
-  projects task summary/status data into bindable properties
-  projects task summary/status data into bindable properties
-- **`TaskListViewModel`** — Task list/history surface view model; manages `TaskSnapshot`
-  collection with deterministic reconciliation
-  collection with deterministic reconciliation
-- **`HudTaskRowViewModel`** — HUD row item view model; projects individual task
-  properties with binding support
-  properties with binding support
-- **`TaskDetailViewModel`** — Detail surface view model; provides comprehensive
-  task information and edit capability binding
-  task information and edit capability binding
-- **`HistoryViewModel`** — History/past tasks surface view model; maintains sorted,
-  reconciled task history collection
-  reconciled task history collection
-- **`ManualTaskEditorViewModel`** — Editor surface view model for manual task creation/editing;
-  manages form state and validation binding
-  manages form state and validation binding
-- **`ConfigViewModel`** — Configuration surface view model; projects config state
-  and dispatches config changes (if Phase 4 scope includes config UI)
-  and dispatches config changes (if Phase 4 scope includes config UI)
-- **`UISnapshotSubscriptionManager`** — Lifecycle coordinator for view model subscription/unsubscription;
-  handles per-viewmodel dispose safety with token-based unsubscribe semantics
-  handles per-viewmodel dispose safety with token-based unsubscribe semantics
-- **`ConfigLoader Exception Hardening`** — Deterministic fallback logic and structured
-  logging in config read/normalize catch paths
-  logging in config read/normalize catch paths
-- **`UI Command Dispatch`** — Pattern for marshaling user commands (add task, complete,
-  pin, etc.) from UI into StateStore command system
-  pin, etc.) from UI into StateStore command system
+- **`UIViewModelBase`** — Base class implementing `INotifyPropertyChanged` via `PropertyChanged.SourceGenerator`; defines property change notification pattern defines property change notification pattern
+- **`HudViewModel`** — HUD surface view model; subscribes to `SnapshotChanged` and projects task summary/status data into bindable properties projects task summary/status data into bindable properties
+- **`TaskListViewModel`** — Task list/history surface view model; manages `TaskSnapshot` collection with deterministic reconciliation collection with deterministic reconciliation
+- **`HudTaskRowViewModel`** — HUD row item view model; projects individual task properties with binding support properties with binding support
+- **`TaskDetailViewModel`** — Detail surface view model; provides comprehensive task information and edit capability binding task information and edit capability binding
+- **`HistoryViewModel`** — History/past tasks surface view model; maintains sorted, reconciled task history collection reconciled task history collection
+- **`ManualTaskEditorViewModel`** — Editor surface view model for manual task creation/editing; manages form state and validation binding manages form state and validation binding
+- **`ConfigViewModel`** — Configuration surface view model; projects config state and dispatches config changes as an in-scope Phase 4 surface
+- **`UISnapshotSubscriptionManager`** — Lifecycle coordinator for view model subscription/unsubscription; handles per-viewmodel dispose safety with token-based unsubscribe semantics handles per-viewmodel dispose safety with token-based unsubscribe semantics
+- **`ConfigLoader Exception Hardening`** — Deterministic fallback logic and structured logging in config read/normalize catch paths logging in config read/normalize catch paths
+- **`UI Command Dispatch`** — Pattern for marshaling user commands (add task, complete, pin, etc.) from UI into StateStore command system pin, etc.) from UI into StateStore command system
 
 ### Prerequisites
 
-- **Phase 1** (Lifecycle/Config): ModEntry, lifecycle hooks (OnSaving, UpdateTicked),
-  ConfigLoader, logging
-  ConfigLoader, logging
-- **Phase 2** (State Foundation): StateStore, StateContainer, SnapshotProjector,
-  TaskSnapshot and related domain models
-  TaskSnapshot and related domain models
-- **Phase 3** (Commands/Handlers): Command contracts, command handlers, deterministic
-  state mutation pattern
-  state mutation pattern
+- **Phase 1** (Lifecycle/Config): ModEntry, lifecycle hooks (OnSaving, UpdateTicked), ConfigLoader, logging ConfigLoader, logging
+- **Phase 2** (State Foundation): StateStore, StateContainer, SnapshotProjector, TaskSnapshot and related domain models TaskSnapshot and related domain models
+- **Phase 3** (Commands/Handlers): Command contracts, command handlers, deterministic state mutation pattern state mutation pattern
 
-Phase 4 builds on these by wiring UI surface observation into snapshot subscription
-and command dispatch.
+Phase 4 builds on these by wiring UI surface observation into snapshot subscription and command dispatch.
 
 ### Architecture Relationships
 
@@ -101,32 +56,21 @@ and command dispatch.
 
 - Phase 1 provides config-ready `ModEntry` and `Lifecycle` signals
 - Phase 3 provides command contracts and deterministic handlers
-- Phase 3 provides `StateStore` with `SnapshotChanged` event and `TaskSnapshot`
-  projections
-  projections
+- Phase 3 provides `StateStore` with `SnapshotChanged` event and `TaskSnapshot` projections projections
 
 **This Phase:**
 
 - Implements UI foundation (view models, property binding, subscription lifecycle)
-- Establishes snapshot-to-UI projection pattern (read-only snapshots → bindable
-  properties)
-  properties)
-- Establishes UI-to-command pattern (user action → command → snapshot update → UI
-  refresh)
-  refresh)
-- Resolves in-phase deferments: DEF-007 (terminology), DEF-008 (subscription lifecycle),
-  DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception
-  hardening)
-  DEF-009 (INPC/reconciliation), DEF-010 (UI state ownership), DEF-032 (exception
-  hardening)
+- Establishes snapshot-to-UI projection pattern (read-only snapshots → bindable properties) properties)
+- Establishes UI-to-command pattern (user action → command → snapshot update → UI refresh) refresh)
+- Resolves in-phase implementation issues: #106 (terminology), #107 (subscription lifecycle), #108 (INPC/reconciliation), #109 (UI state ownership), #159 (exception hardening, merged from #86), and #100 (localization/translation runtime behavior)
 
 **Future Phases:**
 
-- Phase 5 (HUD/Menu UI): Render HudViewModel and TaskListViewModel into game surfaces
-- Phase 6 (User Interactions): Wire click/input handlers into command dispatch
-- Phase 7+ (Polish/Persistence): Performance optimization, save/load integration,
-  extended features
-  extended features
+- Phase 5 (Built-in Task Generators): Implement generator logic and deterministic command emission.
+- Phase 6 (Rule Evaluation Engine): Implement Task Builder rule evaluation runtime and rule-driven command generation.
+- Phase 7 (Persistence System): Implement persistence save/load, migrations, baseline persistence, and manual counter continuity.
+- Phase 8/9 (Menu/HUD UI): Implement rendered UI surfaces and interaction behavior on top of Phase 4 view-model infrastructure.
 
 ### Design Guide References
 
@@ -144,82 +88,31 @@ and command dispatch.
 
 ### 1A - Add UISnapshotSubscriptionManager with per-subscriber handle semantics
 
-- [x] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static
-      Subscribe method that returns an IDisposable token and Unsubscribe method.
-      Subscribe method accepts a snapshot action callback, registers it with `StateStore.SnapshotChanged`,
-      and returns a handle (`IDisposable`) that unsubscribes **only that specific
-      callback** when Dispose is called. `Unsubscribe(IDisposable handle)` is
-      alternative explicit form (deprecated in favor of handle.Dispose()).
-      Implement per-subscriber unsubscribe guarantee: calling Dispose on returned
-      token removes only that subscription, not all subscriptions. Add thread-safety
-      (lock) if shared state required; otherwise, document that calls must occur
-      on main thread.
-- [x] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class
-      `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable`
-      and optional `Unsubscribe(IDisposable handle)` methods).
-- [x] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose
-      on token removes only that subscription; repeated Subscribe/Dispose cycles
-      work correctly; no global unsubscribe-all behavior; no runtime errors when
-      Subscribe is called before StateStore initialization (must handle null StateStore
-      gracefully with early return or optional check).
-- [x] **Suggested commit:** "phase4(step1A): add `UISnapshotSubscriptionManager`
-      with per-subscriber handle semantics"
-- [x] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes
-      only that callback; per-subscriber safety guarantee; hook into `StateStore.SnapshotChanged`
-      event; lifecycle documentation.
+- [x] **Action:** Create `UI/UISnapshotSubscriptionManager.cs` with public static Subscribe method that returns an IDisposable token and Unsubscribe method. Subscribe method accepts a snapshot action callback, registers it with `StateStore.SnapshotChanged`, and returns a handle (`IDisposable`) that unsubscribes **only that specific callback** when Dispose is called. `Unsubscribe(IDisposable handle)` is alternative explicit form (deprecated in favor of handle.Dispose()). Implement per-subscriber unsubscribe guarantee: calling Dispose on returned token removes only that subscription, not all subscriptions. Add thread-safety (lock) if shared state required; otherwise, document that calls must occur on main thread.
+- [x] **Scope:** `UI/UISnapshotSubscriptionManager.cs` (new file; new public class `UISnapshotSubscriptionManager` with `Subscribe(Action<TaskSnapshot>) : IDisposable` and optional `Unsubscribe(IDisposable handle)` methods).
+- [x] **Verify:** File compiles; Subscribe returns an IDisposable token; Dispose on token removes only that subscription; repeated Subscribe/Dispose cycles work correctly; no global unsubscribe-all behavior; no runtime errors when Subscribe is called before StateStore initialization (must handle null StateStore gracefully with early return or optional check).
+- [x] **Suggested commit:** "phase4(step1A): add `UISnapshotSubscriptionManager` with per-subscriber handle semantics"
+- [x] **Must include:** Subscribe returns IDisposable token; Dispose on token unsubscribes only that callback; per-subscriber safety guarantee; hook into `StateStore.SnapshotChanged` event; lifecycle documentation.
 - [x] **Must exclude:** View model implementations, property binding, UI rendering.
 
 ### 1B - Wire UISnapshotSubscriptionManager into ModEntry lifecycle with ordering<BR>guard
 
-- [x] **Action:** In `ModEntry.Entry`, **after `StateStore` and `StateContainer`
-      are fully initialized** (verify initialization order: `StateStore`, `SnapshotProjector`,
-      `StateContainer` must all be available before Subscribe is called), call `UISnapshotSubscriptionManager.Subscribe`
-      with a lambda or delegate that receives `TaskSnapshot` updates. Store returned
-      `IDisposable` token. Use the runtime-composed StateStore only after BootstrapContainer.Build(...)
-      completes, and document that subscription setup depends on successful runtime
-      composition.”. In `ModEntry.OnSaving`, call `Dispose` on the stored token
-      to tear down subscription before game save (disposing token unsubscribes
-      only that specific callback).
-- [x] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization
-      ordering guard).
-- [x] **Verify:** Build succeeds; `ModEntry` loads without throwing; `StateStore`
-      initialization order guard prevents null-reference during subscription;
-      tracing subscription is established during `Entry` and can be verified through  
-       log (add minimal log statement when subscription established); token disposal
-       log (add minimal log statement when subscription established); token disposal
-      properly unsubscribes.
-- [x] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager`
-      into `ModEntry` lifecycle with initialization order guard"
-- [x] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully
-      initialized; composition/order guarantee + minimal lifecycle logging on `_runtime.StateStore`;
-      token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle;
-      token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle;
-      documented initialization order constraint.
-- [x] **Must exclude:** View model implementation, UI rendering, command dispatch
-      setup (defer to later steps).
+- [x] **Action:** In `ModEntry.Entry`, **after `StateStore` and `StateContainer` are fully initialized** (verify initialization order: `StateStore`, `SnapshotProjector`, `StateContainer` must all be available before Subscribe is called), call `UISnapshotSubscriptionManager.Subscribe` with a lambda or delegate that receives `TaskSnapshot` updates. Store returned `IDisposable` token. Use the runtime-composed StateStore only after BootstrapContainer.Build(...) completes, and document that subscription setup depends on successful runtime composition.”. In `ModEntry.OnSaving`, call `Dispose` on the stored token to tear down subscription before game save (disposing token unsubscribes only that specific callback).
+- [x] **Scope:** `ModEntry.cs` (Entry and OnSaving methods; StateStore initialization ordering guard).
+- [x] **Verify:** Build succeeds; `ModEntry` loads without throwing; `StateStore` initialization order guard prevents null-reference during subscription; tracing subscription is established during `Entry` and can be verified through  
+       log (add minimal log statement when subscription established); token disposal log (add minimal log statement when subscription established); token disposal properly unsubscribes.
+- [x] **Suggested commit:** "phase4(step1B): wire `UISnapshotSubscriptionManager` into `ModEntry` lifecycle with initialization order guard"
+- [x] **Must include:** Call to `Subscribe` in `Entry` after `StateStore` fully initialized; composition/order guarantee + minimal lifecycle logging on `_runtime.StateStore`; token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle; token disposal in `OnSaving`; minimal logging to confirm subscription lifecycle; documented initialization order constraint.
+- [x] **Must exclude:** View model implementation, UI rendering, command dispatch setup (defer to later steps).
 
 ### 1C - Create UIViewModelBase with INotifyPropertyChanged
 
-- [ ] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as an abstract base
-      class implementing `INotifyPropertyChanged`. The base class should provide
-      the shared notification foundation for later view models: the `PropertyChanged`
-      event and a protected `OnPropertyChanged` method for manual notification.
-      If the Phase 4 implementation uses `PropertyChanged.SourceGenerator`, treat
-      that as a concrete-view-model convenience for later steps rather than a
-      responsibility of the base class itself.
-- [ ] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class
-      `UIViewModelBase : INotifyPropertyChanged`).
-- [ ] **Verify:** Build succeeds; `INotifyPropertyChanged` is implemented;
-      `PropertyChanged` event is available to subscribers; the base class exposes
-      protected notification helpers that later concrete view models can use
-      directly or alongside source-generator-backed properties.
+- [ ] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as an abstract base class implementing `INotifyPropertyChanged`. The base class should provide the shared notification foundation for later view models: the `PropertyChanged` event and a protected `OnPropertyChanged` method for manual notification. If the Phase 4 implementation uses `PropertyChanged.SourceGenerator`, treat that as a concrete-view-model convenience for later steps rather than a responsibility of the base class itself.
+- [ ] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class `UIViewModelBase : INotifyPropertyChanged`).
+- [ ] **Verify:** Build succeeds; `INotifyPropertyChanged` is implemented; `PropertyChanged` event is available to subscribers; the base class exposes protected notification helpers that later concrete view models can use directly or alongside source-generator-backed properties.
 - [ ] **Suggested commit:** `phase4(step1C): add UIViewModelBase with INPC foundation`
-- [ ] **Must include:** `INotifyPropertyChanged` implementation; `PropertyChanged`
-      event; protected property-change notification method(s); clear role as the
-      shared notification foundation for later concrete view models.
-- [ ] **Must exclude:** Concrete view model implementations (`HudViewModel`,
-      `TaskListViewModel`); business logic property definitions; concrete bindable
-      fields that belong in later view models.
+- [ ] **Must include:** `INotifyPropertyChanged` implementation; `PropertyChanged` event; protected property-change notification method(s); clear role as the shared notification foundation for later concrete view models.
+- [ ] **Must exclude:** Concrete view model implementations (`HudViewModel`, `TaskListViewModel`); business logic property definitions; concrete bindable fields that belong in later view models.
 
 ### Step 1 Completion Checkpoint
 
@@ -392,13 +285,13 @@ and command dispatch.
 - [ ] **Must include:** Observable properties for form inputs; IsValid property; OnInputChanged validation; GetEditCommand for command construction.
 - [ ] **Must exclude:** UI rendering, form submission.
 
-### 4I - Implement ConfigViewModel with config state projection (if in Phase 4 scope)
+### 4I - Implement ConfigViewModel with config state projection
 
-- [ ] **Action:** If config UI is within Phase 4 scope, create `UI/ViewModels/ConfigViewModel.cs` inheriting from UIViewModelBase. Define properties for ModConfig fields (IsHudEnabled, HudPosition, TaskLimit, UpdateFrequencyMinutes). Add constructor accepting ModConfig. Implement DispatchConfigChange method for config updates. If config UI is deferred, create placeholder with documented deferment notes.
-- [ ] **Scope:** `UI/ViewModels/ConfigViewModel.cs` (new file; conditional on Phase 4 scope confirmation).
-- [ ] **Verify:** Property bindings match ModConfig fields; config dispatch is wired if in scope; deferment documented if not.
-- [ ] **Suggested commit:** `phase4(step4I): implement ConfigViewModel with config state projection (if in scope)`
-- [ ] **Must include:** Observable properties for config fields; constructor from ModConfig; config dispatch if Phase 4 scope, or documented deferment if not.
+- [ ] **Action:** Create `UI/ViewModels/ConfigViewModel.cs` inheriting from UIViewModelBase. Define properties for ModConfig fields (IsHudEnabled, HudPosition, TaskLimit, UpdateFrequencyMinutes). Add constructor accepting ModConfig. Implement DispatchConfigChange method for config updates.
+- [ ] **Scope:** `UI/ViewModels/ConfigViewModel.cs` (new file; in-scope Phase 4 surface).
+- [ ] **Verify:** Property bindings match ModConfig fields; config dispatch is wired.
+- [ ] **Suggested commit:** `phase4(step4I): implement ConfigViewModel with config state projection`
+- [ ] **Must include:** Observable properties for config fields; constructor from ModConfig; config dispatch wiring.
 - [ ] **Must exclude:** Config file persistence, feature-gated behavior.
 
 ### Step 4 Completion Checkpoint
@@ -479,13 +372,13 @@ and command dispatch.
 - [ ] **Must include:** Complete inventory of current usage; identified inconsistencies; standardized terminology mapping.
 - [ ] **Must exclude:** Code refactoring (defer to post-phase remediation if needed).
 
-### 6C - Create terminology baseline in ManualTask\_{N} context
+### 6C - Create terminology baseline in Manual\_{N} context
 
 - [ ] **Action:** In view models (HudViewModel, TaskListViewModel) and UI command methods, use consistent terminology in comments and property names. When referencing source of a task, use `TaskSourceType` for the enum/category; when referencing unique source identifier, use `SourceIdentifier`. Update any property names or comments to reflect this distinction. Example: `TaskList items should show SourceType property (TaskSourceType enum) by source category; detailed view shows SourceIdentifier for identification.` Document this baseline in code comments.
 - [ ] **Scope:** `UI/ViewModels/HudViewModel.cs`, `UI/ViewModels/TaskListViewModel.cs`, `UI/ViewModels/TaskItemViewModel.cs` (property definitions and comments).
 - [ ] **Verify:** Property naming and comments consistently use TaskSourceType and SourceIdentifier; terminology matches documentation from step 6A.
 - [ ] **Suggested commit:** `phase4(step6C): establish terminology baseline in UI view models`
-- [ ] **Must include:** Consistent property/comment naming; terminology alignment with documentation; ManualTask\_{N} wording baseline notes.
+- [ ] **Must include:** Consistent property/comment naming; terminology alignment with documentation; Manual\_{N} wording baseline notes.
 - [ ] **Must exclude:** Domain type changes, persistence schema changes, config version changes.
 
 ### Step 6 Completion Checkpoint
@@ -546,7 +439,7 @@ and command dispatch.
 
 ### Step Goal
 
-- [ ] Verify Phase 4 implementation is complete, deterministic, and contract-aligned. Validate all guardrails. Reconcile deferments. Gate readiness for Phase 5.
+- [ ] Verify Phase 4 implementation is complete, deterministic, and contract-aligned. Validate all guardrails. Reconcile ImplementationIssues. Gate readiness for Phase 5 built-in task generators.
 
 ### 8A - Run clean build and full test suite
 
@@ -559,7 +452,7 @@ and command dispatch.
 
 ### 8B - Audit guardrails against implementation
 
-- [ ] **Action:** Manually review implementation against each guardrail from the "Guardrails" section: (1) Command/Snapshot Boundary Integrity — verify no view model mutates StateStore/StateContainer directly, all writes route through IUICommandDispatcher; (2) Deterministic Reconciliation — verify TaskListViewModel collection reconciliation uses stable key (TaskId) and sorted iteration; (3) Subscription Lifecycle — verify subscribe in **init**, unsubscribe in Dispose; (4) No Optimistic Mutation — verify UI never writes canonical state; (5) ManualTask\_{N} Terminology — verify all properties and comments use consistent terminology; (6) DEF-032 Exception-Only Boundary — verify ConfigLoader catch paths contain only exception handling, fallback, logging (no schema/migration/feature logic). Document guardrail verification in checklist or audit notes.
+- [ ] **Action:** Manually review implementation against each guardrail from the "Guardrails" section: (1) Command/Snapshot Boundary Integrity — verify no view model mutates StateStore/StateContainer directly, all writes route through IUICommandDispatcher; (2) Deterministic Reconciliation — verify TaskListViewModel collection reconciliation uses stable key (TaskId) and sorted iteration; (3) Subscription Lifecycle — verify subscribe in **init**, unsubscribe in Dispose; (4) No Optimistic Mutation — verify UI never writes canonical state; (5) Manual\_{N} Terminology — verify all properties and comments use consistent terminology; (6) DEF-032 Exception-Only Boundary — verify ConfigLoader catch paths contain only exception handling, fallback, logging (no schema/migration/feature logic). Document guardrail verification in checklist or audit notes.
 - [ ] **Scope:** Code review against guardrails; this checklist file; implementation files (UIViewModelBase, HudViewModel, TaskListViewModel, UICommandDispatcher, ConfigLoader).
 - [ ] **Verify:** Each guardrail is preserved in implementation; no violations detected; documentation is clear.
 - [ ] **Suggested commit:** `phase4(step8B): audit and confirm guardrails preserved in Phase 4`
@@ -568,123 +461,21 @@ and command dispatch.
 
 ### 8C - Validate Phase 4 scope boundaries
 
-- [ ] **Action:** Review all files changed during Phase 4 (new files and edits
-      to existing files) to confirm scope matches Phase 4 requirements: UI
-      foundation (view models, subscription, binding), ConfigLoader
-      hardening, command dispatch. Verify no scope expansion into Phase 5
-      (HUD/menu rendering), Phase 6 (click handlers/input), or unplanned
-      areas. Generate file change summary (use git diff or manual review).
-      Verify all Phase 4-scoped ImplementationIssues compatibility items
-      (legacy DEF-007, 008, 009, 010, 032) are addressed.
-- [ ] **Scope:** Code review and file inventory; this checklist; git log or
-      change summary.
-- [ ] **Verify:** File changes are within Phase 4 scope; no unintended Phase
-      5/6 work; all 5 in-phase ImplementationIssues compatibility items are
-      covered.
-- [ ] **Suggested commit:**
-      `phase4(step8C): finalize scope validation and implementation-issue coverage`
-- [ ] **Must include:** File change inventory; scope alignment verification;
-      ImplementationIssues coverage check.
-- [ ] **Action:** Review all files changed during Phase 4 (new files and edits
-      to existing files) to confirm scope matches Phase 4 requirements: UI
-      foundation (view models, subscription, binding), ConfigLoader
-      hardening, command dispatch. Verify no scope expansion into Phase 5
-      (HUD/menu rendering), Phase 6 (click handlers/input), or unplanned
-      areas. Generate file change summary (use git diff or manual review).
-      Verify all Phase 4-scoped ImplementationIssues compatibility items
-      (legacy DEF-007, 008, 009, 010, 032) are addressed.
-- [ ] **Scope:** Code review and file inventory; this checklist; git log or
-      change summary.
-- [ ] **Verify:** File changes are within Phase 4 scope; no unintended Phase
-      5/6 work; all 5 in-phase ImplementationIssues compatibility items are
-      covered.
-- [ ] **Suggested commit:**
-      `phase4(step8C): finalize scope validation and implementation-issue coverage`
-- [ ] **Must include:** File change inventory; scope alignment verification;
-      ImplementationIssues coverage check.
+- [ ] **Action:** Review all files changed during Phase 4 (new files and edits to existing files) to confirm scope matches Phase 4 requirements: UI foundation (view models, subscription, binding), ConfigLoader hardening, command dispatch. Verify no scope expansion into Phase 5 (built-in generators), Phase 6 (rule engine), Phase 7 (persistence), or Phase 8/9 (UI rendering and interaction), and no unplanned areas. Generate file change summary (use git diff or manual review). Verify all active Phase 4 issue targets are covered: #100, #106, #107, #108, #109, and #159 (includes merged #86), and that legacy compatibility mappings DEF-007, 008, 009, 010, 032 remain satisfied.
+- [ ] **Scope:** Code review and file inventory; this checklist; git log or change summary.
+- [ ] **Verify:** File changes are within Phase 4 scope; no unintended Phase 5/6 work; all active Phase 4 issue targets are covered; legacy compatibility mappings remain covered.
+- [ ] **Suggested commit:** `phase4(step8C): finalize scope validation and implementation-issue coverage`
+- [ ] **Must include:** File change inventory; scope alignment verification; ImplementationIssues coverage check.
 - [ ] **Must exclude:** Out-of-scope code changes, Phase 5 work.
 
 ### 8D - Reconcile Phase 4 ImplementationIssues coverage and document findings
-### 8D - Reconcile Phase 4 ImplementationIssues coverage and document findings
 
-- [ ] **Action:** Review
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
-      and the associated issue records for any Phase 4-scoped items tracked
-      through `legacy_id` compatibility references.
-      Match them against the Phase 4 checklist: DEF-007 (terminology ambiguity,
-      Step 6), DEF-008 (snapshot subscription lifecycle, Step 3), DEF-009
-      (INPC/reconciliation, Step 4), DEF-010 (UI-local state ownership, Step
-      5), and DEF-032 (ConfigLoader exception hardening, Step 2).
-      Record findings in local audit notes or a review artifact. Move resolved
-      Phase 4 issues into
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`
-      with archived date and resolution notes while preserving DEF identifiers
-      only as `legacy_id` compatibility references where applicable. If new
-      follow-up work is discovered during Phase 4, add it to the
-      ImplementationIssues system without minting new DEF identifiers. If
-      architecture or scope issues are found during this gate, reviewer +
-      GodAgent draft `Project/Planning/Phase 4 Implementation Review Report.md`
-      and route follow-up work to the user-owned post-phase checklist.
-- [ ] **Scope:**
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`,
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`,
-      relevant per-issue records, this Phase 4 checklist, and optional
-      post-phase review artifacts.
-- [ ] **Verify:** All in-phase ImplementationIssues compatibility items
-      (DEF-007, 008, 009, 010, 032) are mapped to Phase 4 steps; resolved
-      Phase 4 issues are archived with context where applicable; implementer
-      findings are recorded; any new follow-up issues are added to the
-      ImplementationIssues system; and review documentation is drafted when
-      needed.
-- [ ] **Suggested commit:**
-      `phase4(step8D): reconcile implementation issues and post-phase routing`
-- [ ] **Must include:** Mapping of DEF-007/008/009/010/032 to Phase 4 steps;
-      archive updates with resolution context where applicable; implementer
-      findings or audit notes; any new ImplementationIssues entries needed for
-      follow-up; and a review report with post-phase routing when issues are
-      found.
-- [ ] **Must exclude:** Retroactive edits to prior phase items without
-      explicit justification; inline fixes for architectural issues (route to
-      post-phase instead).
-- [ ] **Action:** Review
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`
-      and the associated issue records for any Phase 4-scoped items tracked
-      through `legacy_id` compatibility references.
-      Match them against the Phase 4 checklist: DEF-007 (terminology ambiguity,
-      Step 6), DEF-008 (snapshot subscription lifecycle, Step 3), DEF-009
-      (INPC/reconciliation, Step 4), DEF-010 (UI-local state ownership, Step
-      5), and DEF-032 (ConfigLoader exception hardening, Step 2).
-      Record findings in local audit notes or a review artifact. Move resolved
-      Phase 4 issues into
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`
-      with archived date and resolution notes while preserving DEF identifiers
-      only as `legacy_id` compatibility references where applicable. If new
-      follow-up work is discovered during Phase 4, add it to the
-      ImplementationIssues system without minting new DEF identifiers. If
-      architecture or scope issues are found during this gate, reviewer +
-      GodAgent draft `Project/Planning/Phase 4 Implementation Review Report.md`
-      and route follow-up work to the user-owned post-phase checklist.
-- [ ] **Scope:**
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`,
-      `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`,
-      relevant per-issue records, this Phase 4 checklist, and optional
-      post-phase review artifacts.
-- [ ] **Verify:** All in-phase ImplementationIssues compatibility items
-      (DEF-007, 008, 009, 010, 032) are mapped to Phase 4 steps; resolved
-      Phase 4 issues are archived with context where applicable; implementer
-      findings are recorded; any new follow-up issues are added to the
-      ImplementationIssues system; and review documentation is drafted when
-      needed.
-- [ ] **Suggested commit:**
-      `phase4(step8D): reconcile implementation issues and post-phase routing`
-- [ ] **Must include:** Mapping of DEF-007/008/009/010/032 to Phase 4 steps;
-      archive updates with resolution context where applicable; implementer
-      findings or audit notes; any new ImplementationIssues entries needed for
-      follow-up; and a review report with post-phase routing when issues are
-      found.
-- [ ] **Must exclude:** Retroactive edits to prior phase items without
-      explicit justification; inline fixes for architectural issues (route to
-      post-phase instead).
+- [ ] **Action:** Review `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md` and the associated issue records for any Phase 4-scoped items tracked through `legacy_id` compatibility references. Match them against the Phase 4 checklist: DEF-007 (terminology ambiguity, Step 6), DEF-008 (snapshot subscription lifecycle, Step 3), DEF-009 (INPC/reconciliation, Step 4), DEF-010 (UI-local state ownership, Step 5), and DEF-032 (ConfigLoader exception hardening, Step 2). Record findings in local audit notes or a review artifact. Move resolved Phase 4 issues into `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md` with archived date and resolution notes while preserving DEF identifiers only as `legacy_id` compatibility references where applicable. If new follow-up work is discovered during Phase 4, add it to the ImplementationIssues system without minting new DEF identifiers. If unresolved work belongs to later phases, map handoff explicitly using scheduled targets aligned to Section 21 ordering (Phase 5 generators, Phase 6 rule engine, Phase 7 persistence, Phase 8/9 UI). If architecture or scope issues are found during this gate, reviewer + GodAgent draft `Project/Planning/Phase 4 Implementation Review Report.md` and route follow-up work to the user-owned post-phase checklist.
+- [ ] **Scope:** `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md`, `Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesArchive.md`, relevant per-issue records, this Phase 4 checklist, and optional post-phase review artifacts.
+- [ ] **Verify:** All in-phase ImplementationIssues compatibility items (DEF-007, 008, 009, 010, 032) are mapped to Phase 4 steps; resolved Phase 4 issues are archived with context where applicable; implementer findings are recorded; any new follow-up issues are added to the ImplementationIssues system with explicit later-phase handoff targets; and review documentation is drafted when needed.
+- [ ] **Suggested commit:** `phase4(step8D): reconcile implementation issues and post-phase routing`
+- [ ] **Must include:** Mapping of DEF-007/008/009/010/032 to Phase 4 steps; archive updates with resolution context where applicable; implementer findings or audit notes; any new ImplementationIssues entries needed for follow-up; and a review report with post-phase routing when issues are found.
+- [ ] **Must exclude:** Retroactive edits to prior phase items without explicit justification; inline fixes for architectural issues (route to post-phase instead).
 
 ### Step 8 Completion Checkpoint
 
@@ -697,89 +488,48 @@ and command dispatch.
 **If blocking issues are identified during Step 8 gates:**
 
 - Every blocking constraint violation must have a documented resolution path
-- Issues must be either resolved before Phase 4 close or explicitly routed
-  into the ImplementationIssues system with post-phase handling; preserve a
-  DEF identifier only as a legacy compatibility reference when applicable
-- Reviewer: draft Phase 4 Implementation Review Report if architectural issues
-  surface; do not attempt inline fixes
+- Issues must be either resolved before Phase 4 close or explicitly routed into the ImplementationIssues system with post-phase handling; preserve a DEF identifier only as a legacy compatibility reference when applicable
+- Reviewer: draft Phase 4 Implementation Review Report if architectural issues surface; do not attempt inline fixes
 
 ---
 
 ## Final Completion Gate Checklist
 
 - [ ] All substeps 1A through 8D are complete.
-- [ ] Implementation scope matches Phase 4 requirements (no unintended
-      expansion into Phase 5/6).
-- [ ] Implementation scope matches Phase 4 requirements (no unintended
-      expansion into Phase 5/6).
+- [ ] Implementation scope matches Phase 4 requirements (no unintended expansion into Phase 5 generators, Phase 6 rule engine, Phase 7 persistence, or Phase 8/9 UI implementation).
 - [ ] All guardrails are preserved and verified in code.
-- [ ] Unit tests pass; Phase 1-4 test suite is comprehensive and
-      deterministic (~160-170 total tests).
-- [ ] Unit tests pass; Phase 1-4 test suite is comprehensive and
-      deterministic (~160-170 total tests).
+- [ ] Unit tests pass; Phase 1-4 test suite is comprehensive and deterministic (~160-170 total tests).
 - [ ] Build succeeds without errors or warnings.
-- [ ] All five in-phase ImplementationIssues compatibility items are addressed
-      (legacy DEF-007, 008, 009, 010, 032):
-- [ ] All five in-phase ImplementationIssues compatibility items are addressed
-      (legacy DEF-007, 008, 009, 010, 032):
+- [ ] Active Phase 4 issue set is fully closed or properly routed with evidence: #100, #106, #107, #108, #109, #159 (includes merged #86).
+- [ ] All five in-phase ImplementationIssues compatibility items are addressed (legacy DEF-007, 008, 009, 010, 032):
   - DEF-007: Terminology ambiguity resolved (Step 6)
   - DEF-008: Snapshot subscription lifecycle implemented (Step 3)
   - DEF-009: INPC/reconciliation implemented (Step 4)
   - DEF-010: UI-local state ownership established (Step 5)
   - DEF-032: ConfigLoader exception hardening completed (Step 2)
-- [ ] ImplementationIssues reconciliation completed: resolved Phase 4 items
-      archived with phase/date/notes where applicable; any new follow-up work
-      added through the ImplementationIssues system without creating new
-      DEF-NNN identifiers.
-- [ ] If scope or architecture issues found, review report drafted and
-      post-phase routing documented (user-owned
-      `Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` for
-      remediation).
-- [ ] ImplementationIssues reconciliation completed: resolved Phase 4 items
-      archived with phase/date/notes where applicable; any new follow-up work
-      added through the ImplementationIssues system without creating new
-      DEF-NNN identifiers.
-- [ ] If scope or architecture issues found, review report drafted and
-      post-phase routing documented (user-owned
-      `Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` for
-      remediation).
-- [ ] Phase 4 is ready for Phase 5 (HUD/Menu UI Rendering) to begin.
+- [ ] ImplementationIssues reconciliation completed: resolved Phase 4 items archived with phase/date/notes where applicable; any new follow-up work added through the ImplementationIssues system without creating new DEF-NNN identifiers.
+- [ ] Later-phase handoff mapping is explicit for unresolved items in ImplementationIssues and aligned to Section 21 phase order (5 generators, 6 rule engine, 7 persistence, 8/9 UI).
+- [ ] If scope or architecture issues found, review report drafted and post-phase routing documented (user-owned `Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` for remediation).
+- [ ] Phase 4 is ready for Phase 5 (Built-in Task Generators) to begin.
 
 ---
 
 ## Post-Phase Artifact Routing (If Findings Discovered)
 
-**If scope/architecture issues are discovered during Step 8D
-(ImplementationIssues reconciliation) or earlier gates:**
-**If scope/architecture issues are discovered during Step 8D
-(ImplementationIssues reconciliation) or earlier gates:**
+**If scope/architecture issues are discovered during Step 8D (ImplementationIssues reconciliation) or earlier gates:**
 
-1. **Create Review Report:**
-   `Project/Planning/Phase 4 Implementation Review Report.md`
-   - Section: Issue Analysis (categorized by severity: blocking, important,
-     minor)
-   - Section: Remediation Guidance (recommended fixes, complexity level,
-     phase for attempted resolution)
-   - Section: Evidence (file paths, line number citations, test failures,
-     constraint violations)
+1. **Create Review Report:** `Project/Planning/Phase 4 Implementation Review Report.md`
+   - Section: Issue Analysis (categorized by severity: blocking, important, minor)
+   - Section: Remediation Guidance (recommended fixes, complexity level, phase for attempted resolution)
+   - Section: Evidence (file paths, line number citations, test failures, constraint violations)
 
-2. **Draft Post-Phase Checklist:**
-   `Project/Tasks/ImplementationPlan/Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` - User-owned execution checklist for addressing issues identified in Phase
-   4 review
+2. **Draft Post-Phase Checklist:** `Project/Tasks/ImplementationPlan/Phase 4 - Post-Phase Atomic Commit Execution Checklist.md` - User-owned execution checklist for addressing issues identified in Phase 4 review
    - Do NOT implement fixes inline in Phase 4 completion gate
-     - Route to user for prioritization and scheduling in post-phase atomic
-       execution cycle
+     - Route to user for prioritization and scheduling in post-phase atomic execution cycle
 
-3. **ImplementationIssues Update:** Append new follow-up issues from Phase 4 to
-   the `ImplementationIssues` system. Preserve DEF identifiers in `legacy_id`
-   only when reconciling migrated legacy items.
+3. **ImplementationIssues Update:** Append new follow-up issues from Phase 4 to the `ImplementationIssues` system. Preserve DEF identifiers in `legacy_id` only when reconciling migrated legacy items.
 
-**Note:** This phase assumes clean completion (no blocking issues). If issues
-are found, this routing ensures structured documentation and user control over
-post-phase remediation.
-**Note:** This phase assumes clean completion (no blocking issues). If issues
-are found, this routing ensures structured documentation and user control over
-post-phase remediation.
+**Note:** This phase assumes clean completion (no blocking issues). If issues are found, this routing ensures structured documentation and user control over post-phase remediation.
 
 ---
 
@@ -789,7 +539,7 @@ post-phase remediation.
 - **Testable Without Game:** All Phase 4 components compile and test in isolation; no Stardew Valley runtime required.
 - **Atomic Commits:** Commit after each substep (1A, 1B, 1C, etc.) for fine-grained history and easy rollback.
 - **Configuration Constraints:** DEF-032 exception hardening must not expand config schema or introduce feature-gated logic.
-- **Terminology Baseline:** All new code uses ManualTask\_{N} wording and SourceIdentifier/TaskSourceType distinction consistently.
+- **Terminology Baseline:** All new code uses Manual\_{N} wording and SourceIdentifier/TaskSourceType distinction consistently.
 
 ---
 
@@ -800,8 +550,6 @@ post-phase remediation.
 1. Step 1A says to name the new subscription manager `UISnapshotSubscriptionManager`,  
    however, [C# Contract](/.github/instructions/csharp-style-contract.instructions.md)  
    says `Manager` name is to be avoided without justification. Is `UiSnapshotSubscriptionManager`  
-   acceptable given the UI-specific nature, or should we consider an alternative name
-   like `UiSnapshotSubscriptionCoordinator` given it is brokering subscriptions?
-   Let's discuss this post-review.
+   acceptable given the UI-specific nature, or should we consider an alternative name like `UiSnapshotSubscriptionCoordinator` given it is brokering subscriptions? Let's discuss this post-review.
 
 **End of Phase 4 - Atomic Commit Execution Checklist**

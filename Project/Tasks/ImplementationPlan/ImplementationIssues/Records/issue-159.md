@@ -5,7 +5,7 @@ type: "Review follow-up"
 title: "Review follow-up:"
 summary: "A bare catch block in Configuration/ConfigLoader.cs (line 26) suppresses all exceptions without discrimination during config deserialization. This means fatal CLR exceptions (StackOverflowException, OutOfMemoryException, ThreadAbortException) and genuine deserialization bugs are silently swallowed, falling back to null as if the config file simply didn't exist."
 created_phase: "Phase 3"
-source: "#86"
+source: "#86 (merged historical source reference)"
 scheduled_target: "Phase 4"
 status: "Open"
 priority: "High"
@@ -13,14 +13,16 @@ github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/159"
 resolution_pr: ""
 created_by: "alcar2364"
 created_at: "2026-03-13T00:02:45Z"
-updated_at: "2026-03-13T04:42:15Z"
+updated_at: "2026-03-14T00:00:00Z"
 sync_state: "github-synced"
-notes: "conversion of security scanner review into new issues system
+notes: "Canonical active tracker for merged #86 scope; #86 retained as historical merged-reference only.
+
+conversion of security scanner review into new issues system
 
 Additional Context
 The rest of the codebase (e.g. TaskIdFormat.cs) already follows the correct pattern of catching only ArgumentException—this file should be brought in line with that convention.
 Secret pattern scan: no findings (no hardcoded credentials, API keys, or connection strings in any .cs file).
-NuGet vulnerability scan: could not run — the sandbox environment blocks outbound NuGet.org access (proxy 403). This scan should be re-run in CI where network access is available; the existing ci.yml workflow does not currently include dotnet list package --vulnerable.
+NuGet vulnerability scan: could not run — the sandbox environment blocks outbound NuGet.org access (proxy 403). CI now includes a warning-only `dotnet list package --vulnerable` step.
 Detection Method
 Manual SAST review (CodeQL equivalent static analysis) — security-and-quality query suite scope."
 ---
@@ -53,32 +55,21 @@ Severity | High (per security scanning policy)
 Impact | Fatal CLR exceptions are masked; actual deserialization failures are indistinguishable from corrupt-config fallback; security-relevant errors during config load cannot be detected or logged
 
 </markdown-accessiblity-table><p dir="auto" style="box-sizing: border-box; margin-top: 0px; margin-bottom: 16px; color: rgb(240, 246, 252); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">Concretely:</p><ul dir="auto" style="box-sizing: border-box; margin-top: 0px; margin-bottom: 16px; padding-left: 2em; color: rgb(240, 246, 252); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(13, 17, 23); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><li style="box-sizing: border-box;">A malformed config file that triggers a non-JSON exception (e.g. a stack overflow in a custom converter, or an<span> </span><code class="notranslate" style="box-sizing: border-box; font-family: &quot;Monaspace Neon&quot;, ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, monospace; font-size: 11.9px; tab-size: 4; white-space: break-spaces; background-color: rgba(101, 108, 118, 0.2); border-radius: 6px; margin: 0px; padding: 0.2em 0.4em;">OutOfMemoryException</code><span> </span>on a huge payload) is silently discarded and replaced with defaults — the player and developer see no error.</li><li style="box-sizing: border-box; margin-top: 0.25em;">Any future deserialization code added to this path (e.g. reading player data, save-file state) would inherit this silent-failure behaviour.</li></ul><!--EndFragment-->
+
 </body>
 </html>
 
 ## Impact
 
-Recommended Fix
-Catch only the specific, expected exception types that IModHelper.ReadConfig(T)() can realistically raise for a corrupt/missing config file. Since SMAPI uses Newtonsoft.Json internally, the narrowest safe catch is:
+Recommended Fix Catch only the specific, expected exception types that IModHelper.ReadConfig(T)() can realistically raise for a corrupt/missing config file. Since SMAPI uses Newtonsoft.Json internally, the narrowest safe catch is:
 
-try
-{
-    loadedConfig = _helper.ReadConfig(ModConfig)();
-}
-catch (Exception ex) when (ex is not (StackOverflowException or OutOfMemoryException or ThreadAbortException))
-{
-    _logger.Log($"Failed to load config, reverting to defaults: {ex.Message}", LogLevel.Warn);
-    loadedConfig = null;
-}
-Or, if logging in Load() is not yet available, at minimum restrict to expected exception types:
+try { loadedConfig = \_helper.ReadConfig(ModConfig)(); } catch (Exception ex) when (ex is not (StackOverflowException or OutOfMemoryException or ThreadAbortException)) { \_logger.Log($"Failed to load config, reverting to defaults: {ex.Message}", LogLevel.Warn); loadedConfig = null; } Or, if logging in Load() is not yet available, at minimum restrict to expected exception types:
 
-catch (Exception ex) when (ex is System.IO.IOException or Newtonsoft.Json.JsonException or InvalidOperationException)
-{
-    loadedConfig = null;
+catch (Exception ex) when (ex is System.IO.IOException or Newtonsoft.Json.JsonException or InvalidOperationException) { loadedConfig = null;
 
 ## Implementation Notes
 
-_No response_
+No response.
 
 ## Acceptance / Closing Criteria
 
@@ -86,4 +77,5 @@ will be resolved in phase 4 checklist
 
 ## History / Resolution Notes
 
-
+- Canonical active tracker for merged scope previously represented by #86.
+- #86 remains historical-only and non-active.

@@ -24,5 +24,10 @@ How it works (high level)
 3. Reviewer validates the plan.
 4. WorkspaceAgent drafts the final Markdown checklist file.
 
+Mandatory pre-publish checks
+- Section 21 section-to-phase mapping check against checklist scope.
+- `ImplementationIssues` scheduling consistency check across index and referenced issue records.
+- merged-duplicate check to ensure one canonical active tracker remains for merged scopes.
+
 Notes
 - This skill encapsulates the multi-agent flow into a discoverable action; it does not itself perform code edits.

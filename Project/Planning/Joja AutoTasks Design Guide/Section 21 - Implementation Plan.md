@@ -1,11 +1,8 @@
-﻿
-# Section 21 — Implementation Plan #
+﻿# Section 21 — Implementation Plan
 
-## 21.1 Purpose ##
+## 21.1 Purpose
 
-This section defines the implementation plan for building the Automatic Task
-Manager mod. The goal is to translate the architecture and design decisions
-defined throughout this document into a structured development roadmap.
+This section defines the implementation plan for building the Automatic Task Manager mod. The goal is to translate the architecture and design decisions defined throughout this document into a structured development roadmap.
 
 The implementation plan prioritizes:
 
@@ -14,16 +11,13 @@ The implementation plan prioritizes:
     - incremental feature delivery
     - testability and debugging visibility
 
-Implementation must follow the architectural boundaries defined in
-Section 2 and the domain models defined in Sections 3 and 4.
+Implementation must follow the architectural boundaries defined in Section 2 and the domain models defined in Sections 3 and 4.
 
-The plan is organized into implementation phases. Each phase introduces
-new subsystems while maintaining a working mod state.
+The plan is organized into implementation phases. Each phase introduces new subsystems while maintaining a working mod state.
 
-## 21.2 Implementation Strategy ##
+## 21.2 Implementation Strategy
 
-The mod uses a no-drop, architecture-first delivery strategy with right-sized
-staging. Core feature intent remains unchanged; sequencing controls complexity.
+The mod uses a no-drop, architecture-first delivery strategy with right-sized staging. Core feature intent remains unchanged; sequencing controls complexity.
 
 Delivery stages:
 
@@ -44,34 +38,44 @@ Non-negotiable constraints:
     - Code and documentation must be updated together, with variances
     recorded and justified.
 
-Each phase must end in a runnable checkpoint and pass the stage gates in
-Section 21.3.2 before promotion.
+Canonical precedence for implementation planning:
 
-## 21.3 Phase Overview ##
+    - This section is canonical for phase sequencing, Version 1 boundaries,
+    and delivery-stage intent.
+    - `ImplementationIssues` scheduled-target metadata is canonical for
+    issue-tracker scheduling and remains authoritative until separately
+    retargeted.
+    - If sequencing or boundary metadata diverges, update
+    `ImplementationIssues` records explicitly; do not reinterpret scope
+    implicitly.
+
+Each phase must end in a runnable checkpoint and pass the stage gates in Section 21.3.2 before promotion.
+
+## 21.3 Phase Overview
 
 The implementation is divided into the following phases.
 
-| Phase | Focus | Delivery stage |
-| ---- | ---- | ---- |
-| Phase 1 | Project skeleton and lifecycle | Now |
-| Phase 2 | Core domain model | Now |
-| Phase 3 | State store | Now |
-| Phase 4 | View model infrastructure | Now |
-| Phase 5 | Built-in task generators | Now |
-| Phase 6 | Rule evaluation engine | Now |
-| Phase 7 | Persistence system | Now |
-| Phase 8 | Menu dashboard | Now |
-| Phase 9 | HUD interface | Now |
-| Phase 10 | Task Builder wizard | Now |
-| Phase 11 | History browsing UI | Now + Next |
-| Phase 12 | Debug and developer tooling | Now + Next |
+| Phase    | Focus                          | Delivery stage |
+| -------- | ------------------------------ | -------------- |
+| Phase 1  | Project skeleton and lifecycle | Now            |
+| Phase 2  | Core domain model              | Now            |
+| Phase 3  | State store                    | Now            |
+| Phase 4  | View model infrastructure      | Now            |
+| Phase 5  | Built-in task generators       | Now            |
+| Phase 6  | Rule evaluation engine         | Now            |
+| Phase 7  | Persistence system             | Now            |
+| Phase 8  | Menu dashboard                 | Now            |
+| Phase 9  | HUD interface                  | Now            |
+| Phase 10 | Task Builder wizard            | Now            |
+| Phase 11 | History browsing UI            | Now + Next     |
+| Phase 12 | Debug and developer tooling    | Now + Next     |
 
 Later phases depend on stable completion of earlier phases.
 
-### 21.3.1 No-drop capability mapping (Version 1 + Phase 8-12) ###
+### 21.3.1 No-drop capability mapping (Version 1 + Phase 8-12)
 
 | Capability | Phase owner | Version 1 requirement | Stage | Notes |
-| ---- | ---- | ---- | ---- | ---- |
+| --- | --- | --- | --- | --- |
 | Menu task list + details split view | Phase 8 | Required | Now | Must read the same snapshot model as HUD. |
 | Manual task creation and editing from menu | Phase 8 | Required | Now | Command-dispatched only, no direct state mutation. |
 | Configuration controls in full menu | Phase 8 | Required | Now | GMCM remains entry surface only. |
@@ -85,12 +89,12 @@ Later phases depend on stable completion of earlier phases.
 | Rule evaluation diagnostics and trigger tooling | Phase 12 | Required | Now | Needed for deterministic validation and supportability. |
 | Debug UX depth and tuning ergonomics | Phase 12 | Required | Next | Deferred polish with no capability removal. |
 
-### 21.3.2 Stage gates ###
+### 21.3.2 Stage gates
 
 All gates are mandatory at stage boundaries.
 
 | Gate | Objective | Minimum pass criteria |
-| ---- | ---- | ---- |
+| --- | --- | --- |
 | G1 Boundary integrity | Preserve command/snapshot architecture | UI and Task Builder paths do not mutate canonical task state directly. |
 | G2 Differentiator viability | Keep Task Builder shippable | Wizard can define, validate, serialize, and persist rules end-to-end. |
 | G3 Dual-surface parity | Keep HUD and menu behavior aligned | HUD and menu consume the same snapshot and expose coherent task data. |
@@ -99,37 +103,32 @@ All gates are mandatory at stage boundaries.
 | G6 Scope budget | Control complexity without feature drops | Deferrals are stage-only and all deferred capabilities remain mapped. |
 | G7 Doc-sync closure | Keep docs and code aligned | Design sections are updated first, Architecture Map reconciled second, and variances logged. |
 
-### 21.3.3 Code-doc synchronization and variance policy ###
+### 21.3.3 Code-doc synchronization and variance policy
 
 Synchronization order:
 
 1. Update canonical design guide sections first.
-2. Reconcile Architecture Map wording and references against the updated
-canonical sections.
-3. Record any accepted divergence in the variance register with explicit
-justification and closure target.
+2. Reconcile Architecture Map wording and references against the updated canonical sections.
+3. Record any accepted divergence in the variance register with explicit justification and closure target.
 
 Variance register template:
 
 | Variance ID | Canonical source | Variant artifact | Justification | Decision | Closure target | Status |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| --- | --- | --- | --- | --- | --- | --- |
 | VAR-XXX | Design guide section | Code or secondary doc reference | Why divergence exists | Keep/update/deprecate | Planned closure milestone | Open/closed |
 
 Seeded baseline variance entry:
 
 | Variance ID | Canonical source | Variant artifact | Justification | Decision | Closure target | Status |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| --- | --- | --- | --- | --- | --- | --- |
 | VAR-001 | Identifier naming in design docs (`RuleID`, `SubjectID`) | Current code symbols and file paths (`RuleId`, `SubjectId`; `Domain/Identifiers/RuleId.cs`, `Domain/Identifiers/SubjectId.cs`) | Legacy docs and checklist wording still use older acronym style | Keep code canonical and update legacy docs incrementally | Doc-sync closure before Version 1 RC | Open |
 | VAR-002 | Section 03 / Section 21 identifier naming (`Manual_N`) | Test files using `ManualTask_N` | Legacy naming split; `Manual_N` is canonical; `ManualTask_N` appears in some test fixtures | Keep `Manual_N` canonical; update test fixtures incrementally | Doc-sync closure before Version 1 RC | Open |
 | VAR-003 | Section 07 rule evaluation model ("commands only" wording) | Pre-fix wording in Section 07 that said "commands or actions" | Pre-fix divergence; resolved by T1 doc fix in this phase | Resolved by T1 doc fix | Closed by T1 in this phase | Closed |
 | VAR-004 | Section 09 persistence model (history exclusion in §9.12) | Pre-fix wording excluded historical task ledger from V1 | Pre-fix divergence; resolved by T1/T5 doc fixes adding ledger to `SaveData` and removing the stale §9.12 exclusion | Resolved by T1/T5 Section 09 doc fixes | Closed by T1/T5 in this phase | Closed |
 
-**Note:** Findings that represent bugs to fix (rather than accepted
-divergences) are tracked in the `ImplementationIssues` folder
-(`Project/Tasks/ImplementationPlan/ImplementationIssues/`), not in this
-variance register.
+**Note:** Findings that represent bugs to fix (rather than accepted divergences) are tracked in the `ImplementationIssues` folder (`Project/Tasks/ImplementationPlan/ImplementationIssues/`), not in this variance register.
 
-## 21.4 Phase 1 — Project Skeleton and Lifecycle ##
+## 21.4 Phase 1 — Project Skeleton and Lifecycle
 
 Phase 1 establishes the basic mod structure and lifecycle integration.
 
@@ -156,7 +155,7 @@ Example lifecycle hooks:
 
 This phase must ensure the mod loads safely without any task logic yet.
 
-## 21.5 Phase 2 — Core Domain Model ##
+## 21.5 Phase 2 — Core Domain Model
 
 Phase 2 implements the domain objects defined in the core data model.
 
@@ -170,36 +169,32 @@ Key types include:
     - `TaskStatus`
     - `DayKey`
 
-Deterministic identifier rules defined in Section 3 must be implemented at this
-stage. fileciteturn1file19
+Deterministic identifier rules defined in Section 3 must be implemented at this stage. fileciteturn1file19
 
-Phase 2 does not introduce a stored per-task priority field in `TaskObject` or
-daily snapshots.
+Phase 2 does not introduce a stored per-task priority field in `TaskObject` or daily snapshots.
 
 This phase should include helper utilities for:
 
     - deterministic TaskId generation
     - day key construction
 
-Deterministic task-type sort mechanism implementation (derived ordering map,
-fallback chain, comparer, and comparer tests) is deferred to Phase 5+ when
-task generator/task-type coverage is stable.
+Deterministic task-type sort mechanism implementation (derived ordering map, fallback chain, comparer, and comparer tests) is deferred to Phase 5+ when task generator/task-type coverage is stable.
 
-Future customization of ordering should use user-configurable ordering/sort
-profiles rather than stored per-task priorities.
+Future customization of ordering should use user-configurable ordering/sort profiles rather than stored per-task priorities.
 
 Phase 2 localization scope constraint:
 
     - Phase 2 may define documentation and architecture guardrails for
     localization boundaries only.
-    - Any translation change that impacts existing Phase 1 or Phase 2
-    implementation behavior is explicitly deferred to Phase 3+.
+    - Any translation behavior change is deferred to UI/view-model phases,
+    consistent with Section 2.6, Section 10.15, and Section 20.12.
+    Backend and engine layers remain localization-neutral per Section 5.13.
     - No additional implementation checklist expansion is introduced in this
     section for post-Phase 2 localization work.
 
 No UI or engine logic should exist yet.
 
-## 21.6 Phase 3 — State Store ##
+## 21.6 Phase 3 — State Store
 
 Phase 3 introduces the centralized State Store defined in Section 4.9.
 
@@ -222,7 +217,7 @@ Example command types:
 
 The State Store becomes the authoritative runtime representation of tasks.
 
-## 21.7 Phase 4 — View Model Infrastructure ##
+## 21.7 Phase 4 — View Model Infrastructure
 
 Phase 4 introduces the View Model layer defined in Section 10A.
 
@@ -230,20 +225,81 @@ Responsibilities:
 
     - Implement base view model with INPC via PropertyChanged.SourceGenerator
     - Implement `HudViewModel` and `TaskListViewModel` as initial consumers
+    - Include `ConfigViewModel` within the expanded Phase 4 ViewModel scope
+    approved for this plan
     - Subscribe to `SnapshotChanged` (Section 8.12) and project snapshot
     data into bindable properties
     - Establish the command dispatch pattern from view models back to the
     State Store
 
-This phase validates the State Store → ViewModel → UI binding pipeline
-before any StarML layout work begins. View models should be testable
-without a running game.
+Phase 4 incorporates deferred carryover from earlier phases through `ImplementationIssues` beginning at this stage, including:
 
-## 21.8 Phase 5 — Built-in Task Generators ##
+    - #100 localization/translation runtime behavior (retargeted to Phase 4)
+    - #106 terminology clarification
+    - #107 snapshot subscription wiring
+    - #108 INPC projection behavior
+    - #109 UI-local state ownership boundaries
+    - #159 config loader exception hardening (with #86 treated as duplicate
+    and merged into #159)
+
+This phase validates the State Store → ViewModel → UI binding pipeline before any StarML layout work begins. View models should be testable without a running game.
+
+### 21.7.1 Carryover mapping for Phases 5-9 (ImplementationIssues)
+
+Carryover mapping in this section is explicit and based on active issue records.
+
+Active-record carryover ID set:
+
+    - #103-#127, #131, #132
+    - #128-#130 are not represented as active records currently.
+
+Phase 5 carryover (`ImplementationIssues`):
+
+    - #104, #105, #110, #111, #112, #113, #126, #131
+
+Phase 6 carryover (`ImplementationIssues`):
+
+    - #103, #114, #115, #127, #132
+
+Phase 7 carryover (`ImplementationIssues`):
+
+    - #116, #117, #118, #119
+
+Phase 8 carryover (`ImplementationIssues`):
+
+    - #120, #121, #124
+    - Planning boundary note: Version 1 treats #124 as Later/V2+ scope.
+    `ImplementationIssues` scheduled-target metadata remains canonical until
+    separately retargeted.
+
+Phase 9 carryover (`ImplementationIssues`):
+
+    - #122, #123, #125
+    - Planning boundary note: Version 1 treats #122 and #123 as Later/V2+
+    scope. `ImplementationIssues` scheduled-target metadata remains canonical
+    until separately retargeted.
+    - Planning boundary note: #125 remains Later/V2+ scope in this plan.
+
+### 21.7.2 Cross-cutting ownership and dependency mapping
+
+This mapping locks ownership for cross-section capabilities without changing phase order.
+
+| Source section capability | Phase owner | Dependency chain | Delivery stage | Notes |
+| --- | --- | --- | --- | --- |
+| Section 20.8 toast routing and notification presentation | Phase 9 | Phase 4 ViewModel snapshot projection and command feedback pathways | Now | Toast routing is HUD-owned delivery work and remains out of Phase 4 implementation scope. |
+| Section 20.10 onboarding flows and first-run UX guidance | Phase 8 | Phase 7 persistence of `OnboardingAcknowledged` and related user-state restoration | Now | Onboarding implementation is menu-owned; persistence preconditions are Phase 7-owned. |
+| Section 12 generator outputs and deterministic task emission integration | Phase 5 | Phase 3 command boundaries and Phase 4 UI consumption contracts | Now | Generator logic remains phase-local; UI phases consume resulting snapshots only. |
+| Section 15 rule-definition authoring and serialized wizard outputs | Phase 10 | Phase 6 rule runtime model and Phase 7 rule persistence contracts | Now | Authoring UX does not bypass rule engine contracts. |
+| Section 16 history browse depth and historical navigation ergonomics | Phase 11 | Phase 7 ledger persistence and Phase 8 menu navigation shell | Now + Next | Baseline browse ships in Now; depth and polish remain staged to Next. |
+| Section 19 diagnostics/debug UX and deterministic observability tooling | Phase 12 | Phase 6 evaluation telemetry and Phase 7 persistence metadata | Now + Next | Determinism-supporting diagnostics ship in Now; ergonomics hardening remains Next. |
+
+## 21.8 Phase 5 — Built-in Task Generators
 
 Phase 5 introduces built-in automatic task generators.
 
 Reference: Section 5. fileciteturn1file17
+
+Minimum Version 1 generator scope must follow the normative built-in set defined in Section 13.10.
 
 Initial generators should be implemented for the most stable gameplay systems:
 
@@ -253,12 +309,11 @@ Initial generators should be implemented for the most stable gameplay systems:
     - calendar reminders
     - quest progress
 
-Generators must operate using the Generation/Evaluation Context defined in
-Section 5.3 rather than querying the game directly. fileciteturn1file17
+Generators must operate using the Generation/Evaluation Context defined in Section 5.3 rather than querying the game directly. fileciteturn1file17
 
 Outputs from generators must pass through the shared task pipeline.
 
-## 21.9 Phase 6 — Rule Evaluation Engine ##
+## 21.9 Phase 6 — Rule Evaluation Engine
 
 Phase 6 implements the rule engine that evaluates Task Builder rules.
 
@@ -280,7 +335,7 @@ This phase must implement:
 
 Rules should be testable independently of the UI.
 
-## 21.10 Phase 7 — Persistence System ##
+## 21.10 Phase 7 — Persistence System
 
 Phase 7 implements the persistence model.
 
@@ -292,16 +347,17 @@ Responsibilities:
     - save manual tasks
     - save runtime baseline values
     - save store-level user state
+    - persist Daily Snapshot Ledger state required by Section 11 and
+    Section 9.14
     - migrate save data between schema versions
 
 Persistence must follow the minimal storage principle:
 
-only essential state is stored; derived task state is reconstructed by the
-engine.
+only essential state is stored; derived task state is reconstructed by the engine.
 
 Save/load lifecycle must align with the mod lifecycle defined in Section 2.5.
 
-## 21.11 Phase 8 — Menu Dashboard ##
+## 21.11 Phase 8 — Menu Dashboard
 
 Phase 8 implements the main mod menu.
 
@@ -310,10 +366,7 @@ Stage intent:
     - Now: ship the required Version 1 management surface.
     - Next: deepen non-blocking workflow polish without dropping capability.
 
-The menu is implemented before the HUD because it exercises the full
-StardewUI menu pipeline (layout, interaction, tabs, navigation) and
-validates the ViewModel binding layer on a simpler interaction surface
-than the always-on HUD drawable.
+The menu is implemented before the HUD because it exercises the full StardewUI menu pipeline (layout, interaction, tabs, navigation) and validates the ViewModel binding layer on a simpler interaction surface than the always-on HUD drawable.
 
 Menu capabilities include:
 
@@ -324,14 +377,13 @@ Menu capabilities include:
     - configuration controls
     - statistics access (V2)
 
-Detailed history browsing interactions are delivered in Phase 11
-(Now baseline, Next depth).
+Detailed history browsing interactions are delivered in Phase 11 (Now baseline, Next depth).
 
 The menu is also responsible for launching the Task Builder wizard.
 
 The menu uses the same store snapshot model as the HUD.
 
-## 21.12 Phase 9 — HUD Interface ##
+## 21.12 Phase 9 — HUD Interface
 
 Phase 9 introduces the in-game HUD interface.
 
@@ -340,9 +392,7 @@ Stage intent:
     - Now: ship the required Version 1 in-game surface.
     - Next: tune interaction ergonomics while preserving parity.
 
-The HUD uses StardewUI's `IViewDrawable` API
-(`viewEngine.CreateDrawableFromAsset()`) as described in Section
-20.6.1.
+The HUD uses StardewUI's `IViewDrawable` API (`viewEngine.CreateDrawableFromAsset()`) as described in Section 20.6.1.
 
 HUD responsibilities:
 
@@ -356,7 +406,7 @@ The HUD must consume immutable snapshots from the State Store.
 
 It must never mutate task objects directly.
 
-## 21.13 Phase 10 — Task Builder Wizard ##
+## 21.13 Phase 10 — Task Builder Wizard
 
 Phase 10 implements the Task Builder UI system.
 
@@ -366,7 +416,7 @@ Stage intent:
     - Next: add polish and template-depth improvements without changing
     command/snapshot boundaries.
 
-Reference: Section 6. fileciteturn1file15
+Reference: Section 6 and Section 14. fileciteturn1file15
 
 The wizard must guide users through:
 
@@ -389,7 +439,7 @@ Boundary constraint:
     - Runtime task changes occur only after rule evaluation through
     command/state-store boundaries.
 
-## 21.14 Phase 11 — History Browsing UI ##
+## 21.14 Phase 11 — History Browsing UI
 
 Phase 11 introduces the history browsing UI.
 
@@ -404,15 +454,13 @@ Capabilities include:
 
     - viewing previous days' task lists
     - browsing completed and incomplete tasks for a selected day
-    - date navigation and quick jump to a specific day
-    - filtering by category or task type
+    - date navigation for day-to-day browsing
 
-Statistics and analytics (V2): Completion statistics, productivity
-trends, and aggregate dashboards are deferred to Version 2. The Daily
-Snapshot Ledger provides the data foundation. Statistics must always
-derive from historical snapshots rather than duplicating stored data.
+Filtering and quick-jump depth are Next-stage scope for Phase 11 and are not part of the Version 1 baseline.
 
-## 21.15 Phase 12 — Debug and Development Tools ##
+Statistics and analytics (V2): Completion statistics, productivity trends, and aggregate dashboards are deferred to Version 2. The Daily Snapshot Ledger provides the data foundation. Statistics must always derive from historical snapshots rather than duplicating stored data.
+
+## 21.15 Phase 12 — Debug and Development Tools
 
 Phase 12 implements debugging and developer tooling.
 
@@ -438,10 +486,9 @@ Debug tools should help verify:
     - baseline capture behavior
     - engine performance boundaries
 
-These tools are critical for validating complex Task Builder rules during
-development.
+These tools are critical for validating complex Task Builder rules during development.
 
-## 21.16 Testing Strategy ##
+## 21.16 Testing Strategy
 
 Testing should occur continuously throughout implementation.
 
@@ -460,7 +507,7 @@ Special attention should be given to:
     - persistence migration safety
     - collision handling in the task pipeline
 
-## 21.17 Version 1 Release Criteria ##
+## 21.17 Version 1 Release Criteria
 
 Version 1 of the mod is considered ready when the following systems are stable:
 
@@ -480,5 +527,4 @@ Features explicitly excluded from Version 1 include:
     - user-defined task priorities
     - cross-save task sharing
 
-Future versions may expand the system once the Version 1 architecture has
-proven stable.
+Future versions may expand the system once the Version 1 architecture has proven stable.

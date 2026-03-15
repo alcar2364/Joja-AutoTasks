@@ -1,0 +1,161 @@
+Execution Plan - Reconciliation Workstream (Docs-Only)
+Date: 2026-03-14
+Mode: Documentation-only planning artifact
+
+Goal
+- Produce an execution-ready, minimal-change documentation reconciliation plan using current workspace state (including unstaged edits).
+- Apply canonicalization decisions: Section 21 is canonical for scheduling intent; issue #100 is Phase 4; issue #86 is merged into #159.
+- Follow workflow name mapping: pre-validation -> prd-validation, execute.md -> execution.md.
+
+A-I Workflow Mapping To Concrete Batches
+A) Intake and scope lock (initial-workflow.md + workflow-brief.md)
+- Outcome: freeze constraints, canonical source order, and no-code boundary.
+- Artifacts used: existing temp artifacts 01 and 03.
+
+B) Requirements validation (prd-validation.md alias for pre-validation)
+- Outcome: confirm request/inputs complete; no blocking ambiguity remains.
+- Artifacts used: existing temp artifact 03.
+
+C) Core flow grounding (core-flows.md)
+- Outcome: align reconciliation path from design-guide ownership to issue scheduling to checklist generation.
+- Artifacts used: existing temp artifact 02.
+
+D) Technical mapping (tech-plan.md)
+- Outcome: capture section-to-phase ownership adjustments needed in Section 21.
+- Artifacts used: existing temp artifact 04.
+
+E) Architecture validation (architecture-validation.md)
+- Outcome: confirm no new phase needed; enforce minimal-change and boundary preservation.
+- Artifacts used: existing temp artifact 05.
+
+F) Cross-artifact validation (cross-artifact-validation.md)
+- Outcome: lock concrete inconsistencies and update targets (#100 phase mismatch, #86/#159 duplicate-active conflict, Section 20.8/20.10 ownership gap).
+- Artifacts used: existing temp artifact 06.
+
+G) Ticket breakdown (ticket-breakdown.md)
+- Outcome: map work into executable tickets with dependencies and out-of-scope boundaries.
+- Artifacts used: existing temp artifact 07.
+
+H) Execution orchestration (execution.md alias for execute.md)
+- Outcome: convert tickets into ordered edit batches with explicit sequential vs parallel lanes and gate checks.
+- Artifact produced: this file.
+
+I) Final verification planning (implementation-validation.md)
+- Outcome: define final cross-artifact consistency sweep and closure criteria before handoff completion.
+- Artifact produced: this file.
+
+Ticket Breakdown With Parallel/Sequential Execution
+Ticket 1 (Sequential - must run first)
+- Reconcile scheduling and duplicate policy metadata.
+- Why first: downstream checklist and governance updates depend on canonical issue set.
+
+Ticket 2 and Ticket 3 (Parallel after Ticket 1)
+- Ticket 2: strengthen Section 21 ownership mapping for Section 20.8 toast routing and Section 20.10 onboarding ownership/dependencies.
+- Ticket 3: add cross-cutting ownership mapping table for Sections 12, 15, 16, 19 in Section 21.
+- Parallel condition: Ticket 2 and Ticket 3 edit the same planning file in one coordinated batch and can proceed once Ticket 1 lands.
+
+Ticket 4 (Sequential - after Ticket 2 and Ticket 3)
+- Align Phase 4 checklist to reconciled issue set and explicit out-of-scope exclusions.
+- Why now: depends on finalized ownership language and reconciled issue model.
+
+Ticket 5 (Sequential - after Ticket 4)
+- Harden checklist generation governance in instruction + skill files to prevent recurrence.
+- Why last: locks preventive guardrails after reconciliation edits settle.
+
+Exact Target Files and Intended Change Intent
+Ticket 1 file set (canonicalization reconciliation)
+- Project/Tasks/ImplementationPlan/ImplementationIssues/ImplementationIssuesIndex.md
+  Intent: set #100 scheduled target to Phase 4; retain #86 as historical merged-reference only (non-active); preserve #159 as the sole canonical active tracker for that merged scope.
+- Project/Tasks/ImplementationPlan/ImplementationIssues/Records/issue-100.md
+  Intent: normalize scheduled_target to Phase 4 and note Section 21 canonicalization basis.
+- Project/Tasks/ImplementationPlan/ImplementationIssues/Records/issue-86.md
+  Intent: mark merged-into #159 with required non-active historical-reference status (retain traceability only).
+- Project/Tasks/ImplementationPlan/ImplementationIssues/Records/issue-159.md
+  Intent: confirm canonical active ownership language references merged #86 as historical-only.
+
+Ticket 2 file set (Section 21 ownership clarity)
+- Project/Planning/Joja AutoTasks Design Guide/Section 21 - Implementation Plan.md
+  Intent: explicitly map Section 20.8 toast routing ownership to Phase 9; explicitly map Section 20.10 onboarding ownership to Phase 8 with Phase 7 OnboardingAcknowledged persistence dependency; keep no-drop strategy and phase order unchanged.
+
+Ticket 3 file set (Section 21 cross-cutting ownership matrix)
+- Project/Planning/Joja AutoTasks Design Guide/Section 21 - Implementation Plan.md
+  Intent: add concise cross-cutting mapping table for Sections 12, 15, 16, and 19 to reduce future checklist drift without changing phase order.
+
+Ticket 4 file set (Phase 4 checklist scope reconciliation)
+- Project/Tasks/ImplementationPlan/Phase 4 - Atomic Commit Execution Checklist.md
+  Intent: ensure target issue set references reconciled canonical active rows (#159 includes merged #86, #100, #106-#109); add explicit out-of-scope exclusions for toast routing, onboarding implementation, and gamepad verification where these belong to later UI phases.
+
+Ticket 5 file set (future checklist hardening)
+- .github/instructions/atomic-commit-execution-checklist-creation.instructions.md
+  Intent: require mandatory pre-publish checks for (1) Section 21 section-to-phase mapping, (2) ImplementationIssues scheduling conflicts, (3) merged-duplicate detection/resolution.
+- .github/skills/atomic-commit-execution-checklist-creation/SKILL.md
+  Intent: mirror the same required checks at skill level so planner/reviewer/workspace drafting flows inherit guardrails consistently.
+
+Validation Gates (Run After Each Batch)
+Gate G1 - Post-T1 Canonicalization Gate
+- Pass if:
+  - #100 is Phase 4 consistently in index + issue record.
+  - #86 is retained only as a merged historical reference and remains non-active.
+  - #159 is the sole active tracker for the merged #86 scope.
+
+Gate G2 - Post-(Ticket 2/Ticket 3) Scope and Ownership Gate
+- Pass if:
+  - Section 21 explicitly owns Section 20.8 and 20.10 in existing phases (no new phase introduced).
+  - Section 21 includes the cross-cutting mapping table for Sections 12, 15, 16, and 19.
+
+Gate G3 - Post-(Ticket 4/Ticket 5) Reconciliation and Governance Hardening Gate
+- Pass if:
+  - Phase 4 checklist target issue line and exclusions align with Ticket 1 canonical issue state.
+  - Phase 4 checklist does not leak implementation scope into Phase 8/9 delivery work.
+  - instruction + skill both codify the same three mandatory checks.
+  - no contradiction remains between checklist-generation instruction and skill brief.
+
+Final Cross-Artifact Verification (I-phase)
+- Confirm consistency across:
+  - Section 21 carryover ownership and phase boundaries.
+  - ImplementationIssues index and issue records (#100, #86, #159).
+  - Phase 4 checklist target issue set and explicit exclusions.
+  - checklist-creation instruction and skill preconditions.
+- Confirm workflow alias mapping is preserved in planning text: pre-validation -> prd-validation; execute.md -> execution.md.
+- Confirm minimal-change principle: docs only, no new phase, no code/test/build actions.
+
+Done Definition For This Plan
+- A single executable docs-only sequence exists with clear dependencies and parallelism.
+- Every targeted file has explicit edit intent.
+- Batch-level and final verification gates are defined and measurable.
+- WorkspaceAgent handoff text is ready and scoped.
+
+WorkspaceAgent-Ready Execution Handoff
+PlannerHandoff: true
+ReviewMode: pre
+ReviewStatus: completed
+ReviewReason: Material multi-file docs reconciliation touching canonical scheduling, phase ownership, checklist scope, and checklist-governance rules; plan reviewed for sequencing and boundary safety before drafting/edit execution.
+
+Goal
+Implement docs-only reconciliation updates for canonical issue scheduling and checklist-governance hardening without changing runtime code.
+
+Scope
+- Reconcile #100 schedule to Phase 4 and retire #86 as active duplicate of #159.
+- Strengthen Section 21 ownership mapping for Section 20.8 and 20.10.
+- Add Section 21 cross-cutting mapping table coverage for Sections 12, 15, 16, and 19.
+- Reconcile Phase 4 checklist issue set and explicit exclusions.
+- Harden checklist-generation instruction + skill with mandatory consistency checks.
+
+Constraints
+- Docs-only edits.
+- Minimal-change principle.
+- No new phase unless absolutely required (not expected).
+- Preserve canonicalization decisions already provided.
+- Respect workflow naming mapping: pre-validation -> prd-validation; execution.md is canonical execute flow artifact.
+
+Edit Order
+1) Ticket 1: ImplementationIssues index/records reconciliation.
+2) Ticket 2 + Ticket 3 in parallel: Section 21 ownership mapping and cross-cutting matrix updates.
+3) Ticket 4: Phase 4 checklist reconciliation.
+4) Ticket 5: instruction + skill hardening.
+5) Final cross-artifact verification sweep.
+
+Verify Before Merge
+- Run G1, G2, G3 gates exactly as defined above.
+- Verify final consistency across Section 21, ImplementationIssues index/records, Phase 4 checklist, and checklist governance files.
+- Ensure no runtime code, build commands, or test commands were introduced.
