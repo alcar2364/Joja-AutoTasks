@@ -186,9 +186,6 @@ internal sealed class StateStore
         return TaskIdFactory.CreateManual(nextId);
     }
 
-    // create the snapshot first, then raise:
-    // sender: this
-    // args: new SnapshotChangedEventArgs(snapshot)
     private void PublishSnapshot()
     {
         if (!_timeContextInitialized)

@@ -185,12 +185,12 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 3C - Implement view model subscription initialization
 
-- [ ] **Action:** In `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` constructors, call `UISnapshotSubscriptionManager.Subscribe` to register a snapshot change callback. Store callback reference as instance field for unsubscription. Add constructor parameter for StateStore or inject dependency if pattern supports DI.
-- [ ] **Scope:** `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` (constructors; subscription registration).
-- [ ] **Verify:** Constructors compile; subscription is registered when view model instantiated; callback is callable (not null).
-- [ ] **Suggested commit:** `phase4(step3C): implement view model subscription initialization`
-- [ ] **Must include:** Subscription registration in constructor; callback reference stored; no syntax errors.
-- [ ] **Must exclude:** Property binding, snapshot projection, UI rendering.
+- [x] **Action:** In `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` constructors, call `UISnapshotSubscriptionManager.Subscribe` to register a snapshot change callback. Store callback reference as instance field for unsubscription. Add constructor parameter for StateStore or inject dependency if pattern supports DI.
+- [x] **Scope:** `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` (constructors; subscription registration).
+- [x] **Verify:** Constructors compile; subscription is registered when view model instantiated; callback is callable (not null).
+- [x] **Suggested commit:** `phase4(step3C): implement view model subscription initialization`
+- [x] **Must include:** Subscription registration in constructor; callback reference stored; no syntax errors.
+- [x] **Must exclude:** Property binding, snapshot projection, UI rendering.
 
 ### 3D - Implement deterministic unsubscription on dispose
 
