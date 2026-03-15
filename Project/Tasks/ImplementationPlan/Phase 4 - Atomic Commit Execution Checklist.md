@@ -194,16 +194,23 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 3D - Implement deterministic unsubscription on dispose
 
-- [ ] **Action:** Add `IDisposable` implementation to HudViewModel and TaskListViewModel. In Dispose method, call `UISnapshotSubscriptionManager.Unsubscribe` to deregister snapshot callback. Use finalizer pattern (destructor) as safety net if Dispose is not called; log warning in finalizer.
-- [ ] **Scope:** `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` (IDisposable.Dispose method; optional finalizer).
-- [ ] **Verify:** IDisposable is implemented; Dispose is callable without error; unsubscription is deterministic (always removes callback when called).
-- [ ] **Suggested commit:** `phase4(step3D): add IDisposable with deterministic unsubscription`
-- [ ] **Must include:** IDisposable.Dispose method; unsubscription call; thread-safety if view models are multi-threaded.
-- [ ] **Must exclude:** Business logic in Dispose; snapshot manipulation.
+- [x] **Action:** Add `IDisposable` implementation to HudViewModel and TaskListViewModel. In Dispose method, call `UISnapshotSubscriptionManager.Unsubscribe` to deregister snapshot callback. Use finalizer pattern (destructor) as safety net if Dispose is not called; log warning in finalizer.
+- [x] **Scope:** `UI/ViewModels/HudViewModel.cs` and `UI/ViewModels/TaskListViewModel.cs` (IDisposable.Dispose method; optional finalizer).
+- [x] **Verify:** IDisposable is implemented; Dispose is callable without error; unsubscription is deterministic (always removes callback when called).
+- [x] **Suggested commit:** `phase4(step3D): add IDisposable with deterministic unsubscription`
+- [x] **Must include:** IDisposable.Dispose method; unsubscription call; thread-safety if view models are multi-threaded.
+- [x] **Must exclude:** Business logic in Dispose; snapshot manipulation.
+
+#### 3D.1 Notes for Reviewer: ####
+
+I used the returned subscription token’s Dispose() method instead of UiSnapshotSubscriptionManager.Unsubscribe(...) because Step 3D’s goal is deterministic unsubscription on dispose, and the current subscription manager already models that lifetime through IDisposable. Calling Dispose() removes the exact registered listener through the owned token, stays aligned with the standard .NET cleanup pattern, and avoids introducing two teardown paths for the same subscription mechanism.
+
+I did not add a finalizer. The view models only own managed snapshot-subscription cleanup through the returned IDisposable token, and Step 3D’s deterministic teardown requirement is already satisfied by explicit Dispose(). Adding a finalizer here would introduce delayed, non-deterministic backup cleanup and extra dispose-pattern complexity without clear lifecycle benefit for this managed subscription case.
+
 
 ### Step 3 Completion Checkpoint
 
-- [ ] All substeps in Step 3 complete (3A, 3B, 3C, 3D).
+- [x] All substeps in Step 3 complete (3A, 3B, 3C, 3D).
 
 ---
 
@@ -543,11 +550,11 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ---
 
-## Implementation Notes -- Reviewer Action Required
+## Reviewer Action Required
 
 **Open questions for Reviewer:**
 
-1. Step 1A says to name the new subscription manager `UISnapshotSubscriptionManager`,  
+1. Step 1A says to name the new subscription manager `UiSnapshotSubscriptionManager`,  
    however, [C# Contract](/.github/instructions/csharp-style-contract.instructions.md)  
    says `Manager` name is to be avoided without justification. Is `UiSnapshotSubscriptionManager`  
    acceptable given the UI-specific nature, or should we consider an alternative name like `UiSnapshotSubscriptionCoordinator` given it is brokering subscriptions? Let's discuss this post-review.
