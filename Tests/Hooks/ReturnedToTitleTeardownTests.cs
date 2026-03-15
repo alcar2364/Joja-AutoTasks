@@ -32,7 +32,8 @@ public sealed class ReturnedToTitleTeardownTests
             category: TaskCategory.Farming,
             title: "Pre-title task",
             description: null,
-            creationDay: day);
+            creationDay: day
+        );
 
         InvokeOnReturnedToTitle(sut);
 
@@ -62,7 +63,8 @@ public sealed class ReturnedToTitleTeardownTests
     {
         FieldInfo runtimeField = Assert.Single(
             typeof(ModEntry).GetFields(BindingFlags.Instance | BindingFlags.NonPublic),
-            static field => field.FieldType == typeof(ModRuntime));
+            static field => field.FieldType == typeof(ModRuntime)
+        );
 
         runtimeField.SetValue(entry, runtime);
     }
@@ -71,7 +73,8 @@ public sealed class ReturnedToTitleTeardownTests
     {
         FieldInfo hudViewModelField = Assert.Single(
             typeof(ModEntry).GetFields(BindingFlags.Instance | BindingFlags.NonPublic),
-            static field => field.FieldType == typeof(HudViewModel));
+            static field => field.FieldType == typeof(HudViewModel)
+        );
 
         return hudViewModelField.GetValue(entry) as HudViewModel;
     }
@@ -80,23 +83,35 @@ public sealed class ReturnedToTitleTeardownTests
     {
         FieldInfo hudViewModelField = Assert.Single(
             typeof(ModEntry).GetFields(BindingFlags.Instance | BindingFlags.NonPublic),
-            static field => field.FieldType == typeof(HudViewModel));
+            static field => field.FieldType == typeof(HudViewModel)
+        );
 
         hudViewModelField.SetValue(entry, hudViewModel);
     }
 
     private static int GetTaskCount(Store stateStore)
     {
-        FieldInfo stateContainerField = typeof(Store).GetField("_stateContainer", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("StateStore state container field was not found.");
+        FieldInfo stateContainerField =
+            typeof(Store).GetField(
+                "_stateContainer",
+                BindingFlags.Instance | BindingFlags.NonPublic
+            )
+            ?? throw new InvalidOperationException(
+                "StateStore state container field was not found."
+            );
 
-        object stateContainer = stateContainerField.GetValue(stateStore)
+        object stateContainer =
+            stateContainerField.GetValue(stateStore)
             ?? throw new InvalidOperationException("StateStore state container was null.");
 
-        MethodInfo getAllMethod = stateContainer.GetType().GetMethod("GetAll", BindingFlags.Instance | BindingFlags.NonPublic)
+        MethodInfo getAllMethod =
+            stateContainer
+                .GetType()
+                .GetMethod("GetAll", BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new InvalidOperationException("StateContainer.GetAll method was not found.");
 
-        object records = getAllMethod.Invoke(stateContainer, Array.Empty<object>())
+        object records =
+            getAllMethod.Invoke(stateContainer, Array.Empty<object>())
             ?? throw new InvalidOperationException("StateContainer.GetAll returned null.");
 
         return ((System.Collections.IEnumerable)records).Cast<object>().Count();
@@ -104,8 +119,11 @@ public sealed class ReturnedToTitleTeardownTests
 
     private static void InvokeOnReturnedToTitle(ModEntry entry)
     {
-        MethodInfo method = typeof(ModEntry).GetMethod("OnReturnedToTitle", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("OnReturnedToTitle method was not found.");
+        MethodInfo method =
+            typeof(ModEntry).GetMethod(
+                "OnReturnedToTitle",
+                BindingFlags.Instance | BindingFlags.NonPublic
+            ) ?? throw new InvalidOperationException("OnReturnedToTitle method was not found.");
 
         method.Invoke(entry, new object?[] { null, null });
     }
@@ -129,34 +147,23 @@ public sealed class ReturnedToTitleTeardownTests
             _entry = entry;
         }
 
-        public void DispatchGameLaunched()
-        {
-        }
+        public void DispatchGameLaunched() { }
 
-        public void DispatchSaveLoaded()
-        {
-        }
+        public void DispatchSaveLoaded() { }
 
-        public void DispatchDayStarted()
-        {
-        }
+        public void DispatchDayStarted() { }
 
         public void DispatchReturnedToTitle()
         {
-            HudDisposedBeforeReturnedToTitleDispatch = _entry is not null && GetHudViewModel(_entry) is null;
+            HudDisposedBeforeReturnedToTitleDispatch =
+                _entry is not null && GetHudViewModel(_entry) is null;
             StateStillPopulatedDuringReturnedToTitleDispatch = GetTaskCount(_stateStore) > 0;
         }
 
-        public void DispatchSavingInProgress()
-        {
-        }
+        public void DispatchSavingInProgress() { }
 
-        public void DispatchTimeChanged(DayKey currentDay, int currentTime)
-        {
-        }
+        public void DispatchTimeChanged(DayKey currentDay, int currentTime) { }
 
-        public void DispatchUpdateTicked()
-        {
-        }
+        public void DispatchUpdateTicked() { }
     }
 }
