@@ -244,12 +244,12 @@ I changed LastUpdateTime to LastSnapshotVersion with type long to track the vers
 
 ### 4C - Create TaskItemViewModel for row binding
 
-- [ ] **Action:** Create `UI/ViewModels/TaskItemViewModel.cs` with properties mapping to TaskRecord display: Id (TaskId), Title, Status, IsPinned, CreatedDay, LastModifiedDay. Add constructor accepting TaskRecord to populate properties. Implement INotifyPropertyChanged.
-- [ ] **Scope:** `UI/ViewModels/TaskItemViewModel.cs` (new file; public class `TaskItemViewModel : UIViewModelBase`).
-- [ ] **Verify:** Constructor accepts TaskRecord; properties are readable; INotifyPropertyChanged is available on property change.
-- [ ] **Suggested commit:** `phase4(step4C): create TaskItemViewModel for row binding`
-- [ ] **Must include:** Properties for Id, Title, Status, IsPinned, CreatedDay, LastModifiedDay; constructor from TaskRecord; INotifyPropertyChanged.
-- [ ] **Must exclude:** UI rendering, command handling.
+- [x] **Action:** Create `UI/ViewModels/TaskItemViewModel.cs` with properties mapping to TaskRecord display: Id (TaskId), Title, Status, IsPinned, CreatedDay, LastModifiedDay. Add constructor accepting TaskRecord to populate properties. Implement INotifyPropertyChanged.
+- [x] **Scope:** `UI/ViewModels/TaskItemViewModel.cs` (new file; public class `TaskItemViewModel : UIViewModelBase`).
+- [x] **Verify:** Constructor accepts TaskRecord; properties are readable; INotifyPropertyChanged is available on property change.
+- [x] **Suggested commit:** `phase4(step4C): create TaskItemViewModel for row binding`
+- [x] **Must include:** Properties for Id, Title, Status, IsPinned, CreatedDay, LastModifiedDay; constructor from TaskRecord; INotifyPropertyChanged.
+- [x] **Must exclude:** UI rendering, command handling.
 
 ### 4D - Add unit tests for collection reconciliation
 

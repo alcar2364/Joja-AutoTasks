@@ -17,9 +17,6 @@ internal sealed partial class HudViewModel : UiViewModelBase, IDisposable
     [ObservableProperty]
     private int _pinnedTaskCount;
 
-    [ObservableProperty]
-    private long _lastSnapshotVersion;
-
     internal HudViewModel()
     {
         _snapshotSubscription = UiSnapshotSubscriptionManager.Subscribe(OnSnapshotChanged);
@@ -39,6 +36,5 @@ internal sealed partial class HudViewModel : UiViewModelBase, IDisposable
         ActiveTaskCount = activeTaskCount;
         CompletedTaskCount = completedTaskCount;
         PinnedTaskCount = pinnedTaskCount;
-        LastSnapshotVersion = snapshot.Version;
     }
 }
