@@ -110,6 +110,34 @@ Every skill folder in `.github/skills` is documented here for reference
 | troubleshooter-output-format | Troubleshooter | Orchestrator |
 
 | update-specification | Planner | WorkspaceAgent |
+| grepai-chunking | — | — |
+| grepai-config-reference | — | — |
+| grepai-embeddings-lmstudio | — | — |
+| grepai-embeddings-ollama | — | — |
+| grepai-embeddings-openai | — | — |
+| grepai-ignore-patterns | — | — |
+| grepai-init | — | — |
+| grepai-installation | — | — |
+| grepai-languages | — | — |
+| grepai-mcp-claude | — | — |
+| grepai-mcp-cursor | — | — |
+| grepai-mcp-tools | — | — |
+| grepai-ollama-setup | — | — |
+| grepai-quickstart | — | — |
+| grepai-search-advanced | — | — |
+| grepai-search-basics | — | — |
+| grepai-search-boosting | — | — |
+| grepai-search-tips | — | — |
+| grepai-storage-gob | — | — |
+| grepai-storage-postgres | — | — |
+| grepai-storage-qdrant | — | — |
+| grepai-trace-callees | — | — |
+| grepai-trace-callers | — | — |
+| grepai-trace-graph | — | — |
+| grepai-troubleshooting | — | — |
+| grepai-watch-daemon | — | — |
+| grepai-workspaces | — | — |
+| mermaid-diagram-creator | — | — |
 
 ## Skill File Conventions
 
