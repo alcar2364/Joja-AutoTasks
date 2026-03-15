@@ -146,16 +146,16 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 2C - Add unit tests for ConfigLoader exception handling
 
-- [ ] **Action:** In `Tests/Configuration/ConfigLoaderTests.cs`, add test cases for: (1) missing config file → defaults applied, (2) corrupt JSON → exception logged + defaults applied, (3) version mismatch → migration attempted, if successful use migrated config, if failed use defaults. Use mocked file system if available; otherwise use temporary file fixtures. Verify log statements contain expected exception context and fallback action.
-- [ ] **Scope:** `Tests/Configuration/ConfigLoaderTests.cs` (new test methods for exception scenarios).
-- [ ] **Verify:** All new tests pass; exception paths are exercised; log output assertions are precise (exception type, message, fallback action all logged).
-- [ ] **Suggested commit:** `phase4(step2C): add unit tests for ConfigLoader exception scenarios`
-- [ ] **Must include:** Test cases for missing config, corrupt JSON, version mismatch; assertions on log output; deterministic fallback verification.
-- [ ] **Must exclude:** Production logic changes, config schema updates.
+- [x] **Action:** In `Tests/Configuration/ConfigLoaderTests.cs`, add test cases for: (1) missing config file → defaults applied, (2) corrupt JSON → exception logged + defaults applied, (3) version mismatch → migration attempted, if successful use migrated config, if failed use defaults. Use mocked file system if available; otherwise use temporary file fixtures. Verify log statements contain expected exception context and fallback action.
+- [x] **Scope:** `Tests/Configuration/ConfigLoaderTests.cs` (new test methods for exception scenarios).
+- [x] **Verify:** All new tests pass; exception paths are exercised; log output assertions are precise (exception type, message, fallback action all logged).
+- [x] **Suggested commit:** `phase4(step2C): add unit tests for ConfigLoader exception scenarios`
+- [x] **Must include:** Test cases for missing config, corrupt JSON, version mismatch; assertions on log output; deterministic fallback verification.
+- [x] **Must exclude:** Production logic changes, config schema updates.
 
 ### Step 2 Completion Checkpoint
 
-- [ ] All substeps in Step 2 complete (2A, 2B, 2C).
+- [x] All substeps in Step 2 complete (2A, 2B, 2C).
 
 ---
 

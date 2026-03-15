@@ -1,4 +1,5 @@
 using JojaAutoTasks.Configuration;
+using JojaAutoTasks.Infrastructure.Logging;
 using Moq;
 using StardewModdingAPI;
 using Xunit;
@@ -90,6 +91,9 @@ public class ConfigLoaderMigrationSafetyTests
         helper = new Mock<IModHelper>(MockBehavior.Strict);
         helper.Setup(x => x.ReadConfig<ModConfig>()).Returns(config);
 
-        return new ConfigLoader(helper.Object);
+        Mock<IMonitor> monitor = new(MockBehavior.Loose);
+        ModLogger logger = new(monitor.Object);
+
+        return new ConfigLoader(helper.Object, logger);
     }
 }

@@ -1,7 +1,8 @@
-using JojaAutoTasks.Configuration;
 using Moq;
 using StardewModdingAPI;
-using Xunit;
+using JojaAutoTasks.Configuration;
+using JojaAutoTasks.Infrastructure.Logging;
+
 
 namespace JojaAutoTasks.Tests.Configuration;
 
@@ -14,7 +15,8 @@ public class ConfigLoaderTests
     {
         ModConfig input = CreateValidConfig();
         Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        ModLogger logger = CreateLogger();
+        ConfigLoader sut = new ConfigLoader(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -39,7 +41,8 @@ public class ConfigLoaderTests
         });
 
         Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        ModLogger logger = CreateLogger();
+        ConfigLoader sut = new ConfigLoader(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -64,7 +67,8 @@ public class ConfigLoaderTests
         });
 
         Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        ModLogger logger = CreateLogger();
+        ConfigLoader sut = new ConfigLoader(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -77,11 +81,23 @@ public class ConfigLoaderTests
     }
 
     [Fact]
-    public void Load_WhenReadConfigThrows_ReturnsDefaultConfig()
+    public void Load_WhenReadConfigThrows_LogsFallbackAndReturnsDefaultConfig()
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
+        Mock<IModHelper> helper = new(MockBehavior.Strict);
+        Mock<IMonitor> monitor = new(MockBehavior.Strict);
         helper.Setup(x => x.ReadConfig<ModConfig>()).Throws(new InvalidOperationException("Invalid config payload."));
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        helper.SetupGet(x => x.DirectoryPath).Returns("C:\\TestMod");
+        monitor.Setup(x => x.Log(
+            It.Is<string>(message =>
+                message.Contains("[config.load.defaulted]")
+                && message.Contains("[C:\\TestMod\\config.json]")
+                && message.Contains("System.InvalidOperationException")
+                && message.Contains("Invalid config payload.")
+                && message.Contains("Falling back to default config.")),
+            LogLevel.Error));
+
+        ModLogger logger = new(monitor.Object);
+        ConfigLoader sut = new(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -90,14 +106,17 @@ public class ConfigLoaderTests
         Assert.True(result.EnableMod);
         Assert.False(result.EnableDebugMode);
         helper.Verify(x => x.ReadConfig<ModConfig>(), Times.Once);
+        helper.VerifyGet(x => x.DirectoryPath, Times.Once);
+        monitor.VerifyAll();
     }
 
     [Fact]
     public void Load_WhenReadConfigReturnsNull_ReturnsDefaultConfig()
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
+        Mock<IModHelper> helper = new(MockBehavior.Strict);
         helper.Setup(x => x.ReadConfig<ModConfig>()).Returns((ModConfig)null!);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        ModLogger logger = CreateLogger();
+        ConfigLoader sut = new(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -118,7 +137,8 @@ public class ConfigLoaderTests
         });
 
         Mock<IModHelper> helper = CreateHelperReturning(input);
-        ConfigLoader sut = new ConfigLoader(helper.Object);
+        ModLogger logger = CreateLogger();
+        ConfigLoader sut = new(helper.Object, logger);
 
         ModConfig result = sut.Load();
 
@@ -144,8 +164,14 @@ public class ConfigLoaderTests
 
     private static Mock<IModHelper> CreateHelperReturning(ModConfig config)
     {
-        Mock<IModHelper> helper = new Mock<IModHelper>(MockBehavior.Strict);
+        Mock<IModHelper> helper = new(MockBehavior.Strict);
         helper.Setup(x => x.ReadConfig<ModConfig>()).Returns(config);
         return helper;
+    }
+
+    private static ModLogger CreateLogger()
+    {
+        Mock<IMonitor> monitor = new(MockBehavior.Loose);
+        return new ModLogger(monitor.Object);
     }
 }
