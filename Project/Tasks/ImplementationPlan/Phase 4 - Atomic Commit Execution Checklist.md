@@ -122,27 +122,27 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 2: Hardening ConfigLoader Exception Paths (DEF-032)
 
-### Step Goal
+### 2.1 Step Goal
 
-- [ ] Add deterministic exception handling, fallback logic, and structured logging to ConfigLoader catch paths. Ensure config read, normalization, and default fallback are robust without expanding config schema or migration logic.
+- [x] Add deterministic exception handling, fallback logic, and structured logging to ConfigLoader catch paths. Ensure config read, normalization, and default fallback are robust without expanding config schema or migration logic.
 
 ### 2A - Add structured exception logging to ConfigLoader.Load catch path
 
-- [ ] **Action:** In `Configuration/ConfigLoader.cs` Load method, add try-catch block around config file deserialization. In catch block, log exception details (exception type, message, inner exception chain) using ModLogger at Error level with structured context: include file path attempted, migration context if applicable, and fallback action taken. Do not suppress the exception; allow it to propagate after logging, or convert to typed exception with context.
-- [ ] **Scope:** `Configuration/ConfigLoader.cs` (Load method; catch block for deserialization exceptions).
-- [ ] **Verify:** Build succeeds; exception logging is testable (verify log output format in unit tests); fallback behavior is deterministic (same input → same fallback).
-- [ ] **Suggested commit:** `phase4(step2A): add structured logging to ConfigLoader exception paths`
-- [ ] **Must include:** Exception logging at Error level with context (file path, exception chain, fallback action); deterministic fallback specification in log message.
-- [ ] **Must exclude:** Config schema changes, version migration logic, feature-level decision-making in exception handler.
+- [x] **Action:** In `Configuration/ConfigLoader.cs` Load method, add try-catch block around config file deserialization. In catch block, log exception details (exception type, message, inner exception chain) using ModLogger at Error level with structured context: include file path attempted, migration context if applicable, and fallback action taken. Do not suppress the exception; allow it to propagate after logging, or convert to typed exception with context.
+- [x] **Scope:** `Configuration/ConfigLoader.cs` (Load method; catch block for deserialization exceptions).
+- [x] **Verify:** Build succeeds; exception logging is testable (verify log output format in unit tests); fallback behavior is deterministic (same input → same fallback).
+- [x] **Suggested commit:** `phase4(step2A): add structured logging to ConfigLoader exception paths`
+- [x] **Must include:** Exception logging at Error level with context (file path, exception chain, fallback action); deterministic fallback specification in log message.
+- [x] **Must exclude:** Config schema changes, version migration logic, feature-level decision-making in exception handler.
 
 ### 2B - Add default fallback specification for missing/invalid config (DEF-032 scope limit)
 
-- [ ] **Action:** Document explicit fallback order in ConfigLoader.Load: if config file missing, load defaults from ModConfig.DefaultConfig; if file corrupt/unparseable, log and apply defaults; if version mismatch detected, **call only existing migration utilities (e.g., ConfigMigrationHelper.MigrateFromPrior) already defined in ConfigLoader or Configuration package — no new migration/schema/version logic may be introduced in Phase 4**. Apply fallback if migration fails or is not applicable. Implement this order deterministically (not probabilistic or feature-gated). Add code comments documenting fallback precedence and DEF-032 boundary constraint (config read/normalize/fallback only; no new schema version logic).
-- [ ] **Scope:** `Configuration/ConfigLoader.cs` (Load method; fallback specification comments and logic; DEF-032 boundary assertion).
-- [ ] **Verify:** Fallback is deterministic (same error condition → same fallback every time); code comments clearly document precedence and DEF-032 constraint (only existing utilities allowed); unit tests can verify each fallback path; no new version/schema logic introduced.
-- [ ] **Suggested commit:** `phase4(step2B): specify deterministic config fallback order with DEF-032 scope guard`
-- [ ] **Must include:** Explicit fallback precedence (missing → corrupt → mismatch); deterministic logic with no probabilistic branches; inline code documentation of DEF-032 boundary (existing utilities only, no new schema/version/migration logic); reference to existing migration utilities only.
-- [ ] **Must exclude:** Config schema expansion, new config fields, new migration/version logic, feature migrations.
+- [x] **Action:** Document explicit fallback order in ConfigLoader.Load: if config file missing, load defaults from ModConfig.DefaultConfig; if file corrupt/unparseable, log and apply defaults; if version mismatch detected, **call only existing migration utilities (e.g., ConfigMigrationHelper.MigrateFromPrior) already defined in ConfigLoader or Configuration package — no new migration/schema/version logic may be introduced in Phase 4**. Apply fallback if migration fails or is not applicable. Implement this order deterministically (not probabilistic or feature-gated). Add code comments documenting fallback precedence and DEF-032 boundary constraint (config read/normalize/fallback only; no new schema version logic).
+- [x] **Scope:** `Configuration/ConfigLoader.cs` (Load method; fallback specification comments and logic; DEF-032 boundary assertion).
+- [x] **Verify:** Fallback is deterministic (same error condition → same fallback every time); code comments clearly document precedence and DEF-032 constraint (only existing utilities allowed); unit tests can verify each fallback path; no new version/schema logic introduced.
+- [x] **Suggested commit:** `phase4(step2B): specify deterministic config fallback order with DEF-032 scope guard`
+- [x] **Must include:** Explicit fallback precedence (missing → corrupt → mismatch); deterministic logic with no probabilistic branches; inline code documentation of DEF-032 boundary (existing utilities only, no new schema/version/migration logic); reference to existing migration utilities only.
+- [x] **Must exclude:** Config schema expansion, new config fields, new migration/version logic, feature migrations.
 
 ### 2C - Add unit tests for ConfigLoader exception handling
 
