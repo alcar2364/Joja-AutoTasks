@@ -41,7 +41,6 @@ This file is the active summary view of all unresolved implementation issues tra
 | 110 | Deferment | Implement task generation logic that emits State Store commands instead of direct mutations. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 5+ Generators/Engine) | Phase 5 | Open | Low |  |  |
 | 109 | Deferment | Add UI-local state ownership for selection, filters, and scroll while keeping snapshot state canonical. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 4 ViewModels) | Phase 4 | Open | Low |  |  |
 | 108 | Deferment | Implement INPC property updates driven from snapshots for deterministic UI refresh behavior. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 4 ViewModels) | Phase 4 | Open | Low |  |  |
-| 107 | Deferment | Wire ViewModels to subscribe to SnapshotChanged so snapshot updates propagate into UI state. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 4 ViewModels) | Phase 4 | Open | Low |  |  |
 | 106 | Deferment | Resolve TaskSourceType versus SourceIdentifier ambiguity and clarify/refactor domain terminology if needed. | Phase 3 | Phase 3 checklist, Deferred Items (Phase 4 ambiguity note) | Phase 4 | Open | Low |  | Open question on domain model clarity |
 | 105 | Deferment | Add deterministic task-type ordering/comparer test coverage with comparer implementation. | Phase 2 | Phase 2 checklist, Step 7F (comparer tests defer) | Phase 5+ | Open | Low |  |  |
 | 104 | Deferment | Add deterministic task-type ordering/comparer implementation after generator/task-type coverage stabilizes. | Phase 2 | Phase 2 checklist, Step 6A (task-type comparer defer) | Phase 5+ | Open | Low |  |  |
@@ -50,4 +49,4 @@ This file is the active summary view of all unresolved implementation issues tra
 
 ---
 
-**Total Active Implementation Issues**: 29
+**Total Active Implementation Issues**: 28
