@@ -161,18 +161,18 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 3: Implement Snapshot Subscription Lifecycle (DEF-008)
 
-### Step Goal
+### 3.1 Step Goal
 
-- [ ] Establish SnapshotChanged event subscription pattern; wire view models to receive snapshot updates; implement deterministic unsubscription on dispose.
+- [x] Establish SnapshotChanged event subscription pattern; wire view models to receive snapshot updates; implement deterministic unsubscription on dispose.
 
 ### 3A - Create SnapshotChangedEventArgs contract
 
-- [ ] **Action:** Create `Events/SnapshotChangedEventArgs.cs` (if not present) with public property `TaskSnapshot CurrentSnapshot` and optional `DateTime Timestamp`. Use this as the event argument type for StateStore.SnapshotChanged event (or define/update StateStore event signature to use this).
-- [ ] **Scope:** `Events/SnapshotChangedEventArgs.cs` (new or updated file; public class with TaskSnapshot and Timestamp properties).
-- [ ] **Verify:** Compiles; StateStore.SnapshotChanged event (if it exists) uses SnapshotChangedEventArgs as argument type; event is raisable.
-- [ ] **Suggested commit:** `phase4(step3A): introduce SnapshotChangedEventArgs contract`
-- [ ] **Must include:** SnapshotChangedEventArgs class with TaskSnapshot and Timestamp; public property access.
-- [ ] **Must exclude:** Event handling logic, view model wiring.
+- [x] **Action:** Create `Events/SnapshotChangedEventArgs.cs` (if not present) with internal property `TaskSnapshot CurrentSnapshot` and optional `DateTime Timestamp`. Use this as the event argument type for StateStore.SnapshotChanged event (or define/update StateStore event signature to use this).
+- [x] **Scope:** `Events/SnapshotChangedEventArgs.cs` (new or updated file; internal class with TaskSnapshot and Timestamp properties).
+- [x] **Verify:** Compiles; StateStore.SnapshotChanged event (if it exists) uses SnapshotChangedEventArgs as argument type; event is raisable.
+- [x] **Suggested commit:** `phase4(step3A): introduce SnapshotChangedEventArgs contract`
+- [x] **Must include:** SnapshotChangedEventArgs class with TaskSnapshot and Timestamp; public property access.
+- [x] **Must exclude:** Event handling logic, view model wiring.
 
 ### 3B - Verify SnapshotChanged event signature compatibility in StateStore
 
@@ -209,7 +209,7 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 4: Implement View Model Property Projection with INPC (DEF-009)
 
-### Step Goal
+### 4.1 Step Goal
 
 - [ ] Implement bindable properties in HudViewModel and TaskListViewModel that project TaskSnapshot data. Establish INPC notification on property changes. Implement deterministic collection reconciliation by stable key.
 
@@ -302,7 +302,7 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 5: Establish UI-Local State Ownership and Command/Snapshot Loop (DEF-010)
 
-### Step Goal
+### 5.1 Step Goal
 
 - [ ] Implement UI command dispatch pattern: map user actions to commands, dispatch through StateStore, receive updated snapshots, refresh UI via bindings. Establish clear boundary: UI owns presentation state (selected item, scroll position, form input) but not canonical task state.
 
@@ -350,7 +350,7 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 6: Resolve TaskSourceType Terminology Ambiguity (DEF-007)
 
-### Step Goal
+### 6.1 Step Goal
 
 - [ ] **Document, standardize, and resolve in-phase TaskSourceType vs SourceIdentifier ambiguity.** Center the distinction between SourceIdentifier (unique source context identifier) and TaskSourceType (categorical source classification) in Phase 4 design. Establish consistent naming across domain models, commands, and UI. **Explicit Phase 4 scope inclusions**: resolve SourceIdentifier-vs-TaskSourceType naming in TaskRecord, snapshot projections, and UI view model properties. **Explicit Phase 4 exclusions**: no changes to TaskId format, no persistence schema changes, no config version migration logic, no command/snapshot boundary modifications. **Post-Phase Handling**: if full legacy inconsistency cleanup (across all prior Phase 1-3 code) is outside Phase 4 scope, explicitly defer to post-phase `Phase 4 Implementation Review Report` with route to user-owned `Phase 4 - Post-Phase Atomic Commit Execution Checklist` rather than attempting incomplete inline fixes.
 
@@ -389,7 +389,7 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 7: Add Phase 4 Verification Tests
 
-### Step Goal
+### 7.1 Step Goal
 
 - [ ] Add comprehensive unit tests locking Phase 4 constraints, testing snapshot subscription lifecycle, view model binding, collection reconciliation, and command dispatch without running the game.
 
@@ -437,7 +437,7 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ## Step 8: Phase 4 Completion Gate
 
-### Step Goal
+### 8.1 Step Goal
 
 - [ ] Verify Phase 4 implementation is complete, deterministic, and contract-aligned. Validate all guardrails. Reconcile ImplementationIssues. Gate readiness for Phase 5 built-in task generators.
 
@@ -552,4 +552,4 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
    says `Manager` name is to be avoided without justification. Is `UiSnapshotSubscriptionManager`  
    acceptable given the UI-specific nature, or should we consider an alternative name like `UiSnapshotSubscriptionCoordinator` given it is brokering subscriptions? Let's discuss this post-review.
 
-**End of Phase 4 - Atomic Commit Execution Checklist**
+## End of Phase 4 - Atomic Commit Execution Checklist
