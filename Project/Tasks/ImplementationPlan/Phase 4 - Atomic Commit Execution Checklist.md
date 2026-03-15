@@ -107,16 +107,16 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 1C - Create UIViewModelBase with INotifyPropertyChanged
 
-- [ ] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as an abstract base class implementing `INotifyPropertyChanged`. The base class should provide the shared notification foundation for later view models: the `PropertyChanged` event and a protected `OnPropertyChanged` method for manual notification. If the Phase 4 implementation uses `PropertyChanged.SourceGenerator`, treat that as a concrete-view-model convenience for later steps rather than a responsibility of the base class itself.
-- [ ] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class `UIViewModelBase : INotifyPropertyChanged`).
-- [ ] **Verify:** Build succeeds; `INotifyPropertyChanged` is implemented; `PropertyChanged` event is available to subscribers; the base class exposes protected notification helpers that later concrete view models can use directly or alongside source-generator-backed properties.
-- [ ] **Suggested commit:** `phase4(step1C): add UIViewModelBase with INPC foundation`
-- [ ] **Must include:** `INotifyPropertyChanged` implementation; `PropertyChanged` event; protected property-change notification method(s); clear role as the shared notification foundation for later concrete view models.
-- [ ] **Must exclude:** Concrete view model implementations (`HudViewModel`, `TaskListViewModel`); business logic property definitions; concrete bindable fields that belong in later view models.
+- [x] **Action:** Create `UI/ViewModels/UIViewModelBase.cs` as an abstract base class implementing `INotifyPropertyChanged`. The base class should provide the shared notification foundation for later view models: the `PropertyChanged` event and a protected `OnPropertyChanged` method for manual notification. If the Phase 4 implementation uses `PropertyChanged.SourceGenerator`, treat that as a concrete-view-model convenience for later steps rather than a responsibility of the base class itself.
+- [x] **Scope:** `UI/ViewModels/UIViewModelBase.cs` (new file; new abstract class `UIViewModelBase : INotifyPropertyChanged`).
+- [x] **Verify:** Build succeeds; `INotifyPropertyChanged` is implemented; `PropertyChanged` event is available to subscribers; the base class exposes protected notification helpers that later concrete view models can use directly or alongside source-generator-backed properties.
+- [x] **Suggested commit:** `phase4(step1C): add UIViewModelBase with INPC foundation`
+- [x] **Must include:** `INotifyPropertyChanged` implementation; `PropertyChanged` event; protected property-change notification method(s); clear role as the shared notification foundation for later concrete view models.
+- [x] **Must exclude:** Concrete view model implementations (`HudViewModel`, `TaskListViewModel`); business logic property definitions; concrete bindable fields that belong in later view models.
 
 ### Step 1 Completion Checkpoint
 
-- [ ] All substeps in Step 1 complete (1A, 1B, 1C).
+- [x] All substeps in Step 1 complete (1A, 1B, 1C).
 
 ---
 
