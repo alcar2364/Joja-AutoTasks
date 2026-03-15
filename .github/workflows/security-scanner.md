@@ -16,7 +16,7 @@ permissions:
   pull-requests: read
 strict: true
 network:
-  allowed: [defaults, github]
+  allowed: [defaults, github, nuget]
 engine:
   id: copilot
 tools:
