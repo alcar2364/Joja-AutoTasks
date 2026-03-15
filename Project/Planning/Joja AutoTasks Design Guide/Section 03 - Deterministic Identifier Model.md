@@ -20,10 +20,10 @@ The system uses several identifier types.
 
 Primary identifiers include:
 
-    - TaskId
-    - RuleId
-    - DayKey
-    - SubjectId (optional)
+- `TaskId`
+- `WizardKey`
+- `DayKey`
+- `SubjectId` (optional)
 
 Each identifier serves a specific role in maintaining system stability.
 
@@ -38,128 +38,119 @@ TaskId uniquely identifies a task instance.
 
 TaskIds are deterministic strings derived from the task source and its associated subject.
 
+Each category, key, or identifier component follows specific rules to ensure stability and collision prevention. The combination of each should result in unique TaskIds for each task instance.
+
 Conceptual structure:
 
-TaskId = `{SourcePrefix}_{RuleId}_{SubjectId?}_{DayKey?}`
+TaskId = `"{SourcePrefix}{GeneratorKey/WizardKey/ManualKey}_{DayKey}_{SubjectId?}_{ContextId?}"`
 
 Components:
 
-- `SourceType` Identifies task origin. Possible values:
-  - `BuiltIn`
-  - `TaskBuilder`
+- `SourcePrefix` consists of a `TaskSourceType` which identifies task origin by category. Possible values:
+  - `Auto`
+  - `Wizard`
   - `Manual`
+- `DayKey` corresponds to the in-game day the task was created
+- `AutoKey`, `WizardKey` or `ManualKey` is a unique number originating from the task source. In V1, the number is derived from an auto-incrmenting counter. This is a deterministic safeguard to ensure all TaskIds are unique even if other components (like SubjectId) are not sufficient to guarantee uniqueness on their own.
+  - `Auto` sourced tasks that are built-in and automatically tracked use an `AutoKey`.
+  - `Wizard` sourced tasks from the task builder use a `WizardKey`
+  - `Manual` sourced tasks created by the user use a `ManualKey`
+- `SubjectId` Represents the object or entity associated with the task. It is optional depending on task source.
+  Examples include:
+  - `ItemId`
+  - `AnimalId`
+  - `MachineId`
+  - `SkillType`
+- `ContextId` - Optional component representing contextual scope such as location
 
-Note: Both `TaskSourceType` enum and manual `TaskId` source prefix use `Manual`.
-
-- `RuleOrGeneratorID` Identifies the rule or generator responsible for producing the task.
-- `SubjectIdentifier` Represents the object or entity associated with the task.
-
-Examples include:
-
-- `ItemID`
-- `AnimalID`
-- `MachineID`
-- `SkillType`
-
-`ContextIdentifier` - Optional component representing contextual scope such as location or day.
-
-## 3.4 Task Builder Task IDs
-
-Task Builder tasks derive their identity from the Rule ID and subject.
-
-Conceptual structure:
-
-`TaskBuilder_{RuleId}_{SubjectId?}_{DayKey?}`
-
-Examples:
-
-    - Persistent rule: `TaskBuilder_17_ItemWood`
-    - Daily rule: `TaskBuilder_42_Daily_Year2-Spring12`
-
-**Note:** When a `DayKey` is embedded in a `TaskId`, the hyphen within the `DayKey` token is preserved (e.g., `Year2-Spring12`). The `_` character is the `TaskId` component separator only. See Section 3.8 for the canonical `DayKey` format.
-
-Including the day key ensures that daily recurring tasks generate a new task instance for each day while still remaining deterministic.
-
-## 3.5 Built-in Generator Task IDs
+## 3.4 Built-in Generator Task IDs
 
 Built-in automatic tasks generate IDs based on their generator and subject.
 
+Conceptual structure:
+
+`$"Auto{AutoKey}_{DayKey}_{SubjectId}_{ContextId?}"`
+
 Example structures:
 
-    - Crop watering task: `BuiltIn_CropWatering_FarmTile_12_14`
-    - Animal care task: `BuiltIn_AnimalPet_Cow_3`
-    - Machine output task: `BuiltIn_MachineOutput_Keg_15`
+- Crop watering task: `Auto28_Year2_Fall12_CropWatering_FarmTile_12_14`
+- Animal care task: `Auto15_Year1_Winter5_AnimalPet_Bessie`
+- Machine output task: `Auto_Year3_Spring_27_Machine_Keg_BeachTile_5_10`
 
-Generator implementations are responsible for defining stable subject identifiers.
+Generator implementations are responsible for defining stable subject identifiers. Each generator will use its own counter to produce the `AutoKey`. Most generators will also provide context identifiers unique to their domain (e.g., farm tile coordinates for crop tasks, machine type and location for machine tasks).
+
+## 3.5 Task Builder Task IDs
+
+Conceptual structure:
+
+`$"Wizard_{WizardKey}_{DayKey}_{SubjectId}_{ContextId?}"`
+
+Examples:
+
+- No context: `Wizard_15_Year2_Summer8_ItemWood`
+- Context: `Wizard_28_Year1_Spring17_TreeCut_Daily`
+
+TaskIds can be built with or without context. Context is optional and depends on the task being generated. For example, a task to cut a certain amount of trees every day may include `Daily` context, while a more general task like "Collect 300 wood" may not require context. The presence of context should be determined by the generator logic based on whether it is needed to ensure uniqueness or provide necessary information for the task.
 
 ## 3.6 Manual Task IDs
 
 Manual tasks are created by the player and do not derive from rule systems.
 
-Manual task IDs are generated using a monotonically incrementing counter.
-
-Example:
-
-    - `Manual_3`
-    - `Manual_4`
-    - `Manual_5`
-
-**Normative rule:** `Manual_N` is the canonical prefix for manual task identifiers. The prefix `ManualTask_N` is a non-canonical legacy variant and must not be used in new code or documentation. The canonical form aligns with the `SourceType` prefix pattern used in Section 3.3 and Section 3.5.
-
-The counter MUST be persisted as part of the `StoreUserState` structure (Section 9.8) to ensure it survives across sessions.
-
-The counter MUST only increment, never reset or regress.
-
-Manual task identifiers persist across sessions and are stored in persistence.
-
-## 3.7 RuleId Model
-
-`RuleId` is an immutable value object that follows an auto-incrementing integer counter pattern, parallel to `ManualTaskCounter` in §3.6.
-
-Normative definition:
-
-    - `RuleId` is an auto-incrementing integer counter, parallel in pattern to
-      `ManualTaskCounter` (§3.6).
-    - The value object wraps the counter value as a numeric string internally
-      (e.g., `"17"`).
-    - `RuleId` is serialized as an integer in JSON (e.g., `"ruleId": 17`).
-    - The counter is persisted in `StoreUserState` alongside
-      `ManualTaskCounter`.
-    - The counter only increments, never resets or regresses.
-
-Examples:
-
-    - Internal value-object representation: `RuleId = "17"`
-    - Serialized JSON form: `"ruleId": 17`
-
-See `ManualTaskCounter` in §3.6 as the parallel pattern.
-
-## 3.8 DayKey Model
-
-Daily tasks and history snapshots rely on a deterministic `DayKey`.
+Manual task IDs are generated using their creation date and a monotonically incrementing counter.
 
 Conceptual structure:
 
-    - `Year{N}-{Season}{D}`
+`$"Manual_{ManualKey}_{DayKey}"`
 
 Example:
 
-    - `Year1-Summer15`
-    - `Year3-Fall28`
+- `Manual_3_Year2_Spring5`
+- `Manual_3_Year2_Spring6`
+- `Manual_4_Year2_Spring6`
+
+**Normative rule:** `Manual_{ManualKey}_{DayKey}` is the canonical prefix for manual task identifiers. The prefix `ManualTask_N` is a non-canonical legacy variant and must not be used in new code or documentation. The canonical form aligns with the `SourceType` prefix pattern used in Section 3.3 and Section 3.5.
+
+## 3.7 `AutoKey`, `WizardKey`, and `ManualKey` Models
+
+Normative definition:
+
+These keys are immutable value objects that follows an auto-incrementing integer counter pattern for tasks generated in their specific source.  
+
+- `AutoKey` is used for built-in automatic tasks and is managed by each generator. So each generator will have its own `AutoKey` counter that increments with each task it generates.
+- `WizardKey` is used for tasks generated by the Task Builder Wizard and follows a similar auto-incrementing pattern, except there is a single global `WizardKey` counter that increments with each new task generated by the wizard regardless of type.
+- `ManualKey` is used for manual tasks created by the player. There is a single global `ManualKey` counter that increments with each new manual task created by the player.
+- The value object wraps the counter value as a numeric string internally (e.g., `"17"`).
+- Each key is serialized as an integer in JSON (e.g., `"WizardKey": 17`).
+- Each counter resets every in game day `OnSaving`, so the same key values may be reused across different days but will never collide within the same day.
+
+## 3.8 DayKey Model
+
+Daily tasks and history snapshots rely on a deterministic `DayKey`. A `DayKey` represnts a in-game day in Stardew Valley and can be used for different purposes.  
+`CreationDay` and `CompletionDay` are examples of `DayKey` usage for task lifecycle tracking
+
+Conceptual structure:
+
+- `Year{N}_{Season}{D}`
+
+Example:
+
+- `Year1_Summer15`
+- `Year3_Fall28`
 
 `DayKey` is used in several systems:
 
-    - Daily task identity
-    - Daily snapshot history
-    - Deadline calculations
-    - Statistics aggregation
+- Task identity
+- Logging the creation day or completion day of a task.
+- Daily snapshot history
+- Deadline calculations
+- Statistics aggregation (out of scope for V1)
 
 Current implementation behavior:
 
-    - Canonical shape is exactly `Year{N}-{Season}{D}`.
-    - Season token must match one of `Spring`, `Summer`, `Fall`, or `Winter` using invariant case.
-    - Year must be a positive integer and day must be in the range 1-28.
-    - Outer whitespace is trimmed, but non-canonical casing or structure is rejected.
+- Canonical shape is exactly `Year{N}_{Season}{D}`.
+- Season token must match one of `Spring`, `Summer`, `Fall`, or `Winter` using invariant case.
+- Year must be a positive integer and day must be in the range 1-28.
+- Outer whitespace is trimmed, but non-canonical casing or structure is rejected.
 
 ## 3.9 Subject Identifier Model
 
@@ -167,23 +158,23 @@ Subject identifiers represent the in-game entity associated with a task.
 
 Examples include:
 
-    - `ItemID`
+- `ItemId` - Used for inventory tracking tasks and should correspond to the real qualified item id in the game data + DisplayName (see [Modding:Items](https://stardewvalleywiki.com/Modding:Items))
 
-Used for inventory tracking tasks.
+- `MachineId` - This is essentially equivalent to an `ItemId` but specifically for machine. It corresponds to the machine's qualified item id + display name. (see [Modding:Machines](https://stardewvalleywiki.com/Modding:Machines))
 
-    - `MachineID`
-
-Used for machine output tasks.
-
-    - `AnimalID`
+- `AnimalId`
 
 Used for animal care tasks.
 
-    - `TileCoordinates`
+- `TileCoordinates`
 
 Used for crop or location-based tasks.
 
 Subject identifiers must be deterministic and stable across sessions.
+
+## 3.10 Context Identifier Model
+
+
 
 ## 3.10 Identifier Collision Prevention
 
@@ -191,10 +182,10 @@ The identifier system must prevent collisions between task sources.
 
 Rules include:
 
-    - `SourceType` prefixes separate manual, built-in, and rule-generated tasks
-    - `RuleId` values remain unique
-    - `SubjectIdentifier` values remain stable
-    - `ContextIdentifier` values differentiate scoped tasks
+- `SourceType` prefixes separate manual, built-in, and rule-generated tasks
+- `RuleId` and manual task counter values remain unique
+- `SubjectIdentifier` values remain stable
+- `ContextIdentifier` values differentiate scoped tasks
 
 If a collision occurs it is considered a development bug.
 
@@ -202,16 +193,16 @@ If a collision occurs it is considered a development bug.
 
 Identifiers must remain stable across:
 
-    - Game reloads
-    - Save migrations
-    - Rule edits that do not affect task identity
-    - Engine evaluation cycles
+- Game reloads
+- Save migrations
+- Rule edits that do not affect task identity
+- Engine evaluation cycles
 
 Breaking identifier stability can cause:
 
-    - Task duplication
-    - Loss of completion state
-    - Corrupted history records
+- Task duplication
+- Loss of completion state
+- Corrupted history records
 
 ## 3.12 Version 1 Constraints
 
@@ -219,9 +210,9 @@ Version 1 identifier rules remain intentionally simple.
 
 Excluded features include:
 
-    - Hash-based identifiers
-    - Multiplayer synchronization IDs
-    - Cross-save global identifiers
+- Hash-based identifiers
+- Multiplayer synchronization IDs
+- Cross-save global identifiers
 
 The initial identifier model focuses on deterministic stability within a single save file.
 
@@ -231,13 +222,13 @@ Localization must never influence deterministic identity behavior.
 
 Hard invariants:
 
-    - Localized strings MUST NOT participate in `TaskId`, `RuleId`, `DayKey`,
-    or `SubjectId` generation.
-    - Localized strings MUST NOT participate in identifier equality,
-    reconciliation, or collision checks.
-    - Localized strings MUST NOT participate in deterministic ordering or sort
-    fallback chains.
-    - `DayKey` remains locale-neutral and uses fixed canonical season tokens.
+- Localized strings MUST NOT participate in `TaskId`, `RuleId`, `DayKey`,
+or `SubjectId` generation.
+- Localized strings MUST NOT participate in identifier equality,
+reconciliation, or collision checks.
+- Localized strings MUST NOT participate in deterministic ordering or sort
+fallback chains.
+- `DayKey` remains locale-neutral and uses fixed canonical season tokens.
 
 Display text may vary by locale, but identity semantics remain invariant.
 
