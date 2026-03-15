@@ -1,6 +1,6 @@
-﻿# Section 6 — Task Builder Rule Serialization #
+﻿# Section 6 — Task Builder Rule Serialization
 
-## 6.1 Purpose ##
+## 6.1 Purpose
 
 Task Builder rules must be stored in a stable serialized format so that:
 
@@ -11,8 +11,7 @@ Task Builder rules must be stored in a stable serialized format so that:
 - Future rule system expansions can be introduced without breaking saves
 ```
 
-The serialization model represents rules as structured data, not executable
-logic.
+The serialization model represents rules as structured data, not executable logic.
 
 This ensures:
 
@@ -24,7 +23,7 @@ This ensures:
 
 Rules are therefore data-driven definitions interpreted by the rule engine.
 
-## 6.2 Rule Object Structure ##
+## 6.2 Rule Object Structure
 
 A Task Builder rule is stored as a serialized Rule Definition.
 
@@ -34,12 +33,7 @@ Conceptual structure:
 RuleDefinition
 ```
 
-RuleID
-Metadata
-Trigger
-ConditionTree
-ProgressModel
-OutputModel
+RuleID Metadata Trigger ConditionTree ProgressModel OutputModel
 
 ```text
 
@@ -47,7 +41,7 @@ OutputModel
 
 Each component has a dedicated purpose.
 
-|   Component   |                          Purpose                         |
+| Component     | Purpose                                                  |
 | ------------- | -------------------------------------------------------- |
 | RuleID        | Stable identifier used for deterministic task generation |
 | Metadata      | UI presentation information                              |
@@ -56,7 +50,7 @@ Each component has a dedicated purpose.
 | ProgressModel | Defines how progress is measured                         |
 | OutputModel   | Defines the task produced                                |
 
-## 6.3 Rule Identity ##
+## 6.3 Rule Identity
 
 Each rule is assigned a stable integer Rule ID at creation time.
 
@@ -68,16 +62,13 @@ RuleID = 17
 
 Rule IDs must never change after creation.
 
-Rule IDs are auto-incrementing integers issued by the `RuleIdCounter`,
-parallel to `ManualTaskCounter`. See §3.7.
+Rule IDs are auto-incrementing integers issued by the `RuleIdCounter`, parallel to `ManualTaskCounter`. See §3.7.
 
-Rule IDs are used when generating deterministic task identifiers. Canonical
-TaskID structure is defined in Section 3.3, and Task Builder-specific TaskID
-composition is defined in Section 3.4.
+Rule IDs are used when generating deterministic task identifiers. Canonical TaskId structure is defined in Section 3.3, and Task Builder-specific TaskId composition is defined in Section 3.4.
 
 This ensures that the same rule always generates the same task identity.
 
-## 6.4 Rule Metadata ##
+## 6.4 Rule Metadata
 
 Metadata contains presentation information used by the UI.
 
@@ -87,10 +78,7 @@ Fields include:
 Metadata
 ```
 
-Title
-Description
-Category
-Icon
+Title Description Category Icon
 
 ```text
 
@@ -107,7 +95,7 @@ Icon: Wood
 
 Metadata does not affect rule logic.
 
-## 6.5 Trigger Model ##
+## 6.5 Trigger Model
 
 Triggers determine when rule evaluation should occur.
 
@@ -119,8 +107,7 @@ Example structure:
 Trigger
 ```
 
-Type
-Parameters
+Type Parameters
 
 ```text
 
@@ -128,7 +115,7 @@ Parameters
 
 Trigger types supported in Version 1:
 
-|   Trigger Type  |              Description             |
+| Trigger Type    | Description                          |
 | --------------- | ------------------------------------ |
 | DayStart        | Evaluate rule when a new day begins  |
 | InventoryChange | Evaluate when inventory changes      |
@@ -152,7 +139,7 @@ Rules can define multiple triggers if required.
 
 Triggers are used to reduce unnecessary evaluation work.
 
-## 6.6 Condition Tree ##
+## 6.6 Condition Tree
 
 The condition tree defines logical evaluation rules.
 
@@ -172,8 +159,7 @@ Example:
 AND
 ```
 
-Condition: ItemCount(Wood >= 300)
-Condition: DayOfSeason <= 28
+Condition: ItemCount(Wood >= 300) Condition: DayOfSeason <= 28
 
 ```text
 
@@ -181,7 +167,7 @@ Condition: DayOfSeason <= 28
 
 Leaf condition types supported in Version 1:
 
-|   Condition  |            Description           |
+| Condition    | Description                      |
 | ------------ | -------------------------------- |
 | ItemCount    | Inventory contains item >= value |
 | SkillLevel   | Skill level >= value             |
@@ -191,10 +177,9 @@ Leaf condition types supported in Version 1:
 | TimeWindow   | Time of day range                |
 | MachineState | Machine ready                    |
 
-The condition tree determines whether a task exists and contributes to
-completion evaluation.
+The condition tree determines whether a task exists and contributes to completion evaluation.
 
-## 6.7 Progress Model ##
+## 6.7 Progress Model
 
 Rules may optionally define progress tracking.
 
@@ -204,9 +189,7 @@ Structure:
 ProgressModel
 ```
 
-Type
-BaselineMode
-TargetValue
+Type BaselineMode TargetValue
 
 ```text
 
@@ -214,21 +197,20 @@ TargetValue
 
 Supported types:
 
-| Progress Type | Description |
+| Progress Type      | Description       |
 | ------------------ | ----------------- |
-| None | Binary condition |
-| Counter | Count of actions |
+| None               | Binary condition  |
+| Counter            | Count of actions  |
 | ResourceCollection | Resource progress |
-| SkillProgress | Skill progress |
+| SkillProgress      | Skill progress    |
 
-Baseline modes (determine whether progress is measured from a baseline value or
-as an absolute value):
+Baseline modes (determine whether progress is measured from a baseline value or as an absolute value):
 
-| Baseline Mode | Description |
+| Baseline Mode     | Description                         |
 | ----------------- | ----------------------------------- |
-| None | No baseline needed |
+| None              | No baseline needed                  |
 | CaptureAtCreation | Baseline captured when task created |
-| CaptureDaily | Baseline captured at day start |
+| CaptureDaily      | Baseline captured at day start      |
 
 Runtime baseline behavior for these modes is defined in Section 7.6.
 
@@ -238,15 +220,13 @@ Example:
 ProgressModel
 ```
 
-Type: ResourceCollection
-BaselineMode: CaptureAtCreation
-TargetValue: 300
+Type: ResourceCollection BaselineMode: CaptureAtCreation TargetValue: 300
 
 ```text
 
 ```
 
-## 6.8 Output Model ##
+## 6.8 Output Model
 
 The Output Model defines what task is produced.
 
@@ -256,9 +236,7 @@ Structure:
 OutputModel
 ```
 
-TaskType
-Persistence
-Deadline
+TaskType Persistence Deadline
 
 ```text
 
@@ -266,11 +244,11 @@ Deadline
 
 Fields:
 
-| Field | Description |
+| Field       | Description          |
 | ----------- | -------------------- |
-| TaskType | Progress or Reminder |
-| Persistence | Persistent or Daily |
-| Deadline | Optional due date |
+| TaskType    | Progress or Reminder |
+| Persistence | Persistent or Daily  |
+| Deadline    | Optional due date    |
 
 Example:
 
@@ -278,8 +256,7 @@ Example:
 OutputModel
 ```
 
-TaskType: Progress
-Persistence: Persistent
+TaskType: Progress Persistence: Persistent
 
 ```text
 
@@ -291,15 +268,13 @@ Example with deadline:
 OutputModel
 ```
 
-TaskType: Progress
-Persistence: Persistent
-Deadline: Fall 28
+TaskType: Progress Persistence: Persistent Deadline: Fall 28
 
 ```text
 
 ```
 
-## 6.9 Example Serialized Rule ##
+## 6.9 Example Serialized Rule
 
 Example rule: Collect 300 wood.
 
@@ -309,8 +284,7 @@ RuleID: 17
 Metadata
 ```
 
-Title: Collect 300 Wood
-Category: Resources
+Title: Collect 300 Wood Category: Resources
 
 ```text
 
@@ -334,9 +308,7 @@ ProgressModel
 
 ```
 
-Type: ResourceCollection
-BaselineMode: CaptureAtCreation
-TargetValue: 300
+Type: ResourceCollection BaselineMode: CaptureAtCreation TargetValue: 300
 
 ```text
 
@@ -344,14 +316,13 @@ OutputModel
 
 ```
 
-TaskType: Progress
-Persistence: Persistent
+TaskType: Progress Persistence: Persistent
 
 ```text
 
 ```
 
-## 6.10 Serialization Format ##
+## 6.10 Serialization Format
 
 Rules are stored in the mod save data as structured JSON.
 
@@ -363,8 +334,7 @@ Example conceptual JSON:
   "metadata": {
 ```
 
-"title": "Collect 300 Wood",
-"category": "Resources"
+"title": "Collect 300 Wood", "category": "Resources"
 
 ```text
 
@@ -382,9 +352,7 @@ Example conceptual JSON:
 
 ```
 
-"type": "ResourceCollection",
-"baselineMode": "CaptureAtCreation",
-"target": 300
+"type": "ResourceCollection", "baselineMode": "CaptureAtCreation", "target": 300
 
 ```text
 
@@ -401,7 +369,7 @@ JSON allows:
 - Easy extension
 ```
 
-## 6.11 Versioning Strategy ##
+## 6.11 Versioning Strategy
 
 Rules must include a schema version.
 
@@ -419,3 +387,16 @@ If rule formats change in future versions:
 ```
 
 This prevents rule corruption when expanding the system.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 10 — Task Builder Wizard
+
+Also referenced in:
+
+- Phase 6 — Rule Evaluation Engine
+- Phase 7 — Persistence System
+
+Canonical implementation mapping lives in Section 21.

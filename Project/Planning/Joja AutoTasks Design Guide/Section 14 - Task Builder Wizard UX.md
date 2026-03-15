@@ -1,21 +1,16 @@
-﻿# Section 14 — Task Builder Wizard UX #
+﻿# Section 14 — Task Builder Wizard UX
 
-## 14.1 Purpose ##
+## 14.1 Purpose
 
-The Task Builder Wizard provides a guided interface allowing players to
-create custom task rules without directly editing rule definitions.
+The Task Builder Wizard provides a guided interface allowing players to create custom task rules without directly editing rule definitions.
 
-Task Builder is a core differentiator and must remain on the Version 1
-critical path.
+Task Builder is a core differentiator and must remain on the Version 1 critical path.
 
-The wizard translates player input into deterministic rule definitions
-consumed by the rule engine described in Section 7.1. The resulting rules
-must produce stable `TaskId` values as defined in Section 3.3.
+The wizard translates player input into deterministic rule definitions consumed by the rule engine described in Section 7.1. The resulting rules must produce stable `TaskId` values as defined in Section 3.3.
 
-The wizard must prioritize clarity and error prevention over speed of
-entry.
+The wizard must prioritize clarity and error prevention over speed of entry.
 
-## 14.2 Wizard responsibilities ##
+## 14.2 Wizard responsibilities
 
 The wizard is responsible for:
 
@@ -31,8 +26,7 @@ The wizard must not:
     - Mutate runtime task state.
     - Bypass the rule persistence pipeline described in Section 9.
 
-The wizard only produces rule definitions that are later evaluated by
-the rule engine.
+The wizard only produces rule definitions that are later evaluated by the rule engine.
 
 Now-stage constraint:
 
@@ -42,10 +36,9 @@ Now-stage constraint:
     - Runtime task mutation remains owned by the State Store command path
     after rule evaluation.
 
-## 14.3 Wizard interaction model ##
+## 14.3 Wizard interaction model
 
-The wizard follows a multi-step workflow that progressively defines a
-rule.
+The wizard follows a multi-step workflow that progressively defines a rule.
 
 Each step must collect one logical component of the rule definition.
 
@@ -59,10 +52,9 @@ Typical flow:
 6. Define metadata and presentation options.
 7. Review and confirm rule creation.
 
-The wizard should allow backward navigation to modify earlier steps
-before confirmation.
+The wizard should allow backward navigation to modify earlier steps before confirmation.
 
-## 14.4 Rule Types ##
+## 14.4 Rule Types
 
 Rule types determine the overall behavior model of the rule.
 
@@ -76,30 +68,24 @@ Version 1 supports the following rule types:
     | Milestone   | A long-term achievement or goal                     |
 
 | Wizard Rule Type | Engine TaskType | Engine Persistence | Notes |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Reminder | Reminder | Persistent | One-time or persistent reminder |
 | Reminder (daily) | Reminder | Daily | Daily recurring reminder; resets each day |
 | Progress | Progress | Persistent | Goal persists until target reached |
-| Repeating | Progress | Daily | Daily goal; resets each day with new day-keyed TaskID |
+| Repeating | Progress | Daily | Daily goal; resets each day with new day-keyed TaskId |
 | Milestone | Progress | Persistent | Progress + optional Deadline |
 
-This table maps wizard-facing Rule Types to the `OutputModel.TaskType` and
-`OutputModel.Persistence` fields defined in §6.8. The wizard is a pure UX layer
-over the engine's serialization model. `Milestone` has no distinct engine type
-— it serializes as `TaskType: Progress` and may include an optional `Deadline`
-field.
+This table maps wizard-facing Rule Types to the `OutputModel.TaskType` and `OutputModel.Persistence` fields defined in §6.8. The wizard is a pure UX layer over the engine's serialization model. `Milestone` has no distinct engine type — it serializes as `TaskType: Progress` and may include an optional `Deadline` field.
 
-In this document, Rule Type defines engine behavior, while Task Category
-defines UI organization labels.
+In this document, Rule Type defines engine behavior, while Task Category defines UI organization labels.
 
 Rule type selection constrains later wizard steps to valid rule options.
 
-## 14.5 Trigger definition ##
+## 14.5 Trigger definition
 
 Triggers determine when a rule becomes active.
 
-The wizard must provide selectable trigger types corresponding to the
-evaluation triggers described in Section 7.8.
+The wizard must provide selectable trigger types corresponding to the evaluation triggers described in Section 7.8.
 
 Examples include:
 
@@ -109,10 +95,9 @@ Examples include:
     - Skill level change
     - Calendar event
 
-Trigger configuration must prevent combinations that would produce
-invalid or unreachable rule states.
+Trigger configuration must prevent combinations that would produce invalid or unreachable rule states.
 
-## 14.6 Subject selection ##
+## 14.6 Subject selection
 
 The subject defines the entity that the rule operates on.
 
@@ -124,11 +109,9 @@ Examples include:
     - Resource count
     - Location activity
 
-The wizard must translate subject selections into deterministic
-`SubjectId` values compatible with the identity rules described in
-Section 3.9.
+The wizard must translate subject selections into deterministic `SubjectId` values compatible with the identity rules described in Section 3.9.
 
-## 14.7 Progress definition ##
+## 14.7 Progress definition
 
 Progress-based tasks require a measurable completion condition.
 
@@ -139,10 +122,9 @@ The wizard must support defining progress targets such as:
     - Reach skill level N
     - Accumulate resource quantity
 
-Progress models must correspond to the progress evaluation models used
-by the rule engine described in Section 7.
+Progress models must correspond to the progress evaluation models used by the rule engine described in Section 7.
 
-## 14.8 Deadline and schedule definition ##
+## 14.8 Deadline and schedule definition
 
 Rules may include optional timing constraints.
 
@@ -153,13 +135,11 @@ Supported timing definitions include:
     - Repeat every N days
     - Repeat each day or week
 
-Timing rules must remain deterministic and compatible with daily
-snapshot evaluation described in Section 11.4.
+Timing rules must remain deterministic and compatible with daily snapshot evaluation described in Section 11.4.
 
-## 14.9 Metadata and presentation ##
+## 14.9 Metadata and presentation
 
-The wizard must allow configuration of non-functional metadata used by
-the UI.
+The wizard must allow configuration of non-functional metadata used by the UI.
 
 Examples include:
 
@@ -168,10 +148,9 @@ Examples include:
     - Category label
     - Icon selection
 
-Metadata must not influence `TaskId` generation unless explicitly
-defined as an identity field. See Section 3.3.
+Metadata must not influence `TaskId` generation unless explicitly defined as an identity field. See Section 3.3.
 
-## 14.10 Validation rules ##
+## 14.10 Validation rules
 
 The wizard must validate rule definitions before persistence.
 
@@ -184,7 +163,7 @@ Validation must ensure:
 
 Invalid configurations must prevent rule creation until corrected.
 
-## 14.11 Rule confirmation ##
+## 14.11 Rule confirmation
 
 The final step of the wizard presents a rule summary.
 
@@ -196,28 +175,21 @@ The summary must display:
     - Deadline or schedule
     - Resulting task description
 
-Players must explicitly confirm rule creation before the rule is
-persisted.
+Players must explicitly confirm rule creation before the rule is persisted.
 
-## 14.12 Rule persistence ##
+## 14.12 Rule persistence
 
-Upon confirmation, the wizard serializes the rule definition and sends
-it to the persistence system described in Section 9.
+Upon confirmation, the wizard serializes the rule definition and sends it to the persistence system described in Section 9.
 
-The rule then becomes part of the rule evaluation pipeline described in
-Section 7.9 and may generate tasks during the next evaluation cycle.
+The rule then becomes part of the rule evaluation pipeline described in Section 7.9 and may generate tasks during the next evaluation cycle.
 
-The wizard does not write runtime task state directly. Runtime task
-entities change only through evaluation and State Store command
-application.
+The wizard does not write runtime task state directly. Runtime task entities change only through evaluation and State Store command application.
 
-## 14.13 Rule template library ##
+## 14.13 Rule template library
 
-The wizard should offer a library of pre-built rule templates for common
-tasks.
+The wizard should offer a library of pre-built rule templates for common tasks.
 
-Templates provide a starting point that the player can customize rather
-than building a rule from scratch.
+Templates provide a starting point that the player can customize rather than building a rule from scratch.
 
 Example templates:
 
@@ -230,41 +202,31 @@ Example templates:
     - "Seasonal calendar event" — pre-filled with date trigger and
     seasonal schedule
 
-Templates are not persisted rules. A template populates the wizard with
-default values; the player then modifies and confirms as usual.
+Templates are not persisted rules. A template populates the wizard with default values; the player then modifies and confirms as usual.
 
-New templates may be added in future versions as the rule engine
-expands.
+New templates may be added in future versions as the rule engine expands.
 
-## 14.14 Sentence-builder preview ##
+## 14.14 Sentence-builder preview
 
-The wizard may display a human-readable sentence summarizing the rule as
-the player fills in each step.
+The wizard may display a human-readable sentence summarizing the rule as the player fills in each step.
 
 Example:
 
--"When I have **300 wood**, mark **Collect Wood** as complete."
--"Every day, remind me to **check crab pots**."
+-"When I have **300 wood**, mark **Collect Wood** as complete." -"Every day, remind me to **check crab pots**."
 
-The sentence updates live as the player changes wizard fields. This
-helps the player understand the effect of their choices without needing
-to interpret the technical rule summary in §14.11.
+The sentence updates live as the player changes wizard fields. This helps the player understand the effect of their choices without needing to interpret the technical rule summary in §14.11.
 
-The sentence is a UI affordance only. It must not influence rule
-identity or evaluation behavior.
+The sentence is a UI affordance only. It must not influence rule identity or evaluation behavior.
 
-## 14.15 Rule preview panel ##
+## 14.15 Rule preview panel
 
-Before confirmation, the wizard may show a preview panel demonstrating
-how the resulting task would appear in the HUD and menu.
+Before confirmation, the wizard may show a preview panel demonstrating how the resulting task would appear in the HUD and menu.
 
-The preview renders a mock task row using the current wizard inputs
-(display name, category, icon) so the player can verify
-appearance before committing.
+The preview renders a mock task row using the current wizard inputs (display name, category, icon) so the player can verify appearance before committing.
 
 The preview is cosmetic and must not create or evaluate any actual task.
 
-## 14.16 Command and snapshot boundary flow ##
+## 14.16 Command and snapshot boundary flow
 
 Task Builder execution flow must remain boundary-safe.
 
@@ -281,23 +243,26 @@ In this flow:
     - HUD and Menu render the resulting snapshot
     - no direct runtime task mutation occurs inside wizard steps
 
-## 14.17 Rule Editing and Backward Navigation ##
+## 14.17 Rule Editing and Backward Navigation
 
-Backward navigation must preserve all data already entered in later steps.
-No step data is discarded when the player navigates back to a previous wizard
-step.
+Backward navigation must preserve all data already entered in later steps. No step data is discarded when the player navigates back to a previous wizard step.
 
-Opening the wizard to edit an existing rule must pre-populate all wizard steps
-with the rule's current values.
+Opening the wizard to edit an existing rule must pre-populate all wizard steps with the rule's current values.
 
-Metadata-only edits (title, description, category, icon) keep `TaskID` stable.
-The existing task is updated in-place via `AddOrUpdateTaskCommand`, and no
-progress or completion state is lost.
+Metadata-only edits (title, description, category, icon) keep `TaskId` stable. The existing task is updated in-place via `AddOrUpdateTaskCommand`, and no progress or completion state is lost.
 
-Identity-affecting edits (trigger, subject, or progress model change) remove
-the old task via `RemoveTaskCommand`. The engine generates a fresh task on the
-next evaluation pass. Progress carryover is attempted if `TaskType` and
-`SubjectId` are compatible; progress resets if incompatible.
+Identity-affecting edits (trigger, subject, or progress model change) remove the old task via `RemoveTaskCommand`. The engine generates a fresh task on the next evaluation pass. Progress carryover is attempted if `TaskType` and `SubjectId` are compatible; progress resets if incompatible.
 
-Before confirming an identity-affecting edit, the player must be shown a
-warning explaining that existing progress may be lost.
+Before confirming an identity-affecting edit, the player must be shown a warning explaining that existing progress may be lost.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 10 — Task Builder Wizard
+
+Also referenced in:
+
+- Phase 8 — Menu Dashboard
+
+Canonical implementation mapping lives in Section 21.

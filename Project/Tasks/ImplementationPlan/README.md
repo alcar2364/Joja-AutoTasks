@@ -33,3 +33,8 @@ and the canonical implementation-issue tracker for Joja AutoTasks.
 
 - This rule applies to all future implementation plan, checklist, audit, and
   implementation-issue tracking artifacts.
+
+## Archive
+
+- This folder also contains an archive of outdated or unused implementation plans and checklists. Do not delete these files; they serve as historical records of the project's implementation evolution.
+- Archived plans should not be referenced for any future work and are retained for historical context only.

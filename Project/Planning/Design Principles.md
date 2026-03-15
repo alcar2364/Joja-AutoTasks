@@ -1,17 +1,13 @@
-# Joja AutoTasks — Design Principles #
+# Joja AutoTasks — Design Principles
 
-## Purpose ##
+## Purpose
 
-This document defines the core design principles for **Joja AutoTasks (JAT)**, a SMAPI mod for
-Stardew Valley. These principles guide all architectural decisions, implementation work, and code
-reviews across the project lifecycle.
+This document defines the core design principles for **Joja AutoTasks (JAT)**, a SMAPI mod for Stardew Valley. These principles guide all architectural decisions, implementation work, and code reviews across the project lifecycle.
 
 Principles are organized into two categories:
 
-1. **Adapted Game Development Principles** — foundational software engineering practices adapted
-   specifically for JAT's context as a deterministic task management mod
-2. **JAT-Specific Architectural Principles** — principles derived from JAT's unique technical
-   contracts and design constraints
+1. **Adapted Game Development Principles** — foundational software engineering practices adapted specifically for JAT's context as a deterministic task management mod
+2. **JAT-Specific Architectural Principles** — principles derived from JAT's unique technical contracts and design constraints
 
 **Target audience:** Developers, AI agents, code reviewers, and contributors working on JAT.
 
@@ -19,17 +15,15 @@ Principles are organized into two categories:
 
 ---
 
-## Adapted Game Development Principles ##
+## Adapted Game Development Principles
 
-### Principle 1: Predictable Naming Conventions ###
+### Principle 1: Predictable Naming Conventions
 
-**Original Principle:** Pick a naming convention and stick to it. Names should be predictable; if
-you can't type a name from memory, rename it.
+**Original Principle:** Pick a naming convention and stick to it. Names should be predictable; if you can't type a name from memory, rename it.
 
 **JAT Adaptation:**
 
-Identifiers must follow strict C# naming conventions as defined in
-[CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md).
+Identifiers must follow strict C# naming conventions as defined in [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md).
 
 **Hard Rules:**
 
@@ -45,8 +39,7 @@ Identifiers must follow strict C# naming conventions as defined in
 
 **Why This Matters in JAT:**
 
-JAT's architecture relies on deterministic identifiers (`TaskID`, `RuleID`, `DayKey`, `SubjectID`)
-that must remain stable across save/load cycles. Predictable naming ensures:
+JAT's architecture relies on deterministic identifiers (`TaskId`, `RuleId`, `DayKey`, `SubjectId`) that must remain stable across save/load cycles. Predictable naming ensures:
 
     - Task identifiers are derived from stable, recognizable sources
     - UI binding property paths are type-safe and discoverable
@@ -78,20 +71,17 @@ public class task_store : ITaskStore
 
 ---
 
-### Principle 2: Subsystem Boundaries and Modularity ###
+### Principle 2: Subsystem Boundaries and Modularity
 
-**Original Principle:** Compartmentalize your game. Make code modular, avoid tight coupling, use
-hierarchies.
+**Original Principle:** Compartmentalize your game. Make code modular, avoid tight coupling, use hierarchies.
 
 **JAT Adaptation:**
 
-JAT architecture is organized into **canonical subsystems** with explicit boundaries and
-responsibilities. All subsystem dependencies are wired via **constructor injection**.
+JAT architecture is organized into **canonical subsystems** with explicit boundaries and responsibilities. All subsystem dependencies are wired via **constructor injection**.
 
 **Hard Rules:**
 
-JAT defines five core backend subsystems (per
-[BACKEND-ARCHITECTURE-CONTRACT](../../.github/instructions/backend-architecture-contract.instructions.md)):
+JAT defines five core backend subsystems (per [BACKEND-ARCHITECTURE-CONTRACT](../../.github/instructions/backend-architecture-contract.instructions.md)):
 
 1. **Evaluation Engine** — Evaluates rules and generators to produce candidate tasks
 2. **State Store** — Single source of truth; owns canonical task state
@@ -149,15 +139,13 @@ public class TaskStore : ITaskStore
 
 ---
 
-### Principle 3: Centralized Control Flow ###
+### Principle 3: Centralized Control Flow
 
-**Original Principle:** Don't spread code across multiple objects. Keep logic centralized in
-controllers.
+**Original Principle:** Don't spread code across multiple objects. Keep logic centralized in controllers.
 
 **JAT Adaptation:**
 
-All canonical state mutations flow through a **single path**: Commands → Reducers → State Store.
-The State Store is the **sole owner** of canonical task state.
+All canonical state mutations flow through a **single path**: Commands → Reducers → State Store. The State Store is the **sole owner** of canonical task state.
 
 **Hard Rules:**
 
@@ -207,16 +195,13 @@ public void OnCompleteTaskButtonClicked(string taskId)
 
 ---
 
-### Principle 4: Organized Planning and Backlog Management ###
+### Principle 4: Organized Planning and Backlog Management
 
-**Original Principle:** Keep a todo list for all ideas. Organize by time commitment, with session
-notes.
+**Original Principle:** Keep a todo list for all ideas. Organize by time commitment, with session notes.
 
 **JAT Adaptation:**
 
-JAT uses **Implementation Plans** stored in `Project/Tasks/Implementation Plan/` as flat
-Markdown files. All planning artifacts follow a structured format with phases, atomic commits, and
-verification criteria.
+JAT uses **Implementation Plans** stored in `Project/Tasks/Implementation Plan/` as flat Markdown files. All planning artifacts follow a structured format with phases, atomic commits, and verification criteria.
 
 **Hard Rules:**
 
@@ -227,8 +212,7 @@ verification criteria.
 
 **Why This Matters in JAT:**
 
-JAT is a complex mod with determinism requirements, versioned persistence, and SMAPI integration
-constraints. Organized planning ensures:
+JAT is a complex mod with determinism requirements, versioned persistence, and SMAPI integration constraints. Organized planning ensures:
 
     - **Incremental progress:** Atomic commits allow safe iteration
     - **Verification gates:** Each commit can be tested before proceeding
@@ -247,15 +231,13 @@ constraints. Organized planning ensures:
 
 ---
 
-### Principle 5: Scope Discipline and Feature Containment ###
+### Principle 5: Scope Discipline and Feature Containment
 
-**Original Principle:** Do NOT give in to feature slip. Decide scope early, stick to it, 3x time
-estimates.
+**Original Principle:** Do NOT give in to feature slip. Decide scope early, stick to it, 3x time estimates.
 
 **JAT Adaptation:**
 
-JAT enforces **strict scope discipline** through multi-phase implementation plans and explicit
-confirmation gates for scope-expanding changes.
+JAT enforces **strict scope discipline** through multi-phase implementation plans and explicit confirmation gates for scope-expanding changes.
 
 **Hard Rules:**
 
@@ -268,7 +250,8 @@ confirmation gates for scope-expanding changes.
         * Modifying build/config files
         * Adding new dependencies
     - **No silent scope expansion:** If solving an issue requires additional changes outside requested
-  scope, **stop and ask permission**
+
+scope, **stop and ask permission**
 
 **Why This Matters in JAT:**
 
@@ -284,7 +267,7 @@ JAT's determinism contract and versioned persistence make scope creep dangerous:
 ✅ GOOD workflow:
 User: "Fix task completion bug in HUD"
 Agent: [Reviews code, identifies root cause in State Store reducer]
-Agent: "The bug is in TaskStore.ApplyCommand, but fixing it requires changing 
+Agent: "The bug is in TaskStore.ApplyCommand, but fixing it requires changing
         the reducer signature in ITaskStore. This affects 3 files. Proceed?"
 User: "Yes, proceed."
 Agent: [Makes changes]
@@ -302,15 +285,13 @@ Agent: "Done! Also improved the architecture while I was there."
 
 ---
 
-### Principle 6: Visual Documentation of System Design ###
+### Principle 6: Visual Documentation of System Design
 
-**Original Principle:** Create physical documents about what objects do. Visual representations of
-variables and functions.
+**Original Principle:** Create physical documents about what objects do. Visual representations of variables and functions.
 
 **JAT Adaptation:**
 
-JAT maintains a comprehensive **Design Guide** with section-based organization. Each section covers
-a specific subsystem or design concern with clear diagrams, data structures, and flow descriptions.
+JAT maintains a comprehensive **Design Guide** with section-based organization. Each section covers a specific subsystem or design concern with clear diagrams, data structures, and flow descriptions.
 
 **Hard Rules:**
 
@@ -332,8 +313,7 @@ JAT's architecture is non-trivial:
     - **Identifier derivation** requires understanding determinism contracts
     - **Persistence versioning** needs explicit migration strategy documentation
 
-Visual documentation ensures contributors and reviewers can verify correctness without deep code
-archaeology.
+Visual documentation ensures contributors and reviewers can verify correctness without deep code archaeology.
 
 **Examples:**
 
@@ -347,16 +327,13 @@ archaeology.
 
 ---
 
-### Principle 7: Concise, Semantic Identifiers ###
+### Principle 7: Concise, Semantic Identifiers
 
-**Original Principle:** Give everything a name. Short (6 letters max), consistent, noun-only
-identifiers.
+**Original Principle:** Give everything a name. Short (6 letters max), consistent, noun-only identifiers.
 
 **JAT Adaptation:**
 
-JAT **balances brevity with clarity**. While the original principle favors 6-letter max
-identifiers, JAT prioritizes **self-documenting names** that communicate intent without requiring
-comments.
+JAT **balances brevity with clarity**. While the original principle favors 6-letter max identifiers, JAT prioritizes **self-documenting names** that communicate intent without requiring comments.
 
 **Hard Rules:**
 
@@ -372,8 +349,7 @@ comments.
 
 **Why This Matters in JAT:**
 
-JAT code serves as **living documentation**. Self-explanatory names reduce cognitive load and allow
-reviewers to verify correctness without constant context switching to documentation.
+JAT code serves as **living documentation**. Self-explanatory names reduce cognitive load and allow reviewers to verify correctness without constant context switching to documentation.
 
 **Examples:**
 
@@ -404,29 +380,19 @@ public class TskEvl : ITskEvl
 
 ---
 
-### Principle 8: Design Before Implementation ###
+### Principle 8: Design Before Implementation
 
-**Original Principle:** Know in advance the best way to build your code. Experiment first, avoid
-mid-implementation rewrites.
+**Original Principle:** Know in advance the best way to build your code. Experiment first, avoid mid-implementation rewrites.
 
 **JAT Adaptation:**
 
-JAT requires **upfront architectural planning** due to determinism constraints, SMAPI integration
-boundaries, and versioned persistence. Mid-implementation pivots risk breaking saves or introducing
-non-deterministic behavior.
+JAT requires **upfront architectural planning** due to determinism constraints, SMAPI integration boundaries, and versioned persistence. Mid-implementation pivots risk breaking saves or introducing non-deterministic behavior.
 
 **Hard Rules:**
 
     - **Plan-first for complex features:** New subsystems, persistence format changes, and identifier
-  changes require Design Guide sections before implementation
-    - **Prototype risky integrations** before committing to architecture:
-        * SMAPI event lifecycle interactions
-        * StardewUI binding patterns
-        * Game state query performance
-    - **Design Guide updates before breaking changes:** If architecture must change, update Design
-  Guide first, then implement
-    - **Avoid mid-flight architecture pivots:** If a fundamental flaw is discovered, pause
-  implementation, update plan, get approval, then resume
+
+changes require Design Guide sections before implementation - **Prototype risky integrations** before committing to architecture: _ SMAPI event lifecycle interactions _ StardewUI binding patterns \* Game state query performance - **Design Guide updates before breaking changes:** If architecture must change, update Design Guide first, then implement - **Avoid mid-flight architecture pivots:** If a fundamental flaw is discovered, pause implementation, update plan, get approval, then resume
 
 **Why This Matters in JAT:**
 
@@ -464,33 +430,23 @@ JAT's constraints make course corrections expensive:
 
 ---
 
-### Principle 9: Finish Before Starting New Work ###
+### Principle 9: Finish Before Starting New Work
 
-**Original Principle:** Don't abandon your project midway. Maintain discipline, finish before
-starting new projects.
+**Original Principle:** Don't abandon your project midway. Maintain discipline, finish before starting new projects.
 
 **JAT Adaptation:**
 
-JAT enforces **phase-based completion discipline**. Each phase must reach a **verified working
-state** before proceeding to the next phase.
+JAT enforces **phase-based completion discipline**. Each phase must reach a **verified working state** before proceeding to the next phase.
 
 **Hard Rules:**
 
     - **Atomic commits must be verifiable:** Each commit includes verification steps (build passes,
-  tests pass, determinism checks)
-    - **No half-implemented features in main branch:** Use feature branches for work-in-progress
-    - **Phase completion gates:**
-        * All atomic commits in phase completed
-        * All verification steps passed
-        * No known blockers or regressions
-        * Phase retrospective documented (optional but recommended)
-    - **No scope expansion mid-phase:** New feature ideas captured in backlog, not inserted into
-  active phase
+
+tests pass, determinism checks) - **No half-implemented features in main branch:** Use feature branches for work-in-progress - **Phase completion gates:** _ All atomic commits in phase completed _ All verification steps passed _ No known blockers or regressions _ Phase retrospective documented (optional but recommended) - **No scope expansion mid-phase:** New feature ideas captured in backlog, not inserted into active phase
 
 **Why This Matters in JAT:**
 
-JAT's determinism contract means **partially implemented features can corrupt saves** or introduce
-subtle bugs that only manifest across save/load cycles. Incremental, verified progress is mandatory.
+JAT's determinism contract means **partially implemented features can corrupt saves** or introduce subtle bugs that only manifest across save/load cycles. Incremental, verified progress is mandatory.
 
 **Examples:**
 
@@ -514,26 +470,24 @@ subtle bugs that only manifest across save/load cycles. Incremental, verified pr
 
 ---
 
-## JAT-Specific Architectural Principles ##
+## JAT-Specific Architectural Principles
 
 The following principles are derived from JAT's unique technical contracts and design constraints.
 
 ---
 
-### Principle 10: Determinism is Non-Negotiable ###
+### Principle 10: Determinism is Non-Negotiable
 
 **Definition:**
 
-All identifier generation, task evaluation, and state transformations must be **deterministic** —
-producing identical outputs for identical inputs, regardless of evaluation order, timing, or
-session.
+All identifier generation, task evaluation, and state transformations must be **deterministic** — producing identical outputs for identical inputs, regardless of evaluation order, timing, or session.
 
 **Hard Rules:**
 
-    - **TaskID must be deterministic:**
+    - **TaskId must be deterministic:**
         * Derived from stable inputs: source type, rule ID, subject ID, day key
         * **Never** use `Guid.NewGuid()`, random numbers, or time-based UUIDs for generated tasks
-        * Task IDs must remain stable across reloads and evaluation passes
+        * TaskIds must remain stable across reloads and evaluation passes
     - **Reducer functions must be pure:**
         * Same command + same state → same new state
         * No side effects (logging is permissible, state mutation is not)
@@ -581,12 +535,11 @@ public static TaskId ForBuiltInTask(string generatorName, SubjectID subjectId)
 
 ---
 
-### Principle 11: Immutability Boundaries are Inviolable ###
+### Principle 11: Immutability Boundaries are Inviolable
 
 **Definition:**
 
-**Snapshots** published by the State Store are **read-only**. UI and other consumers must **never**
-mutate snapshot data.
+**Snapshots** published by the State Store are **read-only**. UI and other consumers must **never** mutate snapshot data.
 
 **Hard Rules:**
 
@@ -640,21 +593,17 @@ public void OnCompleteTaskClicked(string taskId)
 
 ---
 
-### Principle 12: Performance Through Design, Not Restrictions ###
+### Principle 12: Performance Through Design, Not Restrictions
 
 **Definition:**
 
-JAT achieves performance through **architectural design** (caching, bounded evaluation, event-
-driven updates) rather than feature restrictions.
+JAT achieves performance through **architectural design** (caching, bounded evaluation, event- driven updates) rather than feature restrictions.
 
 **Hard Rules:**
 
     - **Avoid per-frame work:** Expensive computations (rule evaluation, game state queries) run on
-  **events** or **throttled ticks**, not every frame
-    - **Cache expensive lookups:** Game state snapshots cached for evaluation window
-    - **Bounded scans:** Avoid unbounded loops; use explicit limits or early exits
-    - **UI rebuild throttling:** UI refreshes only on snapshot changes, not continuously
-    - **Lazy evaluation:** Defer expensive computations until actually needed
+
+**events** or **throttled ticks**, not every frame - **Cache expensive lookups:** Game state snapshots cached for evaluation window - **Bounded scans:** Avoid unbounded loops; use explicit limits or early exits - **UI rebuild throttling:** UI refreshes only on snapshot changes, not continuously - **Lazy evaluation:** Defer expensive computations until actually needed
 
 **Why This Matters:**
 
@@ -700,12 +649,11 @@ public void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 
 ---
 
-### Principle 13: Minimal Persistence, Explicit Versioning ###
+### Principle 13: Minimal Persistence, Explicit Versioning
 
 **Definition:**
 
-Persist **only the minimal essential data** required to reconstruct state. All persisted data must
-include **explicit version identifiers** to support safe migrations.
+Persist **only the minimal essential data** required to reconstruct state. All persisted data must include **explicit version identifiers** to support safe migrations.
 
 **Hard Rules:**
 
@@ -769,52 +717,54 @@ public class SaveData
 
 ---
 
-### Principle 14: Comment Why, Not What ###
+### Principle 14: Comment Why, Not What
 
 **Definition:**
 
-Code should be **self-explanatory** through clear naming and structure. Comments explain **why**
-decisions were made, not **what** the code does.
+Code should be **self-explanatory** through clear naming and structure. Comments explain **why** decisions were made, not **what** the code does.
 
 **Hard Rules:**
 
     - **Do not comment obvious code:**
 
-  ```csharp
-  // ❌ BAD
-  counter++; // Increment counter
-  ```
+```csharp
+// ❌ BAD
+counter++; // Increment counter
+```
+
     - **Do comment non-obvious decisions:**
 
-  ```csharp
-  // ✅ GOOD
-  // SMAPI event order: DayStarted fires before TimeChanged,
-  // so we must evaluate rules here to catch new daily tasks
-  private void OnDayStarted(object sender, DayStartedEventArgs e)
-  {
-      EvaluateAllRules();
-  }
-  ```
+```csharp
+// ✅ GOOD
+// SMAPI event order: DayStarted fires before TimeChanged,
+// so we must evaluate rules here to catch new daily tasks
+private void OnDayStarted(object sender, DayStartedEventArgs e)
+{
+    EvaluateAllRules();
+}
+```
+
     - **Do comment complex algorithms:**
 
-  ```csharp
-  // ✅ GOOD
-  // TaskID must include DayKey for daily recurring tasks to ensure
-  // a new task instance is created each day while remaining deterministic
-    var taskId = $"TaskBuilder:{ruleId}:{subjectId}:{dayKey}";
-  ```
+```csharp
+// ✅ GOOD
+  // TaskId must include DayKey for daily recurring tasks to ensure
+// a new task instance is created each day while remaining deterministic
+  var taskId = $"TaskBuilder:{ruleId}:{subjectId}:{dayKey}";
+```
+
     - **Do comment performance-critical code:**
 
-  ```csharp
-  // ✅ GOOD
-  // Cache game state snapshot to avoid per-rule queries
-  // (reduces N rule evaluations from N*M queries to 1 snapshot + N evaluations)
-  var gameStateSnapshot = CaptureGameState();
-  foreach (var rule in rules)
-  {
-      EvaluateRule(rule, gameStateSnapshot);
-  }
-  ```
+```csharp
+// ✅ GOOD
+// Cache game state snapshot to avoid per-rule queries
+// (reduces N rule evaluations from N*M queries to 1 snapshot + N evaluations)
+var gameStateSnapshot = CaptureGameState();
+foreach (var rule in rules)
+{
+    EvaluateRule(rule, gameStateSnapshot);
+}
+```
 
 **Why This Matters:**
 
@@ -833,12 +783,11 @@ Bad comments clutter code and become outdated when code changes.
 
 ---
 
-### Principle 15: Explicit Dependencies via Constructor Injection ###
+### Principle 15: Explicit Dependencies via Constructor Injection
 
 **Definition:**
 
-All subsystems declare dependencies **explicitly** via constructor parameters. No service locators,
-no ambient globals.
+All subsystems declare dependencies **explicitly** via constructor parameters. No service locators, no ambient globals.
 
 **Hard Rules:**
 
@@ -889,7 +838,7 @@ public class TaskStore : ITaskStore
 
 ---
 
-## Principle Application Workflow ##
+## Principle Application Workflow
 
 When implementing a new feature or reviewing code, apply these principles in order:
 
@@ -907,29 +856,29 @@ If any principle is violated, **stop and fix** before proceeding.
 
 ---
 
-## Risks and Concerns Identified ##
+## Risks and Concerns Identified
 
 During adaptation of these principles to JAT context, the following risks were identified:
 
 1. **Tension between determinism and flexibility:**
-   * JAT's determinism requirements can conflict with rapid prototyping
-   * **Mitigation:** Design Guide sections and upfront planning reduce mid-flight pivots
+   - JAT's determinism requirements can conflict with rapid prototyping
+   - **Mitigation:** Design Guide sections and upfront planning reduce mid-flight pivots
 
 2. **Performance vs. feature richness:**
-   * "Unlimited tasks" philosophy requires careful performance discipline
-   * **Mitigation:** Event-driven architecture and caching prevent per-frame work
+   - "Unlimited tasks" philosophy requires careful performance discipline
+   - **Mitigation:** Event-driven architecture and caching prevent per-frame work
 
 3. **Persistence migration complexity:**
-   * Explicit versioning is critical but adds upfront design overhead
-   * **Mitigation:** Version from day 1; incremental migrations easier than retroactive fixes
+   - Explicit versioning is critical but adds upfront design overhead
+   - **Mitigation:** Version from day 1; incremental migrations easier than retroactive fixes
 
 4. **Learning curve for contributors:**
-   * JAT's principles are more stringent than typical SMAPI mods
-   * **Mitigation:** This document + Design Guide + contracts provide clear onboarding path
+   - JAT's principles are more stringent than typical SMAPI mods
+   - **Mitigation:** This document + Design Guide + contracts provide clear onboarding path
 
 ---
 
-## Document Maintenance ##
+## Document Maintenance
 
 This document should be updated when:
 
@@ -942,27 +891,27 @@ This document should be updated when:
 
 ---
 
-## References ##
+## References
 
-### Architecture Contracts ###
+### Architecture Contracts
 
     - [BACKEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/backend-architecture-contract.instructions.md)
     - [FRONTEND-ARCHITECTURE-CONTRACT.instructions.md](../../.github/instructions/frontend-architecture-contract.instructions.md)
     - [WORKSPACE-CONTRACTS.instructions.md](../../.github/instructions/workspace-contracts.instructions.md)
 
-### Style Contracts ###
+### Style Contracts
 
     - [CSHARP-STYLE-CONTRACT.instructions.md](../../.github/instructions/csharp-style-contract.instructions.md)
     - [SELF-EXPLANATORY-CODE-COMMENTING.instructions.md](../../.github/instructions/self-explanatory-code-commenting.instructions.md)
 
-### Design Guide Sections ###
+### Design Guide Sections
 
     - [JojaAutoTasks Design Guide.md](Joja%20AutoTasks%20Design%20Guide/JojaAutoTasks%20Design%20Guide.md)
     - [Section 02 - System Architecture](Joja%20AutoTasks%20Design%20Guide/Section%2002%20-%20System%20Architecture.md)
     - [Section 03 - Deterministic Identifier Model](Joja%20AutoTasks%20Design%20Guide/Section%2003%20-%20Deterministic%20Identifier%20Model.md)
     - [Section 09 - Persistence Model](Joja%20AutoTasks%20Design%20Guide/Section%2009%20-%20Persistence%20Model.md)
 
-### Testing Contracts ###
+### Testing Contracts
 
     - [UNIT-TESTING-CONTRACT.instructions.md](../../.github/instructions/unit-testing-contract.instructions.md)
 

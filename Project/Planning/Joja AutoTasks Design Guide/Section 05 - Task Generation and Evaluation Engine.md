@@ -1,9 +1,8 @@
-﻿# Section 5 — Task Generation and Evaluation Engine #
+﻿# Section 5 — Task Generation and Evaluation Engine
 
-## 5.1 Purpose ##
+## 5.1 Purpose
 
-The Task Generation and Evaluation Engine is responsible for creating and
-updating tasks from all task sources.
+The Task Generation and Evaluation Engine is responsible for creating and updating tasks from all task sources.
 
 The engine must:
 
@@ -21,37 +20,32 @@ The engine operates on a unified output model:
 
 All tasks then flow through a shared pipeline and into the State Store.
 
-## 5.2 Task Sources and Engine Inputs ##
+## 5.2 Task Sources and Engine Inputs
 
 The engine consumes three sources of task definitions.
 
 1. Built-in Automatic Task Generators
-
-    * Hardcoded generators implemented as independent modules.
-    * Each generator is responsible for a defined gameplay domain
-    * Generators create tasks based on game state detection
+   - Hardcoded generators implemented as independent modules.
+   - Each generator is responsible for a defined gameplay domain
+   - Generators create tasks based on game state detection
 
 2. Task Builder Rules
-
-    * Player-authored rules created through the wizard interface.
-    * Rules are stored in a stable serialized format
-    * Rules are evaluated by the rule engine to create tasks
+   - Player-authored rules created through the wizard interface.
+   - Rules are stored in a stable serialized format
+   - Rules are evaluated by the rule engine to create tasks
 
 3. Manual Tasks
-
-    * Player-authored tasks created manually.
-    * Manual tasks do not require evaluation for progress unless optionally
-        supported later
-    * Manual tasks persist until manually completed
+   - Player-authored tasks created manually.
+   - Manual tasks do not require evaluation for progress unless optionally supported later
+   - Manual tasks persist until manually completed
 
 The engine produces tasks using a single unified context input:
 
     - Generation and Evaluation Context
 
-## 5.3 Generation and Evaluation Context ##
+## 5.3 Generation and Evaluation Context
 
-The engine constructs a Generation/Evaluation Context which is a snapshot of
-relevant game state needed for evaluation.
+The engine constructs a Generation/Evaluation Context which is a snapshot of relevant game state needed for evaluation.
 
 The context exists to:
 
@@ -61,9 +55,7 @@ The context exists to:
     - Decouple generators and rules from direct event dependencies
     - Enable unit testing without a running game
 
-The context MUST be structured as a collection of **domain-specific slices**
-that are lazily materialized. This ensures that a rule needing only inventory
-data never pays the cost of scanning farm state.
+The context MUST be structured as a collection of **domain-specific slices** that are lazily materialized. This ensures that a rule needing only inventory data never pays the cost of scanning farm state.
 
 Conceptual structure:
 
@@ -76,14 +68,11 @@ Conceptual structure:
         public FarmContext Farm => _farm ??= BuildFarmContext();
     }
 
-Each domain slice is built on first access and cached for the duration of
-the evaluation cycle.
+Each domain slice is built on first access and cached for the duration of the evaluation cycle.
 
-### 5.3.1 Game State Abstraction ###
+### 5.3.1 Game State Abstraction
 
-Generators and rules MUST NOT call game APIs directly (e.g.,
-`Game1.player.Items`, `Game1.getFarm()`). All game state access MUST go
-through abstraction interfaces that the EvaluationContext consumes.
+Generators and rules MUST NOT call game APIs directly (e.g., `Game1.player.Items`, `Game1.getFarm()`). All game state access MUST go through abstraction interfaces that the EvaluationContext consumes.
 
 Conceptual interface:
 
@@ -97,7 +86,7 @@ Conceptual interface:
     }
 
 | Method | V1 Required | Purpose |
-|--------|-------------|---------|
+| --- | --- | --- |
 | `GetPlayerItems()` | ✅ V1 | Inventory-based generators and rules |
 | `GetFarmAnimals()` | ✅ V1 | Animal care generator |
 | `GetLocations()` | ✅ V1 | Machine output generator (scans locations for machines) |
@@ -112,9 +101,7 @@ Conceptual interface:
 | `GetHouseUpgradeLevel()` | V2+ | House upgrade condition support |
 | `GetToolUpgradeState()` | V2+ | Tool upgrade condition support |
 
-Methods marked V2+ are not required for the V1 generator set defined in
-§13.10. They may be added in future phases without breaking the V1 interface
-contract.
+Methods marked V2+ are not required for the V1 generator set defined in §13.10. They may be added in future phases without breaking the V1 interface contract.
 
 This abstraction enables:
 
@@ -122,8 +109,7 @@ This abstraction enables:
     - Deterministic evaluation isolated from the game environment
     - Clean separation between engine logic and SMAPI/game coupling
 
-The concrete implementation of `IGameStateProvider` wraps actual game
-API calls and is injected during mod initialization.
+The concrete implementation of `IGameStateProvider` wraps actual game API calls and is injected during mod initialization.
 
 The context includes only the data needed for supported task types and rules.
 
@@ -157,7 +143,7 @@ Example context domains:
 
 The context is built lazily where possible and cached per evaluation cycle.
 
-## 5.4 Built-in Automatic Task Generators ##
+## 5.4 Built-in Automatic Task Generators
 
 Built-in tasks are implemented as independent generators.
 
@@ -189,11 +175,9 @@ V1 built-in generators:
 
 Generators output tasks into the shared pipeline.
 
-The normative V1 generator set is defined in Section 13 §13.10. The generators
-listed here are illustrative of the domain structure; §13.10 is the
-authoritative V1 commitment.
+The normative V1 generator set is defined in Section 13 §13.10. The generators listed here are illustrative of the domain structure; §13.10 is the authoritative V1 commitment.
 
-## 5.5 Task Builder Rule Engine ##
+## 5.5 Task Builder Rule Engine
 
 Task Builder rules are evaluated using a composable logic tree.
 
@@ -212,7 +196,7 @@ Task Builder evaluation is split into two conceptual steps:
 
 The rule engine produces the same Task Object model as built-in generators.
 
-## 5.6 Rule Model Overview ##
+## 5.6 Rule Model Overview
 
 A Task Builder Rule is represented internally as:
 
@@ -298,7 +282,7 @@ Output model:
         * Day-based reminders (tomorrow, by date)
         * Time-based reminders (at 5:00pm)
 
-## 5.7 Deadline and "By Date" Tasks ##
+## 5.7 Deadline and "By Date" Tasks
 
 The Task Builder must support goals such as:
 
@@ -315,8 +299,7 @@ In Version 1 the Task Status model remains:
     - Incomplete
     - Completed
 
-Therefore deadline behavior is represented as derived properties rather than new
-statuses.
+Therefore deadline behavior is represented as derived properties rather than new statuses.
 
 Deadline derived properties include:
 
@@ -326,10 +309,9 @@ Deadline derived properties include:
 
 Tasks remain Incomplete when overdue unless completed.
 
-This avoids introducing Failed/Expired statuses in Version 1 while still
-enabling meaningful UI warnings and statistics.
+This avoids introducing Failed/Expired statuses in Version 1 while still enabling meaningful UI warnings and statistics.
 
-## 5.8 Daily Recurring Tasks ##
+## 5.8 Daily Recurring Tasks
 
 The Task Builder must support daily recurring tasks such as:
 
@@ -348,99 +330,84 @@ Daily tasks are stored in the daily snapshot system so that players can review:
     - whether the task was completed that day
     - the progress achieved that day
 
-## 5.9 Evaluation Scheduling and Performance ##
+## 5.9 Evaluation Scheduling and Performance
 
-The engine uses a hybrid scheduling model to balance responsiveness and
-performance.
+The engine uses a hybrid scheduling model to balance responsiveness and performance.
 
 Canonical rule scheduling behavior is defined in Section 7.8.
 
 Engine lifecycle timing and phase orchestration are defined in Section 12.
 
-## 5.10 Task Generation Pipeline ##
+## 5.10 Task Generation Pipeline
 
 All task sources flow into a single pipeline.
 
 Pipeline stages:
 
 1. Generate candidate tasks
-
-    * Built-in generators
-    * Task Builder rules
-    * Manual tasks
+   - Built-in generators
+   - Task Builder rules
+   - Manual tasks
 
 2. Normalize tasks
-
-    * Ensure deterministic IDs
-    * Ensure required fields exist
-    * Apply category and presentation defaults
+   - Ensure deterministic IDs
+   - Ensure required fields exist
+   - Apply category and presentation defaults
 
 3. Merge and reconcile
-
-    * Resolve collisions using deterministic IDs
-    * Prefer a single authoritative task instance per ID
+   - Resolve collisions using deterministic IDs
+   - Prefer a single authoritative task instance per ID
 
 4. Apply deterministic task-type ordering
-
-    * Use a derived deterministic task-type ordering map
-    * Apply fixed fallback chain (Task Creation Day, then canonical Task ID)
-    * Apply pinned tasks at top from the State Store
+   - Use a derived deterministic task-type ordering map
+   - Apply fixed fallback chain (Task Creation Day, then canonical Task ID)
+   - Apply pinned tasks at top from the State Store
 
 5. Evaluate completion and progress
-
-    * Automatic completion rules
-    * Task Builder completion rules
-    * Manual tasks remain incomplete until manually completed
+   - Automatic completion rules
+   - Task Builder completion rules
+   - Manual tasks remain incomplete until manually completed
 
 6. Publish to State Store
+   - Store new task list
+   - Notify UI
 
-    * Store new task list
-    * Notify UI
-
-## 5.11 Examples of Task Builder Rules ##
+## 5.11 Examples of Task Builder Rules
 
 The following example tasks represent required Task Builder capabilities.
 
 1. Silos full of hay by Fall 28
-
-    * Deadline goal with a farm state condition
-    * Derived overdue state when past due date
+   - Deadline goal with a farm state condition
+   - Derived overdue state when past due date
 
 2. Collect 300 wood to build Coop
-
-    * Inventory baseline rule
-    * Progress = current wood - baseline
-    * Completed when baseline + 300 reached
+   - Inventory baseline rule
+   - Progress = current wood - baseline
+   - Completed when baseline + 300 reached
 
 3. Reach floor 70 of the mines by Spring 25
-
-    * Deadline goal with a progression state condition
-    * Progress = deepest floor reached
+   - Deadline goal with a progression state condition
+   - Progress = deepest floor reached
 
 4. Cut down 5 trees every day
-
-    * Daily recurring goal
-    * Baseline taken at day start
-    * Completed when baseline + 5 reached
+   - Daily recurring goal
+   - Baseline taken at day start
+   - Completed when baseline + 5 reached
 
 5. Reach farming skill level 8 by Summer 20
-
-    * Deadline + skill condition
+   - Deadline + skill condition
 
 6. Own 8 iridium sprinklers by Fall 15
-
-    * Deadline + item count condition
+   - Deadline + item count condition
 
 7. Upgrade house by Fall 16
-
-    * Deadline + house upgrade state condition
+   - Deadline + house upgrade state condition
 
 8. Upgrade watering can
+   - Tool upgrade state condition
+   - Persistent until completed
 
-    * Tool upgrade state condition
-    * Persistent until completed
-
-## 5.12 Version 1 Constraints ##
+## 5.12 Version 1 Constraints
 
 Version 1 engine constraints:
 
@@ -450,10 +417,9 @@ Version 1 engine constraints:
     status
     - Multiplayer support is excluded from V1
 
-These constraints intentionally reduce complexity while still supporting the
-core value proposition of powerful user-authored rules.
+These constraints intentionally reduce complexity while still supporting the core value proposition of powerful user-authored rules.
 
-## 5.13 Localization-Neutral Engine Output ##
+## 5.13 Localization-Neutral Engine Output
 
 The engine output model must remain semantic and locale-neutral.
 
@@ -468,5 +434,18 @@ Rules:
     - Any user-authored free text (for example manual task titles) is treated
     as user data, not as an identity input.
 
-This preserves deterministic behavior and keeps translation resolution at the
-UI boundary.
+This preserves deterministic behavior and keeps translation resolution at the UI boundary.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 5 — Built-in Task Generators
+- Phase 6 — Rule Evaluation Engine
+
+Also referenced in:
+
+- Phase 7 — Persistence System
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.

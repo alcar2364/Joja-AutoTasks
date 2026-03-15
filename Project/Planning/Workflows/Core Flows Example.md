@@ -1,7 +1,5 @@
 ---
-
 Description: This document is an example template for a Core Flows Spec, do not edit or use this as a document that is authoritative. Flows defined here are example only and may not reflect current design decisions.
-
 ---
 
 # Core Flows Spec Example
@@ -121,7 +119,7 @@ The full deterministic ordering chain, with completion status added as the prima
 2. **Pin state** — Within each completion group, pinned tasks sort first
 3. **Task-type rank** — Within pinned/unpinned groups, the in-code ordering map applies
 4. **Task Creation Day** — Fallback within the same type rank
-5. **Canonical Task ID** — Final tiebreaker
+5. **Canonical TaskId** — Final tiebreaker
 
 ### 2.4 HUD completed-task presentation
 
@@ -211,7 +209,7 @@ How the four wizard-facing Rule Types (Reminder, Progress, Repeating, Milestone)
 | **Reminder** | Reminder | Persistent | Optional | One-time date/time reminder |
 | **Reminder (daily)** | Reminder | Daily | — | Recurring daily reminder; resets each day |
 | **Progress** | Progress | Persistent | Optional | Goal that persists until target reached |
-| **Repeating** | Progress | Daily | — | Daily goal; resets each day with new day-keyed TaskID |
+| **Repeating** | Progress | Daily | — | Daily goal; resets each day with new day-keyed TaskId |
 | **Milestone** | Progress | Persistent | Required | Long-term goal; wizard enforces deadline entry |
 
 ### 3.3 RuleId generation flow
@@ -270,7 +268,7 @@ sequenceDiagram
 3. On the Review screen, the wizard determines whether the edit is **metadata-only** or **identity-affecting**:
 
 - **Metadata-only** (title, description, category, icon changed): No warning. The existing task is updated in-place on confirmation. Progress and completion state are preserved.
-- **Identity-affecting** (trigger, subject, or progress model changed in a way that alters the `TaskID`): The Review screen shows a notice: _"This change will reset the task's progress. Your previous progress cannot be carried over."_ The player must explicitly confirm.
+- **Identity-affecting** (trigger, subject, or progress model changed in a way that alters the `TaskId`): The Review screen shows a notice: _"This change will reset the task's progress. Your previous progress cannot be carried over."_ The player must explicitly confirm.
 
 1. Player confirms. The rule definition is updated in persistence.
 2. On the next evaluation pass, the engine attempts progress carryover:
@@ -460,7 +458,7 @@ How the `HistoryViewModel` accesses the Daily Snapshot Ledger, what the History 
 
 `IDailySnapshotLedger`
 
-| | | | |
+|  |  |  |  |
 | --- | :-: | --- | --- |
 | `GetSnapshot(DayKey)` | `→` | `DailyTaskSnapshot?` | `null` if no entry for thatday |
 | `GetRecordedDays()` | `→` | `IReadOnlyList<DayKey>` | All days with ledger entries, newest first |

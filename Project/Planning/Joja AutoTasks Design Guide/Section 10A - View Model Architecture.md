@@ -18,12 +18,9 @@ The View Model layer solves this by:
 not belong in the State Store
 ```
 
-Native notifications are a separate UI integration concern. They may
-be triggered from backend events through the outbound
-game-events/effect queue, but they are not part of the StardewUI
-binding-context/view-model layer.
+Native notifications are a separate UI integration concern. They may be triggered from backend events through the outbound game-events/effect queue, but they are not part of the StardewUI binding-context/view-model layer.
 
-## 10A.2 Architecture Position ##
+## 10A.2 Architecture Position
 
 The View Model layer sits between the State Store and the UI surfaces.
 
@@ -38,10 +35,7 @@ State Store
   → UI re-renders affected elements
 ```
 
-Live task surfaces consume State Store snapshots, while history,
-configuration, and debug sections layer read-only ledger/configuration
-data onto the same binding architecture without creating alternate state
-ownership.
+Live task surfaces consume State Store snapshots, while history, configuration, and debug sections layer read-only ledger/configuration data onto the same binding architecture without creating alternate state ownership.
 
 View Models are consumed by StarML views through the binding context mechanism described in the StardewUI documentation.
 
@@ -87,7 +81,7 @@ Example:
 ```cs
 using PropertyChanged.SourceGenerator;
 
-public partial class TaskRowViewModel
+public partial class HudTaskRowViewModel
 {
 [Notify] private string title = "";
 [Notify] private string status = "";
@@ -102,7 +96,7 @@ public float ProgressPercent =>
 }
 ```
 
-Fields that never change after construction (e.g., `TaskID`) do not need `[Notify]` and can remain as regular properties.
+Fields that never change after construction (e.g., `TaskId`) do not need `[Notify]` and can remain as regular properties.
 
 ## 10A.4 Collection Binding Strategy
 
@@ -149,6 +143,15 @@ The following view models are expected for Version 1.
 - Fields: title, status, progress, category icon, completion affordance
 ```
 
+Naming note:
+
+```text
+- `HudTaskRowViewModel` is the canonical Version 1 role name in the design guide.
+- An implementation may temporarily use an equivalent HUD row/item ViewModel name
+  (for example `TaskItemViewModel`) during transition, but the role remains the
+  Phase 9 HUD row/item projection model defined in Section 21.
+```
+
 Toast/effect routing note:
 
 ```text
@@ -160,7 +163,7 @@ Toast/effect routing note:
   outside the binding layer.
 ```
 
-#### Menu View Models ####
+#### Menu View Models
 
 `MenuShellViewModel` (or equivalent root menu binding context)
 
@@ -247,57 +250,40 @@ state
 
 ## 10A.6 Snapshot Subscription Model
 
-View models MUST NOT hide backend-event subscription lifetime inside
-themselves for non-snapshot event channels. The View Model subscription
-model is specifically for `SnapshotChanged`.
+View models MUST NOT hide backend-event subscription lifetime inside themselves for non-snapshot event channels. The View Model subscription model is specifically for `SnapshotChanged`.
 
-Live task view models subscribe directly to `SnapshotChanged`, hold the
-resulting subscription lifetime, and release it during disposal.
+Live task view models subscribe directly to `SnapshotChanged`, hold the resulting subscription lifetime, and release it during disposal.
 
-`ToastRequested` and other outbound effect/game-event channels are not
-part of this model and must remain outside the view-model layer.
+`ToastRequested` and other outbound effect/game-event channels are not part of this model and must remain outside the view-model layer.
 
 Recommended pattern:
 
-- The State Store exposes `SnapshotChanged` for bindable UI
-  reconciliation.
-- Each live task view model subscribes during initialization and
-  unsubscribes during disposal.
-- On notification, the view model reconciles its current bindable state
-  against the newly published snapshot.
+- The State Store exposes `SnapshotChanged` for bindable UI reconciliation.
+- Each live task view model subscribes during initialization and unsubscribes during disposal.
+- On notification, the view model reconciles its current bindable state against the newly published snapshot.
 
 Why this pattern:
 
-- Keeps the binding boundary simple: snapshots in, INPC/collection
-  updates out.
-- Matches the canonical teardown rule in Section 2.5: dispose view
-  models and unsubscribe from `SnapshotChanged`.
-- Prevents the outbound effect/game-event path from leaking into the
-  binding layer.
+- Keeps the binding boundary simple: snapshots in, INPC/collection updates out.
+- Matches the canonical teardown rule in Section 2.5: dispose view models and unsubscribe from `SnapshotChanged`.
+- Prevents the outbound effect/game-event path from leaking into the binding layer.
 
 Recommended snapshot flow:
 
 1. View Model subscribes to `SnapshotChanged`.
 2. View Model receives `TaskSnapshot`.
-3. View Model diffs snapshot against internal view state and updates
-   INPC/collection properties (reconciling `ObservableCollection<T>`).
+3. View Model diffs snapshot against internal view state and updates INPC/collection properties (reconciling `ObservableCollection<T>`).
 4. StardewUI detects INPC/collection changes and re-renders.
 
 Responsibilities that stay outside the View Model subscription model:
 
-- Native game API calls and conversions to platform-specific actions
-  (for example `Game1.addHUDMessage`).
+- Native game API calls and conversions to platform-specific actions (for example `Game1.addHUDMessage`).
 - Outbound game-events/effect queue ownership and draining.
 - Any non-snapshot event routing such as toast/effect delivery.
 
-View models therefore own a single, explicit snapshot subscription path
-and remain free of toast/effect routing responsibilities.
+View models therefore own a single, explicit snapshot subscription path and remain free of toast/effect routing responsibilities.
 
-For the HUD, `HudViewModel` subscribes to `SnapshotChanged` and
-reconciles the HUD task rows directly. For the menu, the relevant menu
-view models subscribe to the same live snapshot source for task
-presentation. Native notifications never pass through the HUD binding
-context.
+For the HUD, `HudViewModel` subscribes to `SnapshotChanged` and reconciles the HUD task rows directly. For the menu, the relevant menu view models subscribe to the same live snapshot source for task presentation. Native notifications never pass through the HUD binding context.
 
 ## 10A.7 UI-Local State
 
@@ -337,10 +323,7 @@ User clicks checkbox → HudViewModel.CompleteTask(taskId)
   → StardewUI re-renders checkbox as completed
 ```
 
-Task Builder view models follow the same "intent out, snapshot back"
-rule but emit rule-definition and persistence intents only. Config and
-debug view models update their respective config/debug services rather
-than dispatching task-state commands.
+Task Builder view models follow the same "intent out, snapshot back" rule but emit rule-definition and persistence intents only. Config and debug view models update their respective config/debug services rather than dispatching task-state commands.
 
 View Models MUST NOT modify their own state optimistically before the snapshot confirms the change. The snapshot is the source of truth.
 
@@ -369,13 +352,9 @@ Wizard View Model lifecycle:
 - Disposed when the wizard completes or is cancelled
 ```
 
-This lifecycle must honor the teardown sequence in Section 2.5: view
-models are disposed before the HUD drawable is torn down and before the
-State Store is cleared.
+This lifecycle must honor the teardown sequence in Section 2.5: view models are disposed before the HUD drawable is torn down and before the State Store is cleared.
 
-Disposal MUST release any timers, UI-owned event handlers, or other
-local resources and MUST unsubscribe from `SnapshotChanged` before the
-view model is discarded.
+Disposal MUST release any timers, UI-owned event handlers, or other local resources and MUST unsubscribe from `SnapshotChanged` before the view model is discarded.
 
 ## 10A.10 StardewUI Update Tick Integration
 
@@ -471,3 +450,19 @@ HistoricalTaskRowViewModel
 - Full task rows: title, category icon, progress bar, completion status.
 - Detail panel: selecting a historical task shows full detail.
 - GetRecordedDays() is included in the V1 interface contract to support this upgrade.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 4 — View Model Infrastructure
+
+Also referenced in:
+
+- Phase 8 — Menu Dashboard
+- Phase 9 — HUD Interface
+- Phase 10 — Task Builder Wizard
+- Phase 11 — History Browsing UI
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.

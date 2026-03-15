@@ -1,18 +1,14 @@
-﻿# Section 16 - Error Handling and Rule Validation #
+﻿# Section 16 - Error Handling and Rule Validation
 
-## 16.1 Purpose ##
+## 16.1 Purpose
 
-The error handling and validation system ensures that rule definitions,
-task generation, and engine evaluation operate safely and predictably
-even when invalid inputs or runtime failures occur.
+The error handling and validation system ensures that rule definitions, task generation, and engine evaluation operate safely and predictably even when invalid inputs or runtime failures occur.
 
-The system must prevent corrupted rules, invalid task states, and
-generator failures from affecting the stability of the task engine.
+The system must prevent corrupted rules, invalid task states, and generator failures from affecting the stability of the task engine.
 
-Failures must be isolated, logged, and safely recovered without
-interrupting normal gameplay.
+Failures must be isolated, logged, and safely recovered without interrupting normal gameplay.
 
-## 16.2 Failure domains ##
+## 16.2 Failure domains
 
 Failures may occur in several subsystems of the task engine.
 
@@ -24,13 +20,11 @@ Primary failure domains include:
     - State store command application
     - Persistence and serialization
 
-Each domain must isolate failures so that one failing component does not
-prevent the rest of the system from functioning.
+Each domain must isolate failures so that one failing component does not prevent the rest of the system from functioning.
 
-## 16.3 Rule definition validation ##
+## 16.3 Rule definition validation
 
-Rule definitions created by the Task Builder Wizard must be validated
-before persistence.
+Rule definitions created by the Task Builder Wizard must be validated before persistence.
 
 Validation must ensure:
 
@@ -42,7 +36,7 @@ Validation must ensure:
 
 Invalid rules must not be persisted to storage. See Section 9.
 
-## 16.4 Runtime rule validation ##
+## 16.4 Runtime rule validation
 
 Persisted rules must also be validated during rule loading.
 
@@ -52,13 +46,11 @@ This protects the system from:
     - incompatible rule versions
     - manual modification of save files
 
-If a rule fails runtime validation it must be disabled and excluded from
-evaluation until corrected.
+If a rule fails runtime validation it must be disabled and excluded from evaluation until corrected.
 
-## 16.5 Generator error handling ##
+## 16.5 Generator error handling
 
-Task generators described in Section 13 may fail due to unexpected game
-state conditions or runtime exceptions.
+Task generators described in Section 13 may fail due to unexpected game state conditions or runtime exceptions.
 
 Generator execution must be wrapped in a safe evaluation boundary.
 
@@ -71,10 +63,9 @@ If a generator throws an exception:
 
 Generator failures must not terminate the evaluation cycle.
 
-## 16.6 Rule evaluation failures ##
+## 16.6 Rule evaluation failures
 
-Rule evaluation failures may occur during condition evaluation or
-progress calculation.
+Rule evaluation failures may occur during condition evaluation or progress calculation.
 
 Evaluation failures must follow these rules:
 
@@ -82,26 +73,21 @@ Evaluation failures must follow these rules:
     - The failure must be logged for diagnostics.
     - Other rules must continue evaluating normally.
 
-**Normative (V1):** A rule that accumulates **3 consecutive evaluation
-failures within a single session** is automatically disabled for the remainder
-of that session. The failure count resets when the session ends (return to
-title or game close). The threshold is configurable via `DebugConfig` for
-development and diagnostic purposes.
+**Normative (V1):** A rule that accumulates **3 consecutive evaluation failures within a single session** is automatically disabled for the remainder of that session. The failure count resets when the session ends (return to title or game close). The threshold is configurable via `DebugConfig` for development and diagnostic purposes.
 
-## 16.7 State store command safety ##
+## 16.7 State store command safety
 
-Commands applied to the State Store must be validated before execution.
-See Section 8.
+Commands applied to the State Store must be validated before execution. See Section 8.
 
 Command validation must ensure:
 
-    - Referenced `TaskID` values exist.
+    - Referenced `TaskId` values exist.
     - Task identity fields are immutable.
     - Commands do not violate store invariants.
 
 Invalid commands must be rejected and logged.
 
-## 16.8 Task state consistency ##
+## 16.8 Task state consistency
 
 The system must prevent inconsistent task states from being persisted.
 
@@ -111,13 +97,11 @@ Examples of invalid states include:
     - Progress exceeding defined completion targets
     - Completion timestamps earlier than task creation
 
-Consistency checks must be applied during command processing within the
-State Store.
+Consistency checks must be applied during command processing within the State Store.
 
-## 16.9 Persistence failures ##
+## 16.9 Persistence failures
 
-Persistence failures may occur during save or load operations described
-in Section 9.
+Persistence failures may occur during save or load operations described in Section 9.
 
 Failure scenarios include:
 
@@ -133,7 +117,7 @@ Recovery strategies may include:
     - migration of compatible fields
     - disabling invalid rules
 
-## 16.10 Logging and diagnostics ##
+## 16.10 Logging and diagnostics
 
 All failures must produce diagnostic log entries.
 
@@ -144,20 +128,17 @@ Diagnostic logs should include:
     - failure description
     - timestamp
 
-Logging must be rate-limited when repeated failures occur to prevent log
-flooding.
+Logging must be rate-limited when repeated failures occur to prevent log flooding.
 
-## 16.11 User-facing error behavior ##
+## 16.11 User-facing error behavior
 
 Most runtime errors must remain invisible to the player.
 
-Errors that affect player-created rules may optionally produce
-non-intrusive notifications indicating that a rule was disabled or
-requires correction.
+Errors that affect player-created rules may optionally produce non-intrusive notifications indicating that a rule was disabled or requires correction.
 
 User notifications must not interrupt gameplay.
 
-## 16.12 Failure recovery principles ##
+## 16.12 Failure recovery principles
 
 The error handling system must follow these principles:
 
@@ -166,5 +147,19 @@ The error handling system must follow these principles:
 3. Invalid inputs must never corrupt runtime state.
 4. Diagnostic information must be available for debugging.
 
-These principles ensure that the task engine remains stable during
-unexpected runtime conditions.
+These principles ensure that the task engine remains stable during unexpected runtime conditions.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 3 — State Store
+- Phase 6 — Rule Evaluation Engine
+- Phase 7 — Persistence System
+- Phase 12 — Debug and Development Tools
+
+Also referenced in:
+
+- Phase 10 — Task Builder Wizard
+
+Canonical implementation mapping lives in Section 21.

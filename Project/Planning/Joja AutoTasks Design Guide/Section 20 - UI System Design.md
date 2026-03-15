@@ -1,9 +1,8 @@
-﻿# Section 20 - UI System Design #
+﻿# Section 20 - UI System Design
 
-## 20.1 Purpose ##
+## 20.1 Purpose
 
-The UI system provides the primary interaction surface between the
-player and the task engine.
+The UI system provides the primary interaction surface between the player and the task engine.
 
 The UI system must support two distinct experiences:
 
@@ -13,10 +12,9 @@ The UI system must support two distinct experiences:
 rules, modifying configuration, and reviewing history
 ```
 
-The HUD and menu are separate because they have different performance,
-layout, and interaction requirements.
+The HUD and menu are separate because they have different performance, layout, and interaction requirements.
 
-## 20.2 UI surfaces ##
+## 20.2 UI surfaces
 
 The mod provides the following UI surfaces:
 
@@ -45,27 +43,23 @@ Version 1 delivery rule:
     command/snapshot boundaries.
 ```
 
-## 20.3 Shared UI data model ##
+## 20.3 Shared UI data model
 
-Both HUD and menus must display information derived from the same State
-Store snapshot described in Section 8.
+Both HUD and menus must display information derived from the same State Store snapshot described in Section 8.
 
-UI code must never directly mutate task state. UI actions must dispatch
-commands to the State Store.
+UI code must never directly mutate task state. UI actions must dispatch commands to the State Store.
 
 Conceptual flow:
 
-``` text
+```text
 UI Interaction → Command Dispatch → State Store → UI Refresh
 ```
 
-This ensures deterministic state updates and prevents UI logic from
-corrupting task state.
+This ensures deterministic state updates and prevents UI logic from corrupting task state.
 
-## 20.4 UI update and refresh model ##
+## 20.4 UI update and refresh model
 
-UI refresh must be driven by state changes rather than frame-by-frame
-recomputation.
+UI refresh must be driven by state changes rather than frame-by-frame recomputation.
 
 The UI system must refresh when one of the following occurs:
 
@@ -75,10 +69,9 @@ The UI system must refresh when one of the following occurs:
 - Debug tuning values change (Section 17)
 ```
 
-The UI system must avoid rebuilding view structures when the underlying
-data has not changed.
+The UI system must avoid rebuilding view structures when the underlying data has not changed.
 
-## 20.5 StardewUI usage model ##
+## 20.5 StardewUI usage model
 
 StardewUI is used across both UI surfaces.
 
@@ -87,10 +80,9 @@ StardewUI is used across both UI surfaces.
 - Menus use StardewUI for layout, rendering, and interaction.
 ```
 
-StardewUI view composition uses StarML and provides standard views such
-as scrollable regions, expanders, and tabs.
+StardewUI view composition uses StarML and provides standard views such as scrollable regions, expanders, and tabs.
 
-## 20.6 HUD design goals ##
+## 20.6 HUD design goals
 
 The HUD provides a compact, real-time display of tasks during gameplay.
 
@@ -105,31 +97,21 @@ The HUD must prioritize:
 - predictable interactions
 ```
 
-### 20.6.1 HUD implementation model (StardewUI IViewDrawable) ###
+### 20.6.1 HUD implementation model (StardewUI IViewDrawable)
 
 The HUD is implemented using StardewUI's `IViewDrawable` API.
 
-The mod creates the HUD drawable using
-`viewEngine.CreateDrawableFromAsset()`, which returns an `IViewDrawable`
-bound to a StarML asset and a view model context.
+The mod creates the HUD drawable using `viewEngine.CreateDrawableFromAsset()`, which returns an `IViewDrawable` bound to a StarML asset and a view model context.
 
-The HUD drawable is drawn each frame by calling its `Draw()` method
-during the game's render cycle. StardewUI handles layout, rendering,
-and input routing through the drawable.
+The HUD drawable is drawn each frame by calling its `Draw()` method during the game's render cycle. StardewUI handles layout, rendering, and input routing through the drawable.
 
-The HUD does not use StardewUI's menu pipeline (`IClickableMenu`).
-Instead it operates as a non-modal drawable overlay rendered alongside
-normal gameplay.
+The HUD does not use StardewUI's menu pipeline (`IClickableMenu`). Instead it operates as a non-modal drawable overlay rendered alongside normal gameplay.
 
-The view model bound to the HUD drawable follows the patterns defined
-in Section 10A.
+The view model bound to the HUD drawable follows the patterns defined in Section 10A.
 
-Drawable creation and disposal belong to UI composition/startup wiring.
-Version 1 does not require a dedicated `HudHost` type as part of the
-canonical design; a helper may exist as an implementation detail later
-if HUD lifecycle management needs one.
+Drawable creation and disposal belong to UI composition/startup wiring. Version 1 does not require a dedicated `HudHost` type as part of the canonical design; a helper may exist as an implementation detail later if HUD lifecycle management needs one.
 
-#### 20.6.2 HUD interactions ####
+#### 20.6.2 HUD interactions
 
 The HUD must support the following interactions:
 
@@ -147,8 +129,7 @@ The HUD must support the following interactions:
 - User configurable tooltip to display detailed task information
 ```
 
-HUD interactions must be translated into semantic UI actions that
-either:
+HUD interactions must be translated into semantic UI actions that either:
 
 ```text
 - dispatch commands to the State Store, or
@@ -158,7 +139,7 @@ state, drag position)
 
 HUD-local UI state must not be persisted as task state.
 
-#### 20.6.3 HUD view composition ####
+#### 20.6.3 HUD view composition
 
 The HUD visual tree is defined using StardewUI view composition.
 
@@ -171,8 +152,7 @@ The HUD must construct a view tree representing:
 - HUD controls (scroll arrows, open menu button, collapse controls)
 ```
 
-The HUD view tree must be rebuilt only when one of the following
-changes:
+The HUD view tree must be rebuilt only when one of the following changes:
 
 ```text
 - UI configuration values affecting layout change
@@ -182,11 +162,9 @@ changes:
 
 Otherwise the HUD must reuse the existing view tree and cached layout.
 
-#### 20.6.4 HUD interaction handling ####
+#### 20.6.4 HUD interaction handling
 
-StardewUI's `IViewDrawable` routes input events (hover, click, scroll)
-through the view tree automatically. The mod does not need to implement
-custom hit testing or maintain an interaction registry.
+StardewUI's `IViewDrawable` routes input events (hover, click, scroll) through the view tree automatically. The mod does not need to implement custom hit testing or maintain an interaction registry.
 
 HUD interaction handling is limited to:
 
@@ -198,11 +176,9 @@ handling outside the view tree if StardewUI does not natively
 support drag-to-reposition on drawables)
 ```
 
-If drag repositioning requires manual coordinate tracking, that logic
-lives in HUD lifecycle/composition wiring rather than in the view model
-or StarML.
+If drag repositioning requires manual coordinate tracking, that logic lives in HUD lifecycle/composition wiring rather than in the view model or StarML.
 
-#### 20.6.5 HUD rendering constraints ####
+#### 20.6.5 HUD rendering constraints
 
 HUD rendering occurs during the game's draw cycle.
 
@@ -215,21 +191,17 @@ The HUD renderer must:
 - restrict expensive layout recomputation to state/config changes
 ```
 
-These constraints are required to satisfy the performance guardrails
-defined in Section 19.
+These constraints are required to satisfy the performance guardrails defined in Section 19.
 
-#### 20.6.6 HUD configuration and debug tuning ####
+#### 20.6.6 HUD configuration and debug tuning
 
-HUD layout and behavior parameters must be configurable through the
-configuration system (Section 15).
+HUD layout and behavior parameters must be configurable through the configuration system (Section 15).
 
-When debug mode is enabled (Section 17), selected HUD layout parameters
-must support live tuning through the debug configuration menu.
+When debug mode is enabled (Section 17), selected HUD layout parameters must support live tuning through the debug configuration menu.
 
-When live tuning is enabled, the HUD must read layout parameters from
-runtime configuration values rather than static constants.
+When live tuning is enabled, the HUD must read layout parameters from runtime configuration values rather than static constants.
 
-## 20.7 Menu system design (StardewUI) ##
+## 20.7 Menu system design (StardewUI)
 
 The full menu system is implemented using StardewUI for:
 
@@ -258,7 +230,7 @@ Task Builder boundary in the Menu surface:
 - Task Builder interactions must not directly mutate runtime task entities.
 ```
 
-### 20.7.1 Tasks section (combined list + details) ###
+### 20.7.1 Tasks section (combined list + details)
 
 The Tasks section must display the task list and task details together.
 
@@ -269,14 +241,11 @@ The Tasks section must use a split layout:
 - Right panel: details for the currently selected task
 ```
 
-Selection changes update the detail panel without leaving the Tasks
-section.
+Selection changes update the detail panel without leaving the Tasks section.
 
-The Tasks section must support filtering and sorting controls, but these
-controls must remain menu-local state unless explicitly defined as
-configuration.
+The Tasks section must support filtering and sorting controls, but these controls must remain menu-local state unless explicitly defined as configuration.
 
-#### 20.7.2 History section ####
+#### 20.7.2 History section
 
 The menu must provide a section dedicated to historical viewing.
 
@@ -289,25 +258,19 @@ History section requirements:
 - stage quick-jump depth to a specific day as Next hardening scope
 ```
 
-History must not alter deterministic task identity. This view is a
-read-only surface over persisted history described in Section 11.
+History must not alter deterministic task identity. This view is a read-only surface over persisted history described in Section 11.
 
-Statistics section (V2): A dedicated statistics section showing
-aggregate counts, completion rates, streaks, and breakdowns by
-generator/category/task type is deferred to Version 2. The Daily
-Snapshot Ledger provides the data foundation for future statistics.
+Statistics section (V2): A dedicated statistics section showing aggregate counts, completion rates, streaks, and breakdowns by generator/category/task type is deferred to Version 2. The Daily Snapshot Ledger provides the data foundation for future statistics.
 
-##### 20.7.3 Menu navigation structure #####
+##### 20.7.3 Menu navigation structure
 
-The menu system must provide a structured navigation model that keeps
-features organized without excessive depth.
+The menu system must provide a structured navigation model that keeps features organized without excessive depth.
 
-The navigation model may be implemented using a tab system or other
-clear navigation controls.
+The navigation model may be implemented using a tab system or other clear navigation controls.
 
 Example structure:
 
-``` text
+```text
 Task Manager Menu
  ├─ Tasks (list + details)
  ├─ Task Builder Wizard
@@ -318,17 +281,13 @@ Task Manager Menu
 
 Version 2 may add a Statistics tab.
 
-This structure may evolve, but the core requirement is that tasks,
-history, task builder wizard, configuration, and debug tooling are
-reachable through clear navigation.
+This structure may evolve, but the core requirement is that tasks, history, task builder wizard, configuration, and debug tooling are reachable through clear navigation.
 
-##### 20.7.4 Menu interaction and command dispatch #####
+##### 20.7.4 Menu interaction and command dispatch
 
-Menu interactions must follow the same command dispatch model as the
-HUD.
+Menu interactions must follow the same command dispatch model as the HUD.
 
-Menu interactions must not directly mutate task state. Instead, the menu
-must dispatch commands to the State Store.
+Menu interactions must not directly mutate task state. Instead, the menu must dispatch commands to the State Store.
 
 Task Builder-specific command constraint:
 
@@ -337,56 +296,39 @@ Task Builder-specific command constraint:
 - Runtime task state changes happen after rule evaluation through the State Store.
 ```
 
-Menu-local state (selection, filters, sorting state, current history
-date) must remain within the menu subsystem and must not be persisted as
-task state unless explicitly defined as configuration.
+Menu-local state (selection, filters, sorting state, current history date) must remain within the menu subsystem and must not be persisted as task state unless explicitly defined as configuration.
 
-## 20.8 Notification and Toast System ##
+## 20.8 Notification and Toast System
 
-V1 uses the game's native `Game1.addHUDMessage()` API for task
-auto-completion notifications. No custom toast component is built in V1.
+V1 uses the game's native `Game1.addHUDMessage()` API for task auto-completion notifications. No custom toast component is built in V1.
 
-### 20.8.1 Toast Triggers (V1) ###
+### 20.8.1 Toast Triggers (V1)
 
-The only V1 toast trigger is engine-driven task auto-completion
-(`IsPlayerInitiated = false` on `CompleteTaskCommand`). All other triggers
-(rule first activates, reminder fires, daily summary) are deferred to V2.
+The only V1 toast trigger is engine-driven task auto-completion (`IsPlayerInitiated = false` on `CompleteTaskCommand`). All other triggers (rule first activates, reminder fires, daily summary) are deferred to V2.
 
-### 20.8.2 Toast Ownership Boundary ###
+### 20.8.2 Toast Ownership Boundary
 
-The outbound game-events/effect queue is the toast integration boundary
-in V1. `HudViewModel` and the rest of the binding layer do not receive
-toast events and do not call game APIs directly. This preserves the "no
-direct game API access from subsystem view-models" boundary.
+The outbound game-events/effect queue is the toast integration boundary in V1. `HudViewModel` and the rest of the binding layer do not receive toast events and do not call game APIs directly. This preserves the "no direct game API access from subsystem view-models" boundary.
 
-### 20.8.3 Toast Event Routing ###
+### 20.8.3 Toast Event Routing
 
-The State Store fires `ToastRequested(ToastEvent)` before `SnapshotChanged`
-when a true `Incomplete → Completed` transition occurs with
-`IsPlayerInitiated = false`. V1 event flow is:
+The State Store fires `ToastRequested(ToastEvent)` before `SnapshotChanged` when a true `Incomplete → Completed` transition occurs with `IsPlayerInitiated = false`. V1 event flow is:
 
 `StateStore.ToastRequested → outbound game-events/effect queue → native game integration → Game1.addHUDMessage()`
 
-See §8.12 for the full `ToastRequested` event contract and `ToastEvent`
-structure.
+See §8.12 for the full `ToastRequested` event contract and `ToastEvent` structure.
 
-### 20.8.4 V2 Upgrade Path ###
+### 20.8.4 V2 Upgrade Path
 
-V2 may add: custom toast queue management, configurable duration, additional
-toast triggers (rule activation, reminders, daily summary), and a custom toast
-UI component.
+V2 may add: custom toast queue management, configurable duration, additional toast triggers (rule activation, reminders, daily summary), and a custom toast UI component.
 
-## 20.9 Gamepad and controller support ##
+## 20.9 Gamepad and controller support
 
-StardewUI provides built-in controller and gamepad support for both
-menus and drawables. The mod does not need to implement custom gamepad
-input handling.
+StardewUI provides built-in controller and gamepad support for both menus and drawables. The mod does not need to implement custom gamepad input handling.
 
-All interactive elements defined in StarML are automatically navigable
-via gamepad. Custom focus order can be specified using StardewUI's
-focus-navigation attributes if the default tab order is insufficient.
+All interactive elements defined in StarML are automatically navigable via gamepad. Custom focus order can be specified using StardewUI's focus-navigation attributes if the default tab order is insufficient.
 
-## 20.10 First-run onboarding ##
+## 20.10 First-run onboarding
 
 The mod should provide a lightweight onboarding experience on first use.
 
@@ -400,11 +342,9 @@ rules
 - Provide a sample set of pre-configured rules the player can enable
 ```
 
-Onboarding must not block gameplay. It should be dismissible and must
-not reappear once acknowledged. The onboarding state is persisted as
-part of `StoreUserState` (Section 9.8).
+Onboarding must not block gameplay. It should be dismissible and must not reappear once acknowledged. The onboarding state is persisted as part of `StoreUserState` (Section 9.8).
 
-## 20.11 UI consistency rules ##
+## 20.11 UI consistency rules
 
 The UI system must follow these consistency rules:
 
@@ -429,7 +369,7 @@ updates.
 
 These rules ensure predictable behavior across all UI surfaces.
 
-## 20.12 Localization Model (SMAPI I18n) ##
+## 20.12 Localization Model (SMAPI I18n)
 
 HUD and menu localization must follow a shared model.
 
@@ -443,7 +383,7 @@ Rules:
 - Deterministic IDs, equality, and ordering remain locale-neutral and must never depend on translated text.
 ```
 
-## 20.13 No-drop UI delivery staging ##
+## 20.13 No-drop UI delivery staging
 
 UI sequencing follows the no-drop Now/Next/Later model in Section 21.
 
@@ -457,5 +397,20 @@ Capability-level mapping is canonical in Section 21.3.1.
 - Later: deliver post-Version-1 UI expansion such as statistics dashboards.
 ```
 
-Promotion from Now to Next requires passing boundary, parity, performance,
-and documentation-sync gates defined in Section 21.3.2.
+Promotion from Now to Next requires passing boundary, parity, performance, and documentation-sync gates defined in Section 21.3.2.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 8 — Menu Dashboard
+- Phase 9 — HUD Interface
+- Phase 10 — Task Builder Wizard
+- Phase 11 — History Browsing UI
+- Phase 12 — Debug and Development Tools
+
+Also referenced in:
+
+- Phase 4 — View Model Infrastructure (foundational binding and snapshot-parity layer only)
+
+Canonical implementation mapping lives in Section 21.

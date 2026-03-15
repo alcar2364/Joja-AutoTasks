@@ -1,12 +1,10 @@
-﻿# Section 8 — State Store Command Model #
+﻿# Section 8 — State Store Command Model
 
-## 8.1 Purpose ##
+## 8.1 Purpose
 
-The State Store is the **authoritative in-memory representation of all active
-tasks**.
+The State Store is the **authoritative in-memory representation of all active tasks**.
 
-It is responsible for maintaining the canonical task list used by the HUD,
-task menu, and all other UI systems.
+It is responsible for maintaining the canonical task list used by the HUD, task menu, and all other UI systems.
 
 The State Store ensures that:
 
@@ -21,7 +19,7 @@ All task mutations must occur through **commands processed by the State Store**.
 
 No other system may modify tasks directly.
 
-## 8.2 State Store Responsibilities ##
+## 8.2 State Store Responsibilities
 
 The State Store performs several critical functions.
 
@@ -39,13 +37,11 @@ The State Store **does not perform rule evaluation**.
 
 Rule evaluation is handled exclusively by the **Evaluation Engine**.
 
-## 8.3 State Store Architecture ##
+## 8.3 State Store Architecture
 
 The State Store follows a **Command → Reducer → State** architecture.
 
-Implementation note: in code, reducer responsibilities are realized through
-typed command handlers (`ICommandHandler<TCommand>` and concrete
-`*CommandHandler` classes).
+Implementation note: in code, reducer responsibilities are realized through typed command handlers (`ICommandHandler<TCommand>` and concrete `*CommandHandler` classes).
 
 Conceptual flow:
 
@@ -68,16 +64,16 @@ This model ensures:
 - Clear debugging behavior
 ```
 
-## 8.4 Task State Structure ##
+## 8.4 Task State Structure
 
-The State Store maintains a dictionary keyed by **Task ID**.
+The State Store maintains a dictionary keyed by **TaskId**.
 
 Conceptual structure:
 
-TaskStore  
+TaskStore
 
 ```text
-Dictionary<TaskID, TaskRecord>
+Dictionary<TaskId, TaskRecord>
 ```
 
 Each TaskRecord represents the current state of a task.
@@ -87,7 +83,7 @@ Conceptual fields:
 TaskRecord
 
 ```text
-- TaskID
+- TaskId
 - SourceType
 - Status
 - ProgressCurrent
@@ -99,7 +95,7 @@ TaskRecord
 
 Field descriptions:
 
-TaskID  
+TaskId  
 Unique deterministic identifier for the task.
 
 SourceType  
@@ -130,24 +126,20 @@ Target progress value.
 
 Used for display, HUD rendering, and rule evaluation support.
 
-Note: Progress fields are tracking metrics only. Completion is determined by the
-task's completion condition, not solely by progress saturation (see Section 4.4.1).
+Note: Progress fields are tracking metrics only. Completion is determined by the task's completion condition, not solely by progress saturation (see Section 4.4.1).
 
 Metadata  
 Title, description, category, icon, and display information.
 
 DeadlineStoredFields  
-Persisted deadline data stored on `TaskRecord`. This includes only the saved
-deadline fields, not derived projection values. See Section 04 §4.10.
+Persisted deadline data stored on `TaskRecord`. This includes only the saved deadline fields, not derived projection values. See Section 04 §4.10.
 
 UserFlags  
 User-controlled properties such as pinning.
 
-`DeadlineFields` exists only on the derived `TaskView` / snapshot projection.
-The State Store persists `DeadlineStoredFields` on `TaskRecord` and computes
-`DeadlineFields` when generating read models. See Section 04 §4.10.
+`DeadlineFields` exists only on the derived `TaskView` / snapshot projection. The State Store persists `DeadlineStoredFields` on `TaskRecord` and computes `DeadlineFields` when generating read models. See Section 04 §4.10.
 
-## 8.5 Immutable Snapshot Model ##
+## 8.5 Immutable Snapshot Model
 
 External systems never read the mutable task store directly.
 
@@ -173,7 +165,7 @@ Snapshots ensure:
 
 Snapshots are regenerated whenever commands modify task state.
 
-## 8.6 Command System ##
+## 8.6 Command System
 
 Commands represent **requests to change task state**.
 
@@ -201,8 +193,7 @@ CompleteTaskCommand contract:
 
 UI callers always pass `IsPlayerInitiated = true`.
 
-Engine callers pass `IsPlayerInitiated = false` (or omit, relying on the
-default).
+Engine callers pass `IsPlayerInitiated = false` (or omit, relying on the default).
 
 Commands may originate from:
 
@@ -212,13 +203,11 @@ Commands may originate from:
 - Persistence rehydration
 ```
 
-Commands must contain all information required for the reducer to apply
-the change.
+Commands must contain all information required for the reducer to apply the change.
 
-## 8.7 Reducer Behavior ##
+## 8.7 Reducer Behavior
 
-Implementation note: this section uses the term "Reducer" conceptually; Phase 3
-implements these transformations via deterministic command handlers.
+Implementation note: this section uses the term "Reducer" conceptually; Phase 3 implements these transformations via deterministic command handlers.
 
 Reducers apply commands to the current state.
 
@@ -245,7 +234,7 @@ Reducers must not:
 
 Reducers only transform state.
 
-## 8.8 Engine → Store Interaction ##
+## 8.8 Engine → Store Interaction
 
 The Evaluation Engine never modifies tasks directly.
 
@@ -256,7 +245,7 @@ Example command fields:
 AddOrUpdateTaskCommand
 
 ```text
-- TaskID
+- TaskId
 - Title
 - Description
 - Category
@@ -276,12 +265,9 @@ If the task exists
 
 User-controlled fields must never be overwritten.
 
-`AddOrUpdateTaskCommand` carries persisted deadline input as
-`DeadlineStoredFields`. Derived `DeadlineFields` are not written into the State
-Store; they are computed when projecting `TaskView` snapshot output. See
-Section 04 §4.10.
+`AddOrUpdateTaskCommand` carries persisted deadline input as `DeadlineStoredFields`. Derived `DeadlineFields` are not written into the State Store; they are computed when projecting `TaskView` snapshot output. See Section 04 §4.10.
 
-## 8.9 Preserving User-Controlled State ##
+## 8.9 Preserving User-Controlled State
 
 Certain fields belong exclusively to the player.
 
@@ -301,7 +287,7 @@ User-controlled fields
 Conceptual rule:
 
 Engine fields overwrite engine fields.  
-User fields overwrite user fields.  
+User fields overwrite user fields.
 
 Neither system may overwrite the other.
 
@@ -309,7 +295,7 @@ Example:
 
 An engine update must **not remove a pin set by the player**.
 
-## 8.10 Task Removal Rules ##
+## 8.10 Task Removal Rules
 
 Tasks may be removed for several reasons.
 
@@ -331,7 +317,7 @@ RemoveTaskCommand
 
 Reducers delete the record from the store.
 
-## 8.11 Day Boundary Behavior ##
+## 8.11 Day Boundary Behavior
 
 The start of a new in-game day triggers several actions.
 
@@ -343,11 +329,11 @@ The start of a new in-game day triggers several actions.
 
 4. Daily task history may be persisted.
 
-Daily tasks are identified by **day-keyed Task IDs**.
+Daily tasks are identified by **day-keyed TaskIds**.
 
 Persistent tasks remain unchanged.
 
-## 8.12 Snapshot Publishing ##
+## 8.12 Snapshot Publishing
 
 Whenever commands modify the store:
 
@@ -361,7 +347,7 @@ Whenever commands modify the store:
 
 The State Store exposes a snapshot-changed event:
 
-``` cs
+```cs
 public event Action<TaskSnapshot>? SnapshotChanged;
 ```
 
@@ -371,8 +357,7 @@ ToastRequested event contract:
 public event Action<ToastEvent>? ToastRequested;
 ```
 
-`ToastRequested` is fired before `SnapshotChanged` when all conditions are
-true:
+`ToastRequested` is fired before `SnapshotChanged` when all conditions are true:
 
 - `CompleteTaskCommand.IsPlayerInitiated == false`
 - Prior task status == `Incomplete`
@@ -385,8 +370,7 @@ Type      — ToastType enum (TaskAutoCompleted = 0; V2 may add others)
 TaskTitle — string (task display title at completion time)
 ```
 
-Replaying a completion command against an already-completed task does not emit
-another `ToastRequested` (transition-based, not command-based).
+Replaying a completion command against an already-completed task does not emit another `ToastRequested` (transition-based, not command-based).
 
 Snapshot subscribers include:
 
@@ -403,13 +387,11 @@ Toast routing boundary:
   queue for later native game integration handling.
 ```
 
-View Models subscribe to `SnapshotChanged` and update their INPC
-properties when a new snapshot arrives, causing StardewUI to re-render
-affected elements. See Section 10A.6 for the full subscription model.
+View Models subscribe to `SnapshotChanged` and update their INPC properties when a new snapshot arrives, causing StardewUI to re-render affected elements. See Section 10A.6 for the full subscription model.
 
 UI rendering should always use the latest snapshot.
 
-## 8.13 Debug and Development Benefits ##
+## 8.13 Debug and Development Benefits
 
 The command model enables powerful debugging.
 
@@ -421,12 +403,11 @@ Example:
 [UI] CompleteTask TaskBuilder_17  
 [Engine] UpdateProgress TaskBuilder_17
 
-This allows developers to observe task lifecycle events and easily
-trace state transitions.
+This allows developers to observe task lifecycle events and easily trace state transitions.
 
 The model also allows potential future support for **time-travel debugging**.
 
-## 8.14 Version 1 Constraints ##
+## 8.14 Version 1 Constraints
 
 The Version 1 State Store intentionally remains minimal.
 
@@ -439,5 +420,18 @@ Limitations include:
 - No multiplayer synchronization
 ```
 
-The command architecture is designed to remain stable while allowing
-future features to expand on the system safely.
+The command architecture is designed to remain stable while allowing future features to expand on the system safely.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 3 — State Store
+
+Also referenced in:
+
+- Phase 4 — View Model Infrastructure
+- Phase 9 — HUD Interface
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.

@@ -1,19 +1,14 @@
-﻿# Section 13 — Built-in Task Generators #
+﻿# Section 13 — Built-in Task Generators
 
-## 13.1 Purpose ##
+## 13.1 Purpose
 
-Built-in task generators produce tasks derived automatically from the
-current game state. Generators allow the system to surface useful tasks
-without requiring the player to manually define rules.
+Built-in task generators produce tasks derived automatically from the current game state. Generators allow the system to surface useful tasks without requiring the player to manually define rules.
 
-Generators must operate deterministically so that task identities remain
-stable across evaluations. See Section 3.3 and Section 3.11 for deterministic
-identifier rules.
+Generators must operate deterministically so that task identities remain stable across evaluations. See Section 3.3 and Section 3.11 for deterministic identifier rules.
 
-Generators are evaluated by the Task Generation Engine described in
-Section 5.1.
+Generators are evaluated by the Task Generation Engine described in Section 5.1.
 
-## 13.2 Generator responsibilities ##
+## 13.2 Generator responsibilities
 
 A task generator is responsible for:
 
@@ -31,10 +26,9 @@ A generator must not:
 - Persist any state outside of the engine evaluation cycle.
 ```
 
-Generators only produce task definitions. The engine reconciles those
-definitions against the State Store. See Section 5.10.
+Generators only produce task definitions. The engine reconciles those definitions against the State Store. See Section 5.10.
 
-## 13.3 Generator domains ##
+## 13.3 Generator domains
 
 Each generator operates on a specific domain of the game state.
 
@@ -50,34 +44,31 @@ Examples include:
 - Inventory state
 ```
 
-A generator must only inspect its own domain. Cross-domain logic belongs
-in rule evaluation composition (Section 7.4), not in generator coupling.
+A generator must only inspect its own domain. Cross-domain logic belongs in rule evaluation composition (Section 7.4), not in generator coupling.
 
-## 13.4 Generator identity ##
+## 13.4 Generator identity
 
 Each generator must declare a unique `GeneratorID`.
 
-The `GeneratorID` must remain stable across versions to preserve task
-identity stability.
+The `GeneratorID` must remain stable across versions to preserve task identity stability.
 
 Example format:
 
-``` text
+```text
 GeneratorID = "BuiltIn.Crops.Water"
 GeneratorID = "BuiltIn.Animals.Pet"
 GeneratorID = "BuiltIn.Machines.Harvest"
 ```
 
-The `GeneratorID` participates in deterministic `TaskID` generation. See
-Section 3.3.
+The `GeneratorID` participates in deterministic `TaskId` generation. See Section 3.3.
 
-## 13.5 Generator interface ##
+## 13.5 Generator interface
 
 Generators must implement a common interface.
 
 Conceptual interface:
 
-``` cs
+```cs
 public interface ITaskGenerator
 {
 string GeneratorID { get; }
@@ -89,19 +80,17 @@ IEnumerable<GeneratedTask> GenerateTasks(
 
 ```
 
-`GenerationContext` contains a read-only snapshot of the current game
-state required for evaluation.
+`GenerationContext` contains a read-only snapshot of the current game state required for evaluation.
 
 Generators must treat the context as immutable.
 
-## 13.6 Generated task structure ##
+## 13.6 Generated task structure
 
-Generators return `GeneratedTask` structures describing the task that
-should exist.
+Generators return `GeneratedTask` structures describing the task that should exist.
 
 Conceptual structure:
 
-``` cs
+```cs
 public struct GeneratedTask
 {
 string GeneratorID;
@@ -113,15 +102,13 @@ TaskMetadata Metadata;
 
 ```
 
-`GeneratedTask` must contain only identity-affecting fields and metadata
-necessary for task creation.
+`GeneratedTask` must contain only identity-affecting fields and metadata necessary for task creation.
 
 Runtime task state is managed by the State Store. See Section 8.
 
-## 13.7 Subject identifiers ##
+## 13.7 Subject identifiers
 
-`SubjectID` uniquely identifies the in-game entity associated with the
-task.
+`SubjectID` uniquely identifies the in-game entity associated with the task.
 
 Examples:
 
@@ -133,10 +120,9 @@ Examples:
 
 `SubjectID` must remain stable for the lifetime of the entity.
 
-## 13.8 Evaluation triggers ##
+## 13.8 Evaluation triggers
 
-Generators are evaluated when the engine determines that their domain
-may have changed.
+Generators are evaluated when the engine determines that their domain may have changed.
 
 Typical triggers include:
 
@@ -148,10 +134,9 @@ Typical triggers include:
 * Player progression: skill level change
 ```
 
-Trigger routing is handled by the evaluation scheduler described in
-Section 7.8 and Section 12.5.
+Trigger routing is handled by the evaluation scheduler described in Section 7.8 and Section 12.5.
 
-## 13.9 Generator evaluation rules ##
+## 13.9 Generator evaluation rules
 
 Generators must follow these rules:
 
@@ -160,17 +145,14 @@ Generators must follow these rules:
 3. Generators must not maintain internal mutable state.
 4. Generators should avoid expensive scans where possible.
 
-Generators should only examine the subset of state required for their
-domain.
+Generators should only examine the subset of state required for their domain.
 
-## 13.10 Built-in generator set ##
+## 13.10 Built-in generator set
 
-Version 1 includes the following built-in generators. The generators listed
-below are the minimum V1 commitment. The set may expand, but none of the listed
-generators may be dropped from V1.
+Version 1 includes the following built-in generators. The generators listed below are the minimum V1 commitment. The set may expand, but none of the listed generators may be dropped from V1.
 
 | GeneratorID | Domain | Example Tasks | V1 Required |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `BuiltIn.Crops.Water` | Crops | Water crops | ✅ |
 | `BuiltIn.Crops.Harvest` | Crops | Harvest ready crops | ✅ |
 | `BuiltIn.Animals.Pet` | Animals | Pet animals | ✅ |
@@ -180,22 +162,30 @@ generators may be dropped from V1.
 | `BuiltIn.Calendar.Birthday` | Calendar | Gift NPC birthday | ✅ |
 | `BuiltIn.Quest.Progress` | Quests | Active quest progress | ✅ |
 
-All generators marked V1 Required must ship in Version 1. Additional generators
-may be added in later phases or future versions.
+All generators marked V1 Required must ship in Version 1. Additional generators may be added in later phases or future versions.
 
-## 13.11 Generator configuration ##
+## 13.11 Generator configuration
 
-Generators may expose configuration flags allowing players to enable or
-disable them.
+Generators may expose configuration flags allowing players to enable or disable them.
 
-Configuration is managed by the configuration system described in
-Section 15.3.
+Configuration is managed by the configuration system described in Section 15.3.
 
-## 13.12 Custom rule interaction ##
+## 13.12 Custom rule interaction
 
 Built-in generators operate independently of player-defined rules.
 
-Player-defined rules may reference the same domains but should not
-modify the behavior of built-in generators.
+Player-defined rules may reference the same domains but should not modify the behavior of built-in generators.
 
 This separation ensures predictable behavior and stable task identity.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 5 — Built-in Task Generators
+
+Also referenced in:
+
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.

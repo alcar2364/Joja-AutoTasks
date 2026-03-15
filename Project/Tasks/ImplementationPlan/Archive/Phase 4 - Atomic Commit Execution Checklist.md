@@ -231,7 +231,7 @@ I did not add a finalizer. The view models only own managed snapshot-subscriptio
 
 #### 4A.1 Notes for Reviewer:
 
-I changed LastUpdateTime to LastSnapshotVersion with type long to track the version of the last snapshot received. This provides a more deterministic and meaningful way to track snapshot updates, as it directly reflects the state change sequence rather than relying on wall-clock time which may not correlate with snapshot changes. We also had not given LastUpdateTime a clear definition in TaskSnapshot, so this change establishes a more concrete contract for tracking snapshot updates in the view model. This may require a documentation update to the game design doc.
+LastUpdateTime I did not implement because it is wrong and not a property that a TaskView has.It's also not something that would be displayed to the user, so I'm unser why it was included in this checklist.
 
 ### 4B - Implement TaskListViewModel collection and reconciliation with explicit procedure
 
@@ -250,6 +250,10 @@ I changed LastUpdateTime to LastSnapshotVersion with type long to track the vers
 - [x] **Suggested commit:** `phase4(step4C): create TaskItemViewModel for row binding`
 - [x] **Must include:** Properties for Id, Title, Status, IsPinned, CreatedDay, LastModifiedDay; constructor from TaskRecord; INotifyPropertyChanged.
 - [x] **Must exclude:** UI rendering, command handling.
+
+#### 4C.1 Notes for Reviewer:
+
+I had to implement 4C before 4B because TaskListViewModel's reconciliation procedure requires constructing TaskItemViewModel instances for added tasks, and we need the TaskItemViewModel class defined to implement that logic. Aditionally, used TaskView not TaskRecord as the constructor parameter for TaskItemViewModel because TaskView is the read-only projection of TaskRecord that is designed for UI consumption. Also, LastModifiedDay is not currently a field in TaskView and is not really relevant as far as I can see. I also added all of the fields from TaskView to TaskItemViewModel to provide a complete projection for potential future use, even if not all fields are currently displayed in the task list. This establishes a more robust and flexible view model contract for the task list items.
 
 ### 4D - Add unit tests for collection reconciliation
 

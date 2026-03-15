@@ -29,11 +29,11 @@ backend features.
 
 ## Out of scope ##
 
-    - UI layout, rendering, interaction patterns (see [`FRONTEND-ARCHITECTURE-CONTRACT.instructions.md`](FRONTEND-ARCHITECTURE-CONTRACT.instructions.md))
-    - coding style and formatting (see [`CSHARP-STYLE-CONTRACT.instructions.md`](CSHARP-STYLE-CONTRACT.instructions.md))
-    - code review / verification / testing requirements (see [`REVIEW-AND-VERIFICATION-CONTRACT.instructions.md`](REVIEW-AND-VERIFICATION-CONTRACT.instructions.md), [`UNIT-TESTING-CONTRACT.instructions.md`](UNIT-TESTING-CONTRACT.instructions.md))
-    - workspace/user interaction rules (see [`WORKSPACE-CONTRACTS.instructions.md`](WORKSPACE-CONTRACTS.instructions.md))
-    - SMAPI API references (see [`../Instructions/external-resources.instructions.md`](../Instructions/external-resources.instructions.md))
+- UI layout, rendering, interaction patterns (see [Frontend Architecture Contract](frontend-architecture-contract.instructions.md))
+- coding style and formatting (see [C# Style Contract](csharp-style-contract.instructions.md.instructions.md))
+- code review / verification / testing requirements (see [Review and Verification Contract](review-and-verification-contract.instructions.md), [Unit Testing Contract](unit-testing-contract.instructions.md))
+- workspace/user interaction rules (see [Workspace Contracts](workspace-contracts.instructions.md.instructions.md))
+- SMAPI API references (see [External Resources](external-resources.instructions.md))
 
 ## 1. Canonical Backend Subsystems ##
 

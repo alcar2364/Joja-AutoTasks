@@ -412,7 +412,7 @@ public static TaskId CreateTaskBuilder(string ruleId, string? subjectIdentifier 
 - Uses stable source prefixes (`BuiltIn`, `TaskBuilder`)
 - Preserves deterministic part ordering when composing IDs
 - Omits null/empty optional parts before joining with `_`
-- Manual task IDs use canonical `Manual_{Counter}` shape (issuance deferred to Phase 3)
+- Manual TaskIds use canonical `Manual_{Counter}` shape (issuance deferred to Phase 3)
 - Returns validated `TaskId` instances
 
 ---
@@ -934,7 +934,7 @@ Snapshots are projected via `SnapshotProjector` and published after version-chan
 
 **Behavior:**
 
-- `ExpirationDetector` selects expired task IDs from canonical state
+- `ExpirationDetector` selects expired TaskIds from canonical state
 - `DayTransitionHandler` removes them via `RemoveTaskCommandHandler`
 - `StateStore.OnDayStarted(DayKey)` publishes a fresh snapshot if state changed
 
@@ -1253,7 +1253,7 @@ Manual tasks are **fully stored** because they are not derived from rules.
 ```csharp
 public sealed class ManualTaskRecord
 {
-    public TaskId TaskID { get; set; }
+    public TaskId TaskId { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
     public TaskCategory Category { get; set; }
@@ -1420,7 +1420,7 @@ View Models receive snapshot change events, diff against current state, and upda
 ```csharp
 public sealed class TaskView
 {
-    public TaskId TaskID { get; }
+    public TaskId TaskId { get; }
     public string Title { get; }
     public string? Description { get; }
     public TaskCategory Category { get; }

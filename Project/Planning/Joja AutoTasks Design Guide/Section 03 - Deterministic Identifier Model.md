@@ -1,69 +1,69 @@
-﻿# Section 3 — Deterministic Identifier Model #
+﻿# Section 3 — Deterministic Identifier Model
 
-## 3.1 Purpose ##
+## 3.1 Purpose
 
-The task system relies heavily on deterministic identifiers to ensure that
-tasks remain stable across reloads, engine evaluations, and save cycles.
+The task system relies heavily on deterministic identifiers to ensure that tasks remain stable across reloads, engine evaluations, and save cycles.
 
 Deterministic identifiers guarantee that:
 
-    - Tasks generated from the same rule or generator always produce the same ID
-    - Task completion state persists correctly across sessions
-    - Task history records remain accurate
-    - Duplicate task creation is prevented
-    - UI elements can reliably reference task objects
+- Tasks generated from the same rule or generator always produce the same ID
+- Task completion state persists correctly across sessions
+- Task history records remain accurate
+- Duplicate task creation is prevented
+- UI elements can reliably reference task objects
 
 Identifiers are internal implementation details and are not exposed to players.
 
-## 3.2 Identifier Types ##
+## 3.2 Identifier Types
 
 The system uses several identifier types.
 
 Primary identifiers include:
 
-    - TaskID
+    - TaskId
     - RuleId
     - DayKey
     - SubjectId (optional)
 
 Each identifier serves a specific role in maintaining system stability.
 
-## 3.3 TaskID Structure ##
+Naming note:
 
-TaskID uniquely identifies a task instance.
+- `TaskId` is the canonical type and documentation name.
+- Legacy uppercase `TaskID` wording may still appear in older artifacts when referring to conceptual string formats, but new code and documentation should use `TaskId`.
 
-TaskIDs are deterministic strings derived from the task source and its
-associated subject.
+## 3.3 TaskId Structure
+
+TaskId uniquely identifies a task instance.
+
+TaskIds are deterministic strings derived from the task source and its associated subject.
 
 Conceptual structure:
 
-TaskID = `{SourcePrefix}_{RuleId}_{SubjectId?}_{DayKey?}`
+TaskId = `{SourcePrefix}_{RuleId}_{SubjectId?}_{DayKey?}`
 
 Components:
 
-    - `SourceType`
-    Identifies task origin.
-    Possible values:
-        * `BuiltIn`
-        * `TaskBuilder`
-        * `Manual`
-    Note: Both `TaskSourceType` enum and manual `TaskID` source prefix use `Manual`.
-    - `RuleOrGeneratorID`
-    Identifies the rule or generator responsible for producing the task.
-    - `SubjectIdentifier`
-    Represents the object or entity associated with the task.
+- `SourceType` Identifies task origin. Possible values:
+  - `BuiltIn`
+  - `TaskBuilder`
+  - `Manual`
+
+Note: Both `TaskSourceType` enum and manual `TaskId` source prefix use `Manual`.
+
+- `RuleOrGeneratorID` Identifies the rule or generator responsible for producing the task.
+- `SubjectIdentifier` Represents the object or entity associated with the task.
 
 Examples include:
 
-    - `ItemID`
-    - `AnimalID`
-    - `MachineID`
-    - `SkillType`
+- `ItemID`
+- `AnimalID`
+- `MachineID`
+- `SkillType`
 
-`ContextIdentifier` - Optional component representing contextual scope such as
-location or day.
+`ContextIdentifier` - Optional component representing contextual scope such as location or day.
 
-## 3.4 Task Builder Task IDs ##
+## 3.4 Task Builder Task IDs
 
 Task Builder tasks derive their identity from the Rule ID and subject.
 
@@ -76,15 +76,11 @@ Examples:
     - Persistent rule: `TaskBuilder_17_ItemWood`
     - Daily rule: `TaskBuilder_42_Daily_Year2-Spring12`
 
-**Note:** When a `DayKey` is embedded in a `TaskID`, the hyphen within the
-`DayKey` token is preserved (e.g., `Year2-Spring12`). The `_` character is the
-`TaskID` component separator only. See Section 3.8 for the canonical `DayKey`
-format.
+**Note:** When a `DayKey` is embedded in a `TaskId`, the hyphen within the `DayKey` token is preserved (e.g., `Year2-Spring12`). The `_` character is the `TaskId` component separator only. See Section 3.8 for the canonical `DayKey` format.
 
-Including the day key ensures that daily recurring tasks generate a new task
-instance for each day while still remaining deterministic.
+Including the day key ensures that daily recurring tasks generate a new task instance for each day while still remaining deterministic.
 
-## 3.5 Built-in Generator Task IDs ##
+## 3.5 Built-in Generator Task IDs
 
 Built-in automatic tasks generate IDs based on their generator and subject.
 
@@ -94,10 +90,9 @@ Example structures:
     - Animal care task: `BuiltIn_AnimalPet_Cow_3`
     - Machine output task: `BuiltIn_MachineOutput_Keg_15`
 
-Generator implementations are responsible for defining stable subject
-identifiers.
+Generator implementations are responsible for defining stable subject identifiers.
 
-## 3.6 Manual Task IDs ##
+## 3.6 Manual Task IDs
 
 Manual tasks are created by the player and do not derive from rule systems.
 
@@ -109,22 +104,17 @@ Example:
     - `Manual_4`
     - `Manual_5`
 
-**Normative rule:** `Manual_N` is the canonical prefix for manual task
-identifiers. The prefix `ManualTask_N` is a non-canonical legacy variant and
-must not be used in new code or documentation. The canonical form aligns with
-the `SourceType` prefix pattern used in Section 3.3 and Section 3.5.
+**Normative rule:** `Manual_N` is the canonical prefix for manual task identifiers. The prefix `ManualTask_N` is a non-canonical legacy variant and must not be used in new code or documentation. The canonical form aligns with the `SourceType` prefix pattern used in Section 3.3 and Section 3.5.
 
-The counter MUST be persisted as part of the `StoreUserState` structure
-(Section 9.8) to ensure it survives across sessions.
+The counter MUST be persisted as part of the `StoreUserState` structure (Section 9.8) to ensure it survives across sessions.
 
 The counter MUST only increment, never reset or regress.
 
 Manual task identifiers persist across sessions and are stored in persistence.
 
-## 3.7 RuleId Model ##
+## 3.7 RuleId Model
 
-`RuleId` is an immutable value object that follows an auto-incrementing integer
-counter pattern, parallel to `ManualTaskCounter` in §3.6.
+`RuleId` is an immutable value object that follows an auto-incrementing integer counter pattern, parallel to `ManualTaskCounter` in §3.6.
 
 Normative definition:
 
@@ -144,7 +134,7 @@ Examples:
 
 See `ManualTaskCounter` in §3.6 as the parallel pattern.
 
-## 3.8 DayKey Model ##
+## 3.8 DayKey Model
 
 Daily tasks and history snapshots rely on a deterministic `DayKey`.
 
@@ -171,27 +161,31 @@ Current implementation behavior:
     - Year must be a positive integer and day must be in the range 1-28.
     - Outer whitespace is trimmed, but non-canonical casing or structure is rejected.
 
-## 3.9 Subject Identifier Model ##
+## 3.9 Subject Identifier Model
 
 Subject identifiers represent the in-game entity associated with a task.
 
 Examples include:
 
-    - `ItemID`  
-  Used for inventory tracking tasks.
+    - `ItemID`
 
-    - `MachineID`  
-  Used for machine output tasks.
+Used for inventory tracking tasks.
 
-    - `AnimalID`  
-  Used for animal care tasks.
+    - `MachineID`
 
-    - `TileCoordinates`  
-  Used for crop or location-based tasks.
+Used for machine output tasks.
+
+    - `AnimalID`
+
+Used for animal care tasks.
+
+    - `TileCoordinates`
+
+Used for crop or location-based tasks.
 
 Subject identifiers must be deterministic and stable across sessions.
 
-## 3.10 Identifier Collision Prevention ##
+## 3.10 Identifier Collision Prevention
 
 The identifier system must prevent collisions between task sources.
 
@@ -204,7 +198,7 @@ Rules include:
 
 If a collision occurs it is considered a development bug.
 
-## 3.11 Identifier Stability Requirements ##
+## 3.11 Identifier Stability Requirements
 
 Identifiers must remain stable across:
 
@@ -219,7 +213,7 @@ Breaking identifier stability can cause:
     - Loss of completion state
     - Corrupted history records
 
-## 3.12 Version 1 Constraints ##
+## 3.12 Version 1 Constraints
 
 Version 1 identifier rules remain intentionally simple.
 
@@ -229,16 +223,15 @@ Excluded features include:
     - Multiplayer synchronization IDs
     - Cross-save global identifiers
 
-The initial identifier model focuses on deterministic stability within a
-single save file.
+The initial identifier model focuses on deterministic stability within a single save file.
 
-## 3.13 Localization and Identity Invariants ##
+## 3.13 Localization and Identity Invariants
 
 Localization must never influence deterministic identity behavior.
 
 Hard invariants:
 
-    - Localized strings MUST NOT participate in `TaskID`, `RuleId`, `DayKey`,
+    - Localized strings MUST NOT participate in `TaskId`, `RuleId`, `DayKey`,
     or `SubjectId` generation.
     - Localized strings MUST NOT participate in identifier equality,
     reconciliation, or collision checks.
@@ -247,3 +240,18 @@ Hard invariants:
     - `DayKey` remains locale-neutral and uses fixed canonical season tokens.
 
 Display text may vary by locale, but identity semantics remain invariant.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 2 — Core Domain Model
+
+Also referenced in:
+
+- Phase 5 — Built-in Task Generators
+- Phase 6 — Rule Evaluation Engine
+- Phase 7 — Persistence System
+- Phase 11 — History Browsing UI
+
+Canonical implementation mapping lives in Section 21.

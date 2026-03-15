@@ -1,18 +1,16 @@
-﻿# Section 4 — Core Data Model #
+﻿# Section 4 — Core Data Model
 
-## 4.1 Task Identity ##
+## 4.1 Task Identity
 
 Every task in the system must have a deterministic identifier.
 
-Canonical Task ID structure, composition rules, and stability requirements are
-defined in Section 3.
+Canonical Task ID structure, composition rules, and stability requirements are defined in Section 3.
 
 This section relies on those rules rather than redefining identifier mechanics.
 
-## 4.2 Task Object Model ##
+## 4.2 Task Object Model
 
-Each task instance in the system is represented by a Task Object containing all
-data required for UI display, evaluation, and persistence.
+Each task instance in the system is represented by a Task Object containing all data required for UI display, evaluation, and persistence.
 
 A task object contains the following conceptual fields:
 
@@ -28,18 +26,16 @@ A task object contains the following conceptual fields:
     - Task Completion Day
     - Task Source Identifier
 
-These fields allow the task engine, UI systems, and persistence layer to operate
-independently while referencing the same task data.
+These fields allow the task engine, UI systems, and persistence layer to operate independently while referencing the same task data.
 
-## 4.3 Task Status ##
+## 4.3 Task Status
 
 The system supports two core task states:
 
     - Incomplete
     - Completed
 
-Tasks transition from Incomplete → Completed when their completion condition is
-satisfied.
+Tasks transition from Incomplete → Completed when their completion condition is satisfied.
 
 Completion behavior varies depending on task type:
 
@@ -47,10 +43,9 @@ Completion behavior varies depending on task type:
     - Task Builder Tasks complete when their defined rule condition is satisfied.
     - Manual Tasks are completed manually by the player.
 
-Additional status types such as Dismissed, Hidden, Failed, or Snoozed are
-intentionally excluded from Version 1 to reduce system complexity.
+Additional status types such as Dismissed, Hidden, Failed, or Snoozed are intentionally excluded from Version 1 to reduce system complexity.
 
-## 4.4 Task Progress Model ##
+## 4.4 Task Progress Model
 
 Some tasks require progress tracking rather than simple completion checks.
 
@@ -75,7 +70,7 @@ Baseline-based progress behavior is defined in Section 7.6.
 
 This section defines the data model fields only.
 
-### 4.4.1 Progress Fields as Tracking Metrics ###
+### 4.4.1 Progress Fields as Tracking Metrics
 
 ProgressCurrent and ProgressTarget are **tracking metrics** used to communicate progress state to the UI and rule evaluation systems.
 
@@ -87,13 +82,11 @@ These fields serve three purposes:
 
 **Progress saturation does not imply automatic task completion.**
 
-TaskStatus completion is determined by the task's completion condition, not
-solely by whether ProgressCurrent >= ProgressTarget.
+TaskStatus completion is determined by the task's completion condition, not solely by whether ProgressCurrent >= ProgressTarget.
 
 Some tasks complete when progress reaches the target value.
 
-Other tasks may reach or exceed the target while remaining incomplete until
-additional conditions are satisfied.
+Other tasks may reach or exceed the target while remaining incomplete until additional conditions are satisfied.
 
 Example:
 
@@ -105,10 +98,9 @@ Example:
     Reason: The player must still build the Coop. Progress saturation alone does
     not satisfy the task's completion condition.
 
-TaskStatus represents the authoritative completion state as determined by the
-task's rule or condition system.
+TaskStatus represents the authoritative completion state as determined by the task's rule or condition system.
 
-## 4.5 Task Categories ##
+## 4.5 Task Categories
 
 Version 1 uses fixed category definitions implemented as an internal enumeration.
 
@@ -129,64 +121,54 @@ Categories are used for:
 
 Future versions may introduce user-defined categories.
 
-## 4.6 Deterministic Task-Type Ordering ##
+## 4.6 Deterministic Task-Type Ordering
 
-Default ordering behavior in the HUD and task menu is derived from
-`TaskCategory`, plus a fixed deterministic fallback chain.
+Default ordering behavior in the HUD and task menu is derived from `TaskCategory`, plus a fixed deterministic fallback chain.
 
 Version 1 ordering chain:
 
 1. Completion status — Incomplete tasks first, completed tasks last
 2. Pin state — Within each completion group, pinned tasks sort first
-3. TaskCategory rank — Within pinned/unpinned groups, the in-code category
-   ordering map applies
+3. TaskCategory rank — Within pinned/unpinned groups, the in-code category ordering map applies
 4. Task Creation Day — Fallback within the same category rank
 5. Canonical Task ID — Final tiebreaker
 
 Normative ordering map:
 
-| Rank | TaskCategory |
-|------|--------------|
-| 1 | `Farming` |
-| 2 | `Animals` |
-| 3 | `Machines` |
-| 4 | `Social` |
-| 5 | `Exploration` |
-| 6 | `Resources` |
+| Rank | TaskCategory  |
+| ---- | ------------- |
+| 1    | `Farming`     |
+| 2    | `Animals`     |
+| 3    | `Machines`    |
+| 4    | `Social`      |
+| 5    | `Exploration` |
+| 6    | `Resources`   |
 
-**Normative note:** The map key is `TaskCategory`. Tasks not matching any
-explicit category entry use rank 99. Manual tasks with no assigned
-`TaskCategory` also use rank 99. The ordering map is an in-code constant and
-does not require a persisted per-task priority field. The canonical
-`TaskCategory` values are defined in Section 4.5 and in
-`Domain/Tasks/TaskCategory.cs`.
+**Normative note:** The map key is `TaskCategory`. Tasks not matching any explicit category entry use rank 99. Manual tasks with no assigned `TaskCategory` also use rank 99. The ordering map is an in-code constant and does not require a persisted per-task priority field. The canonical `TaskCategory` values are defined in Section 4.5 and in `Domain/Tasks/TaskCategory.cs`.
 
-**Note:** Completion status is the primary sort key. A pinned completed task
-sorts below all incomplete tasks but above other completed tasks.
+**Note:** Completion status is the primary sort key. A pinned completed task sorts below all incomplete tasks but above other completed tasks.
 
 Pinned tasks are stored in the State Store and persisted between sessions.
 
 In Version 1 players cannot modify ordering directly.
 
-Future versions may allow user-configurable ordering profiles/mechanisms that
-still resolve to deterministic task-type ordering with the same fallback
-behavior.
+Future versions may allow user-configurable ordering profiles/mechanisms that still resolve to deterministic task-type ordering with the same fallback behavior.
 
-## 4.7 Task Source Types ##
+## 4.7 Task Source Types
 
 Tasks originate from three sources.
 
 1. Automatic Task Generators
 
-    Built-in task detection systems that monitor gameplay conditions.
+   Built-in task detection systems that monitor gameplay conditions.
 
 2. Task Builder Rules
 
-    User-defined rule systems that generate custom automated tasks.
+   User-defined rule systems that generate custom automated tasks.
 
 3. Manual Tasks
 
-    Tasks created manually by the player.
+   Tasks created manually by the player.
 
 The task source type is stored with each task instance to allow the engine to determine:
 
@@ -194,7 +176,7 @@ The task source type is stored with each task instance to allow the engine to de
     - persistence behavior
     - completion rules
 
-## 4.8 Task Snapshot Model ##
+## 4.8 Task Snapshot Model
 
 At the end of each in-game day a Daily Task Snapshot is recorded.
 
@@ -217,10 +199,9 @@ Snapshots are read-only records.
 
 They can be exported for viewing outside the game but cannot be modified and re-imported.
 
-## 4.9 State Store Model ##
+## 4.9 State Store Model
 
-The mod uses a centralized State Store that acts as the authoritative runtime
-data source.
+The mod uses a centralized State Store that acts as the authoritative runtime data source.
 
 The State Store maintains:
 
@@ -236,10 +217,9 @@ Key design principles:
     - All task changes occur through defined commands
     - The store exposes immutable snapshots for UI rendering
 
-This architecture ensures that UI systems, the task engine, and persistence
-logic remain cleanly separated
+This architecture ensures that UI systems, the task engine, and persistence logic remain cleanly separated
 
-## 4.10 Deadline Fields Model ##
+## 4.10 Deadline Fields Model
 
 Two concrete structures represent deadline data in the system.
 
@@ -273,21 +253,17 @@ DeadlineFields
 ### V1 Display Rules
 
 | State | Display suffix | Completion affordance |
-|-------|----------------|-----------------------|
+| --- | --- | --- |
 | Normal future deadline | `· 5d` | Enabled |
 | Due today, window open | `· Today` or `· Until 10pm` | Enabled |
 | Due today, window closed | `· Window Closed` | Disabled |
 | Past due day | `· OVERDUE` | Disabled (time-window tasks) |
 
-Deadline is shown as an inline suffix on the task title row in the HUD and
-menu.
+Deadline is shown as an inline suffix on the task title row in the HUD and menu.
 
 ### Canonical ExpiresAtTime Example
 
-The festival-window pattern is the canonical example for `ExpiresAtTime`. A
-festival task with `DueDayKey = Year2-Summer11` and `ExpiresAtTime = 1400`
-(2pm) becomes window-closed at 2pm on Summer 11. The task remains in the list
-as incomplete and is preserved in the end-of-day snapshot.
+The festival-window pattern is the canonical example for `ExpiresAtTime`. A festival task with `DueDayKey = Year2-Summer11` and `ExpiresAtTime = 1400` (2pm) becomes window-closed at 2pm on Summer 11. The task remains in the list as incomplete and is preserved in the end-of-day snapshot.
 
 ### V2 Upgrade Path
 
@@ -295,3 +271,17 @@ as incomplete and is preserved in the end-of-day snapshot.
 - Auto-removal after due day passes (optional V2)
 - Configurable display format for deadline suffix (V2)
 - Failed/Expired status enum (optional V2+)
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 2 — Core Domain Model
+
+Also referenced in:
+
+- Phase 3 — State Store
+- Phase 7 — Persistence System
+- Phase 11 — History Browsing UI
+
+Canonical implementation mapping lives in Section 21.

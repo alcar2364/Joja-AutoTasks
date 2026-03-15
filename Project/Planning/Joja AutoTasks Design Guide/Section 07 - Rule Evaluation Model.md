@@ -10,27 +10,17 @@ The Rule Evaluation Model defines how Task Builder rules are:
 - reconciled with the State Store without duplication or task shuffle
 - evaluated efficiently without overwork
 
-This section focuses only on Task Builder rules. Built-in generators follow a
-similar pipeline, but have separate generator logic.
+This section focuses only on Task Builder rules. Built-in generators follow a similar pipeline, but have separate generator logic.
 
 ## 7.2 Core Requirements
 
 The evaluation model must guarantee:
 
-- Determinism
-  The same rule evaluated against the same context produces the same `TaskID`
-  and the same task output fields.
-- Stability across sessions
-  Rules persist and rehydrate without changing the produced task identities.
-- Correct progress tracking
-  Baseline-based progress must not reset incorrectly, except for daily rules
-  that intentionally reset each day.
-- Bounded performance
-  Rules must not evaluate every tick unless needed. Evaluation should be
-  event-driven where possible and corrected by throttled periodic passes.
-- Reconciliation-safe behavior
-  Rule output must merge cleanly with tasks from built-in generators and manual
-  tasks using deterministic `TaskID` values.
+- Determinism The same rule evaluated against the same context produces the same `TaskId` and the same task output fields.
+- Stability across sessions Rules persist and rehydrate without changing the produced task identities.
+- Correct progress tracking Baseline-based progress must not reset incorrectly, except for daily rules that intentionally reset each day.
+- Bounded performance Rules must not evaluate every tick unless needed. Evaluation should be event-driven where possible and corrected by throttled periodic passes.
+- Reconciliation-safe behavior Rule output must merge cleanly with tasks from built-in generators and manual tasks using deterministic `TaskId` values.
 
 ## 7.3 Evaluation Inputs and Outputs
 
@@ -38,15 +28,13 @@ Rule evaluation consumes:
 
 - `RuleDefinition` serialized data loaded into the runtime model
 - Generation and Evaluation Context as a snapshot of relevant game state
-- Rule Runtime Cache as engine-maintained per-rule runtime values, such as
-  baselines
+- Rule Runtime Cache as engine-maintained per-rule runtime values, such as baselines
 
-Rule evaluation produces a Rule Evaluation Result which is then normalized into
-a Task Object.
+Rule evaluation produces a Rule Evaluation Result which is then normalized into a Task Object.
 
 Conceptual output fields:
 
-- Deterministic `TaskID`
+- Deterministic `TaskId`
 - `Title`, `Description`, `Category`, and `Icon` metadata
 - `Status` as `Incomplete` or `Completed`
 - Optional progress and target values
@@ -85,14 +73,13 @@ This yields:
 
 - `Status = Completed | Incomplete`
 
-This split ensures the engine can compute progress even when a task is
-incomplete and handle derived UI warnings consistently.
+This split ensures the engine can compute progress even when a task is incomplete and handle derived UI warnings consistently.
 
 ## 7.5 Task Identity Derivation
 
 Task identity must be stable and deterministic.
 
-Task Builder `TaskID` values are derived from:
+Task Builder `TaskId` values are derived from:
 
 - stable `RuleID`
 - stable `SubjectID` values for the target entity, item, or goal
@@ -114,19 +101,15 @@ Examples:
 - Persistent: `TaskBuilder_17_ItemWood`
 - Daily: `TaskBuilder_42_Daily_Year2-Spring12`
 
-**Note:** `_` is the `TaskID` component separator. The hyphen inside the
-embedded `DayKey` token is preserved as part of the canonical `DayKey` format
-(e.g., `Year2-Spring12`). Do not replace the hyphen with an underscore.
+**Note:** `_` is the `TaskId` component separator. The hyphen inside the embedded `DayKey` token is preserved as part of the canonical `DayKey` format (e.g., `Year2-Spring12`). Do not replace the hyphen with an underscore.
 
 Key constraint:
 
-A single rule must never generate two different task identities for the same
-conceptual task within the same day or context.
+A single rule must never generate two different task identities for the same conceptual task within the same day or context.
 
 ## 7.6 Baseline Capture Rules
 
-Some progress models require a baseline value, for example collect 300 more
-wood from now.
+Some progress models require a baseline value, for example collect 300 more wood from now.
 
 Baseline capture is controlled by `BaselineMode`:
 
@@ -138,12 +121,11 @@ Baseline capture is controlled by `BaselineMode`:
 
 Baseline is recorded the first time the engine creates the task instance.
 
-Baseline is stored in the engine's runtime cache and persisted through the save
-system.
+Baseline is stored in the engine's runtime cache and persisted through the save system.
 
 Baseline remains constant for the lifetime of the persistent task.
 
-Baseline must be keyed by deterministic `TaskID`.
+Baseline must be keyed by deterministic `TaskId`.
 
 Example:
 
@@ -164,13 +146,9 @@ Example:
 
 - Cut down 5 trees every day
 - Baseline captured at start of day
-- Progress computed against that baseline only for the day's `TaskID`
+- Progress computed against that baseline only for the day's `TaskId`
 
-**Normative (V1):** Daily baselines are stored in the daily snapshot ledger
-entry for that day, not in `RuleRuntimeData`. On mid-day reload (e.g., after a
-crash), the daily baseline is re-captured at the start of the next evaluation
-pass. Progress for the day resets to zero. This is accepted V1 behavior and is
-not a bug.
+**Normative (V1):** Daily baselines are stored in the daily snapshot ledger entry for that day, not in `RuleRuntimeData`. On mid-day reload (e.g., after a crash), the daily baseline is re-captured at the start of the next evaluation pass. Progress for the day resets to zero. This is accepted V1 behavior and is not a bug.
 
 ## 7.7 Rule Runtime Cache
 
@@ -184,7 +162,7 @@ Conceptual cache record:
 
 ```text
 RuleRuntimeRecord
-    - TaskID
+    - TaskId
     - BaselineValues (optional)
     - LastEvaluatedAt (optional)
     - LastKnownProgress (optional)
@@ -256,8 +234,7 @@ Each evaluation cycle follows:
 
 Key constraint:
 
-UI never mutates tasks directly. Only the engine and manual UI commands emit
-mutations into the store.
+UI never mutates tasks directly. Only the engine and manual UI commands emit mutations into the store.
 
 ## 7.10 Rule Result Normalization
 
@@ -265,7 +242,7 @@ Rule outputs must be normalized into a consistent Task Object.
 
 Normalization includes:
 
-- enforcing deterministic `TaskID`
+- enforcing deterministic `TaskId`
 - applying default category and priority if missing
 - ensuring consistent title, description, and icon formatting
 - ensuring progress fields are present only when required
@@ -281,19 +258,16 @@ No new statuses are introduced in Version 1. Overdue tasks remain `Incomplete`.
 
 ## 7.11 Collision and Merge Rules
 
-Multiple sources may attempt to create tasks with the same `TaskID`.
+Multiple sources may attempt to create tasks with the same `TaskId`.
 
 Resolution rule:
 
-- `TaskID` is the primary key.
-- Exactly one authoritative task instance exists per ID in the unified task
-  list.
+- `TaskId` is the primary key.
+- Exactly one authoritative task instance exists per ID in the unified task list.
 
-If a collision occurs, the engine uses deterministic rules to select the
-winner, typically source precedence.
+If a collision occurs, the engine uses deterministic rules to select the winner, typically source precedence.
 
-Collisions should be treated as a bug during development, since `TaskID`
-values should be designed to avoid overlaps between subsystems.
+Collisions should be treated as a bug during development, since `TaskId` values should be designed to avoid overlaps between subsystems.
 
 Recommended precedence in Version 1:
 
@@ -301,8 +275,7 @@ Recommended precedence in Version 1:
 - Task Builder Tasks as user rules
 - Built-in Tasks as automatic generators
 
-This ensures player-authored tasks are never unexpectedly replaced by automatic
-outputs.
+This ensures player-authored tasks are never unexpectedly replaced by automatic outputs.
 
 ## 7.12 Completion Reconciliation with Store State
 
@@ -315,10 +288,8 @@ The engine must reconcile with store state to preserve:
 
 Rules:
 
-- If a task is marked completed in the store for the current day, the engine
-  must not re-open it unless the task is daily and the day key changes.
-- For persistent tasks, completed tasks remain completed and should not
-  reappear as incomplete.
+- If a task is marked completed in the store for the current day, the engine must not re-open it unless the task is daily and the day key changes.
+- For persistent tasks, completed tasks remain completed and should not reappear as incomplete.
 - For daily tasks, completion applies only to that day-keyed instance.
 
 ## 7.13 Examples
@@ -327,7 +298,7 @@ Rules:
 
 Rule: Collect 300 wood to build coop
 
-- `TaskID`: `TaskBuilder_17_ItemWood`
+- `TaskId`: `TaskBuilder_17_ItemWood`
 - `BaselineMode`: `CaptureAtCreation`
 - Baseline captured first time task is created
 - `Progress = CurrentWood - BaselineWood`
@@ -337,7 +308,7 @@ Rule: Collect 300 wood to build coop
 
 Rule: Cut down 5 trees every day
 
-- `TaskID` includes day key: `TaskBuilder_42_Daily_Year2-Spring12`
+- `TaskId` includes day key: `TaskBuilder_42_Daily_Year2-Spring12`
 - `BaselineMode`: `CaptureDaily`
 - Baseline captured at day start for that instance
 - Progress tracked for the day only
@@ -350,8 +321,7 @@ Rule: Reach floor 70 by Spring 25
 - `DueDayKey = YearX-Spring25`
 - Derived: `DaysRemaining`
 - Derived: `IsOverdue`
-- Status remains `Incomplete` until goal met and does not become `Failed` in
-  Version 1
+- Status remains `Incomplete` until goal met and does not become `Failed` in Version 1
 
 ## 7.14 Version 1 Constraints
 
@@ -361,3 +331,16 @@ Version 1 evaluation constraints:
 - no dismissal or snooze system
 - deadline failure represented only via derived properties
 - multiplayer excluded
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 6 — Rule Evaluation Engine
+
+Also referenced in:
+
+- Phase 7 — Persistence System
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.

@@ -1,9 +1,8 @@
-﻿# Section 12 — Engine Update Cycle #
+﻿# Section 12 — Engine Update Cycle
 
-## 12.1 Purpose ##
+## 12.1 Purpose
 
-The Engine Update Cycle defines how the Automatic Task Manager updates
-its internal state during gameplay.
+The Engine Update Cycle defines how the Automatic Task Manager updates its internal state during gameplay.
 
 The update cycle coordinates the following systems:
 
@@ -15,10 +14,9 @@ The update cycle coordinates the following systems:
 - daily snapshot capture
 ```
 
-The engine must update task state in response to game events while
-maintaining deterministic and bounded behavior.
+The engine must update task state in response to game events while maintaining deterministic and bounded behavior.
 
-## 12.2 Update Model Overview ##
+## 12.2 Update Model Overview
 
 The engine operates using a hybrid model combining:
 
@@ -27,27 +25,21 @@ The engine operates using a hybrid model combining:
 - scheduled evaluation passes
 ```
 
-Event triggers enqueue rule evaluations when relevant game state
-changes. Periodic passes ensure the system remains consistent even if
-events are missed.
+Event triggers enqueue rule evaluations when relevant game state changes. Periodic passes ensure the system remains consistent even if events are missed.
 
 Conceptual flow:
 
-``` text
+```text
 Game Event
 ```
 
-→ Engine Trigger Handler
-→ Rule Evaluation Queue
-→ Evaluation Pass
-→ State Store Commands
-→ Snapshot Published
+→ Engine Trigger Handler → Rule Evaluation Queue → Evaluation Pass → State Store Commands → Snapshot Published
 
 ```text
 
 ```
 
-## 12.3 Engine Lifecycle Phases ##
+## 12.3 Engine Lifecycle Phases
 
 The engine operates through several lifecycle phases.
 
@@ -59,7 +51,7 @@ The engine operates through several lifecycle phases.
 
 Each phase has distinct responsibilities.
 
-## 12.4 Initialization Phase ##
+## 12.4 Initialization Phase
 
 Initialization occurs when the save file is loaded.
 
@@ -75,10 +67,9 @@ Initialization sequence:
 
 After initialization, the engine enters the runtime update phase.
 
-## 12.5 Event Trigger Handling ##
+## 12.5 Event Trigger Handling
 
-The engine must listen for relevant game events and convert them into
-rule evaluation triggers.
+The engine must listen for relevant game events and convert them into rule evaluation triggers.
 
 Examples of event categories include:
 
@@ -93,10 +84,9 @@ Examples of event categories include:
 
 Each event maps to one or more rule triggers.
 
-Event handlers must enqueue rule evaluations rather than executing them
-immediately.
+Event handlers must enqueue rule evaluations rather than executing them immediately.
 
-## 12.6 Rule Evaluation Queue ##
+## 12.6 Rule Evaluation Queue
 
 Triggered rule evaluations are placed into an evaluation queue.
 
@@ -115,7 +105,7 @@ Queue behavior rules:
 - queue size must remain bounded
 ```
 
-## 12.7 Evaluation Pass ##
+## 12.7 Evaluation Pass
 
 Evaluation passes process queued rules.
 
@@ -135,40 +125,31 @@ Example command types include:
 
 The State Store reducer then applies these commands.
 
-## 12.8 Evaluation Context Construction ##
+## 12.8 Evaluation Context Construction
 
 Rules require access to game state during evaluation.
 
-The engine constructs an evaluation context representing relevant game
-data.
+The engine constructs an evaluation context representing relevant game data.
 
 Conceptual structure:
 
-``` text
+```text
 EvaluationContext
 ```
 
-InventorySnapshot
-PlayerStats
-FarmState
-MachineState
-CurrentLocation
-CurrentDayKey
+InventorySnapshot PlayerStats FarmState MachineState CurrentLocation CurrentDayKey
 
 ```text
 
 ```
 
-The context should represent a stable snapshot of game state during the
-evaluation pass.
+The context should represent a stable snapshot of game state during the evaluation pass.
 
-Rules must read from the context rather than directly querying the game
-environment.
+Rules must read from the context rather than directly querying the game environment.
 
-## 12.9 Snapshot Publishing ##
+## 12.9 Snapshot Publishing
 
-After rule evaluation and state mutations occur, the State Store
-publishes a new snapshot if task state has changed.
+After rule evaluation and state mutations occur, the State Store publishes a new snapshot if task state has changed.
 
 Snapshot publication sequence:
 
@@ -179,21 +160,17 @@ Snapshot publication sequence:
 
 If no task state changed, a new snapshot should not be published.
 
-## 12.10 Day Transition Handling ##
+## 12.10 Day Transition Handling
 
 Day transitions trigger several system actions.
 
-The normative day-start ownership table — mapping each step to its owning layer
-— is defined in **Section 02 §2.5** (On Day Start / On Player Sleep). Section
-2.5 is the canonical source. The sequence is not restated here to prevent
-drift.
+The normative day-start ownership table — mapping each step to its owning layer — is defined in **Section 02 §2.5** (On Day Start / On Player Sleep). Section 2.5 is the canonical source. The sequence is not restated here to prevent drift.
 
 This ensures daily tasks are recreated deterministically.
 
-## 12.11 Save Event Handling ##
+## 12.11 Save Event Handling
 
-When the game is saved, the engine must persist the current system
-state.
+When the game is saved, the engine must persist the current system state.
 
 Save sequence:
 
@@ -205,20 +182,15 @@ Save sequence:
 
 Persistence behavior must follow the rules defined in Section 9.
 
-## 12.11.1 Teardown Phase (Return to Title) ##
+## 12.11.1 Teardown Phase (Return to Title)
 
-When the player returns to the title screen, the engine must tear down
-all runtime state.
+When the player returns to the title screen, the engine must tear down all runtime state.
 
-The canonical teardown sequence is defined in **Section 02 §2.5** ("On
-Returned to Title"). Section 2.5 is the authoritative specification. This
-section cross-references it rather than restating the sequence to prevent drift
-between sections.
+The canonical teardown sequence is defined in **Section 02 §2.5** ("On Returned to Title"). Section 2.5 is the authoritative specification. This section cross-references it rather than restating the sequence to prevent drift between sections.
 
-This ensures the mod is safe to re-initialize on the next `OnSaveLoaded`
-without residual state from the previous session.
+This ensures the mod is safe to re-initialize on the next `OnSaveLoaded` without residual state from the previous session.
 
-## 12.12 Performance Constraints ##
+## 12.12 Performance Constraints
 
 The engine must avoid excessive computation during gameplay.
 
@@ -233,7 +205,7 @@ Implementation guidelines:
 
 These rules ensure the system does not impact gameplay performance.
 
-## 12.13 Determinism Requirements ##
+## 12.13 Determinism Requirements
 
 Engine behavior must remain deterministic for a given game state.
 
@@ -245,10 +217,9 @@ Evaluation results must not depend on:
 - transient UI state
 ```
 
-Determinism ensures stable task identities and consistent history
-records.
+Determinism ensures stable task identities and consistent history records.
 
-## 12.14 Version 1 Constraints ##
+## 12.14 Version 1 Constraints
 
 Version 1 of the engine update cycle includes the following limitations:
 
@@ -259,5 +230,19 @@ Version 1 of the engine update cycle includes the following limitations:
 - no asynchronous persistence operations
 ```
 
-All rule evaluation occurs on the main game thread to maintain
-compatibility with the game state APIs.
+All rule evaluation occurs on the main game thread to maintain compatibility with the game state APIs.
+
+## Implementation Plan Traceability
+
+Primary phase owner(s):
+
+- Phase 5 — Built-in Task Generators
+- Phase 6 — Rule Evaluation Engine
+- Phase 7 — Persistence System
+
+Also referenced in:
+
+- Phase 1 — Project Skeleton and Lifecycle
+- Phase 12 — Debug and Development Tools
+
+Canonical implementation mapping lives in Section 21.
