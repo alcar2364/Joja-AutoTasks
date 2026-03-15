@@ -1,3 +1,4 @@
+using JojaAutoTasks.Events;
 using JojaAutoTasks.State;
 using JojaAutoTasks.State.Models;
 
@@ -8,19 +9,21 @@ internal static class UiSnapshotSubscriptionManager
     private sealed class SnapshotSubscription : IDisposable
     {
         private readonly StateStore _stateStore;
-        private readonly Action<TaskSnapshot> _callback;
+        private readonly EventHandler<SnapshotChangedEventArgs> _handler;
 
-        internal SnapshotSubscription(StateStore stateStore, Action<TaskSnapshot> callback)
+        internal SnapshotSubscription(
+            StateStore stateStore,
+            EventHandler<SnapshotChangedEventArgs> handler
+        )
         {
             _stateStore = stateStore;
-            _callback = callback;
+            _handler = handler;
         }
 
         public void Dispose()
         {
-            _stateStore.SnapshotChanged -= _callback;
+            _stateStore.SnapshotChanged -= _handler;
         }
-
     }
 
     private sealed class NoOpSubscription : IDisposable
@@ -51,7 +54,12 @@ internal static class UiSnapshotSubscriptionManager
             return new NoOpSubscription();
         }
 
-        _stateStore.SnapshotChanged += callback;
-        return new SnapshotSubscription(_stateStore, callback);
+        EventHandler<SnapshotChangedEventArgs> handler = (sender, args) =>
+        {
+            callback(args.CurrentSnapshot);
+        };
+
+        _stateStore.SnapshotChanged += handler;
+        return new SnapshotSubscription(_stateStore, handler);
     }
 }

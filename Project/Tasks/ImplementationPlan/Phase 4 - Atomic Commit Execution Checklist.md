@@ -176,12 +176,12 @@ Phase 4 builds on these by wiring UI surface observation into snapshot subscript
 
 ### 3B - Verify SnapshotChanged event signature compatibility in StateStore
 
-- [ ] **Action:** In `State/StateStore.cs`, ensure public event `EventHandler<SnapshotChangedEventArgs> SnapshotChanged` is declared **before adding or changing any event arguments**. Verify event signature compatibility: existing event signature (if present) must accept SnapshotChangedEventArgs without change. If SnapshotChanged exists with different signature or args (e.g., TaskSnapshot directly, or no args), document the mismatch and resolve by: (A) extending SnapshotChangedEventArgs to wrap existing args, or (B) updating event signature to standard `EventHandler<SnapshotChangedEventArgs>`. Verify it is raised by SnapshotProjector whenever a new snapshot is projected (triggered by command execution or other state mutations). Add code comments documenting event contract and argument flow.
-- [ ] **Scope:** `State/StateStore.cs` (SnapshotChanged event declaration, signature verification, and compatibility assertion).
-- [ ] **Verify:** Event signature matches `EventHandler<SnapshotChangedEventArgs>` precisely; if signature change required, update event and all publishing/subscribing code; event is raised whenever snapshot changes; subscribers can subscribe and unsubscribe without errors; signature change is minimal (compatibility-preserving if possible).
-- [ ] **Suggested commit:** `phase4(step3B): verify and ensure SnapshotChanged event signature compatibility`
-- [ ] **Must include:** Public SnapshotChanged event declaration with standard signature; explicit signature compatibility check; event is raised on snapshot updates; clear documentation of event contract and argument flow.
-- [ ] **Must exclude:** Snapshot projection logic changes, general command handler modifications (limited to event publishing as required).
+- [x] **Action:** In `State/StateStore.cs`, ensure public event `EventHandler<SnapshotChangedEventArgs> SnapshotChanged` is declared **before adding or changing any event arguments**. Verify event signature compatibility: existing event signature (if present) must accept SnapshotChangedEventArgs without change. If SnapshotChanged exists with different signature or args (e.g., TaskSnapshot directly, or no args), document the mismatch and resolve by: (A) extending SnapshotChangedEventArgs to wrap existing args, or (B) updating event signature to standard `EventHandler<SnapshotChangedEventArgs>`. Verify it is raised by SnapshotProjector whenever a new snapshot is projected (triggered by command execution or other state mutations). Add code comments documenting event contract and argument flow.
+- [x] **Scope:** `State/StateStore.cs` (SnapshotChanged event declaration, signature verification, and compatibility assertion).
+- [x] **Verify:** Event signature matches `EventHandler<SnapshotChangedEventArgs>` precisely; if signature change required, update event and all publishing/subscribing code; event is raised whenever snapshot changes; subscribers can subscribe and unsubscribe without errors; signature change is minimal (compatibility-preserving if possible).
+- [x] **Suggested commit:** `phase4(step3B): verify and ensure SnapshotChanged event signature compatibility`
+- [x] **Must include:** Public SnapshotChanged event declaration with standard signature; explicit signature compatibility check; event is raised on snapshot updates; clear documentation of event contract and argument flow.
+- [x] **Must exclude:** Snapshot projection logic changes, general command handler modifications (limited to event publishing as required).
 
 ### 3C - Implement view model subscription initialization
 

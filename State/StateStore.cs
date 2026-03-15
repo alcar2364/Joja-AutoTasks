@@ -1,5 +1,6 @@
 using JojaAutoTasks.Domain.Identifiers;
 using JojaAutoTasks.Domain.Tasks;
+using JojaAutoTasks.Events;
 using JojaAutoTasks.State.Commands;
 using JojaAutoTasks.State.DayBoundary;
 using JojaAutoTasks.State.Handlers;
@@ -29,8 +30,7 @@ internal sealed class StateStore
     private BootstrapGuardPolicy _bootstrapGuardPolicy = BootstrapGuardPolicy.Release;
     private Action<string>? _warnAction;
 
-    public event Action<TaskSnapshot>? SnapshotChanged;
-    public event Action<ToastEvent>? ToastRequested;
+    internal event EventHandler<SnapshotChangedEventArgs>? SnapshotChanged;
 
     internal void Dispatch(IStateCommand command)
     {
@@ -41,7 +41,8 @@ internal sealed class StateStore
         TaskCategory category,
         string title,
         string? description,
-        DayKey creationDay)
+        DayKey creationDay
+    )
     {
         TaskId taskId = IssueNextManualTaskId();
         var command = new AddOrUpdateTaskCommand(
@@ -53,7 +54,8 @@ internal sealed class StateStore
             progressCurrent: 0,
             progressMax: 1,
             creationDay: creationDay,
-            sourceIdentifier: "Player");
+            sourceIdentifier: "Player"
+        );
         Dispatch(command);
     }
 
@@ -83,7 +85,11 @@ internal sealed class StateStore
 
         if (expiredIds.Count > 0)
         {
-            DayTransitionHandler.RemoveExpiredTasks(expiredIds, _stateContainer, _removeTaskHandler);
+            DayTransitionHandler.RemoveExpiredTasks(
+                expiredIds,
+                _stateContainer,
+                _removeTaskHandler
+            );
             PublishSnapshot();
         }
 
@@ -150,7 +156,8 @@ internal sealed class StateStore
                 break;
             default:
                 throw new InvalidOperationException(
-                    $"No handler found for command type {command.GetType().Name}");
+                    $"No handler found for command type {command.GetType().Name}"
+                );
         }
 
         if (_stateContainer.Version != priorVersion)
@@ -159,7 +166,10 @@ internal sealed class StateStore
         }
     }
 
-    private void HandleCompleteTaskCommand(CompleteTaskCommand completeTaskCommand, long priorVersion)
+    private void HandleCompleteTaskCommand(
+        CompleteTaskCommand completeTaskCommand,
+        long priorVersion
+    )
     {
         TaskStatus? priorStatus = null;
         if (_stateContainer.TryGet(completeTaskCommand.TaskId, out TaskRecord? existingRecord))
@@ -168,14 +178,6 @@ internal sealed class StateStore
         }
 
         _completeTaskHandler.Handle(completeTaskCommand, _stateContainer);
-
-        if (_stateContainer.Version != priorVersion
-            && priorStatus == TaskStatus.Incomplete
-            && !completeTaskCommand.IsPlayerInitiated
-            && _stateContainer.TryGet(completeTaskCommand.TaskId, out TaskRecord? updatedRecord))
-        {
-            ToastRequested?.Invoke(new ToastEvent(ToastType.TaskAutoCompleted, updatedRecord.Title));
-        }
     }
 
     private TaskId IssueNextManualTaskId()
@@ -184,6 +186,9 @@ internal sealed class StateStore
         return TaskIdFactory.CreateManual(nextId);
     }
 
+    // create the snapshot first, then raise:
+    // sender: this
+    // args: new SnapshotChangedEventArgs(snapshot)
     private void PublishSnapshot()
     {
         if (!_timeContextInitialized)
@@ -192,7 +197,9 @@ internal sealed class StateStore
             return;
         }
 
-        SnapshotChanged?.Invoke(SnapshotProjector.Project(_stateContainer, _currentDayKey, _currentTime));
+        var snapshot = SnapshotProjector.Project(_stateContainer, _currentDayKey, _currentTime);
+
+        SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot));
     }
 
     private void GuardTimeContextInitialized()
@@ -205,7 +212,9 @@ internal sealed class StateStore
         switch (_bootstrapGuardPolicy)
         {
             case BootstrapGuardPolicy.Debug:
-                throw new InvalidOperationException(ProjectionCalledBeforeTimeContextWasInitializedMessage);
+                throw new InvalidOperationException(
+                    ProjectionCalledBeforeTimeContextWasInitializedMessage
+                );
             case BootstrapGuardPolicy.DebugDiagnostic:
                 _warnAction?.Invoke(ProjectionCalledBeforeTimeContextWasInitializedMessage);
                 return;
