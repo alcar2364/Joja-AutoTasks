@@ -388,16 +388,24 @@ TaskTitle — string (task display title at completion time)
 Replaying a completion command against an already-completed task does not emit
 another `ToastRequested` (transition-based, not command-based).
 
-Subscribers include:
+Snapshot subscribers include:
 
 ```text
 - View Models (Section 10A) — the primary consumers
 - Debug tools (when enabled)
 ```
 
-View Models subscribe to this event and update their INPC properties
-when a new snapshot arrives, causing StardewUI to re-render affected
-elements. See Section 10A.6 for the full subscription model.
+Toast routing boundary:
+
+```text
+- `ToastRequested` is not part of the View Model subscription model.
+- Toast/effect payloads are routed to the outbound game-events/effect
+  queue for later native game integration handling.
+```
+
+View Models subscribe to `SnapshotChanged` and update their INPC
+properties when a new snapshot arrives, causing StardewUI to re-render
+affected elements. See Section 10A.6 for the full subscription model.
 
 UI rendering should always use the latest snapshot.
 

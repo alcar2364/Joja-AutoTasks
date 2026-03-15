@@ -354,11 +354,10 @@ The only V1 toast trigger is engine-driven task auto-completion
 
 ### 20.8.2 Toast Ownership Boundary ###
 
-`UiNotificationBridge` is the native-toast integration boundary in V1.
-It subscribes to backend notification events and performs the native
-`Game1.addHUDMessage()` call. `HudViewModel` does not call game APIs
-directly. This preserves the "no direct game API access from subsystem
-view-models" boundary.
+The outbound game-events/effect queue is the toast integration boundary
+in V1. `HudViewModel` and the rest of the binding layer do not receive
+toast events and do not call game APIs directly. This preserves the "no
+direct game API access from subsystem view-models" boundary.
 
 ### 20.8.3 Toast Event Routing ###
 
@@ -366,7 +365,7 @@ The State Store fires `ToastRequested(ToastEvent)` before `SnapshotChanged`
 when a true `Incomplete → Completed` transition occurs with
 `IsPlayerInitiated = false`. V1 event flow is:
 
-`StateStore.ToastRequested → UiNotificationBridge → Game1.addHUDMessage()`
+`StateStore.ToastRequested → outbound game-events/effect queue → native game integration → Game1.addHUDMessage()`
 
 See §8.12 for the full `ToastRequested` event contract and `ToastEvent`
 structure.

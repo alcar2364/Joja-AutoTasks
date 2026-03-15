@@ -1,6 +1,6 @@
 using JojaAutoTasks.Domain.Identifiers;
-using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.Events;
+using JojaAutoTasks.Infrastructure.Logging;
 using JojaAutoTasks.State;
 
 namespace JojaAutoTasks.Lifecycle;

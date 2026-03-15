@@ -1,3 +1,9 @@
+---
+
+Description: This document is an example template for a Core Flows Spec, do not edit or use this as a document that is authoritative. Flows defined here are example only and may not reflect current design decisions.
+
+---
+
 # Core Flows Spec Example
 
 ## Purpose
@@ -454,7 +460,7 @@ How the `HistoryViewModel` accesses the Daily Snapshot Ledger, what the History 
 
 `IDailySnapshotLedger`
 
-|  |  |  |  |
+| | | | |
 | --- | :-: | --- | --- |
 | `GetSnapshot(DayKey)` | `→` | `DailyTaskSnapshot?` | `null` if no entry for thatday |
 | `GetRecordedDays()` | `→` | `IReadOnlyList<DayKey>` | All days with ledger entries, newest first |

@@ -44,13 +44,12 @@ processing logic.
 Current coverage in `UI/` includes:
 
 1. `ModEntryHudLifecycle` day-start recreation keeps exactly one active
-   `HudHost` snapshot subscription.
-1. `ModEntryHudLifecycle` day-start recreation keeps exactly one active
-   UI-layer toast subscription and the subscriber is `HudViewModel`
-   (`HudHost` direct `ToastRequested` subscription count remains zero).
-1. Replacement `HudHost` subscribes only after prior host disposal ordering.
+   `HudViewModel` instance after recreation.
 1. Day-start recreation uses a fresh `HudViewModel` instance
    (UI-local state reset semantics).
+1. `HandleReturnedToTitle` clears the active `HudViewModel` reference.
+1. `ModEntry.OnReturnedToTitle` tears down HUD lifecycle state before runtime
+   return-to-title dispatch/teardown clears backend state.
 
 ## Hooks Test Matrix
 

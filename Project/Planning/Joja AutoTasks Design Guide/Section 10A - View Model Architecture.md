@@ -19,7 +19,8 @@ not belong in the State Store
 ```
 
 Native notifications are a separate UI integration concern. They may
-listen to backend events, but they are not part of the StardewUI
+be triggered from backend events through the outbound
+game-events/effect queue, but they are not part of the StardewUI
 binding-context/view-model layer.
 
 ## 10A.2 Architecture Position ##
@@ -31,11 +32,16 @@ Conceptual flow:
 ```text
 State Store
   → Snapshot Published (C# event)
-  → View Model receives snapshot
+  → View Model receives `SnapshotChanged`
   → View Model updates INPC properties
   → StardewUI binding engine detects changes
   → UI re-renders affected elements
 ```
+
+Live task surfaces consume State Store snapshots, while history,
+configuration, and debug sections layer read-only ledger/configuration
+data onto the same binding architecture without creating alternate state
+ownership.
 
 View Models are consumed by StarML views through the binding context mechanism described in the StardewUI documentation.
 
@@ -121,7 +127,7 @@ This reconciliation strategy avoids replacing the entire collection on every upd
 
 ## 10A.5 View Model Catalog
 
-The following View Models are expected for Version 1.
+The following view models are expected for Version 1.
 
 ### HUD View Models
 
@@ -129,7 +135,7 @@ The following View Models are expected for Version 1.
 
 ```text
 - The primary binding context for the HUD drawable
-- Subscribes to State Store snapshot updates
+- Subscribes to live snapshot updates
 - Reconciles HUD task rows against the latest snapshot
 - Owns HUD-local state such as scroll position, collapse state, and selection
 - Dispatches commands for HUD interactions such as completion and pinning
@@ -143,22 +149,33 @@ The following View Models are expected for Version 1.
 - Fields: title, status, progress, category icon, completion affordance
 ```
 
-`UiNotificationBridge`
+Toast/effect routing note:
 
 ```text
-- Thin UI integration component for native V1 notifications
-- Subscribes to backend notification events such as StateStore.ToastRequested
-- Translates backend notification payloads into native game UI calls such as Game1.addHUDMessage()
-- Separate from StardewUI binding contexts and task-row reconciliation
+- No toast/event view model participates in V1.
+- `ToastRequested` does not flow into `HudViewModel` or other view
+  models.
+- Toast/effect payloads are routed through the outbound
+  game-events/effect queue and consumed by native game integration
+  outside the binding layer.
 ```
 
 #### Menu View Models ####
+
+`MenuShellViewModel` (or equivalent root menu binding context)
+
+```text
+- Owns current menu section/tab selection across Tasks, Task Builder,
+History, Configuration, and Debug
+- Coordinates the section-specific view models used by the menu surface
+```
 
 `TaskListViewModel`
 
 ```text
 - Exposes the full task list for the menu Tasks section
-- Owns menu-local state: selected task ID, active filters, sort mode
+- Owns menu-local state: selected task ID, active filters, sort mode,
+search text
 - Publishes the selected task's detail data
 ```
 
@@ -212,44 +229,75 @@ The following View Models are expected for Version 1.
 `ConfigViewModel`
 
 ```text
-- Exposes mod configuration fields for the StardewUI configuration menu
+- Exposes mod configuration fields for the full StardewUI configuration
+menu
+- May be opened through the GMCM entry surface, which acts only as a
+thin launcher into the full menu experience
 - Reads from and writes to the `ModConfig` instance
+```
+
+`DebugViewModel`
+
+```text
+- Exposes debug toggles and live tuning fields for supported HUD/menu
+diagnostics and layout parameters
+- Updates debug/runtime tuning values without mutating canonical task
+state
 ```
 
 ## 10A.6 Snapshot Subscription Model
 
-View Models MUST NOT own subscriptions to the State Store. Subscription ownership belongs to UI-layer host objects (for example, `HudHost`, `MenuHost`) that manage native lifecycle and game-API responsibilities.
+View models MUST NOT hide backend-event subscription lifetime inside
+themselves for non-snapshot event channels. The View Model subscription
+model is specifically for `SnapshotChanged`.
+
+Live task view models subscribe directly to `SnapshotChanged`, hold the
+resulting subscription lifetime, and release it during disposal.
+
+`ToastRequested` and other outbound effect/game-event channels are not
+part of this model and must remain outside the view-model layer.
 
 Recommended pattern:
 
-- The State Store exposes event sources (for example `SnapshotChanged`, `ToastRequested`) which are wrapped by `UiSnapshotSubscriptionManager` and `UiToastSubscriptionManager` to provide `Subscribe(...) -> IDisposable` tokens.
-- A UI host subscribes during initialization and disposes the returned token during teardown or replacement (for example on DayStarted recreation).
-- The host forwards incoming snapshots and toast events to its View Model by calling a well-defined method (for example `viewModel.OnSnapshotReceived(TaskSnapshot)` or `viewModel.OnToastReceived(ToastEvent)`).
+- The State Store exposes `SnapshotChanged` for bindable UI
+  reconciliation.
+- Each live task view model subscribes during initialization and
+  unsubscribes during disposal.
+- On notification, the view model reconciles its current bindable state
+  against the newly published snapshot.
 
 Why this pattern:
 
-- Centralizes subscription lifetime in the UI host (single place to dispose/replace subscriptions when UI surfaces are recreated).
-- Keeps View Models focused and testable: view models become pure converters/update handlers that accept snapshots via public methods instead of hiding subscription side-effects.
-- Avoids accidental memory leaks and duplicate subscriptions when view-model instances are replaced (e.g., daily recreation flows).
+- Keeps the binding boundary simple: snapshots in, INPC/collection
+  updates out.
+- Matches the canonical teardown rule in Section 2.5: dispose view
+  models and unsubscribe from `SnapshotChanged`.
+- Prevents the outbound effect/game-event path from leaking into the
+  binding layer.
 
-Recommended host-to-viewmodel flow:
+Recommended snapshot flow:
 
-1. Host subscribes to State Store via `UiSnapshotSubscriptionManager.Subscribe(OnSnapshotReceived)`.
-2. Host receives `TaskSnapshot` and calls `viewModel.OnSnapshotReceived(snapshot)`.
-3. View Model diffs snapshot against internal view state and updates INPC/collection properties (reconciling `ObservableCollection<T>`).
+1. View Model subscribes to `SnapshotChanged`.
+2. View Model receives `TaskSnapshot`.
+3. View Model diffs snapshot against internal view state and updates
+   INPC/collection properties (reconciling `ObservableCollection<T>`).
 4. StardewUI detects INPC/collection changes and re-renders.
 
-Example subscription ownership responsibilities (hosts):
+Responsibilities that stay outside the View Model subscription model:
 
-- Subscribe / unsubscribe to backend events.
-- Own native game API calls and conversions to platform-specific actions (for example `Game1.addHUDMessage`).
-- Dispose subscriptions before replacing UI surfaces or view models.
+- Native game API calls and conversions to platform-specific actions
+  (for example `Game1.addHUDMessage`).
+- Outbound game-events/effect queue ownership and draining.
+- Any non-snapshot event routing such as toast/effect delivery.
 
-View Models therefore implement explicit update entry points (for example `OnSnapshotReceived`, `OnToastReceived`) and remain free of subscription side-effects.
+View models therefore own a single, explicit snapshot subscription path
+and remain free of toast/effect routing responsibilities.
 
-For the HUD, `HudViewModel` is the snapshot subscriber. Native
-notifications use a separate event subscription path through
-`UiNotificationBridge` and do not pass through the HUD binding context.
+For the HUD, `HudViewModel` subscribes to `SnapshotChanged` and
+reconciles the HUD task rows directly. For the menu, the relevant menu
+view models subscribe to the same live snapshot source for task
+presentation. Native notifications never pass through the HUD binding
+context.
 
 ## 10A.7 UI-Local State
 
@@ -261,8 +309,11 @@ Examples of UI-local state:
 - Current selection (selected task ID)
 - Scroll position
 - HUD collapsed/expanded state
+- Completed-task visibility toggles
 - Active filter/sort settings (unless explicitly configured)
+- Current menu section/tab
 - Wizard current step
+- Current history day
 - Menu-local search text
 ```
 
@@ -285,6 +336,11 @@ User clicks checkbox → HudViewModel.CompleteTask(taskId)
   → HudViewModel updates task row status
   → StardewUI re-renders checkbox as completed
 ```
+
+Task Builder view models follow the same "intent out, snapshot back"
+rule but emit rule-definition and persistence intents only. Config and
+debug view models update their respective config/debug services rather
+than dispatching task-state commands.
 
 View Models MUST NOT modify their own state optimistically before the snapshot confirms the change. The snapshot is the source of truth.
 
@@ -313,10 +369,13 @@ Wizard View Model lifecycle:
 - Disposed when the wizard completes or is cancelled
 ```
 
-Disposal MUST unsubscribe from State Store events to prevent memory leaks and stale updates.
+This lifecycle must honor the teardown sequence in Section 2.5: view
+models are disposed before the HUD drawable is torn down and before the
+State Store is cleared.
 
-`UiNotificationBridge` follows the same general subscription hygiene for
-its own backend event listeners, but it is not itself a view model.
+Disposal MUST release any timers, UI-owned event handlers, or other
+local resources and MUST unsubscribe from `SnapshotChanged` before the
+view model is discarded.
 
 ## 10A.10 StardewUI Update Tick Integration
 
@@ -342,6 +401,11 @@ Version 1 View Model constraints:
 - No multiplayer View Model synchronization
 - Collection reconciliation uses simple linear diff (adequate for
 expected task counts in V1)
+- Menu filtering/sorting/searching and baseline history day navigation
+are in-scope for V1; deeper browsing polish and statistics views are
+staged later
+- Toast/effect handling remains outside the View Model layer and does
+  not add extra event subscriptions beyond `SnapshotChanged`
 ```
 
 ## 10A.12 Historical Data Access Pattern

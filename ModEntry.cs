@@ -12,7 +12,6 @@ internal sealed class ModEntry : Mod
 {
     // -- Dependencies -- //
     private ModRuntime _runtime = null!;
-    private readonly ModEntryHudLifecycle _hudLifecycle = new();
 
     // -- State -- //
     private uint _nextTickLogAt;
@@ -25,12 +24,10 @@ internal sealed class ModEntry : Mod
         _runtime = BootstrapContainer.Build(helper, Monitor);
 
         // BootstrapContainer constructs StateStore before ModRuntime is returned, so
-        // subscription setup is safe once the runtime-owned store reference is
-        // available. SubscriptionManager initialization and subscription depends
-        // on successful runtime composition.
+        // snapshot subscription setup is safe once the runtime-owned store reference
+        // is available.
 
         UiSnapshotSubscriptionManager.Initialize(_runtime.StateStore);
-        UiToastSubscriptionManager.Initialize(_runtime.StateStore);
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -52,21 +49,18 @@ internal sealed class ModEntry : Mod
         DayKey currentDay = CreateCurrentDayKey();
         int currentTime = Game1.timeOfDay;
         _runtime.LifecycleCoordinator.HandleSaveLoaded(currentDay, currentTime);
-        _hudLifecycle.HandleSaveLoaded();
     }
 
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
         DayKey currentDay = CreateCurrentDayKey();
         int currentTime = Game1.timeOfDay;
-        _hudLifecycle.HandleDayStarted();
         _runtime.LifecycleCoordinator.HandleDayStarted(currentDay, currentTime);
     }
 
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
     {
         _runtime.LifecycleCoordinator.HandleReturnedToTitle();
-        _hudLifecycle.HandleReturnedToTitle();
     }
 
     // Saving remains signal-only so persistence work never runs inside SMAPI's saving hook.
@@ -108,57 +102,5 @@ internal sealed class ModEntry : Mod
     private static DayKey CreateCurrentDayKey()
     {
         return DayKeyFactory.Create(Game1.year, Game1.currentSeason, Game1.dayOfMonth);
-    }
-}
-
-// TODO: Should not be another lifecycle coordinator class. Refactor to unify with ModRuntime lifecycle coordination or merge into ModRuntime directly.
-internal sealed class ModEntryHudLifecycle
-{
-    private readonly Func<HudViewModel> _createViewModel;
-    private readonly Func<HudViewModel, HudHost> _createHost;
-    private HudHost? _hudHost;
-    private HudViewModel? _hudViewModel;
-
-    internal ModEntryHudLifecycle()
-        : this(
-            createViewModel: static () => new HudViewModel(),
-            createHost: static viewModel => new HudHost(viewModel))
-    {
-    }
-
-    internal ModEntryHudLifecycle(
-        Func<HudViewModel> createViewModel,
-        Func<HudViewModel, HudHost> createHost)
-    {
-        _createViewModel = createViewModel;
-        _createHost = createHost;
-    }
-
-    internal HudViewModel? CurrentViewModel => _hudViewModel;
-
-    internal void HandleSaveLoaded()
-    {
-        _hudViewModel = _createViewModel();
-        _hudHost = _createHost(_hudViewModel);
-    }
-
-    internal void HandleDayStarted()
-    {
-        DisposeCurrent();
-        _hudViewModel = _createViewModel();
-        _hudHost = _createHost(_hudViewModel);
-    }
-
-    internal void HandleReturnedToTitle()
-    {
-        DisposeCurrent();
-        _hudHost = null;
-        _hudViewModel = null;
-    }
-
-    private void DisposeCurrent()
-    {
-        _hudHost?.Dispose();
-        _hudViewModel?.Dispose();
     }
 }

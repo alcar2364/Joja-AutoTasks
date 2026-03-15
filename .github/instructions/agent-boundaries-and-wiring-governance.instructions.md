@@ -62,11 +62,11 @@ Every instruction file below is wired to at least one agent.
 | visual-design-language.instructions.md | UIAgent | StarMLAgent, WorkspaceAgent |
 | workspace-contracts.instructions.md | Orchestrator | GodAgent, Planner, Reviewer, WorkspaceAgent, CSharpMentor |
 
-## Skill-to-Agent Wiring
+## Skill Index
 
 **Advisory note:** In VS Code, skill triggering is automatic and discovery-based — the IDE discovers skills by scanning `SKILL.md` files directly. The wiring table below is **advisory only**; it documents conventional ownership for governance purposes but is **not required** for skill invocation. Future maintainers must not add speculative bulk wiring rows for skills that have no established agent ownership rationale.
 
-Every skill folder in `.github/skills` is mapped to at least one agent.
+Every skill folder in `.github/skills` is documented here for reference
 
 | Skill                                                 | Primary Agent  | Also Used By   |
 | ----------------------------------------------------- | -------------- | -------------- |
