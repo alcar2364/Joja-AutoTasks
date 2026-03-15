@@ -18,6 +18,7 @@ This file is the active summary view of all unresolved implementation issues tra
 
 | Issue | Type | Summary | Created Phase | Source | Scheduled Target | Status | Priority | Resolution PR | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 195 | Deferment | Address security issue #86 by replacing broad exception swallowing in `ConfigLoader` with deterministic, explicit error handling and logging behavior. | Phase 3 | GitHub issue #86 backlog deferment reconciliation | Merged into #159 (historical reference only) | Merged | Low |  | Merged into #159. Retained only as historical traceability reference and not an active tracker. |
 | 159 | Review follow-up | A bare catch block in Configuration/ConfigLoader.cs (line 26) suppresses all exceptions without discrimination during config deserialization. This means fatal CLR exceptions (StackOverflowException, OutOfMemoryException, ThreadAbortException) and genuine deserialization bugs are silently swallowed, falling back to null as if the config file simply didn't exist. | Phase 3 | #86 (merged historical source reference) | Phase 4 | Open | High |  | Canonical active tracker for merged #86 scope; #86 retained as historical merged-reference only. |
 | 132 | Deferment | Evaluate renaming `DayKey` to `DateKey` while preserving canonical `Year{N}-{Season}{D}` key format and contracts. | Phase 3 | Phase 3 checklist, Deferred Items (`DayKey` to `DateKey` naming request) | Phase 6 | Open | Low |  | Naming-only clarity proposal; no format change requested |
 | 131 | Deferment | Decide the permanent home for `ManualTaskCounter` after generator/UI service boundaries are established. | Phase 3 | Phase 3 checklist, Deferred Items (`ManualTaskCounter` location decision) | Phase 5+ | Open | Low |  | Keep `State/Models/` as working location until decision |
@@ -47,7 +48,6 @@ This file is the active summary view of all unresolved implementation issues tra
 | 104 | Deferment | Add deterministic task-type ordering/comparer implementation after generator/task-type coverage stabilizes. | Phase 2 | Phase 2 checklist, Step 6A (task-type comparer defer) | Phase 5+ | Open | Low |  |  |
 | 103 | Deferment | Enforce sequential RuleId generation once actual RuleId generation flow exists. | Phase 2 | Phase 2 checklist guardrails/final gate (RuleId generation defer) | Phase 6 | Open | Low |  | Deferred until RuleId generation exists |
 | 100 | Deferment | Implement localization/translation behavior that changes runtime task content and flow, not just documentation. | Phase 2 | Phase 2 checklist, Step 4D (translation-impacting implementation defer) | Phase 4 | Open | Low |  | Aligned to Phase 4 per Section 21 canonical scheduling reconciliation. |
-| 86 | Deferment | Address security issue #86 by replacing broad exception swallowing in `ConfigLoader` with deterministic, explicit error handling and logging behavior. | Phase 3 | GitHub issue #86 backlog deferment reconciliation | Merged into #159 (historical reference only) | Merged | Low |  | Merged into #159. Retained only as historical traceability reference and not an active tracker. |
 
 ---
 

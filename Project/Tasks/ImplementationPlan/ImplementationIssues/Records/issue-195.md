@@ -1,5 +1,5 @@
 ---
-issue_number: 86
+issue_number: 195
 legacy_id: "DEF-032"
 type: "Deferment"
 title: "Implementation Issue 86: Address security issue #86 by replacing broad exception swallowing in `ConfigLoader` with deterministic, explicit error handling and logging behavior."
@@ -9,11 +9,11 @@ source: "GitHub issue #86 backlog deferment reconciliation"
 scheduled_target: "Merged into #159 (historical reference only)"
 status: "Merged"
 priority: "Low"
-github_url: ""
+github_url: "https://github.com/alcar2364/Joja-AutoTasks/issues/195"
 resolution_pr: ""
 created_by: "migration"
 created_at: "2026-03-12T22:37:53+00:00"
-updated_at: "2026-03-14T00:00:00+00:00"
+updated_at: "2026-03-15T06:37:28+00:00"
 sync_state: "github-synced"
 notes: "Merged into #159. Retained only as historical traceability reference and not an active tracker."
 ---
