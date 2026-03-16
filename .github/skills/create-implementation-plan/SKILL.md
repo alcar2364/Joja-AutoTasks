@@ -1,4 +1,4 @@
-﻿---
+---
 name: create-implementation-plan
 description: Decompose a JAT feature or refactor into subsystem-scoped implementation phases stored as atomic commit execution checklists. Use when: creating step-by-step checklists to guide implementation with design-guide compliance and minimal atomic commits.
 argument-hint: Describe the feature, fix, or refactor to plan; include target subsystem(s), relevant design-guide sections, any constraints (no behavior change, single-subsystem, etc.), and whether documentation updates are needed pre or post implementation.

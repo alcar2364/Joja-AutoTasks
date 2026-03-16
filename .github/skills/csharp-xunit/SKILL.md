@@ -1,4 +1,4 @@
-﻿---
+---
 name: csharp-xunit
 description: Get best practices for XUnit unit testing, including data-driven tests
 ---

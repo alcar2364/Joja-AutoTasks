@@ -1,4 +1,4 @@
-﻿---
+---
 name: git-commit
 description: 'Compose and execute JAT-standard commits using phase(step): imperative description format aligned to Atomic Commit Execution Checklists. Use when user asks to commit changes, group staged work, or draft commit messages in this repository.'
 license: MIT

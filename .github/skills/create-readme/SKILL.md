@@ -1,4 +1,4 @@
-﻿---
+---
 name: create-readme
 description: Create a README.md file for the project
 ---
