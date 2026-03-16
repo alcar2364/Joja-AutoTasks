@@ -1,13 +1,14 @@
 # Implementation Issues Archive
 
 **Status**: Archive of resolved implementation issues  
-**Last Updated**: 2026-03-15
+**Last Updated**: 2026-03-16
 
 | Issue | Legacy ID | Type | Summary | Created Phase | Priority | Resolution PR | Archived Date | Notes |
 | ----- | --------- | ---- | ------- | ------------- | -------- | ------------- | ------------- | ----- |
 
 <!-- markdownlint-disable MD013 -->
 
+| 205 |  | Review follow-up | [ci] NuGet: Unauthorized cloud AI packages added to mod project (net6.0 incompatibility risk) |  | Medium |  | 2026-03-16 |  |
 | 195 | DEF-032 | Deferment | Address security issue #86 by replacing broad exception swallowing in `ConfigLoader` with deterministic, explicit error handling and logging behavior. | Phase 3 | Low |  | 2026-03-15 | Merged into #159. Retained only as historical traceability reference and not an active tracker. |
 | 189 |  | Review follow-up | [ci] CI Infrastructure: `scripts/implementation_issues.py` missing — all three Implementation Issues sync workflows fail on every tri |  | Medium |  | 2026-03-15 |  |
 | 107 | DEF-008 | Deferment | Wire ViewModels to subscribe to SnapshotChanged so snapshot updates propagate into UI state. | Phase 3 | Low |  | 2026-03-15 |  |
@@ -19,5 +20,5 @@
 
 ## Summary
 
-**Total Archived Implementation Issues**: 6
+**Total Archived Implementation Issues**: 7
 
