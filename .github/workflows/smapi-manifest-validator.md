@@ -64,9 +64,13 @@ All of the following fields must exist and be non-empty in `manifest.json`:
 
 ### Rule 2: No Unresolved Placeholder
 
-The value `%ProjectVersion%` must NOT appear in `manifest.json` as a literal string.
-This placeholder is replaced at build time by `ModBuildConfig`; it should never be committed
-in unresolved form.
+**Policy:** `%ProjectVersion%` is the **official SMAPI `ModBuildConfig` substitution token**.
+This repository intentionally uses it in `manifest.json`. The token is replaced at build time by
+the `<Version>` value in `JojaAutoTasks.csproj` via the `Pathoschild.Stardew.ModBuildConfig`
+NuGet package. **Do not flag `%ProjectVersion%` as an error.**
+
+Only flag placeholder values that are **not** the recognized `%ProjectVersion%` token
+(e.g., `%UNSET%`, `TODO`, an empty string, or any other unexpected `%..%`-style token).
 
 ### Rule 3: MinimumApiVersion Constraint
 
@@ -78,8 +82,14 @@ in unresolved form.
 
 ### Rule 4: Version Consistency with .csproj
 
-The `<Version>` property in `JojaAutoTasks.csproj` must match the `Version` field in
-`manifest.json`. If they differ, a release build would embed a mismatched version.
+If `manifest.json` `Version` is `%ProjectVersion%`, this rule **passes automatically** — the
+token is the official SMAPI `ModBuildConfig` build-time substitution pattern, and the
+`JojaAutoTasks.csproj` `<Version>` value is the single authoritative version source. No mismatch
+is reported when the placeholder is in use.
+
+If `manifest.json` contains a **literal** version string (i.e., not `%ProjectVersion%`), it must
+match the `<Version>` property in `JojaAutoTasks.csproj`. If they differ, a release build would
+embed a mismatched version.
 
 ### Rule 5: UniqueID Format
 
@@ -123,3 +133,8 @@ Create issue with:
 - Completes in under 10 seconds
 - Version consistency check is especially important before tagging a release
 - If `release-packaging` workflow is also configured, manifest validation runs first in that pipeline
+- **`%ProjectVersion%` policy:** This repository intentionally commits `%ProjectVersion%` as the
+  `Version` value in `manifest.json`. This is the official SMAPI `ModBuildConfig` build-time
+  substitution pattern documented at https://stardewvalleywiki.com/Modding:Modder_Guide/APIs.
+  Rules 2 and 4 treat `%ProjectVersion%` as a valid, expected token and do **not** report it as
+  an error or a version mismatch. Only unknown or non-standard placeholder tokens are flagged.
