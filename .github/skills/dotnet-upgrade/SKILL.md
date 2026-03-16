@@ -1,4 +1,4 @@
-﻿---
+---
 name: dotnet-upgrade
 description: Ready-to-use prompts for comprehensive .NET framework upgrade analysis and execution
 ---

@@ -1,4 +1,4 @@
-﻿---
+---
 name: ef-core
 description: Get best practices for Entity Framework Core
 ---

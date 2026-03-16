@@ -2,7 +2,6 @@
 name: step-9-execution
 description: Step 9 of the spec-driven workflow. Orchestrate implementation through batched ticket execution with continuous validation against specs. Use after Ticket Breakdown is confirmed and to begin or resume implementation.
 argument-hint: Ticket number(s) to execute, or `all` for all pending tickets
-
 ---
 
 # Step 9: Execution
