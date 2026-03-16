@@ -6,6 +6,7 @@
     <Name>JojaAutoTasks</Name>
     <Authors>Alcar</Authors>
     <Version>0.1.0</Version>
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
