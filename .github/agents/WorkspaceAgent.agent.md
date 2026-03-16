@@ -40,6 +40,10 @@ handoffs:
     agent: Reviewer
     prompt: Verify workspace-artifact changes against applicable contracts, following the active review sequencing guard.
     send: true
+-   label: SpecOrchestrator follow-up
+    agent: SpecOrchestrator
+    prompt: Update workflow state and offer next steps after workspace artifact creation or revision is complete.
+    send: true
 ---
 
 # Workspace Agent #

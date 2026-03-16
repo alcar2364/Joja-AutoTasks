@@ -6,7 +6,7 @@ description: "Use when: implementing frontend C# HUD/menu/view-model interaction
 name: UIAgent
 target: vscode
 tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
-agents: [Reviewer, GameAgent, StarMLAgent, Planner, Researcher]
+agents: [Reviewer, GameAgent, StarMLAgent, Planner, Researcher, SpecOrchestrator]
 handoffs:
 -   label: UI patch verification handoff
     agent: Reviewer
@@ -27,6 +27,10 @@ handoffs:
 -   label: Missing context handoff
     agent: Researcher
     prompt: Gather missing symbols, patterns, or codebase context needed to complete UI implementation safely.
+    send: true
+-   label: Orchestrator follow-up
+    agent: SpecOrchestrator
+    prompt: Update workflow state and offer next steps after UI implementation is complete.
     send: true
 ---
 
@@ -65,6 +69,11 @@ haunted pile of callback spaghetti.
 6. Produce code that is clean, minimal, and reviewable.
 
 Prefer **small, contract‑compliant edits** over sweeping UI rewrites.
+
+When invoked for using /step-9-execution: 
+1. Read all artifacts and all tickets in `.workflow/artifacts/tickets/`
+2. Follow the skill instructions exactly — batched execution with continuous validation
+3. On completion: handoff to SpecOrchestrator to validate the implementation and offer next steps
 
 ## Source of Truth Order ##
 

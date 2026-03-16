@@ -6,7 +6,7 @@ argument-hint:  Describe the backend feature, fix, or refactor; include the appr
                 change, single-file, or touched-region only.
 target: vscode
 tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read, agent, edit, search, 'microsoftdocs/mcp/*', 'grepai/*', todo]
-agents: [Reviewer, Planner, Researcher, UIAgent, StarMLAgent]
+agents: [Reviewer, Planner, Researcher, UIAgent, StarMLAgent, SpecOrchestrator]
 handoffs:
   - label: Review backend patch
     agent: Reviewer
@@ -27,6 +27,10 @@ handoffs:
   - label: StarML follow-up implementation
     agent: StarMLAgent
     prompt: Implement StarML (.sml) composition updates needed after backend changes are complete.
+    send: true
+  - label: Orchestrator follow-up
+    agent: SpecOrchestrator
+    prompt: Update workflow state and offer next steps after backend implementation is complete.
     send: true
 ---
 
@@ -68,6 +72,11 @@ You are responsible for:
 7. producing code that is clean, minimal, and reviewable
 
 You must prefer **small, correct, contract-compliant edits** over broad clever rewrites.
+
+When invoked for using /step-9-execution: 
+1. Read all artifacts and all tickets in `.workflow/artifacts/tickets/`
+2. Follow the skill instructions exactly — batched execution with continuous validation
+3. On completion: handoff to SpecOrchestrator to validate the implementation and offer next steps
 
 ## 2. Source of Truth Order ##
 

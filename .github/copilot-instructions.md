@@ -119,6 +119,63 @@ Load only the contract files needed for the task:
 - Review/risk checks: [`review-and-verification-contract.instructions.md`](./instructions/review-and-verification-contract.instructions.md)
 - Docs updates: [`update-docs-on-code-change.instructions.md`](./instructions/update-docs-on-code-change.instructions.md)
 
+
+# Spec-Driven Workflow
+
+This repo uses a 10-step spec-driven development workflow with three custom agents. Always be aware of workflow position before starting feature work.
+
+## Agent Routing
+
+Each step is owned by a specific agent. Select the correct agent from the dropdown first:
+
+| Agent | Steps | Model |
+|-------|-------|-------|
+| `SpecOrchestrator` | 1 (Requirements), 9 (Execution), Status, Revise | GPT-5.4 xhigh |
+| `SpecPlanner` | 2 (Epic Brief), 3 (Core Flows), 5 (Tech Plan), 8 (Tickets) | Claude Sonnet 4.6 |
+| `SpecReviewer` | 4 (PRD Validation), 6 (Arch Validation), 7 (Cross-Artifact), 10 (Impl Validation) | GPT-5.4 xhigh |
+
+## Invoking Steps
+
+Switch to the correct agent, then type `/` to select the skill:
+
+```
+[SpecOrchestrator] /step-1-requirements
+[SpecPlanner]      /step-2-epic-brief
+[SpecPlanner]      /step-3-core-flows
+[SpecReviewer]     /step-4-prd-validation
+[SpecPlanner]      /step-5-tech-plan
+[SpecReviewer]     /step-6-arch-validation
+[SpecReviewer]     /step-7-cross-artifact
+[SpecPlanner]      /step-8-ticket-breakdown
+[SpecOrchestrator] /step-9-execution
+[SpecReviewer]     /step-10-impl-validation
+[SpecOrchestrator] /workflow-status
+[SpecOrchestrator] /revise-requirement
+```
+
+After each step, the active agent will surface handoff buttons to the next — use them to advance with full context already loaded.
+
+## Workflow State
+
+Current position is in `.workflow/state/workflow-state.json`. Artifacts live in `.workflow/artifacts/`.
+
+## Transition Rules
+
+```
+1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10
+              ↑       ↑   ↑           ↑
+             4→3     6→5 7→3/5      10→9   (validation failures loop back)
+Any step → revise-requirement (on scope change)
+```
+
+## Core Values
+
+- Questions are investments in correctness, not overhead
+- Multiple rounds of clarification is normal and encouraged
+- Specs record decisions made together, not deliverables to rush toward
+- Surfacing assumptions early is cheap; fixing wrong work is expensive
+
+
 ## Final Rule
 
 Trust this file for operational guidance, but verify against code when behavior is the source of

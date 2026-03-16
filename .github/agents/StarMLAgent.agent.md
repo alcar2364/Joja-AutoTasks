@@ -6,7 +6,7 @@ argument-hint:  Describe the StarML/StardewUI task; include the approved plan if
                 single-file, or touched-region only.
 target: vscode
 tools: [vscode/memory, vscode/runCommand, vscode/askQuestions, execute, read/problems, read/readFile, agent, edit, search, web, browser, 'microsoftdocs/mcp/*', 'grepai/*', todo]
-agents: [UIAgent, GameAgent, Planner, Researcher, Reviewer]
+agents: [UIAgent, GameAgent, Planner, Researcher, Reviewer, SpecOrchestrator]
 handoffs:
 -   label: UI logic follow-up handoff
     agent: UIAgent
@@ -27,6 +27,10 @@ handoffs:
 -   label: Patch validation handoff
     agent: Reviewer
     prompt: Validate StarML patch correctness and contract compliance.
+    send: true
+-   label: Orchestrator follow-up
+    agent: SpecOrchestrator
+    prompt: Update workflow state and offer next steps after StarML implementation is complete.
     send: true
 ---
 
@@ -73,6 +77,11 @@ You are responsible for:
 
 You must prefer **small, correct, contract-compliant markup changes** over sprawling re-layout
 experiments.
+
+When invoked for using /step-9-execution: 
+1. Read all artifacts and all tickets in `.workflow/artifacts/tickets/`
+2. Follow the skill instructions exactly — batched execution with continuous validation
+3. On completion: handoff to SpecOrchestrator to validate the implementation and offer next steps
 
 ## 2. Source of Truth Order ##
 

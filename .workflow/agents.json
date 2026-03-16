@@ -1,0 +1,42 @@
+{
+  "_readme": "Map each workflow step to your registered VS Code chat participant. Find participant IDs in your extension's package.json under contributes.chatParticipants[].id. Skills automatically route — this file is the reference for copilot-instructions.md and the hooks.",
+
+  "agents": {
+    "planner": {
+      "agentName": "SpecPlanner",
+      "agentFile": ".github/agents/spec-planner.agent.md",
+      "model": "Claude Sonnet 4.6 (copilot)",
+      "description": "Planning agent — Epic Brief, Core Flows, Tech Plan, Ticket Breakdown"
+    },
+    "reviewer": {
+      "agentName": "SpecReviewer",
+      "agentFile": ".github/agents/spec-reviewer.agent.md",
+      "model": "GPT-5.4 xhigh",
+      "description": "Review agent — PRD Validation, Arch Validation, Cross-Artifact, Impl Validation"
+    },
+    "orchestrator": {
+      "agentName": "SpecOrchestrator",
+      "agentFile": ".github/agents/spec-orchestrator.agent.md",
+      "model": "GPT-5.4 xhigh",
+      "description": "Orchestration agent — Requirements, Execution, Status, Revise Requirement"
+    }
+  },
+
+  "steps": {
+    "1":  { "name": "Requirements Gathering",      "skill": "step-1-requirements",    "agent": "orchestrator" },
+    "2":  { "name": "Epic Brief",                  "skill": "step-2-epic-brief",       "agent": "planner"      },
+    "3":  { "name": "Core Flows",                  "skill": "step-3-core-flows",       "agent": "planner"      },
+    "4":  { "name": "PRD Validation",              "skill": "step-4-prd-validation",   "agent": "reviewer"     },
+    "5":  { "name": "Tech Plan",                   "skill": "step-5-tech-plan",        "agent": "planner"      },
+    "6":  { "name": "Architecture Validation",     "skill": "step-6-arch-validation",  "agent": "reviewer"     },
+    "7":  { "name": "Cross-Artifact Validation",   "skill": "step-7-cross-artifact",   "agent": "reviewer"     },
+    "8":  { "name": "Ticket Breakdown",            "skill": "step-8-ticket-breakdown", "agent": "planner"      },
+    "9":  { "name": "Execution",                   "skill": "step-9-execution",        "agent": "orchestrator" },
+    "10": { "name": "Implementation Validation",   "skill": "step-10-impl-validation", "agent": "reviewer"     }
+  },
+
+  "special": {
+    "workflow-status":    { "skill": "workflow-status",    "agent": "orchestrator" },
+    "revise-requirement": { "skill": "revise-requirement", "agent": "orchestrator" }
+  }
+}

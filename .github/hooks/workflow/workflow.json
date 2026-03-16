@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash .workflow/scripts/hooks/session-start.sh",
+        "windows": "powershell -File .workflow/scripts/hooks/session-start.ps1",
+        "timeout": 5
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "bash .workflow/scripts/hooks/post-tool-use.sh",
+        "windows": "powershell -File .workflow/scripts/hooks/post-tool-use.ps1",
+        "timeout": 15
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "bash .workflow/scripts/hooks/stop-validate.sh",
+        "windows": "powershell -File .workflow/scripts/hooks/stop-validate.ps1",
+        "timeout": 5
+      }
+    ]
+  }
+}
